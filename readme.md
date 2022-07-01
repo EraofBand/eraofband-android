@@ -17,12 +17,14 @@ layout id 규칙
 1. recyclerview 이름_숫자  ex)post_1, post_2
 
 commit 규칙
-1. [type] 수정한 내용
+1. type: [파일명] 수정한 내용
 2. type 
     - add : 새로운 기능을 추가할 때
     - modify : 기존 기능을 수정할 때
     - test : 테스트 코드를 올릴 때
-3. ex) [add] 로그인 레이아웃 추가, [add] 로그인 서버 연동, [modify] 로그인 레이아웃 수정
+3. ex) add: [LoginActivity] 로그인 레이아웃 추가
+       add: [MainActivity] 바텀 네비게이션 구현
+       modify : [LoginActivity] 로그인 레이아웃 수정
 
 코드 주석 규칙 (kt 파일에 사용)
 1. 코드 위에 어떤 기능인지 설명  ex) 파이어베이스 연결, 좋아요 기능
