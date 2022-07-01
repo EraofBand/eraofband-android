@@ -12,7 +12,7 @@
 <br/>
 
 **layout id 규칙**
-1. id_xml 이름_세부 기능_view 이름  ex) id_home_story_rv, id_shop_brandid_tv
+1. xml이름_세부기능_view이름  ex) home_story_rv, shop_brandid_tv
 2. 세부 기능에는 _ 더 사용해도 괜찮아요
 <br/>
 
