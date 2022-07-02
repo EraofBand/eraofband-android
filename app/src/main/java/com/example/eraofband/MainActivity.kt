@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        binding.bottomNavigationView.background = null
+        binding.mainBottomNav.background = null
 
         // test commit
     }
