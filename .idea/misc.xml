@@ -5,6 +5,12 @@
       <map>
         <entry key="..\:/Users/lsh92/AndroidStudioProjects/EraofBand/app/src/main/res/layout/activity_main.xml" value="0.24947916666666667" />
         <entry key="..\:/eraofband-android/app/src/main/res/layout/activity_main.xml" value="0.24947916666666667" />
+        <entry key="..\:/eraofband-android/app/src/main/res/layout/activity_onboarding.xml" value="0.264" />
+        <entry key="..\:/eraofband-android/app/src/main/res/layout/activity_splash.xml" value="0.1" />
+        <entry key="..\:/eraofband-android/app/src/main/res/layout/fragment_on_band.xml" value="0.2047008547008547" />
+        <entry key="..\:/eraofband-android/app/src/main/res/layout/fragment_on_lesson.xml" value="0.24947916666666667" />
+        <entry key="..\:/eraofband-android/app/src/main/res/layout/fragment_on_portfolio.xml" value="0.2484375" />
+        <entry key="..\:/eraofband-android/app/src/main/res/layout/fragment_on_together.xml" value="0.24947916666666667" />
       </map>
     </option>
   </component>
