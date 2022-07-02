@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/community"
+        android:icon="@drawable/bottom_navigation_community"
+        android:title=""
+        android:enabled="true"/>
+
+    <item
+        android:id="@+id/board"
+        android:icon="@drawable/bottom_navigation_board"
+        android:title=""
+        android:enabled="true"/>
+
+    <item
+        android:id="@+id/home"
+        android:title=""
+        android:enabled="false"/>
+
+    <item
+        android:id="@+id/chat"
+        android:icon="@drawable/bottom_navigation_chat"
+        android:title=""
+        android:enabled="true"/>
+
+    <item
+        android:id="@+id/mypage"
+        android:icon="@drawable/bottom_navigation_mypage"
+        android:title=""
+        android:enabled="true"/>
+
+</menu>

@@ -3,6 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/bottom_navigation_board.xml" value="0.1685" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/bottom_navigation_chat.xml" value="0.1685" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/bottom_navigation_community.xml" value="0.1685" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/bottom_navigation_mypage.xml" value="0.1685" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_main.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/menu/bottom_menu.xml" value="0.2484375" />
         <entry key="..\:/Users/lsh92/AndroidStudioProjects/EraofBand/app/src/main/res/layout/activity_main.xml" value="0.24947916666666667" />
       </map>
     </option>
