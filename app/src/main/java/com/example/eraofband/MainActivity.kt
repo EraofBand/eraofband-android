@@ -3,7 +3,6 @@ package com.example.eraofband
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.eraofband.databinding.ActivityMainBinding
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,6 +17,5 @@ class MainActivity : AppCompatActivity() {
 
         binding.mainBottomNav.background = null
 
-        // test commit
     }
 }
