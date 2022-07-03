@@ -10,37 +10,53 @@
         android:id="@+id/main_frm"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_anchor="@id/bottom_app_bar"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/main_bottom"/>
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottom_app_bar"
+    <FrameLayout
+        android:id="@+id/main_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:backgroundTint="#202228"
-        app:fabCradleRoundedCornerRadius="-1dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/main_bottom_nav"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginEnd="16dp"
-            android:background="@color/transparent"
-            app:itemIconSize="40dp"
+            android:layout_height="120dp"
+            android:background="@color/bottom_nav"
+            app:itemIconSize="45dp"
+            app:itemIconTint="@drawable/bottom_nav_icon_color"
             app:labelVisibilityMode="unlabeled"
             app:itemRippleColor="@color/transparent"
-            app:menu="@menu/bottom_menu"/>
+            app:menu="@menu/bottom_menu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-    </com.google.android.material.bottomappbar.BottomAppBar>
+    </FrameLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/main_fab"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:fabCustomSize="70dp"
-        app:borderWidth="0dp"
-        android:background="@drawable/float_background"
-        android:src="@drawable/ic_home"
-        app:layout_anchor="@id/bottom_app_bar"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/main_bottom"
+        app:layout_constraintBottom_toBottomOf="@id/main_bottom">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabCustomSize="70dp"
+            android:src="@drawable/ic_home_bg"
+            app:backgroundTint="@color/transparent"
+            android:clickable="true"
+            android:focusable="true"
+            app:useCompatPadding="true"/>
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

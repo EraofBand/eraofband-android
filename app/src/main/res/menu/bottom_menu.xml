@@ -16,8 +16,8 @@
     <item
         android:id="@+id/home"
         android:title=""
-        android:enabled="false"
-        android:checked="true"/>
+        android:checked="false"
+        android:enabled="false"/>
 
     <item
         android:id="@+id/chat"
