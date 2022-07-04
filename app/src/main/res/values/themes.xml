@@ -16,5 +16,8 @@
         <!-- 상태바 반투명 설정 -->
         <item name="android:windowTranslucentStatus">true</item>
 
+        <!-- 네비게이션 바 색상 설정 -->
+        <item name="android:navigationBarColor">@color/black</item>
+
     </style>
 </resources>
