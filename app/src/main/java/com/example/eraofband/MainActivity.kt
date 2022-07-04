@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
             .setTopLeftCorner(CornerFamily.ROUNDED, 70.0f)
             .setTopRightCorner(CornerFamily.ROUNDED, 70.0f).build()
 
-
     }
 
     private fun initBottomNav(){
@@ -35,10 +34,11 @@ class MainActivity : AppCompatActivity() {
         binding.mainBottomNav.selectedItemId = R.id.home
 
         // 플로팅 버튼을 누르면 HomeFragment 실행
-        binding.mainBottomFabBtn.setOnClickListener {
+        binding.mainBottomHomeBt.setOnClickListener {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.main_frm, HomeFragment())
                 .commitAllowingStateLoss()
+            binding.mainBottomNav.selectedItemId = R.id.home
         }
 
         binding.mainBottomNav.setOnItemSelectedListener{
