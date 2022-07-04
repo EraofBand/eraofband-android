@@ -40,23 +40,29 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/main_bottom_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/main_bottom"
         app:layout_constraintBottom_toBottomOf="@id/main_bottom">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/main_bottom_fab_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:fabCustomSize="70dp"
-            android:src="@drawable/ic_home_bg"
-            app:backgroundTint="@color/transparent"
+            app:fabCustomSize="68dp"
+            app:borderWidth="0dp"
+            android:src="@drawable/ic_home"
+            app:backgroundTint="@color/blue"
+            app:tint="@color/white"
+            app:rippleColor="@color/transparent"
             android:clickable="true"
             android:focusable="true"
-            app:useCompatPadding="true"/>
+            tools:ignore="ContentDescription" />
 
     </FrameLayout>
-
+<!--    app:backgroundTint="#0646CB"-->
 </androidx.constraintlayout.widget.ConstraintLayout>
