@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">Era of Band</string>
+
+    <string name="next">다음</string>
+    <string name="start">시작하기</string>
+
+    // 회원가입 관련 string
+    <string name="nickname">닉네임</string>
+    <string name="signup_nickname_title">밴드의 시대에 오신 것을\n진심으로 환영합니다</string>
+    <string name="signup_nickname_start">프로필을 입력하고 제대로 즐겨보아요!</string>
+
+    <string name="signup_gender_title">성별과 생년월일을\n선택해주세요</string>
+    <string name="gender">성별</string>
+    <string name="man">남</string>
+    <string name="woman">여</string>
+    <string name="birthday">생년월일</string>
+
+    <string name="signup_profile_title">다른 뮤지션들이\n더 잘알 수 있도록\n프로필 사진을 선택해주세요</string>
+
+    <string name="signup_location_title">활동 지역을 선택해주세요</string>
+    <string name="signup_location_subtitle">서울, 경기를 제외한 지역은 조금만 기다려주세요 ?</string>
+
+    <string name="signup_session_title">희망하는 세션을 선택해주세요</string>
+
+    <string name="signup_term_title">서비스 약관에 동의해주세요!</string>
+    <string name="signup_term_all_agree">모든 약관에 동의합니다.</string>
+    <string name="signup_mola">미정(필수)</string>
+    <string name="signup_mola2">미정(선택)</string>
+
 </resources>

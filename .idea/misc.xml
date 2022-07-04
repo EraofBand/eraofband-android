@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/blue_round_bg.xml" value="0.255" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/bottom_nav_icon_color.xml" value="0.1675" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/bottom_navigation_board.xml" value="0.1685" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/bottom_navigation_chat.xml" value="0.1685" />
@@ -10,8 +11,17 @@
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/bottom_navigation_home.xml" value="0.1675" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/bottom_navigation_mypage.xml" value="0.1685" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/fab_gradient_bg.xml" value="0.1685" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/gray_round_bg.xml" value="0.1545" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/spinner_bg.xml" value="0.1545" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/white_checkbox.xml" value="0.1545" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_login.xml" value="0.24947916666666667" />
-        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_main.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_main.xml" value="0.152" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_signup_gender.xml" value="0.15756578947368421" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_signup_location.xml" value="0.15756578947368421" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_signup_nickname.xml" value="0.176" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_signup_profile.xml" value="0.15756578947368421" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_signup_session.xml" value="0.15756578947368421" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_signup_term.xml" value="0.15756578947368421" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/bottom_navigation_home.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/fragment_board.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/fragment_chat.xml" value="0.24947916666666667" />

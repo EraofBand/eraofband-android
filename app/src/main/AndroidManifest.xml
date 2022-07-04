@@ -25,12 +25,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".MainActivity"
+            android:name=".signup.SignUpNicknameActivity"
             android:exported="false" />
+        <activity
+            android:name=".signup.SignUpGenderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".signup.SignUpProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".signup.SignUpLocationActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".signup.SignUpSessionActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".signup.SignUpTermActivity"
+            android:exported="false" />
+
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

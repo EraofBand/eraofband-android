@@ -36,9 +36,9 @@ class MainActivity : AppCompatActivity() {
 
         // 플로팅 버튼을 누르면 HomeFragment 실행
         binding.mainBottomFabBtn.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.main_frm, HomeFragment())
-                .commitAllowingStateLoss()
+            supportFragmentManager.beginTransaction().replace(R.id.main_frm, HomeFragment()).commitAllowingStateLoss()
+
+            binding.mainBottomNav.selectedItemId = R.id.home
         }
 
         binding.mainBottomNav.setOnItemSelectedListener{
