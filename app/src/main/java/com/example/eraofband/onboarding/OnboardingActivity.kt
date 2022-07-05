@@ -41,6 +41,7 @@ class OnboardingActivity : AppCompatActivity() {
             }
         })
 
+        //스킵 버튼 누르면 로그인 액티비티 이동
         binding.onboardingSkipTv.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
         }
