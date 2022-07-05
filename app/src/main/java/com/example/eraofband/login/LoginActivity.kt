@@ -1,9 +1,13 @@
-package com.example.eraofband
+package com.example.eraofband.login
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.eraofband.MainActivity
+import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityLoginBinding
+import com.example.eraofband.signup.SignUpNicknameActivity
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.user.UserApiClient
@@ -53,9 +57,8 @@ class LoginActivity : AppCompatActivity() {
                 }
             } else if (token != null) {
                 Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this, SignUpNicknameActivity::class.java)
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-                finish()
             }
         }
 

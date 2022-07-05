@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.example.eraofband.databinding.FragmentMypageBinding
+import com.example.eraofband.login.LoginActivity
 import com.kakao.sdk.user.UserApiClient
 
 class MyPageFragment : Fragment() {
@@ -45,9 +45,9 @@ class MyPageFragment : Fragment() {
         binding.resign.setOnClickListener {  // 회원탈퇴 프로세스
             UserApiClient.instance.unlink { error ->
                 if (error != null) {
-                    Toast.makeText(context, "회원 탈퇴 실패 $error", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "회원탈퇴 실패 $error", Toast.LENGTH_SHORT).show()
                 }else {
-                    Toast.makeText(context, "회원 탈퇴 성공", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "회원탈퇴 성공", Toast.LENGTH_SHORT).show()
                     val intent = Intent(context, LoginActivity::class.java)
                     startActivity(intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP))
                     activity?.finish()  // 로그아웃시 스택에 있는 메인 액티비티 종료

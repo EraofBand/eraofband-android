@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">Era of Band</string>
+    <string name="app_name">밴드의 시대</string>
 
 
     <string name="next">다음</string>
     <string name="start">시작하기</string>
 
-    // 회원가입 관련 string
+    <!-- 회원가입 관련 String -->
     <string name="nickname">닉네임</string>
     <string name="signup_nickname_title">밴드의 시대에 오신 것을\n진심으로 환영합니다</string>
     <string name="signup_nickname_start">프로필을 입력하고 제대로 즐겨보아요!</string>
@@ -16,7 +16,7 @@
     <string name="woman">여</string>
     <string name="birthday">생년월일</string>
 
-    <string name="signup_profile_title">다른 뮤지션들이\n더 잘알 수 있도록\n프로필 사진을 선택해주세요</string>
+    <string name="signup_profile_title">다른 뮤지션들이\n더 잘 알 수 있도록\n프로필 사진을 선택해주세요</string>
 
     <string name="signup_location_title">활동 지역을 선택해주세요</string>
     <string name="signup_location_subtitle">서울, 경기를 제외한 지역은 조금만 기다려주세요 ?</string>
@@ -32,6 +32,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <!-- 카카오 로그인 앱 키 -->
     <string name="kakao_app_key">ccf29d74d82be869acd9bcd90e665533</string>
     <string name="kakao_native_key">kakaoccf29d74d82be869acd9bcd90e665533</string>
 </resources>

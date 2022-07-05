@@ -1,6 +1,7 @@
-package com.example.eraofband
+package com.example.eraofband.login
 
 import android.app.Application
+import com.example.eraofband.R
 import com.kakao.sdk.common.KakaoSdk
 
 class GlobalApplication : Application(){
