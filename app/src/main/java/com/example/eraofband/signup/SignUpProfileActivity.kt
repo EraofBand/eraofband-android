@@ -29,11 +29,14 @@ class SignUpProfileActivity : AppCompatActivity() {
             finish()
         }
 
+        setTextColor()
+    }
+
+    private fun setTextColor() {
         // 글씨 파란색, 두껍게 만들기
         val nickname = binding.signupProfileTitleTv.text  // 텍스트 가져옴
         val spannableString = SpannableString(nickname)  //객체 생성
 
-        // 유저 이름 부분만 두껍게 표시
         val word = "프로필 사진"
         val start = nickname.indexOf(word)
         val end = start + word.length
@@ -41,6 +44,5 @@ class SignUpProfileActivity : AppCompatActivity() {
         spannableString.setSpan(ForegroundColorSpan(Color.parseColor("#1864FD")), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannableString.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.signupProfileTitleTv.text = spannableString
-
     }
 }

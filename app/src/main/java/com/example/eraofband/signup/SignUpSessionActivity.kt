@@ -30,12 +30,13 @@ class SignUpSessionActivity : AppCompatActivity() {
         binding.signupSessionBackIv.setOnClickListener {
             finish()
         }
+    }
 
+    private fun setTextColor() {
         // 글씨 파란색, 두껍게 만들기
         val nickname = binding.signupSessionTitleTv.text  // 텍스트 가져옴
         val spannableString = SpannableString(nickname)  //객체 생성
 
-        // 유저 이름 부분만 두껍게 표시
         val word = "희망하는 세션"
         val start = nickname.indexOf(word)
         val end = start + word.length
