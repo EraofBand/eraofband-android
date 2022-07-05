@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-import com.example.eraofband.LoginActivity
+import com.example.eraofband.login.LoginActivity
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityOnboardingBinding
 
