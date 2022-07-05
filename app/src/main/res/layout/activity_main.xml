@@ -6,4 +6,63 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <FrameLayout
+        android:id="@+id/main_frm"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/main_bottom"/>
+
+    <FrameLayout
+        android:id="@+id/main_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/main_bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@color/bottom_nav"
+            app:itemIconSize="45dp"
+            app:itemIconTint="@drawable/bottom_nav_icon_color"
+            app:labelVisibilityMode="unlabeled"
+            app:itemRippleColor="@color/transparent"
+            app:menu="@menu/bottom_menu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/main_bottom_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/main_bottom"
+        app:layout_constraintBottom_toBottomOf="@id/main_bottom">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/main_bottom_fab_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabCustomSize="68dp"
+            app:borderWidth="0dp"
+            android:src="@drawable/ic_home"
+            app:backgroundTint="@color/blue"
+            app:tint="@color/white"
+            app:rippleColor="@color/transparent"
+            android:clickable="true"
+            android:focusable="true"
+            tools:ignore="ContentDescription" />
+
+    </FrameLayout>
+<!--    app:backgroundTint="#0646CB"-->
 </androidx.constraintlayout.widget.ConstraintLayout>
