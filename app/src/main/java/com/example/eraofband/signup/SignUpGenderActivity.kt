@@ -37,9 +37,11 @@ class SignUpGenderActivity : AppCompatActivity() {
         binding.signupGenderRealBirthdayTv.text = setDate()
 
         binding.signupGenderRealBirthdayTv.setOnClickListener {
-            val dateDialog = DialogDatePicker()
+            // 현재 설정되어있는 날짜를 넘겨줌
+            val dateDialog = DialogDatePicker(binding.signupGenderRealBirthdayTv.text.toString())
             dateDialog.show(supportFragmentManager, "dateDialog")
 
+            // DialogDatePicker의 날짜 변경 인터페이스를 불러와서 TextView에 날짜를 저장
             dateDialog.setMyItemClickListener(object  : DialogDatePicker.MyItemClickListener {
                 override fun saveBirthday(birthday: String) {
                     binding.signupGenderRealBirthdayTv.text = birthday

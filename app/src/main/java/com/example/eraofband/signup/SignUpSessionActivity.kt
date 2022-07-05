@@ -30,6 +30,8 @@ class SignUpSessionActivity : AppCompatActivity() {
         binding.signupSessionBackIv.setOnClickListener {
             finish()
         }
+
+        setTextColor()
     }
 
     private fun setTextColor() {

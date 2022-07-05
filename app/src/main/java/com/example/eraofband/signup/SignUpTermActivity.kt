@@ -30,6 +30,8 @@ class SignUpTermActivity : AppCompatActivity() {
             finish()
         }
 
+        setTextColor()
+
     }
 
     private fun setTextColor() {
