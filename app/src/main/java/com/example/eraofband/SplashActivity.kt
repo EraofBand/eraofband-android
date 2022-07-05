@@ -1,5 +1,10 @@
 package com.example.eraofband
 
+
+import android.annotation.SuppressLint
+
+import android.content.Context
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +15,10 @@ import android.widget.Toast
 import com.example.eraofband.databinding.ActivitySplashBinding
 import com.kakao.sdk.user.UserApiClient
 
+import com.example.eraofband.onboarding.OnboardingActivity
+import java.lang.Boolean.getBoolean
+
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
     lateinit var binding: ActivitySplashBinding
@@ -20,6 +29,10 @@ class SplashActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val handler = Handler(Looper.getMainLooper())
+
+        //실행여부 체크 위해 선언
+        val prefs = getSharedPreferences("onboarding", Context.MODE_PRIVATE)
+        var isFinished = prefs.getBoolean("isFinished", false)
 
         handler.postDelayed({
             UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
@@ -39,6 +52,17 @@ class SplashActivity : AppCompatActivity() {
                  새로운 인스턴스를 생성하는 것 대신에 존재하고 있는 액티비티를 포그라운드로 가져온다.
                  그리고 호출한 인스턴스를 포그라운드로 가져올때까지 있었던 위의 인스턴스들을 모두 삭제한다. */
             }
+
+            //실행 여부 체크 후 필요한 액티비티로 전환
+            if(isFinished){
+                startActivity(Intent(this, LoginActivity::class.java))
+            } else{
+                startActivity(Intent(this, OnboardingActivity::class.java))
+                prefs.edit().putBoolean("isFinished", true).apply()
+            }
+
+
+            finish()
         }, 1000)
     }
 }

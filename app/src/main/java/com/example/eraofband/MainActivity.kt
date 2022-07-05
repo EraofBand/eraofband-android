@@ -7,6 +7,7 @@ import com.example.eraofband.databinding.ActivityMainBinding
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 
+//test commit
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavBg.shapeAppearanceModel = bottomNavBg.shapeAppearanceModel.toBuilder()
             .setTopLeftCorner(CornerFamily.ROUNDED, 70.0f)
             .setTopRightCorner(CornerFamily.ROUNDED, 70.0f).build()
+
 
     }
 
