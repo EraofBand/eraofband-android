@@ -21,22 +21,20 @@ class SplashActivity : AppCompatActivity() {
 
         val handler = Handler(Looper.getMainLooper())
 
+        //실행여부 체크 위해 선언
+        val prefs = getSharedPreferences("onboarding", Context.MODE_PRIVATE)
+        var isFinished = prefs.getBoolean("isFinished", false)
+
         handler.postDelayed({
             //실행 여부 체크 후 필요한 액티비티로 전환
-            if(isOnboardingFinished()){
+            if(isFinished){
                 startActivity(Intent(this, LoginActivity::class.java))
             } else{
                 startActivity(Intent(this, OnboardingActivity::class.java))
+                prefs.edit().putBoolean("isFinished", true).apply()
             }
 
             finish()
         }, 1000)
     }
-
-    //온보딩 액티비티 실행 됐었는지 체크하는 함수
-    private fun isOnboardingFinished(): Boolean {
-        val prefs = getSharedPreferences("onboarding", Context.MODE_PRIVATE)
-        return prefs.getBoolean("finished", false)
-    }
-
 }
