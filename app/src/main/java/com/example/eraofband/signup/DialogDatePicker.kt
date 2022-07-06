@@ -14,7 +14,7 @@ import com.example.eraofband.databinding.DialogDatepickerBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DialogDatePicker() : DialogFragment() {
+class DialogDatePicker(private val selectedDate : String) : DialogFragment() {
 
     private lateinit var binding : DialogDatepickerBinding
 
@@ -34,10 +34,10 @@ class DialogDatePicker() : DialogFragment() {
 
         binding = DialogDatepickerBinding.inflate(inflater, container, false)
 
-        val today = setDate()
+        val date = selectedDate  // 넘겨받은 날짜를 기본으로
 
         // 날짜 저장
-        binding.dialogDatepicker.init(today.substring(0, 4).toInt(), today.substring(5, 7).toInt(), today.substring(8).toInt(), object : DatePicker.OnDateChangedListener{
+        binding.dialogDatepicker.init(date.substring(0, 4).toInt(), date.substring(5, 7).toInt() - 1, date.substring(8).toInt(), object : DatePicker.OnDateChangedListener{
             @SuppressLint("SetTextI18n")
             override fun onDateChanged(view: DatePicker?, year: Int, month: Int, day: Int) {
                 // string으로 넣어주기 편하게 미리 변환
@@ -69,15 +69,6 @@ class DialogDatePicker() : DialogFragment() {
         }
 
         return binding.root
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    private fun setDate() : String {  // 오늘 날짜 불러오기
-        val today = System.currentTimeMillis()  // 현재 날짜, 시각 불러오기
-        val date = Date(today)
-        val mFormat = SimpleDateFormat("yyyy-MM-dd")
-
-        return mFormat.format(date)
     }
 
     interface MyItemClickListener {

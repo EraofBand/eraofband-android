@@ -10,6 +10,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
+import com.example.eraofband.main.MainActivity
 import com.example.eraofband.MainActivity
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivitySignupTermBinding
@@ -34,6 +35,9 @@ class SignUpTermActivity : AppCompatActivity() {
         binding.signupTermBackIv.setOnClickListener {
             finish()
         }
+
+
+        setTextColor()
 
         binding.signupTermAllAgreeCb.setOnClickListener {
             binding.signupTermAllAgreeCb.isChecked
@@ -101,6 +105,7 @@ class SignUpTermActivity : AppCompatActivity() {
         binding.signupTermForthCb.isChecked = true
         binding.signupTermFifthCb.isChecked = true
         allTrue = allTrue
+
     }
 
     private fun setTextColor() {

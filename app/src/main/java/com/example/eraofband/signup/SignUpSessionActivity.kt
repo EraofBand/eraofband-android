@@ -33,6 +33,8 @@ class SignUpSessionActivity : AppCompatActivity() {
             finish()
             overridePendingTransition(R.anim.slide_left_back, R.anim.slide_right_back)
         }
+
+        setTextColor()
     }
 
     private fun setTextColor() {

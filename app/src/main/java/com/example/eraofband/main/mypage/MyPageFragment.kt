@@ -1,4 +1,4 @@
-package com.example.eraofband
+package com.example.eraofband.main.mypage
 
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -21,8 +21,9 @@ class MyPageFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
         _binding = FragmentMypageBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 

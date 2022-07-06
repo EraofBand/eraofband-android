@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".main.MainActivity">
 
     <FrameLayout
         android:id="@+id/main_frm"
@@ -56,6 +56,7 @@
             android:background="@drawable/ic_home_button_round"
             android:src="@drawable/ic_home_bg"
             android:scaleType="fitXY" />
+
     </FrameLayout>
-<!--    app:backgroundTint="#0646CB"-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -88,25 +88,26 @@
         app:layout_constraintTop_toBottomOf="@id/signup_location_title_tv"
         app:layout_constraintStart_toStartOf="parent"/>
 
-    <Spinner
+    <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/signup_location_city_sp"
         android:layout_width="100dp"
         android:layout_height="50dp"
+        android:spinnerMode="dropdown"
         android:background="@drawable/spinner_bg"
         android:popupBackground="@color/background"
-        android:theme="@style/SpinnerTheme"
         android:layout_marginStart="20dp"
         android:layout_marginTop="150dp"
         app:layout_constraintTop_toBottomOf="@id/signup_location_subtitle_tv"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <Spinner
+
+    <androidx.appcompat.widget.AppCompatSpinner
         android:id="@+id/signup_location_area_sp"
         android:layout_width="100dp"
         android:layout_height="50dp"
+        android:spinnerMode="dropdown"
         android:background="@drawable/spinner_bg"
         android:popupBackground="@color/background"
-        android:theme="@style/SpinnerTheme"
         android:layout_marginStart="23dp"
         android:layout_marginTop="150dp"
         app:layout_constraintTop_toBottomOf="@id/signup_location_subtitle_tv"

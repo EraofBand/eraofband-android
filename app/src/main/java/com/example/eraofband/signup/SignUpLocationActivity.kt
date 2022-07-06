@@ -58,7 +58,7 @@ class SignUpLocationActivity : AppCompatActivity() {
         // 도시 스피너 어뎁터 연결
         val city = resources.getStringArray(R.array.city)  // 도시 목록
 
-        val cityAdapter = ArrayAdapter(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, city)
+        val cityAdapter = ArrayAdapter(this, R.layout.spinner_item, city)
         binding.signupLocationCitySp.adapter = cityAdapter
         binding.signupLocationCitySp.setSelection(0)
 
@@ -68,14 +68,14 @@ class SignUpLocationActivity : AppCompatActivity() {
                 if(position == 0) {  // 서울이면 서울시 지역 연결
                     val area = resources.getStringArray(R.array.seoul)
 
-                    val areaAdapter = ArrayAdapter(applicationContext, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, area)
+                    val areaAdapter = ArrayAdapter(applicationContext, R.layout.spinner_item, area)
                     binding.signupLocationAreaSp.adapter = areaAdapter
                     binding.signupLocationAreaSp.setSelection(0)
                 }
                 else {  // 경기도면 경기도 지역 연결
                     val area = resources.getStringArray(R.array.gyeonggido)
 
-                    val areaAdapter = ArrayAdapter(applicationContext, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, area)
+                    val areaAdapter = ArrayAdapter(applicationContext, R.layout.spinner_item, area)
                     binding.signupLocationAreaSp.adapter = areaAdapter
                     binding.signupLocationAreaSp.setSelection(0)
                 }
@@ -84,7 +84,7 @@ class SignUpLocationActivity : AppCompatActivity() {
             override fun onNothingSelected(p0: AdapterView<*>?) {  // 아무것도 클릭되어있지 않을 때는 기본으로 서울 지역을 띄워줌
                 val area = resources.getStringArray(R.array.seoul)
 
-                val areaAdapter = ArrayAdapter(applicationContext, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, area)
+                val areaAdapter = ArrayAdapter(applicationContext, R.layout.spinner_item, area)
                 binding.signupLocationAreaSp.adapter = areaAdapter
                 binding.signupLocationAreaSp.setSelection(0)
             }

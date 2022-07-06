@@ -1,10 +1,8 @@
 package com.example.eraofband.login
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.eraofband.MainActivity
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityLoginBinding
 import com.example.eraofband.signup.SignUpNicknameActivity
