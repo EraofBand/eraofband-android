@@ -28,10 +28,12 @@ class SignUpLocationActivity : AppCompatActivity() {
 
         binding.signupLocationNextBtn.setOnClickListener {
             startActivity(Intent(this@SignUpLocationActivity, SignUpSessionActivity::class.java))
+            overridePendingTransition(R.anim.slide_right, R.anim.slide_left)
         }
 
         binding.signupLocationBackIv.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.slide_left_back, R.anim.slide_right_back)
         }
 
         setColor()

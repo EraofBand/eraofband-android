@@ -10,6 +10,7 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import androidx.appcompat.app.AppCompatActivity
+import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivitySignupGenderBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,10 +28,12 @@ class SignUpGenderActivity : AppCompatActivity() {
 
         binding.signupGenderNextBtn.setOnClickListener {
             startActivity(Intent(this@SignUpGenderActivity, SignUpProfileActivity::class.java))
+            overridePendingTransition(R.anim.slide_right, R.anim.slide_left)
         }
 
         binding.signupGenderBackIv.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.slide_left_back, R.anim.slide_right_back)
         }
 
         setTextColor()
@@ -50,6 +53,15 @@ class SignUpGenderActivity : AppCompatActivity() {
             })
         }
 
+        binding.signupGenderManCb.setOnClickListener {
+            binding.signupGenderManCb.isChecked
+            if(binding.signupGenderWomanCb.isChecked) binding.signupGenderWomanCb.isChecked = false
+        }
+
+        binding.signupGenderWomanCb.setOnClickListener {
+            binding.signupGenderWomanCb.isChecked
+            if(binding.signupGenderManCb.isChecked) binding.signupGenderManCb.isChecked = false
+        }
     }
 
     private fun setTextColor() {  // 글자 파란색, 두껍게 표시

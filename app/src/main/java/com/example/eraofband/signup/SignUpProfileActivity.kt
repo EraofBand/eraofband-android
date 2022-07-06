@@ -32,16 +32,19 @@ class SignUpProfileActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.signupProfileNextBtn.setOnClickListener {
+
             if(binding.signupProfileAddIv.visibility == View.VISIBLE) {
                 setToast()
             }
             else {
                 startActivity(Intent(this@SignUpProfileActivity, SignUpLocationActivity::class.java))
+                overridePendingTransition(R.anim.slide_right, R.anim.slide_left)
             }
         }
 
         binding.signupProfileBackIv.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.slide_left_back, R.anim.slide_right_back)
         }
 
         setTextColor()

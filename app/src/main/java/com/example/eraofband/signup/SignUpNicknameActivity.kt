@@ -27,16 +27,19 @@ class SignUpNicknameActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.signupNicknameNextBtn.setOnClickListener {
+
             if(binding.signupNicknameNicknameEt.text.isEmpty()) {
                 setToast()
             }
             else {
                 startActivity(Intent(this@SignUpNicknameActivity, SignUpGenderActivity::class.java))
+                overridePendingTransition(R.anim.slide_right, R.anim.slide_left)
             }
         }
 
         binding.signupNicknameBackIv.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.slide_left_back, R.anim.slide_right_back)
         }
 
         setTextColor()

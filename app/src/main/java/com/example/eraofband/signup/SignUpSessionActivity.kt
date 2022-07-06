@@ -10,6 +10,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivitySignupLocationBinding
 import com.example.eraofband.databinding.ActivitySignupSessionBinding
 
@@ -25,10 +26,12 @@ class SignUpSessionActivity : AppCompatActivity() {
 
         binding.signupSessionNextBtn.setOnClickListener {
             startActivity(Intent(this@SignUpSessionActivity, SignUpTermActivity::class.java))
+            overridePendingTransition(R.anim.slide_right, R.anim.slide_left)
         }
 
         binding.signupSessionBackIv.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.slide_left_back, R.anim.slide_right_back)
         }
 
         setTextColor()
