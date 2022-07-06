@@ -1,9 +1,14 @@
-package com.example.eraofband
+package com.example.eraofband.main
 
-import android.content.res.Resources
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityMainBinding
+import com.example.eraofband.main.board.BoardFragment
+import com.example.eraofband.main.chat.ChatFragment
+import com.example.eraofband.main.community.CommunityFragment
+import com.example.eraofband.main.home.HomeFragment
+import com.example.eraofband.main.mypage.MyPageFragment
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 

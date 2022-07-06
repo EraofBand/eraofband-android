@@ -11,7 +11,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import com.example.eraofband.MainActivity
+import com.example.eraofband.main.MainActivity
 import com.example.eraofband.databinding.ActivitySplashBinding
 import com.example.eraofband.login.LoginActivity
 import com.kakao.sdk.user.UserApiClient

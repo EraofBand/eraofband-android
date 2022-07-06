@@ -9,7 +9,7 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import androidx.appcompat.app.AppCompatActivity
-import com.example.eraofband.MainActivity
+import com.example.eraofband.main.MainActivity
 import com.example.eraofband.databinding.ActivitySignupTermBinding
 
 class SignUpTermActivity : AppCompatActivity() {
