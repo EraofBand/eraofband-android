@@ -9,6 +9,7 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import androidx.appcompat.app.AppCompatActivity
+import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivitySignupProfileBinding
 
 class SignUpProfileActivity : AppCompatActivity() {
@@ -23,10 +24,12 @@ class SignUpProfileActivity : AppCompatActivity() {
 
         binding.signupProfileNextBtn.setOnClickListener {
             startActivity(Intent(this@SignUpProfileActivity, SignUpLocationActivity::class.java))
+            overridePendingTransition(R.anim.slide_right, R.anim.slide_left)
         }
 
         binding.signupProfileBackIv.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.slide_left_back, R.anim.slide_right_back)
         }
 
         setTextColor()
