@@ -1,15 +1,16 @@
-package com.example.eraofband
+package com.example.eraofband.main.board
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.eraofband.databinding.FragmentHomeBinding
+import com.example.eraofband.databinding.FragmentBoardBinding
 
-class HomeFragment : Fragment() {
+class BoardFragment : Fragment() {
 
-    private lateinit var binding : FragmentHomeBinding
+    private var _binding: FragmentBoardBinding? = null
+    private val binding get() = _binding!! // 바인딩 누수 방지
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -17,7 +18,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentBoardBinding.inflate(inflater, container, false)
 
         return binding.root
     }
