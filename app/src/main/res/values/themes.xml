@@ -19,10 +19,5 @@
         <!-- 네비게이션 바 색상 설정 -->
         <item name="android:navigationBarColor">@color/black</item>
 
-        <!-- 스피너 텍스트 색-->
-        <item name="android:spinnerItemStyle">@style/SpinnerItem</item>
-        <item name="spinnerDropDownItemStyle">@style/SpinnerItem.DropDownItem</item>
-
-
     </style>
 </resources>

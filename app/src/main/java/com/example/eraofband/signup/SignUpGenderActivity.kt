@@ -36,13 +36,17 @@ class SignUpGenderActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_left_back, R.anim.slide_right_back)
         }
 
+        // 기본 설정
         setTextColor()
         binding.signupGenderRealBirthdayTv.text = setDate()
+        binding.signupGenderManCb.isChecked = true
 
         binding.signupGenderRealBirthdayTv.setOnClickListener {
-            val dateDialog = DialogDatePicker()
+            // 현재 설정되어있는 날짜를 넘겨줌
+            val dateDialog = DialogDatePicker(binding.signupGenderRealBirthdayTv.text.toString())
             dateDialog.show(supportFragmentManager, "dateDialog")
 
+            // DialogDatePicker의 날짜 변경 인터페이스를 불러와서 TextView에 날짜를 저장
             dateDialog.setMyItemClickListener(object  : DialogDatePicker.MyItemClickListener {
                 override fun saveBirthday(birthday: String) {
                     binding.signupGenderRealBirthdayTv.text = birthday
@@ -52,12 +56,10 @@ class SignUpGenderActivity : AppCompatActivity() {
         }
 
         binding.signupGenderManCb.setOnClickListener {
-            binding.signupGenderManCb.isChecked
             if(binding.signupGenderWomanCb.isChecked) binding.signupGenderWomanCb.isChecked = false
         }
 
         binding.signupGenderWomanCb.setOnClickListener {
-            binding.signupGenderWomanCb.isChecked
             if(binding.signupGenderManCb.isChecked) binding.signupGenderManCb.isChecked = false
         }
     }

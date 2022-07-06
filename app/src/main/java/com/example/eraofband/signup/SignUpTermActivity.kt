@@ -10,8 +10,8 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
-import com.example.eraofband.MainActivity
 import com.example.eraofband.R
+import com.example.eraofband.main.MainActivity
 import com.example.eraofband.databinding.ActivitySignupTermBinding
 
 class SignUpTermActivity : AppCompatActivity() {
@@ -36,8 +36,10 @@ class SignUpTermActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_left_back, R.anim.slide_right_back)
         }
 
+
+        setTextColor()
+
         binding.signupTermAllAgreeCb.setOnClickListener {
-            binding.signupTermAllAgreeCb.isChecked
             if( binding.signupTermAllAgreeCb.isChecked) {
                 allTrue()
             } else {
@@ -77,7 +79,7 @@ class SignUpTermActivity : AppCompatActivity() {
         if(allTrue){
             binding.signupTermNextBtn.setBackgroundResource(R.drawable.blue_round_bg)
         }else
-            binding.signupTermNextBtn.setBackgroundResource(R.drawable.lightgray_round_bg)
+            binding.signupTermNextBtn.setBackgroundResource(R.drawable.gray_round_bg)
     }
 
     private fun allCheck() {
