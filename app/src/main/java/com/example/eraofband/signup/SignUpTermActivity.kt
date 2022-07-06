@@ -33,18 +33,15 @@ class SignUpTermActivity : AppCompatActivity() {
 
         binding.signupTermBackIv.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.slide_left_back, R.anim.slide_right_back)
         }
 
         binding.signupTermAllAgreeCb.setOnClickListener {
             binding.signupTermAllAgreeCb.isChecked
             if( binding.signupTermAllAgreeCb.isChecked) {
                 allTrue()
-                binding.signupTermNextBtn.isClickable = true
-                binding.signupTermNextBtn.setBackgroundResource(R.drawable.blue_round_bg)
             } else {
                 allFalse()
-                binding.signupTermNextBtn.isClickable = false
-                binding.signupTermNextBtn.setBackgroundResource(R.drawable.lightgray_round_bg)
             }
         }
 
@@ -75,6 +72,14 @@ class SignUpTermActivity : AppCompatActivity() {
 
     }
 
+    private fun changeButton() {
+        binding.signupTermNextBtn.isClickable = allTrue
+        if(allTrue){
+            binding.signupTermNextBtn.setBackgroundResource(R.drawable.blue_round_bg)
+        }else
+            binding.signupTermNextBtn.setBackgroundResource(R.drawable.lightgray_round_bg)
+    }
+
     private fun allCheck() {
         allTrue = binding.signupTermFirstCb.isChecked &&
                 binding.signupTermSecondCb.isChecked &&
@@ -83,6 +88,7 @@ class SignUpTermActivity : AppCompatActivity() {
                 binding.signupTermFifthCb.isChecked
 
         binding.signupTermAllAgreeCb.isChecked = allTrue
+        changeButton()
     }
 
     private fun allFalse() {
@@ -92,6 +98,7 @@ class SignUpTermActivity : AppCompatActivity() {
         binding.signupTermForthCb.isChecked = false
         binding.signupTermFifthCb.isChecked = false
         allTrue = false
+        changeButton()
     }
 
     private fun allTrue() {
@@ -100,7 +107,8 @@ class SignUpTermActivity : AppCompatActivity() {
         binding.signupTermThirdCb.isChecked = true
         binding.signupTermForthCb.isChecked = true
         binding.signupTermFifthCb.isChecked = true
-        allTrue = allTrue
+        allTrue = true
+        changeButton()
     }
 
     private fun setTextColor() {
