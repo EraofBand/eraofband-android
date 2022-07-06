@@ -16,7 +16,7 @@ class ChatFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
 
         _binding = FragmentChatBinding.inflate(inflater, container, false)
 

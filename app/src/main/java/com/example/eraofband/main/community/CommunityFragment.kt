@@ -16,7 +16,7 @@ class CommunityFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
 
         _binding = FragmentCommunityBinding.inflate(inflater, container, false)
 

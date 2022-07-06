@@ -16,7 +16,7 @@ class BoardFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
 
         _binding = FragmentBoardBinding.inflate(inflater, container, false)
 
