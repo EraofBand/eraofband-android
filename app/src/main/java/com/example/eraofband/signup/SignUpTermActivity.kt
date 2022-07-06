@@ -10,6 +10,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
+import com.example.eraofband.R
 import com.example.eraofband.main.MainActivity
 import com.example.eraofband.MainActivity
 import com.example.eraofband.R
@@ -38,9 +39,9 @@ class SignUpTermActivity : AppCompatActivity() {
 
 
         setTextColor()
+        binding.signupTermNextBtn.setBackgroundResource(R.drawable.gray_round_bg)
 
         binding.signupTermAllAgreeCb.setOnClickListener {
-            binding.signupTermAllAgreeCb.isChecked
             if( binding.signupTermAllAgreeCb.isChecked) {
                 allTrue()
                 binding.signupTermNextBtn.isClickable = true
@@ -48,7 +49,7 @@ class SignUpTermActivity : AppCompatActivity() {
             } else {
                 allFalse()
                 binding.signupTermNextBtn.isClickable = false
-                binding.signupTermNextBtn.setBackgroundResource(R.drawable.lightgray_round_bg)
+                binding.signupTermNextBtn.setBackgroundResource(R.drawable.gray_round_bg)
             }
         }
 
