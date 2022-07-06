@@ -116,8 +116,8 @@
 
     <CheckBox
         android:id="@+id/signup_term_first_cb"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:button="@null"
         android:background="@drawable/white_checkbox"
         android:layout_marginStart="40dp"
@@ -140,8 +140,8 @@
 
     <CheckBox
         android:id="@+id/signup_term_second_cb"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:button="@null"
         android:background="@drawable/white_checkbox"
         android:layout_marginStart="40dp"
@@ -164,8 +164,8 @@
 
     <CheckBox
         android:id="@+id/signup_term_third_cb"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:button="@null"
         android:background="@drawable/white_checkbox"
         android:layout_marginStart="40dp"
@@ -188,8 +188,8 @@
 
     <CheckBox
         android:id="@+id/signup_term_forth_cb"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:button="@null"
         android:background="@drawable/white_checkbox"
         android:layout_marginStart="40dp"
@@ -212,8 +212,8 @@
 
     <CheckBox
         android:id="@+id/signup_term_fifth_cb"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:button="@null"
         android:background="@drawable/white_checkbox"
         android:layout_marginStart="40dp"

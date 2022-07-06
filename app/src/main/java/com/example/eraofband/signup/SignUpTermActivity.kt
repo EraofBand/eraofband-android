@@ -26,7 +26,9 @@ class SignUpTermActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.signupTermNextBtn.setOnClickListener {
-            startActivity(Intent(this@SignUpTermActivity, MainActivity::class.java))
+            val intent = Intent(this@SignUpTermActivity, MainActivity::class.java)
+            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            finishAffinity()
         }
 
         binding.signupTermBackIv.setOnClickListener {
