@@ -6,6 +6,7 @@
 
     <style name="SpinnerItem.DropDownItem" parent="@android:style/Widget.DropDownItem.Spinner">
         <item name="android:textColor">@color/white</item>
+        <item name="colorControlHighlight">#FFFFFF</item>
     </style>
 
     <style name="SpinnerDivideStyle">
