@@ -36,8 +36,10 @@ class SignUpGenderActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_left_back, R.anim.slide_right_back)
         }
 
+        // 기본 설정
         setTextColor()
         binding.signupGenderRealBirthdayTv.text = setDate()
+        binding.signupGenderManCb.isChecked = true
 
         binding.signupGenderRealBirthdayTv.setOnClickListener {
             // 현재 설정되어있는 날짜를 넘겨줌
@@ -54,12 +56,10 @@ class SignUpGenderActivity : AppCompatActivity() {
         }
 
         binding.signupGenderManCb.setOnClickListener {
-            binding.signupGenderManCb.isChecked
             if(binding.signupGenderWomanCb.isChecked) binding.signupGenderWomanCb.isChecked = false
         }
 
         binding.signupGenderWomanCb.setOnClickListener {
-            binding.signupGenderWomanCb.isChecked
             if(binding.signupGenderManCb.isChecked) binding.signupGenderManCb.isChecked = false
         }
     }
