@@ -13,7 +13,7 @@ class OnboardingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityOnboardingBinding.inflate(layoutInflater)
+        binding = ActivityOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //뷰페이저 어뎁터 연결
@@ -44,6 +44,7 @@ class OnboardingActivity : AppCompatActivity() {
         //스킵 버튼 누르면 로그인 액티비티 이동
         binding.onboardingSkipTv.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
     }
 }

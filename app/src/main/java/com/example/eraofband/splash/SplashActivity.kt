@@ -37,13 +37,15 @@ class SplashActivity : AppCompatActivity() {
         handler.postDelayed({
             UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
                 if (error != null) {  // 토큰이 없으면 블록 실행
-                    if(isFinished) {  //실행 여부 체크 후 필요한 액티비티로 전환
+                    if (isFinished) {  //실행 여부 체크 후 필요한 액티비티로 전환
                         startActivity(Intent(this, LoginActivity::class.java))
                         finish()
+                        Log.d("onboard", "x")
                     } else {  // 토큰이 없고 최초 실행이 아니면 온보딩 액티비티 실행
                         startActivity(Intent(this, OnboardingActivity::class.java))
                         prefs.edit().putBoolean("isFinished", true).apply()
                         finish()
+                        Log.d("onboard", "O")
                     }
                 } else if (tokenInfo != null) {  // 토큰이 있으면
                     Log.d(
