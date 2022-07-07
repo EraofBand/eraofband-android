@@ -21,7 +21,7 @@ import com.example.eraofband.remote.LoginResult
 class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
     private lateinit var binding: ActivitySignupTermBinding
-    private var allTrue = true
+    private var allTrue = true //약관 모두동의가 되었는지 확인하기 위한 변수
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,12 +54,15 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
         setTextColor()
         binding.signupTermNextBtn.setBackgroundResource(R.drawable.gray_round_bg)
 
+        //모두동의 체크박스 연결
         binding.signupTermAllAgreeCb.setOnClickListener {
             if( binding.signupTermAllAgreeCb.isChecked) {
+                //체크된 경우 모두 체크해주는 함수 호출
                 allTrue()
                 binding.signupTermNextBtn.isClickable = true
                 binding.signupTermNextBtn.setBackgroundResource(R.drawable.blue_round_bg)
             } else {
+                //체크되었다가 푼 경우 모두 해제해주는 함수 호출
                 allFalse()
                 binding.signupTermNextBtn.isClickable = false
                 binding.signupTermNextBtn.setBackgroundResource(R.drawable.gray_round_bg)
@@ -93,6 +96,7 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
     }
 
+    //allTrue 변수에 따라 버튼 색 & clickable 값 조정
     private fun changeButton() {
         binding.signupTermNextBtn.isClickable = allTrue
         if(allTrue){
@@ -101,6 +105,7 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
             binding.signupTermNextBtn.setBackgroundResource(R.drawable.gray_round_bg)
     }
 
+    //다 체크되어있으면 모두 동의 버튼 변경 후, 버튼 변경 함수 호출
     private fun allCheck() {
         allTrue = binding.signupTermFirstCb.isChecked &&
                 binding.signupTermSecondCb.isChecked &&
@@ -112,6 +117,7 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
         changeButton()
     }
 
+    //체크박스 모두 해제 및 버튼 변경 함수 호출
     private fun allFalse() {
         binding.signupTermFirstCb.isChecked = false
         binding.signupTermSecondCb.isChecked = false
@@ -122,6 +128,7 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
         changeButton()
     }
 
+    //체크박스 모두 동의 및 버튼 변경 함수 호출
     private fun allTrue() {
         binding.signupTermFirstCb.isChecked = true
         binding.signupTermSecondCb.isChecked = true
