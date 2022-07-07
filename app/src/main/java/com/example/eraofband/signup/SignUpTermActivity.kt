@@ -43,6 +43,8 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
             finishAffinity()
         }
 
+
+
         binding.signupTermBackIv.setOnClickListener {
             finish()
             overridePendingTransition(R.anim.slide_left_back, R.anim.slide_right_back)
@@ -100,14 +102,13 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
         binding.signupTermFifthCb.setOnCheckedChangeListener(checkListener)
     }
 
-    private fun changeButton(allTrue : Boolean) {  // 전체동의 여부에 따른 버튼 상태 변경
-        if (allTrue) {
+    //allTrue 변수에 따라 버튼 색 & clickable 값 조정
+    private fun changeButton(allTrue : Boolean) {
+        binding.signupTermNextBtn.isClickable = allTrue
+        if(allTrue){
             binding.signupTermNextBtn.setBackgroundResource(R.drawable.blue_round_bg)
-            binding.signupTermNextBtn.isClickable = allTrue
-        } else {
+        }else
             binding.signupTermNextBtn.setBackgroundResource(R.drawable.gray_round_bg)
-            binding.signupTermNextBtn.isClickable = allTrue
-        }
     }
 
     private fun allCheck() {  // 전체동의 여부 확인 후 상태 지정
