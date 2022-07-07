@@ -18,6 +18,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivitySignupProfileBinding
 
@@ -146,9 +148,15 @@ class SignUpProfileActivity : AppCompatActivity() {
             // 2000: 이미지 컨텐츠를 가져오는 액티비티를 수행한 후 실행되는 Activity 일 때만 수행하기 위해서
             2000 -> {
                 val selectedImageUri: Uri? = data?.data
+                // 이미지 가져오기 성공하면 원래 이미지를 없애고 가져온 사진을 넣어줌
+                // 이미지 동그랗게 + CenterCrop
                 if (selectedImageUri != null) {
-                    // 이미지 가져오기 성공하면 원래 이미지를 없애고 가져온 사진을 넣어줌
-                    binding.signupProfileProfileIv.setImageURI(selectedImageUri)
+                    Glide.with(this)
+                        .load(selectedImageUri)
+                        .apply(RequestOptions.centerCropTransform())
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(binding.signupProfileProfileIv)
+                    binding.signupProfileProfileIv.setBackgroundResource(R.drawable.profile_border)
                     binding.signupProfileAddIv.visibility = View.GONE
                 } else {
                     Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
