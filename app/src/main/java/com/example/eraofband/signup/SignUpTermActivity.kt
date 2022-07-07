@@ -17,6 +17,7 @@ import com.example.eraofband.main.MainActivity
 import com.example.eraofband.remote.KakaoLoginService
 import com.example.eraofband.remote.KakaoLoginView
 import com.example.eraofband.remote.LoginResult
+import com.example.eraofband.databinding.ActivitySignupTermBinding
 
 class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
@@ -47,6 +48,7 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
         binding.signupTermBackIv.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.slide_left_back, R.anim.slide_right_back)
         }
 
 
@@ -92,6 +94,14 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
     }
 
+    private fun changeButton() {
+        binding.signupTermNextBtn.isClickable = allTrue
+        if(allTrue){
+            binding.signupTermNextBtn.setBackgroundResource(R.drawable.blue_round_bg)
+        }else
+            binding.signupTermNextBtn.setBackgroundResource(R.drawable.gray_round_bg)
+    }
+
     private fun allCheck() {
         allTrue = binding.signupTermFirstCb.isChecked &&
                 binding.signupTermSecondCb.isChecked &&
@@ -100,6 +110,7 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
                 binding.signupTermFifthCb.isChecked
 
         binding.signupTermAllAgreeCb.isChecked = allTrue
+        changeButton()
     }
 
     private fun allFalse() {
@@ -109,6 +120,7 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
         binding.signupTermForthCb.isChecked = false
         binding.signupTermFifthCb.isChecked = false
         allTrue = false
+        changeButton()
     }
 
     private fun allTrue() {
@@ -117,8 +129,8 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
         binding.signupTermThirdCb.isChecked = true
         binding.signupTermForthCb.isChecked = true
         binding.signupTermFifthCb.isChecked = true
-        allTrue = allTrue
-
+        allTrue = true
+        changeButton()
     }
 
     private fun setTextColor() {
