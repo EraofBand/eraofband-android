@@ -36,14 +36,12 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
             val loginService = KakaoLoginService()
 
             loginService.setLoginView(this)
-            loginService.login(User("20220707", "FEMALE", "보리", "urlurl", "서울 관악구", 0), tokenSP.getString("tokenInfo", ""))
+            loginService.login(User("19981102", "MALE", "이승희", "1564891771", "서울 송파구", 1), tokenSP.getString("tokenInfo", ""))
 
             val intent = Intent(this@SignUpTermActivity, MainActivity::class.java)
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
             finishAffinity()
         }
-
-
 
         binding.signupTermBackIv.setOnClickListener {
             finish()
@@ -107,8 +105,9 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
         binding.signupTermNextBtn.isClickable = allTrue
         if(allTrue){
             binding.signupTermNextBtn.setBackgroundResource(R.drawable.blue_round_bg)
-        }else
+        } else {
             binding.signupTermNextBtn.setBackgroundResource(R.drawable.gray_round_bg)
+        }
     }
 
     private fun allCheck() {  // 전체동의 여부 확인 후 상태 지정

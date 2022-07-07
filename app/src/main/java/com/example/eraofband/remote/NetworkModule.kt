@@ -5,15 +5,15 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class NetworkModule {
-    private var retrofit : Retrofit? = null
+    private var retrofit: Retrofit? = null
 
-    fun getRetrofit() : Retrofit? {
-        if(retrofit == null) {
+    fun getRetrofit(): Retrofit? {
+        if (retrofit == null) {
             synchronized(this) {
-                retrofit = Retrofit.Builder().baseUrl(GlobalApplication.BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
+                retrofit = Retrofit.Builder().baseUrl(GlobalApplication.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create()).build()
             }
         }
-
         return retrofit
     }
 }
