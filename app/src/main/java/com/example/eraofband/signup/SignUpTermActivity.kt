@@ -8,13 +8,17 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
-import android.widget.CompoundButton
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
-import com.example.eraofband.main.MainActivity
+import com.example.eraofband.data.User
 import com.example.eraofband.databinding.ActivitySignupTermBinding
+import com.example.eraofband.main.MainActivity
+import com.example.eraofband.remote.KakaoLoginService
+import com.example.eraofband.remote.KakaoLoginView
+import com.example.eraofband.remote.LoginResult
 
-class SignUpTermActivity : AppCompatActivity() {
+class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
     private lateinit var binding: ActivitySignupTermBinding
     private var allTrue = true //약관 모두동의가 되었는지 확인하기 위한 변수
@@ -26,10 +30,20 @@ class SignUpTermActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.signupTermNextBtn.setOnClickListener {
+
+            val tokenSP = getSharedPreferences("token", MODE_PRIVATE)
+
+            val loginService = KakaoLoginService()
+
+            loginService.setLoginView(this)
+            loginService.login(User("0121", "여", "보리", "what", "관악구", 0), tokenSP.getString("tokenInfo", ""))
+
             val intent = Intent(this@SignUpTermActivity, MainActivity::class.java)
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
             finishAffinity()
         }
+
+
 
         binding.signupTermBackIv.setOnClickListener {
             finish()
@@ -38,15 +52,20 @@ class SignUpTermActivity : AppCompatActivity() {
 
 
         setTextColor()
+        binding.signupTermNextBtn.setBackgroundResource(R.drawable.gray_round_bg)
 
         //모두동의 체크박스 연결
         binding.signupTermAllAgreeCb.setOnClickListener {
             if( binding.signupTermAllAgreeCb.isChecked) {
                 //체크된 경우 모두 체크해주는 함수 호출
                 allTrue()
+                binding.signupTermNextBtn.isClickable = true
+                binding.signupTermNextBtn.setBackgroundResource(R.drawable.blue_round_bg)
             } else {
                 //체크되었다가 푼 경우 모두 해제해주는 함수 호출
                 allFalse()
+                binding.signupTermNextBtn.isClickable = false
+                binding.signupTermNextBtn.setBackgroundResource(R.drawable.gray_round_bg)
             }
         }
 
@@ -133,5 +152,17 @@ class SignUpTermActivity : AppCompatActivity() {
         spannableString.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.signupTermTitleTv.text = spannableString
 
+    }
+
+    override fun onLoginSuccess(code: Int, result: LoginResult) {
+        when(code) {
+            200 -> {  // 로그인 완료
+                Log.d("SUCCESS", result.toString())
+            }
+        }
+    }
+
+    override fun onLoginFailure(code: Int, message: String) {
+        Log.d("CHECK-FAILURE", "$code $message")
     }
 }

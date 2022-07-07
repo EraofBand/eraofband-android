@@ -30,20 +30,22 @@ class SplashActivity : AppCompatActivity() {
 
         //실행여부 체크 위해 선언
         val prefs = getSharedPreferences("onboarding", Context.MODE_PRIVATE)
-        var isFinished = prefs.getBoolean("isFinished", false)
+        val isFinished = prefs.getBoolean("isFinished", false)
 
         val handler = Handler(Looper.getMainLooper())
 
         handler.postDelayed({
             UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
                 if (error != null) {  // 토큰이 없으면 블록 실행
-                    if(isFinished) {  //실행 여부 체크 후 필요한 액티비티로 전환
+                    if (isFinished) {  //실행 여부 체크 후 필요한 액티비티로 전환
                         startActivity(Intent(this, LoginActivity::class.java))
                         finish()
+                        Log.d("onboard", "x")
                     } else {  // 토큰이 없고 최초 실행이 아니면 온보딩 액티비티 실행
                         startActivity(Intent(this, OnboardingActivity::class.java))
                         prefs.edit().putBoolean("isFinished", true).apply()
                         finish()
+                        Log.d("onboard", "O")
                     }
                 } else if (tokenInfo != null) {  // 토큰이 있으면
                     Log.d(
@@ -51,6 +53,14 @@ class SplashActivity : AppCompatActivity() {
                                 "\n회원번호: ${tokenInfo.id}" +
                                 "\n만료시간: ${tokenInfo.expiresIn} 초"
                     )
+
+                    // 토큰 정보 임시 저장
+                    val tokenSP = getSharedPreferences("token", MODE_PRIVATE)
+                    val tokenEditor = tokenSP.edit()
+
+                    tokenEditor.putString("tokenInfo", tokenInfo.id.toString())
+                    tokenEditor.apply()
+
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     finish()
