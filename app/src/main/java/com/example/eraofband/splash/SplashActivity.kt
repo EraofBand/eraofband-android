@@ -30,7 +30,7 @@ class SplashActivity : AppCompatActivity() {
 
         //실행여부 체크 위해 선언
         val prefs = getSharedPreferences("onboarding", Context.MODE_PRIVATE)
-        var isFinished = prefs.getBoolean("isFinished", false)
+        val isFinished = prefs.getBoolean("isFinished", false)
 
         val handler = Handler(Looper.getMainLooper())
 
@@ -51,6 +51,14 @@ class SplashActivity : AppCompatActivity() {
                                 "\n회원번호: ${tokenInfo.id}" +
                                 "\n만료시간: ${tokenInfo.expiresIn} 초"
                     )
+
+                    // 토큰 정보 임시 저장
+                    val tokenSP = getSharedPreferences("token", MODE_PRIVATE)
+                    val tokenEditor = tokenSP.edit()
+
+                    tokenEditor.putString("tokenInfo", tokenInfo.id.toString())
+                    tokenEditor.apply()
+
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     finish()
