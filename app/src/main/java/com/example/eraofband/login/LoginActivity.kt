@@ -1,6 +1,7 @@
 package com.example.eraofband.login
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
@@ -54,6 +55,14 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
             } else if (token != null) {
+                // 토큰 정보 임시 저장
+                val tokenSP = getSharedPreferences("token", MODE_PRIVATE)
+                val tokenEditor = tokenSP.edit()
+
+                tokenEditor.putString("tokenInfo", token.accessToken)
+                tokenEditor.apply()
+                Log.d("tokenInfo",token.accessToken)
+
                 Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, SignUpNicknameActivity::class.java)
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
