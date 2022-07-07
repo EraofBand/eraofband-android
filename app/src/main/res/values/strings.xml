@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">밴드의 시대</string>
 
-
+    <!-- 왠지 자주 쓸 거 같은 애들은 위에 올려둘게요 -->
     <string name="next">다음</string>
     <string name="start">시작하기</string>
+    <string name="see_all">모두보기</string>
 
     <!-- 회원가입 관련 String -->
     <string name="nickname">닉네임</string>
@@ -28,11 +29,28 @@
     <string name="signup_mola">미정(필수)</string>
     <string name="signup_mola2">미정(선택)</string>
 
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- 카카오 로그인 앱 키 -->
     <string name="kakao_app_key">ccf29d74d82be869acd9bcd90e665533</string>
     <string name="kakao_native_key">kakaoccf29d74d82be869acd9bcd90e665533</string>
+
+    <!-- 마이페이지 관련 String -->
+    <string name="mypage">마이페이지</string>
+
+    <string name="drum">드럼</string>
+    <string name="guitar">기타</string>
+    <string name="piano">피아노</string>
+    <string name="base">베이스</string>
+    <string name="sing">노래</string>
+
+    <string name="following">팔로잉</string>
+    <string name="follower">팔로워</string>
+    <string name="like">좋아요</string>
+
+    <string name="introduce">소개</string>
+    <string name="portfolio">포트폴리오</string>
+    <string name="belong_band">소속밴드</string>
+
 </resources>

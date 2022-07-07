@@ -8,7 +8,10 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.view.Gravity
 import android.view.View
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivitySignupNicknameBinding
@@ -24,11 +27,19 @@ class SignUpNicknameActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.signupNicknameNextBtn.setOnClickListener {
-            startActivity(Intent(this@SignUpNicknameActivity, SignUpGenderActivity::class.java))
+
+            if(binding.signupNicknameNicknameEt.text.isEmpty()) {
+                setToast()
+            }
+            else {
+                startActivity(Intent(this@SignUpNicknameActivity, SignUpGenderActivity::class.java))
+                overridePendingTransition(R.anim.slide_right, R.anim.slide_left)
+            }
         }
 
         binding.signupNicknameBackIv.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.slide_left_back, R.anim.slide_right_back)
         }
 
         setTextColor()
@@ -47,5 +58,20 @@ class SignUpNicknameActivity : AppCompatActivity() {
         spannableString.setSpan(ForegroundColorSpan(Color.parseColor("#1864FD")), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannableString.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.signupNicknameNameTv.text = spannableString
+    }
+
+    private fun setToast() {
+        val view : View = layoutInflater.inflate(R.layout.toast_signup, findViewById(R.id.toast_signup))
+        val toast = Toast(this)
+
+        val text = view.findViewById<TextView>(R.id.toast_signup_text_tv)
+        text.text = "닉네임을 입력해주세요!"
+
+
+
+        toast.view = view
+        toast.setMargin(250F, 0F)
+        toast.setGravity(Gravity.FILL_HORIZONTAL,0, 720)
+        toast.show()
     }
 }

@@ -10,6 +10,7 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import androidx.appcompat.app.AppCompatActivity
+import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivitySignupGenderBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,19 +28,25 @@ class SignUpGenderActivity : AppCompatActivity() {
 
         binding.signupGenderNextBtn.setOnClickListener {
             startActivity(Intent(this@SignUpGenderActivity, SignUpProfileActivity::class.java))
+            overridePendingTransition(R.anim.slide_right, R.anim.slide_left)
         }
 
         binding.signupGenderBackIv.setOnClickListener {
             finish()
+            overridePendingTransition(R.anim.slide_left_back, R.anim.slide_right_back)
         }
 
+        // 기본 설정
         setTextColor()
         binding.signupGenderRealBirthdayTv.text = setDate()
+        binding.signupGenderManCb.isChecked = true
 
         binding.signupGenderRealBirthdayTv.setOnClickListener {
-            val dateDialog = DialogDatePicker()
+            // 현재 설정되어있는 날짜를 넘겨줌
+            val dateDialog = DialogDatePicker(binding.signupGenderRealBirthdayTv.text.toString())
             dateDialog.show(supportFragmentManager, "dateDialog")
 
+            // DialogDatePicker의 날짜 변경 인터페이스를 불러와서 TextView에 날짜를 저장
             dateDialog.setMyItemClickListener(object  : DialogDatePicker.MyItemClickListener {
                 override fun saveBirthday(birthday: String) {
                     binding.signupGenderRealBirthdayTv.text = birthday
@@ -48,6 +55,13 @@ class SignUpGenderActivity : AppCompatActivity() {
             })
         }
 
+        binding.signupGenderManCb.setOnClickListener {
+            if(binding.signupGenderWomanCb.isChecked) binding.signupGenderWomanCb.isChecked = false
+        }
+
+        binding.signupGenderWomanCb.setOnClickListener {
+            if(binding.signupGenderManCb.isChecked) binding.signupGenderManCb.isChecked = false
+        }
     }
 
     private fun setTextColor() {  // 글자 파란색, 두껍게 표시

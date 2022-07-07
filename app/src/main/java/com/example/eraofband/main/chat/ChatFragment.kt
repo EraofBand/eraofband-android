@@ -1,4 +1,4 @@
-package com.example.eraofband
+package com.example.eraofband.main.chat
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,15 +9,16 @@ import com.example.eraofband.databinding.FragmentChatBinding
 
 class ChatFragment : Fragment() {
 
-    private lateinit var binding : FragmentChatBinding
+    private var _binding: FragmentChatBinding? = null
+    private val binding get() = _binding!! // 바인딩 누수 방지
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
 
-        binding = FragmentChatBinding.inflate(inflater, container, false)
+        _binding = FragmentChatBinding.inflate(inflater, container, false)
 
         return binding.root
     }

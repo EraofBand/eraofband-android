@@ -234,15 +234,18 @@
         app:layout_constraintTop_toTopOf="@id/signup_term_fifth_cb"
         app:layout_constraintBottom_toBottomOf="@id/signup_term_fifth_cb"/>
 
-    <Button
+    <TextView
         android:id="@+id/signup_term_next_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/start"
         android:textSize="17sp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
         android:fontFamily="@font/pretendard_regular"
-        android:background="@drawable/blue_round_bg"
-        android:paddingVertical="10dp"
+        android:background="@drawable/gray_round_bg"
+        android:clickable="false"
+        android:paddingVertical="15dp"
         android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="80dp"
         app:layout_constraintStart_toStartOf="parent"
