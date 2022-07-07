@@ -8,6 +8,6 @@ import retrofit2.http.Path
 
 interface KakaoLoginInterface {
     @POST("/users/signin/{access-token}")
-    fun kakaoLogin(@Body user: User, @Path("access-token") token : String) : Call<KakaoLoginResponse>
+    fun kakaoLogin( @Body user: User, @Path("access-token") token : String) : Call<KakaoLoginResponse>
 
 }

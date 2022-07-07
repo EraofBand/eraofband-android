@@ -47,9 +47,6 @@
         </activity>
 
         <activity
-            android:name=".signup.SignUpNicknameActivity"
-            android:exported="true" />
-        <activity
             android:name=".onboarding.OnboardingActivity"
             android:exported="true">
         </activity>
