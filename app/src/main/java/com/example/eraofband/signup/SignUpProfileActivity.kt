@@ -75,7 +75,7 @@ class SignUpProfileActivity : AppCompatActivity() {
         val toast = Toast(this)
 
         val text = view.findViewById<TextView>(R.id.toast_signup_text_tv)
-        text.text = "프로필 사진을 입력해주세요!"
+        text.text = "프로필 사진을 추가해주세요!"
 
         toast.view = view
         toast.setMargin(50F, 0F)

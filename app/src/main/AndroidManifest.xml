@@ -45,6 +45,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".signup.SignUpNicknameActivity"
+            android:exported="true" />
         <activity
             android:name=".onboarding.OnboardingActivity"
             android:exported="true">
