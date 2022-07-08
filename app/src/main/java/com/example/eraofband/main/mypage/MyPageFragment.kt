@@ -27,7 +27,7 @@ class MyPageFragment : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+ /*   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.logout.setOnClickListener {  // 로그아웃 프로세스
@@ -56,7 +56,7 @@ class MyPageFragment : Fragment() {
             }
         }
     }
-
+*/
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
