@@ -52,7 +52,7 @@
         </activity>
         <activity
             android:name=".signup.SignUpNicknameActivity"
-            android:exported="true">
+            android:exported="false">
         </activity>
         <activity
             android:name=".signup.SignUpGenderActivity"
@@ -76,6 +76,10 @@
 
         <activity
             android:name=".main.MainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".main.mypage.ProfileEditActivity"
             android:exported="false" />
 
     </application>

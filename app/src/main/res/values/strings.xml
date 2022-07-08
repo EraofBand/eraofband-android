@@ -53,4 +53,10 @@
     <string name="portfolio">포트폴리오</string>
     <string name="belong_band">소속밴드</string>
 
+    <!-- 프로필 편집 관련 String -->
+    <string name="profile_edit">프로필 편집</string>
+    <string name="my_introduce">내 소개</string>
+    <string name="region">지역</string>
+    <string name="save">저장하기</string>
+
 </resources>
