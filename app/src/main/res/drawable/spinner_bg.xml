@@ -5,6 +5,5 @@
         android:gravity="center|end"
         android:width="15dp"
         android:right="10dp"
-        android:height="10dp"
-        />
+        android:height="10dp" />
 </layer-list>
