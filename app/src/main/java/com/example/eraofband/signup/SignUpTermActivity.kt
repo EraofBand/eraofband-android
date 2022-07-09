@@ -9,6 +9,7 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.Log
+import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.data.User
@@ -21,8 +22,11 @@ import com.example.eraofband.remote.LoginResult
 class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
     private lateinit var binding: ActivitySignupTermBinding
+<<<<<<< HEAD
     private var allTrue = true //약관 모두동의가 되었는지 확인하기 위한 변수
     private var user = User("", "", "", "", "", 0)
+=======
+>>>>>>> 92522b5f8dec6da652707354cf1c136897c99981
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,107 +45,119 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
             val loginService = KakaoLoginService()
 
             loginService.setLoginView(this)
+<<<<<<< HEAD
             loginService.login(User("2022-07-10", "FEMALE", "Bori", "5481544f43g", "서울 영등포구", 1), tokenSP.getString("tokenInfo", ""))
+=======
+            loginService.login(User("19981102", "MALE", "이승희", "1564891771", "서울 송파구", 1), tokenSP.getString("tokenInfo", ""))
+>>>>>>> 92522b5f8dec6da652707354cf1c136897c99981
 
             intent = Intent(this@SignUpTermActivity, MainActivity::class.java)
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
             finishAffinity()
         }
 
-
-
         binding.signupTermBackIv.setOnClickListener {
             finish()
             overridePendingTransition(R.anim.slide_left_back, R.anim.slide_right_back)
         }
 
-
+        // 기본적으로 글씨 색 설정, 다음으로 넘어가지 못하도록 설정
         setTextColor()
         binding.signupTermNextBtn.setBackgroundResource(R.drawable.gray_round_bg)
+        binding.signupTermNextBtn.isClickable = false
 
-        //모두동의 체크박스 연결
+        checkBoxListener()
+
+    }
+
+    private fun checkBoxListener() {  // 체크박스 리스너
         binding.signupTermAllAgreeCb.setOnClickListener {
-            if( binding.signupTermAllAgreeCb.isChecked) {
-                //체크된 경우 모두 체크해주는 함수 호출
+            // allAgree를 밑에 안넣은 이유는... 클릭 여부에 따라서 전체 동의를 변경해야하기 때문입니닷
+            if(binding.signupTermAllAgreeCb.isChecked) {  // 모두 true로 변경
                 allTrue()
-                binding.signupTermNextBtn.isClickable = true
-                binding.signupTermNextBtn.setBackgroundResource(R.drawable.blue_round_bg)
-            } else {
-                //체크되었다가 푼 경우 모두 해제해주는 함수 호출
+            } else {  // 모두 false로 변경
                 allFalse()
-                binding.signupTermNextBtn.isClickable = false
-                binding.signupTermNextBtn.setBackgroundResource(R.drawable.gray_round_bg)
             }
         }
 
-        binding.signupTermFirstCb.setOnClickListener {
-            binding.signupTermFirstCb.isChecked
-            allCheck()
+        val checkListener = CompoundButton.OnCheckedChangeListener { checkbox, _ ->
+            // 각 체크박스를 누를 때마다 전체동의 여부와 필수동의 여부를 확인
+            when (checkbox.id) {
+                R.id.signup_term_first_cb -> {
+                    allCheck()
+                    essentialCheck()
+                }
+                R.id.signup_term_second_cb -> {
+                    allCheck()
+                    essentialCheck()
+                }
+                R.id.signup_term_third_cb -> {
+                    allCheck()
+                    essentialCheck()
+                }
+                R.id.signup_term_forth_cb -> {
+                    allCheck()
+                    essentialCheck()
+                }
+                R.id.signup_term_fifth_cb -> {
+                    allCheck()
+                    essentialCheck()
+                }
+            }
         }
 
-        binding.signupTermSecondCb.setOnClickListener {
-            binding.signupTermSecondCb.isChecked
-            allCheck()
-        }
-
-        binding.signupTermThirdCb.setOnClickListener {
-            binding.signupTermThirdCb.isChecked
-            allCheck()
-        }
-
-        binding.signupTermForthCb.setOnClickListener {
-            binding.signupTermForthCb.isChecked
-            allCheck()
-        }
-
-        binding.signupTermFifthCb.setOnClickListener {
-            binding.signupTermFirstCb.isChecked
-            allCheck()
-        }
-
+        binding.signupTermFirstCb.setOnCheckedChangeListener(checkListener)
+        binding.signupTermSecondCb.setOnCheckedChangeListener(checkListener)
+        binding.signupTermThirdCb.setOnCheckedChangeListener(checkListener)
+        binding.signupTermForthCb.setOnCheckedChangeListener(checkListener)
+        binding.signupTermFifthCb.setOnCheckedChangeListener(checkListener)
     }
 
     //allTrue 변수에 따라 버튼 색 & clickable 값 조정
-    private fun changeButton() {
+    private fun changeButton(allTrue : Boolean) {
         binding.signupTermNextBtn.isClickable = allTrue
         if(allTrue){
             binding.signupTermNextBtn.setBackgroundResource(R.drawable.blue_round_bg)
-        }else
+        } else {
             binding.signupTermNextBtn.setBackgroundResource(R.drawable.gray_round_bg)
+        }
     }
 
-    //다 체크되어있으면 모두 동의 버튼 변경 후, 버튼 변경 함수 호출
-    private fun allCheck() {
-        allTrue = binding.signupTermFirstCb.isChecked &&
-                binding.signupTermSecondCb.isChecked &&
-                binding.signupTermThirdCb.isChecked &&
-                binding.signupTermForthCb.isChecked &&
-                binding.signupTermFifthCb.isChecked
+    private fun allCheck() {  // 전체동의 여부 확인 후 상태 지정
+        val allTrue = binding.signupTermFirstCb.isChecked && binding.signupTermSecondCb.isChecked &&
+                binding.signupTermThirdCb.isChecked && binding.signupTermForthCb.isChecked && binding.signupTermFifthCb.isChecked
 
         binding.signupTermAllAgreeCb.isChecked = allTrue
-        changeButton()
+        changeButton(allTrue)
     }
 
-    //체크박스 모두 해제 및 버튼 변경 함수 호출
-    private fun allFalse() {
+    private fun essentialCheck() {  // 필수동의 여부와 버튼 상태 변경
+        val essential = binding.signupTermFirstCb.isChecked && binding.signupTermSecondCb.isChecked
+
+        if(essential) {
+            binding.signupTermNextBtn.setBackgroundResource(R.drawable.blue_round_bg)
+            binding.signupTermNextBtn.isClickable = essential
+        }
+    }
+
+    private fun allFalse() {  // 전체동의 취소
         binding.signupTermFirstCb.isChecked = false
         binding.signupTermSecondCb.isChecked = false
         binding.signupTermThirdCb.isChecked = false
         binding.signupTermForthCb.isChecked = false
         binding.signupTermFifthCb.isChecked = false
-        allTrue = false
-        changeButton()
+
+        allCheck()  // 전체동의 상태 지정
     }
 
-    //체크박스 모두 동의 및 버튼 변경 함수 호출
-    private fun allTrue() {
+    private fun allTrue() {  // 전체동의 설정
         binding.signupTermFirstCb.isChecked = true
         binding.signupTermSecondCb.isChecked = true
         binding.signupTermThirdCb.isChecked = true
         binding.signupTermForthCb.isChecked = true
         binding.signupTermFifthCb.isChecked = true
-        allTrue = true
-        changeButton()
+
+        allCheck()  // 전체동의 상태 지정
     }
 
     private fun setTextColor() {
@@ -161,8 +177,8 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
     override fun onLoginSuccess(code: Int, result: LoginResult) {
         when(code) {
-            200 -> {  // 로그인 완료
-                Log.d("SUCCESS", result.toString())
+            1000 -> {  // 로그인 완료
+                Log.d("CHECK-SUCCESS", result.toString())
             }
         }
     }
