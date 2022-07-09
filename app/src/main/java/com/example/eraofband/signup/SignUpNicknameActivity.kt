@@ -8,17 +8,21 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
+import com.example.eraofband.data.User
 import com.example.eraofband.databinding.ActivitySignupNicknameBinding
+import java.io.Serializable
 
 class SignUpNicknameActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignupNicknameBinding
+    private var user = User("", "", "", "", "", 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,13 +30,18 @@ class SignUpNicknameActivity : AppCompatActivity() {
         binding = ActivitySignupNicknameBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val intent = Intent(this, SignUpGenderActivity::class.java)
+
         binding.signupNicknameNextBtn.setOnClickListener {
 
             if(binding.signupNicknameNicknameEt.text.isEmpty()) {
                 setToast()
             }
             else {
-                startActivity(Intent(this@SignUpNicknameActivity, SignUpGenderActivity::class.java))
+                val nickname = binding.signupNicknameNicknameEt.text.toString()
+                user.nickName = nickname
+                intent.putExtra("user", user)
+                startActivity(intent)
                 overridePendingTransition(R.anim.slide_right, R.anim.slide_left)
             }
         }
@@ -75,3 +84,4 @@ class SignUpNicknameActivity : AppCompatActivity() {
         toast.show()
     }
 }
+

@@ -22,12 +22,18 @@ import com.example.eraofband.remote.LoginResult
 class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
     private lateinit var binding: ActivitySignupTermBinding
+    private var allTrue = true //약관 모두동의가 되었는지 확인하기 위한 변수
+    private var user = User("", "", "", "", "", 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivitySignupTermBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        var intent = intent
+        user = intent.extras?.getSerializable("user") as User
+        Log.d("user-do", user.toString())
 
         binding.signupTermNextBtn.setOnClickListener {
 
@@ -38,7 +44,7 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
             loginService.setLoginView(this)
             loginService.login(User("19981102", "MALE", "이승희", "1564891771", "서울 송파구", 1), tokenSP.getString("tokenInfo", ""))
 
-            val intent = Intent(this@SignUpTermActivity, MainActivity::class.java)
+            intent = Intent(this@SignUpTermActivity, MainActivity::class.java)
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
             finishAffinity()
         }
