@@ -26,7 +26,7 @@ class KakaoLoginService {
                 val resp : KakaoLoginResponse = response.body()!!
 
                 when(val code = resp.code) {
-                    200 -> loginView.onLoginSuccess(code, resp.result)  // 성공
+                    1000 -> loginView.onLoginSuccess(code, resp.result)  // 성공
                     else -> loginView.onLoginFailure(code, resp.message)
                 }
             }
