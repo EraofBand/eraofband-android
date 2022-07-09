@@ -22,12 +22,17 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
     private lateinit var binding: ActivitySignupTermBinding
     private var allTrue = true //약관 모두동의가 되었는지 확인하기 위한 변수
+    private var user = User("", "", "", "", "", 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivitySignupTermBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        var intent = intent
+        user = intent.extras?.getSerializable("user") as User
+        Log.d("user-do", user.toString())
 
         binding.signupTermNextBtn.setOnClickListener {
 
@@ -36,9 +41,9 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
             val loginService = KakaoLoginService()
 
             loginService.setLoginView(this)
-            loginService.login(User("0121", "여", "보리", "what", "관악구", 0), tokenSP.getString("tokenInfo", ""))
+            loginService.login(User("2022-07-10", "FEMALE", "Bori", "5481544f43g", "서울 영등포구", 1), tokenSP.getString("tokenInfo", ""))
 
-            val intent = Intent(this@SignUpTermActivity, MainActivity::class.java)
+            intent = Intent(this@SignUpTermActivity, MainActivity::class.java)
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
             finishAffinity()
         }
