@@ -7,6 +7,8 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityProfileEditBinding
@@ -30,7 +32,7 @@ class ProfileEditActivity : AppCompatActivity() {
         // 데베 정보 불러올 자리
         binding.profileEditIntroduceNumTv.text = "0 / 100"  // 나중에 원래 소개 글 글자 수 가지고 올 예정
         binding.profileEditRealBirthdayTv.text = "2001-12-10"  // 여기에 나중에 데베에 저장 된 생일 불러올 예정
-        binding.profileEditManCb.isChecked = true  // 여기도 나중에 데베 성별 불러올 예정
+        binding.profileEditManRb.isChecked = true  // 여기도 나중에 데베 성별 불러올 예정
 
         // 소개 글 글자 수 연동
         binding.profileEditIntroduceEt.addTextChangedListener(object : TextWatcher {
@@ -49,13 +51,12 @@ class ProfileEditActivity : AppCompatActivity() {
 
         })
 
-        // 성별은 하나만 고를 수 있도록
-        binding.profileEditManCb.setOnClickListener {
-            if(binding.profileEditWomanCb.isChecked) binding.profileEditWomanCb.isChecked = false
-        }
-
-        binding.profileEditWomanCb.setOnClickListener {
-            if(binding.profileEditManCb.isChecked) binding.profileEditManCb.isChecked = false
+        // 성별 설정
+        binding.profileEditGenderRg.setOnCheckedChangeListener { _, id ->
+            when (id) {
+                R.id.profile_edit_man_rb -> Toast.makeText(applicationContext, "남자 선택", Toast.LENGTH_SHORT).show()
+                R.id.profile_edit_woman_rb -> Toast.makeText(applicationContext, "여자 선택", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // 생일 날짜 설정

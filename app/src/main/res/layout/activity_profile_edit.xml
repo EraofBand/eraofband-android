@@ -161,16 +161,32 @@
                 app:layout_constraintTop_toBottomOf="@id/profile_edit_introduce_et"
                 app:layout_constraintStart_toStartOf="parent"/>
 
-            <CheckBox
-                android:id="@+id/profile_edit_man_cb"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:background="@drawable/white_checkbox"
-                android:button="@null"
-                android:layout_marginStart="20dp"
+            <RadioGroup
+                android:id="@+id/profile_edit_gender_rg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:layout_marginStart="20dp"
                 app:layout_constraintTop_toBottomOf="@id/profile_edit_gender_tv"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/profile_edit_man_rb"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:background="@drawable/white_checkbox"
+                    android:button="@null" />
+
+                <RadioButton
+                    android:id="@+id/profile_edit_woman_rb"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:background="@drawable/white_checkbox"
+                    android:button="@null"
+                    android:layout_marginStart="90dp"/>
+
+            </RadioGroup>
 
             <TextView
                 android:id="@+id/profile_edit_man_tv"
@@ -178,23 +194,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/man"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="22sp"
                 android:fontFamily="@font/pretendard_bold"
-                android:layout_marginStart="10dp"
-                app:layout_constraintTop_toTopOf="@id/profile_edit_man_cb"
-                app:layout_constraintStart_toEndOf="@id/profile_edit_man_cb"
-                app:layout_constraintBottom_toBottomOf="@id/profile_edit_man_cb"/>
-
-            <CheckBox
-                android:id="@+id/profile_edit_woman_cb"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:background="@drawable/white_checkbox"
-                android:button="@null"
-                android:layout_marginStart="55dp"
-                android:layout_marginTop="15dp"
-                app:layout_constraintTop_toBottomOf="@id/profile_edit_gender_tv"
-                app:layout_constraintStart_toEndOf="@id/profile_edit_man_tv"/>
+                android:layout_marginStart="40dp"
+                app:layout_constraintTop_toTopOf="@id/profile_edit_gender_rg"
+                app:layout_constraintStart_toStartOf="@id/profile_edit_gender_rg"
+                app:layout_constraintBottom_toBottomOf="@id/profile_edit_gender_rg"/>
 
             <TextView
                 android:id="@+id/profile_edit_woman_tv"
@@ -202,12 +207,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/woman"
                 android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textSize="22sp"
                 android:fontFamily="@font/pretendard_bold"
-                android:layout_marginStart="10dp"
-                app:layout_constraintTop_toTopOf="@id/profile_edit_woman_cb"
-                app:layout_constraintStart_toEndOf="@id/profile_edit_woman_cb"
-                app:layout_constraintBottom_toBottomOf="@id/profile_edit_woman_cb"/>
+                android:layout_marginStart="155dp"
+                app:layout_constraintTop_toTopOf="@id/profile_edit_gender_rg"
+                app:layout_constraintStart_toStartOf="@id/profile_edit_gender_rg"
+                app:layout_constraintBottom_toBottomOf="@id/profile_edit_gender_rg"/>
 
             <TextView
                 android:id="@+id/profile_edit_birthday_tv"
@@ -218,7 +223,7 @@
                 android:textSize="15sp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="35dp"
-                app:layout_constraintTop_toBottomOf="@id/profile_edit_man_cb"
+                app:layout_constraintTop_toBottomOf="@id/profile_edit_man_tv"
                 app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
