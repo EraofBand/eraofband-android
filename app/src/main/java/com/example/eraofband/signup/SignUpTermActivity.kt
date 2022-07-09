@@ -100,9 +100,10 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
         binding.signupTermFifthCb.setOnCheckedChangeListener(checkListener)
     }
 
-    private fun changeButton(allTrue : Boolean) {  // 전체동의 여부에 따른 버튼 상태 변경
+    //allTrue 변수에 따라 버튼 색 & clickable 값 조정
+    private fun changeButton(allTrue : Boolean) {
         binding.signupTermNextBtn.isClickable = allTrue
-        if (allTrue) {
+        if(allTrue){
             binding.signupTermNextBtn.setBackgroundResource(R.drawable.blue_round_bg)
         } else {
             binding.signupTermNextBtn.setBackgroundResource(R.drawable.gray_round_bg)
@@ -116,7 +117,6 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
         binding.signupTermAllAgreeCb.isChecked = allTrue
         changeButton(allTrue)
     }
-
 
     private fun essentialCheck() {  // 필수동의 여부와 버튼 상태 변경
         val essential = binding.signupTermFirstCb.isChecked && binding.signupTermSecondCb.isChecked
