@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.eraofband.databinding.FragmentMypageBinding
 import com.example.eraofband.login.LoginActivity
+import com.google.android.material.tabs.TabLayoutMediator
 import com.kakao.sdk.user.UserApiClient
 
 class MyPageFragment : Fragment() {
@@ -26,6 +27,30 @@ class MyPageFragment : Fragment() {
 
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        connectVP()
+    }
+
+    private fun connectVP() {
+        val myPageAdapter = MyPageVPAdapter(this)
+        binding.mypageVp.adapter = myPageAdapter
+
+        TabLayoutMediator(binding.mypageTb, binding.mypageVp) { tab, position ->
+            when (position) {
+                0 -> tab.text = "포트폴리오"
+                1 -> tab.text = "소속 밴드"
+                2 -> tab.text = "신청 레슨"
+            }
+        }.attach()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}
 
  /*   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,8 +82,3 @@ class MyPageFragment : Fragment() {
         }
     }
 */
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-}
