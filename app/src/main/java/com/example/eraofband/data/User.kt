@@ -1,6 +1,7 @@
 package com.example.eraofband.data
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class User (
     @SerializedName(value = "birth") var birth : String,
@@ -9,5 +10,5 @@ data class User (
     @SerializedName(value = "profileImgUrl") var profileImgUrl : String,
     @SerializedName(value = "region") var region : String,
     @SerializedName(value = "session") var session : Int
-)
+) : Serializable
 
