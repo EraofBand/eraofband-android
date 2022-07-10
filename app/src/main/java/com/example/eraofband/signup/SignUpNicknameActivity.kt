@@ -22,7 +22,7 @@ import java.io.Serializable
 class SignUpNicknameActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignupNicknameBinding
-    private var user = User("", "", "", "", "", 0)
+    private var user = User("", "", "", "", "", "", 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
