@@ -20,7 +20,7 @@ import com.example.eraofband.databinding.ActivitySignupLocationBinding
 class SignUpLocationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignupLocationBinding
-    private var user = User("", "", "", "", "", 0)
+    private var user = User("", "", "", "", "", "", 0)
     private lateinit var location: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
