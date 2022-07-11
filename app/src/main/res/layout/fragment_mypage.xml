@@ -10,6 +10,7 @@
         android:id="@+id/mypage_actionbar_cl"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_marginTop="5dp"
         android:backgroundTint="@color/background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +24,7 @@
             android:fontFamily="@font/pretendard_medium"
             android:text="@string/mypage"
             android:textColor="@color/white"
-            android:textSize="25sp"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
