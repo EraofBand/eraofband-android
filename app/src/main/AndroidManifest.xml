@@ -27,10 +27,8 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
                     android:host="oauth"
                     android:scheme="@string/kakao_native_key" />
@@ -77,6 +75,9 @@
         <activity
             android:name=".main.MainActivity"
             android:exported="false" />
+
+        <activity android:name=".main.mypage.ProfileEditActivity"
+            android:exported="false"/>
 
         <activity
             android:name=".main.chat.ChatContentActivity"

@@ -30,8 +30,16 @@ class MyPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.mypageProfileEditIv.setOnClickListener {
+            startActivity(Intent(activity, ProfileEditActivity::class.java))
+        }
+
         connectVP()
+        logout()
     }
+
+//----------------------------------------------------------------------------------------------------
 
     private fun connectVP() {
         val myPageAdapter = MyPageVPAdapter(this)
@@ -46,24 +54,12 @@ class MyPageFragment : Fragment() {
         }.attach()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-}
-
- /*   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.mypageProfileEditIv.setOnClickListener {
-            startActivity(Intent(activity, ProfileEditActivity::class.java))
-        }
-
+    private fun logout() {
         binding.logout.setOnClickListener {  // 로그아웃 프로세스
             UserApiClient.instance.logout { error ->
                 if (error != null) {
                     Toast.makeText(context, "로그아웃 실패 $error", Toast.LENGTH_SHORT).show()
-                }else {
+                } else {
                     Toast.makeText(context, "로그아웃 성공", Toast.LENGTH_SHORT).show()
                 }
                 val intent = Intent(context, LoginActivity::class.java)
@@ -71,7 +67,9 @@ class MyPageFragment : Fragment() {
                 activity?.finish()  // 로그아웃시 스택에 있는 메인 액티비티 종료
             }
         }
+    }
 
+    /*private fun resign() {
         binding.resign.setOnClickListener {  // 회원탈퇴 프로세스
             UserApiClient.instance.unlink { error ->
                 if (error != null) {
@@ -83,6 +81,12 @@ class MyPageFragment : Fragment() {
                     activity?.finish()  // 로그아웃시 스택에 있는 메인 액티비티 종료
                 }
             }
-        }
+    }*/
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
-*/
+}
+
+
