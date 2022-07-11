@@ -55,6 +55,10 @@ class MyPageFragment : Fragment() {
  /*   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.mypageProfileEditIv.setOnClickListener {
+            startActivity(Intent(activity, ProfileEditActivity::class.java))
+        }
+
         binding.logout.setOnClickListener {  // 로그아웃 프로세스
             UserApiClient.instance.logout { error ->
                 if (error != null) {

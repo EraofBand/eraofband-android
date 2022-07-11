@@ -9,8 +9,11 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.util.Log
+import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
+import com.example.eraofband.data.User
 import com.example.eraofband.databinding.ActivitySignupGenderBinding
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,6 +22,9 @@ import java.util.*
 class SignUpGenderActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignupGenderBinding
+    private var gender = 0
+    private var user = User("", "", "", "", "", "", 0)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +32,21 @@ class SignUpGenderActivity : AppCompatActivity() {
         binding = ActivitySignupGenderBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        var intent = intent
+        user = intent.extras?.getSerializable("user") as User
+        Log.d("user-name", user.toString())
+
+        intent = Intent(this, SignUpProfileActivity::class.java)
+
         binding.signupGenderNextBtn.setOnClickListener {
-            startActivity(Intent(this@SignUpGenderActivity, SignUpProfileActivity::class.java))
+            when(binding.signupGenderRg.checkedRadioButtonId){
+                R.id.signup_gender_man_rb -> user.gender = "MALE"
+                R.id.signup_gender_woman_rb -> user.gender = "FEMALE"
+            }
+
+            user.birth = binding.signupGenderRealBirthdayTv.text.toString()
+            intent.putExtra("user", user)
+            startActivity(intent)
             overridePendingTransition(R.anim.slide_right, R.anim.slide_left)
         }
 
@@ -36,10 +55,10 @@ class SignUpGenderActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_left_back, R.anim.slide_right_back)
         }
 
+
         // 기본 설정
         setTextColor()
         binding.signupGenderRealBirthdayTv.text = setDate()
-        binding.signupGenderManCb.isChecked = true
 
         binding.signupGenderRealBirthdayTv.setOnClickListener {
             // 현재 설정되어있는 날짜를 넘겨줌
@@ -53,14 +72,6 @@ class SignUpGenderActivity : AppCompatActivity() {
                 }
 
             })
-        }
-
-        binding.signupGenderManCb.setOnClickListener {
-            if(binding.signupGenderWomanCb.isChecked) binding.signupGenderWomanCb.isChecked = false
-        }
-
-        binding.signupGenderWomanCb.setOnClickListener {
-            if(binding.signupGenderManCb.isChecked) binding.signupGenderManCb.isChecked = false
         }
     }
 

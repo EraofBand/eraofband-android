@@ -75,6 +75,60 @@
         app:layout_constraintTop_toBottomOf="@id/signup_session_progress"
         app:layout_constraintStart_toStartOf="parent"/>
 
+
+        <CheckBox
+            android:id="@+id/signup_session_vocal_cb"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:button="@null"
+            android:background="@drawable/white_checkbox"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="50dp"
+            app:layout_constraintTop_toBottomOf="@id/signup_session_title_tv"
+            app:layout_constraintStart_toStartOf="@id/signup_session_title_tv"/>
+
+        <CheckBox
+            android:id="@+id/signup_session_guitar_cb"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:button="@null"
+            android:background="@drawable/white_checkbox"
+            app:layout_constraintTop_toTopOf="@id/signup_session_vocal_cb"
+            app:layout_constraintStart_toEndOf="@id/signup_session_vocal_cb"
+            app:layout_constraintEnd_toStartOf="@id/signup_session_base_cb"/>
+
+        <CheckBox
+            android:id="@+id/signup_session_base_cb"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:button="@null"
+            android:background="@drawable/white_checkbox"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintTop_toTopOf="@id/signup_session_vocal_cb"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <CheckBox
+            android:id="@+id/signup_session_keyboard_cb"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:button="@null"
+            android:background="@drawable/white_checkbox"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/signup_session_vocal_cb"
+            app:layout_constraintStart_toStartOf="@id/signup_session_vocal_cb"
+            app:layout_constraintEnd_toEndOf="@id/signup_session_guitar_cb"/>
+
+        <CheckBox
+            android:id="@+id/signup_session_drum_cb"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:button="@null"
+            android:background="@drawable/white_checkbox"
+            app:layout_constraintTop_toTopOf="@id/signup_session_keyboard_cb"
+            app:layout_constraintStart_toStartOf="@id/signup_session_guitar_cb"
+            app:layout_constraintEnd_toEndOf="@id/signup_session_base_cb"/>
+
+
     <Button
         android:id="@+id/signup_session_next_btn"
         android:layout_width="match_parent"

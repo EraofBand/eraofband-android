@@ -40,18 +40,20 @@
         <activity
             android:name=".splash.SplashActivity"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity
             android:name=".onboarding.OnboardingActivity"
             android:exported="true">
         </activity>
-
         <activity
             android:name=".signup.SignUpNicknameActivity"
-            android:exported="true">
+            android:exported="false">
         </activity>
-
         <activity
             android:name=".signup.SignUpGenderActivity"
             android:exported="false" />
@@ -60,27 +62,25 @@
             android:exported="false" />
         <activity
             android:name=".signup.SignUpLocationActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".signup.SignUpSessionActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".signup.SignUpTermActivity"
             android:exported="false" />
 
         <activity
             android:name=".login.LoginActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
 
         <activity
             android:name=".main.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false" />
+
+        <activity
+            android:name=".main.chat.ChatContentActivity"
+            android:exported="true"/>
 
     </application>
 

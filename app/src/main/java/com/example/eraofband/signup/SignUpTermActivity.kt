@@ -22,12 +22,17 @@ import com.example.eraofband.remote.LoginResult
 class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
     private lateinit var binding: ActivitySignupTermBinding
+    private var user = User("", "", "", "", "", "", 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivitySignupTermBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        var intent = intent
+        user = intent.extras?.getSerializable("user") as User
+        Log.d("user-do", user.toString())
 
         binding.signupTermNextBtn.setOnClickListener {
 
@@ -36,9 +41,9 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
             val loginService = KakaoLoginService()
 
             loginService.setLoginView(this)
-            loginService.login(User("19981102", "MALE", "해리", "01049099295", "경기도 성남시", 1), tokenSP.getString("tokenInfo", ""))
+            loginService.login(User("19981102", "MALE", "", "해리", "01049099295", "경기도 성남시", 1), tokenSP.getString("tokenInfo", ""))
 
-            val intent = Intent(this@SignUpTermActivity, MainActivity::class.java)
+            intent = Intent(this@SignUpTermActivity, MainActivity::class.java)
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
             finishAffinity()
         }
@@ -100,9 +105,10 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
         binding.signupTermFifthCb.setOnCheckedChangeListener(checkListener)
     }
 
-    private fun changeButton(allTrue : Boolean) {  // 전체동의 여부에 따른 버튼 상태 변경
+    //allTrue 변수에 따라 버튼 색 & clickable 값 조정
+    private fun changeButton(allTrue : Boolean) {
         binding.signupTermNextBtn.isClickable = allTrue
-        if (allTrue) {
+        if(allTrue){
             binding.signupTermNextBtn.setBackgroundResource(R.drawable.blue_round_bg)
         } else {
             binding.signupTermNextBtn.setBackgroundResource(R.drawable.gray_round_bg)

@@ -4,14 +4,17 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.util.Base64
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
@@ -21,11 +24,18 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
+import com.example.eraofband.data.User
 import com.example.eraofband.databinding.ActivitySignupProfileBinding
+import java.io.ByteArrayOutputStream
+import java.io.IOException
+import java.util.*
+
 
 class SignUpProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignupProfileBinding
+    private var user = User("", "", "", "", "", "", 0)
+    private lateinit var bitmap: Bitmap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,13 +43,19 @@ class SignUpProfileActivity : AppCompatActivity() {
         binding = ActivitySignupProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        var intent = intent
+        user = intent.extras?.getSerializable("user") as User
+
+        intent = Intent(this, SignUpLocationActivity::class.java)
+
         binding.signupProfileNextBtn.setOnClickListener {
 
             if(binding.signupProfileAddIv.visibility == View.VISIBLE) {
                 setToast()
             }
             else {
-                startActivity(Intent(this@SignUpProfileActivity, SignUpLocationActivity::class.java))
+                intent.putExtra("user", user)
+                startActivity(intent)
                 overridePendingTransition(R.anim.slide_right, R.anim.slide_left)
             }
         }
@@ -157,6 +173,15 @@ class SignUpProfileActivity : AppCompatActivity() {
                         .apply(RequestOptions.centerCropTransform())
                         .apply(RequestOptions.circleCropTransform())
                         .into(binding.signupProfileProfileIv)
+                    user.profileImgUrl = selectedImageUri.toString()
+                    /*try {
+                        bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
+                        binding.signupProfileProfileIv.setImageBitmap(bitmap)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+
+                    user.profileImgUrl = getStringImage(bitmap).toString()*/
                     binding.signupProfileProfileIv.setBackgroundResource(R.drawable.profile_border)
                     binding.signupProfileAddIv.visibility = View.GONE
                 } else {
@@ -168,6 +193,14 @@ class SignUpProfileActivity : AppCompatActivity() {
             }
         }
     }
+
+    /*private fun getStringImage(bitmap: Bitmap): String? {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        val imageByteArray = byteArrayOutputStream.toByteArray()
+        return Base64.encodeToString(imageByteArray, Base64.DEFAULT)
+    }*/
+
 
     private fun showPermissionContextPopup() {
         // 권한 확인 용 팝업창
