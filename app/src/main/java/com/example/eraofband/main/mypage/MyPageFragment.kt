@@ -47,7 +47,19 @@ class MyPageFragment : Fragment() {
                 }
             }
         })
+        binding.mypageIntroductionTv.post{  // 내소개 더보기 리스너
+            val lineCount = binding.mypageIntroductionTv.layout.lineCount
+            if (lineCount > 0) {
+                if (binding.mypageIntroductionTv.layout.getEllipsisCount(lineCount - 1) > 0) {
+                    // 더보기 표시
+                    binding.mypageLookMoreTv.visibility = View.VISIBLE
 
+                    // 더보기 클릭 이벤트
+                    binding.mypageIntroductionTv.setOnClickListener {
+                    }
+                }
+            }
+        }
         connectVP()
         logout()
     }

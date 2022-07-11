@@ -111,15 +111,29 @@
 
                 <TextView
                     android:id="@+id/mypage_introduction_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:ellipsize="end"
                     android:fontFamily="@font/pretendard_light"
-                    android:text="가천대 아이돌 이승희\n미니앨범 1집 소유 \n팬클럽 &quot;해바라기&quot; 소유"
+                    android:maxLines="3"
+                    android:text="테스트를 해보자테스트를 해보자테스트를 해보자테스트를 해보자테스트를 해보자테스트를 해보자테스트를 해보자"
                     android:textColor="#E2E2E2"
                     android:textSize="12sp"
                     app:layout_constraintStart_toStartOf="@+id/mypage_nickname_tv"
                     app:layout_constraintTop_toBottomOf="@+id/mypage_detail_info_tv" />
+
+                <TextView
+                    android:id="@+id/mypage_look_more_tv"
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_light"
+                    android:text="더보기"
+                    android:textColor="@color/blue"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@+id/mypage_introduction_tv"
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_introduction_tv" />
 
                 <TextView
                     android:id="@+id/mypage_following_tv"
@@ -184,7 +198,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/mypage_follower_tv" />
 
                 <ImageView
-                    android:id="@+id/mypage_line_2"
+                    android:id="@+id/mypage_line_2_iv"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_marginStart="10dp"
@@ -271,6 +285,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/mypage_session_change_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="20dp"
