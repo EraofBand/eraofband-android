@@ -12,4 +12,3 @@ data class User (
     @SerializedName(value = "region") var region : String,
     @SerializedName(value = "session") var session : Int
 ) : Serializable
-
