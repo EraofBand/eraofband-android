@@ -25,6 +25,15 @@ class MyPagePortfolioFragment : Fragment() {
         Portfolio(R.drawable.portfolio_spare),
         Portfolio(R.drawable.portfolio_spare),
         Portfolio(R.drawable.portfolio_spare),
+        Portfolio(R.drawable.portfolio_spare),
+        Portfolio(R.drawable.portfolio_spare),
+        Portfolio(R.drawable.portfolio_spare),
+        Portfolio(R.drawable.portfolio_spare),
+        Portfolio(R.drawable.portfolio_spare),
+        Portfolio(R.drawable.portfolio_spare),
+        Portfolio(R.drawable.portfolio_spare),
+        Portfolio(R.drawable.portfolio_spare),
+        Portfolio(R.drawable.portfolio_spare),
         Portfolio(R.drawable.portfolio_spare)
     )
 
