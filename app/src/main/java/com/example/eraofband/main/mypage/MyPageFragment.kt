@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
+import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentMypageBinding
 import com.example.eraofband.login.LoginActivity
 import com.google.android.material.tabs.TabLayoutMediator
@@ -34,6 +36,17 @@ class MyPageFragment : Fragment() {
         binding.mypageProfileEditIv.setOnClickListener {
             startActivity(Intent(activity, ProfileEditActivity::class.java))
         }
+
+        binding.mypageVp.registerOnPageChangeCallback( object :  // 뷰페이저 리스너 : 포트폴리오 페이지에서만 FAB를 표시해줌
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                when(position){
+                    0 -> binding.mypageFab.visibility = View.VISIBLE
+                    1 -> binding.mypageFab.visibility = View.INVISIBLE
+                    2 -> binding.mypageFab.visibility = View.INVISIBLE
+                }
+            }
+        })
 
         connectVP()
         logout()
