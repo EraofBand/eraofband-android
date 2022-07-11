@@ -62,6 +62,7 @@ class MyPageFragment : Fragment() {
         }
         connectVP()
         logout()
+        resign()
     }
 
 //----------------------------------------------------------------------------------------------------
@@ -94,19 +95,20 @@ class MyPageFragment : Fragment() {
         }
     }
 
-    /*private fun resign() {
+    private fun resign() {
         binding.resign.setOnClickListener {  // 회원탈퇴 프로세스
             UserApiClient.instance.unlink { error ->
                 if (error != null) {
                     Toast.makeText(context, "회원탈퇴 실패 $error", Toast.LENGTH_SHORT).show()
-                }else {
+                } else {
                     Toast.makeText(context, "회원탈퇴 성공", Toast.LENGTH_SHORT).show()
                     val intent = Intent(context, LoginActivity::class.java)
                     startActivity(intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP))
                     activity?.finish()  // 로그아웃시 스택에 있는 메인 액티비티 종료
                 }
             }
-    }*/
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

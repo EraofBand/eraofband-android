@@ -1,6 +1,7 @@
 package com.example.eraofband.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityMainBinding
@@ -11,6 +12,7 @@ import com.example.eraofband.main.home.HomeFragment
 import com.example.eraofband.main.mypage.MyPageFragment
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
+import com.kakao.sdk.user.UserApiClient
 
 //test commit
 class MainActivity : AppCompatActivity() {
@@ -31,6 +33,18 @@ class MainActivity : AppCompatActivity() {
         bottomNavBg.shapeAppearanceModel = bottomNavBg.shapeAppearanceModel.toBuilder()
             .setTopLeftCorner(CornerFamily.ROUNDED, 70.0f)
             .setTopRightCorner(CornerFamily.ROUNDED, 70.0f).build()
+
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Log.e("kakaoinfo", "사용자 정보 요청 실패", error)
+            }
+            else if (user != null) {
+                Log.i("kakaoinfo", "사용자 정보 요청 성공" +
+                        "\n회원번호: ${user.id}" +
+                        "\n이메일: ${user.kakaoAccount?.email}" +
+                        "\n닉네임: ${user.kakaoAccount?.profile?.nickname}")
+            }
+        }
     }
 
     private fun initBottomNav(){
