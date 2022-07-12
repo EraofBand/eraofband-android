@@ -42,7 +42,6 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
             loginService.setLoginView(this)
             loginService.login(user, tokenSP.getString("tokenInfo", ""))
-
             intent = Intent(this@SignUpTermActivity, MainActivity::class.java)
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
             finishAffinity()

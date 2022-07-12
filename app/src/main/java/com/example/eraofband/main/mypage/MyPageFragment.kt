@@ -13,9 +13,6 @@ import com.example.eraofband.databinding.FragmentMypageBinding
 import com.example.eraofband.login.LoginActivity
 import com.example.eraofband.main.MainActivity
 import androidx.viewpager2.widget.ViewPager2
-import com.example.eraofband.R
-import com.example.eraofband.databinding.FragmentMypageBinding
-import com.example.eraofband.login.LoginActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kakao.sdk.user.UserApiClient
 
@@ -40,7 +37,6 @@ class MyPageFragment : Fragment() {
         binding.mypageProfileEditIv.setOnClickListener {
             startActivity(Intent(activity, ProfileEditActivity::class.java))
         }
-
 
         binding.mypageSettingIv.setOnClickListener {
             (context as MainActivity).supportFragmentManager.beginTransaction()
