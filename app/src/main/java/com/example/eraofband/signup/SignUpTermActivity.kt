@@ -41,8 +41,7 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
             val loginService = KakaoLoginService()
 
             loginService.setLoginView(this)
-            loginService.login(User("19981102", "MALE", "", "해리", "01049099295", "경기도 성남시", 1), tokenSP.getString("tokenInfo", ""))
-
+            loginService.login(user, tokenSP.getString("tokenInfo", ""))
             intent = Intent(this@SignUpTermActivity, MainActivity::class.java)
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
             finishAffinity()
