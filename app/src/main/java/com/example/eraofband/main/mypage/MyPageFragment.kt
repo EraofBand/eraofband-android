@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentMypageBinding
 import com.example.eraofband.login.LoginActivity
+import com.example.eraofband.main.MainActivity
 import com.kakao.sdk.user.UserApiClient
 
 class MyPageFragment : Fragment() {
@@ -32,6 +34,11 @@ class MyPageFragment : Fragment() {
 
         binding.mypageProfileEditIv.setOnClickListener {
             startActivity(Intent(activity, ProfileEditActivity::class.java))
+        }
+
+        binding.mypageSettingIv.setOnClickListener {
+            (context as MainActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.main_frm, SettingFragment()).addToBackStack(null).commitAllowingStateLoss()
         }
 
         binding.logout.setOnClickListener {  // 로그아웃 프로세스

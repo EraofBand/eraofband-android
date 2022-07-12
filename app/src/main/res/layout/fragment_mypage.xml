@@ -29,14 +29,16 @@
         android:id="@+id/mypage_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_regular"
         android:text="@string/mypage"
         android:textColor="@color/white"
         android:textSize="20sp"
-        android:fontFamily="@font/pretendard_regular"
-        app:layout_constraintTop_toTopOf="@id/mypage_back_iv"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/mypage_back_iv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/mypage_back_iv"/>
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/mypage_back_iv"
+        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/mypage_profile_iv"
