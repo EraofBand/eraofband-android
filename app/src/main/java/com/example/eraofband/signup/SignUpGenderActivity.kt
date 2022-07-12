@@ -59,6 +59,7 @@ class SignUpGenderActivity : AppCompatActivity() {
         // 기본 설정
         setTextColor()
         binding.signupGenderRealBirthdayTv.text = setDate()
+        binding.signupGenderManRb.isChecked = true
 
         binding.signupGenderRealBirthdayTv.setOnClickListener {
             // 현재 설정되어있는 날짜를 넘겨줌
