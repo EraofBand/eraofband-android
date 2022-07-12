@@ -23,7 +23,7 @@ class SignUpGenderActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignupGenderBinding
     private var gender = 0
-    private var user = User("", "", "", "", "", 0)
+    private var user = User("", "", "", "", "", "", 0)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -22,8 +22,7 @@ import com.example.eraofband.remote.LoginResult
 class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
     private lateinit var binding: ActivitySignupTermBinding
-    private var allTrue = true //약관 모두동의가 되었는지 확인하기 위한 변수
-    private var user = User("", "", "", "", "", 0)
+    private var user = User("", "", "", "", "", "", 0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,6 +121,7 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
         binding.signupTermAllAgreeCb.isChecked = allTrue
         changeButton(allTrue)
     }
+
 
     private fun essentialCheck() {  // 필수동의 여부와 버튼 상태 변경
         val essential = binding.signupTermFirstCb.isChecked && binding.signupTermSecondCb.isChecked

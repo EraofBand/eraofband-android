@@ -17,7 +17,7 @@ import com.example.eraofband.databinding.ActivitySignupSessionBinding
 class SignUpSessionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignupSessionBinding
-    private var user = User("", "", "", "", "", 0)
+    private var user = User("", "", "", "", "", "", 0)
     private var session = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
