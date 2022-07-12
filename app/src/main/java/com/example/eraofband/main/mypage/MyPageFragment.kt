@@ -62,6 +62,16 @@ class MyPageFragment : Fragment(), GetUserView {
             }
         })
 
+
+        binding.mypageFollowingCntTv.setOnClickListener {
+            (context as MainActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.main_frm, FollowFragment(0)).addToBackStack(null).commitAllowingStateLoss()
+        }
+
+        binding.mypageFollowerCntTv.setOnClickListener {
+            (context as MainActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.main_frm, FollowFragment(1)).addToBackStack(null).commitAllowingStateLoss()
+        }
         connectVP()
         logout()
         resign()

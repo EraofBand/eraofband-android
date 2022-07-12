@@ -19,6 +19,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.data.User
 import com.example.eraofband.databinding.ActivitySignupNicknameBinding
+import com.kakao.sdk.user.UserApiClient
+import java.io.Serializable
+
 
 class SignUpNicknameActivity : AppCompatActivity() {
 
@@ -51,23 +54,32 @@ class SignUpNicknameActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.slide_left_back, R.anim.slide_right_back)
         }
 
-        setTextColor()
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Log.e("kakaoinfo", "사용자 정보 요청 실패", error)
+            }
+            else if (user != null) {
+                binding.signupNicknameNameTv.text = "${user.kakaoAccount?.profile?.nickname}"
+            }
+        }
+
+        //setTextColor()
     }
 
-    private fun setTextColor() {
+    /*private fun setTextColor() {
         // 글씨 파란색, 두껍게 만들기
         val nickname = binding.signupNicknameNameTv.text  // 텍스트 가져옴
         val spannableString = SpannableString(nickname)  //객체 생성
 
         // 유저 이름 부분만 두껍게 표시
         val word = "이승희"
-        val start = nickname.indexOf(word)
-        val end = start + word.length
+        val start = nickname.indexOf(nickname)
+        val end = nickname.length
 
-        spannableString.setSpan(ForegroundColorSpan(Color.parseColor("#1864FD")), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannableString.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableString.setSpan(ForegroundColorSpan(Color.parseColor("#1864FD")), 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannableString.setSpan(StyleSpan(Typeface.BOLD), 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.signupNicknameNameTv.text = spannableString
-    }
+    }*/
 
     private fun setToast() {
         val view : View = layoutInflater.inflate(R.layout.toast_signup, findViewById(R.id.toast_signup))
