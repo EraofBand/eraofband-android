@@ -14,7 +14,6 @@ import com.example.eraofband.login.LoginActivity
 import com.example.eraofband.main.MainActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
-
 import com.kakao.sdk.user.UserApiClient
 
 class MyPageFragment : Fragment() {
