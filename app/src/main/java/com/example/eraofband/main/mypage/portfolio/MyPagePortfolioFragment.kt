@@ -1,4 +1,4 @@
-package com.example.eraofband.main.mypage
+package com.example.eraofband.main.mypage.portfolio
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -14,7 +14,7 @@ class MyPagePortfolioFragment : Fragment() {
     private var _binding: FragmentMypagePortfolioBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
 
-    private var portfolioItem = arrayListOf<Portfolio>(
+    private var portfolioItem = arrayListOf(
         Portfolio(R.drawable.portfolio_spare),
         Portfolio(R.drawable.portfolio_spare),
         Portfolio(R.drawable.portfolio_spare),

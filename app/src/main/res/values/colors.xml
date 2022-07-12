@@ -18,6 +18,9 @@
     <color name="indicator_dark">#939393</color>
     <color name="background_gray">#292929</color>
 
+    // 글 관련 색
+    <color name="content">#E2E2E2</color>
+
     // bottom navigation 관련 색
     <color name="bottom_nav">#202228</color>
     <color name="bottom_nav_icon">#939393</color>

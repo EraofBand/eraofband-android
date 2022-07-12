@@ -80,7 +80,7 @@
             android:name=".main.mypage.MyPageSettingActivity"
             android:exported="false" />
         <activity
-            android:name=".main.mypage.PortfolioMakeActivity"
+            android:name=".main.mypage.portfolio.PortfolioMakeActivity"
             android:exported="true" />
     </application>
 

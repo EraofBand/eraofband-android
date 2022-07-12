@@ -1,4 +1,4 @@
-package com.example.eraofband.main.mypage
+package com.example.eraofband.main.mypage.portfolio
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

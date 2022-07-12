@@ -73,8 +73,6 @@ class MyPageFragment : Fragment(), GetUserView {
                 .replace(R.id.main_frm, FollowFragment(1)).addToBackStack(null).commitAllowingStateLoss()
         }
         connectVP()
-        logout()
-        resign()
     }
 
     override fun onStart() {
@@ -103,35 +101,6 @@ class MyPageFragment : Fragment(), GetUserView {
         }.attach()
     }
 
-    private fun logout() {
-        binding.logout.setOnClickListener {  // 로그아웃 프로세스
-            UserApiClient.instance.logout { error ->
-                if (error != null) {
-                    Toast.makeText(context, "로그아웃 실패 $error", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(context, "로그아웃 성공", Toast.LENGTH_SHORT).show()
-                }
-                val intent = Intent(context, LoginActivity::class.java)
-                startActivity(intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP))
-                activity?.finish()  // 로그아웃시 스택에 있는 메인 액티비티 종료
-            }
-        }
-    }
-
-    private fun resign() {
-        binding.resign.setOnClickListener {  // 회원탈퇴 프로세스
-            UserApiClient.instance.unlink { error ->
-                if (error != null) {
-                    Toast.makeText(context, "회원탈퇴 실패 $error", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(context, "회원탈퇴 성공", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(context, LoginActivity::class.java)
-                    startActivity(intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP))
-                    activity?.finish()  // 로그아웃시 스택에 있는 메인 액티비티 종료
-                }
-            }
-        }
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
