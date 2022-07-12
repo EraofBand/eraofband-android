@@ -1,7 +1,9 @@
 package com.example.eraofband.signup
 
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Spannable
@@ -20,6 +22,7 @@ import com.example.eraofband.databinding.ActivitySignupNicknameBinding
 import com.kakao.sdk.user.UserApiClient
 import java.io.Serializable
 
+
 class SignUpNicknameActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignupNicknameBinding
@@ -34,7 +37,6 @@ class SignUpNicknameActivity : AppCompatActivity() {
         val intent = Intent(this, SignUpGenderActivity::class.java)
 
         binding.signupNicknameNextBtn.setOnClickListener {
-
             if(binding.signupNicknameNicknameEt.text.isEmpty()) {
                 setToast()
             }
@@ -86,12 +88,17 @@ class SignUpNicknameActivity : AppCompatActivity() {
         val text = view.findViewById<TextView>(R.id.toast_signup_text_tv)
         text.text = "닉네임을 입력해주세요!"
 
+        val display = windowManager.defaultDisplay // in case of Activity
+        val size = Point()
+        display.getSize(size)  // 상단바 등을 제외한 스크린 전체 크기 구하기
+        val height = size.y / 2  // 토스트 메세지가 중간에 고정되어있기 때문에 높이 / 2
 
-
+        // 중간부터 marginBottom, 버튼 높이 / 2 만큼 빼줌
         toast.view = view
-        toast.setMargin(250F, 0F)
-        toast.setGravity(Gravity.FILL_HORIZONTAL,0, 720)
+        toast.setGravity(Gravity.FILL_HORIZONTAL, 0, height - 80.toPx() - binding.signupNicknameNextBtn.height / 2)
         toast.show()
     }
+
+    private fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 }
 

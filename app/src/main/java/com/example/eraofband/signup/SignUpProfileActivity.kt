@@ -4,8 +4,10 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
@@ -95,11 +97,18 @@ class SignUpProfileActivity : AppCompatActivity() {
         val text = view.findViewById<TextView>(R.id.toast_signup_text_tv)
         text.text = "프로필 사진을 추가해주세요!"
 
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)  // 상단바 등을 제외한 스크린 전체 크기 구하기
+        val height = size.y / 2  // 토스트 메세지가 중간에 고정되어있기 때문에 높이 / 2
+
+        // 중간부터 marginBottom, 버튼 높이 / 2 만큼 빼줌
         toast.view = view
-        toast.setMargin(50F, 0F)
-        toast.setGravity(Gravity.FILL_HORIZONTAL,0, 720)
+        toast.setGravity(Gravity.FILL_HORIZONTAL, 0, height - 80.toPx() - binding.signupProfileNextBtn.height / 2)
         toast.show()
     }
+
+    private fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 
     private fun initImageViewProfile() {
         when {

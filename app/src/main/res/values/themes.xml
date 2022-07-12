@@ -27,4 +27,13 @@
         <item name="android:fontFamily">@font/pretendard_medium</item>
     </style>
 
+    <style name="Theme.EraofBand.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.EraofBand.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.EraofBand.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>
