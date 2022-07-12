@@ -8,6 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.eraofband.R
+import com.example.eraofband.databinding.FragmentMypageBinding
+import com.example.eraofband.login.LoginActivity
+import com.example.eraofband.main.MainActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentMypageBinding
@@ -35,6 +39,12 @@ class MyPageFragment : Fragment() {
 
         binding.mypageProfileEditIv.setOnClickListener {
             startActivity(Intent(activity, ProfileEditActivity::class.java))
+        }
+
+
+        binding.mypageSettingIv.setOnClickListener {
+            (context as MainActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.main_frm, SettingFragment()).addToBackStack(null).commitAllowingStateLoss()
         }
 
         binding.mypageVp.registerOnPageChangeCallback( object :  // 뷰페이저 리스너 : 포트폴리오 페이지에서만 FAB를 표시해줌
