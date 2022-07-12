@@ -38,6 +38,7 @@
 
     <!-- 마이페이지 관련 String -->
     <string name="mypage">마이페이지</string>
+    <string name="look_more">더보기</string>
 
     <string name="drum">드럼</string>
     <string name="guitar">기타</string>
