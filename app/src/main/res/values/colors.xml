@@ -22,4 +22,6 @@
     <color name="bottom_nav">#202228</color>
     <color name="bottom_nav_icon">#939393</color>
 
+    <color name="tablayout_gray">#333333</color>
+
 </resources>
