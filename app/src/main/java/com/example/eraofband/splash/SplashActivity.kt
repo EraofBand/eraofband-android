@@ -17,6 +17,8 @@ import com.example.eraofband.login.LoginActivity
 import com.kakao.sdk.user.UserApiClient
 
 import com.example.eraofband.onboarding.OnboardingActivity
+import com.kakao.sdk.auth.AuthApiClient
+import com.kakao.sdk.common.model.KakaoSdkError
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
@@ -35,29 +37,38 @@ class SplashActivity : AppCompatActivity() {
         val handler = Handler(Looper.getMainLooper())
 
         handler.postDelayed({
-            UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
-                if (error != null) {  // 토큰이 없으면 블록 실행
-                    if (isFinished) {  // 실행 여부 체크 후 필요한 액티비티로 전환
-                        startActivity(Intent(this, LoginActivity::class.java))
+            if (AuthApiClient.instance.hasToken()) {  // 발급받은 토급이 카카오 sdk 내부에 존재하는가?
+                UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
+                    if (error != null) {
+                        if (error is KakaoSdkError && error.isInvalidTokenError()) {  // 토큰은 있지만 에러발생, 재로그인 필요
+                            startActivity(Intent(this, LoginActivity::class.java))
+                            finish()
+                            Log.d("kakaoLogin", error.toString())
+                        } else {  // 기타 에러, 재로그인 필요
+                            startActivity(Intent(this, LoginActivity::class.java))
+                            finish()
+                            Log.d("kakaoLogin", error.toString())
+                        }
+                    } else {  // 토큰 유효성 체크 성공(필요 시 토큰 갱신)
+                        startActivity(Intent(this, MainActivity::class.java))
                         finish()
-                    } else {  // 토큰이 없고 최초 실행이 아니면 온보딩 액티비티 실행
-                        startActivity(Intent(this, OnboardingActivity::class.java))
-                        prefs.edit().putBoolean("isFinished", true).apply()
-                        finish()
+                        if (tokenInfo != null) {
+                            Log.d(
+                                "kakaoLogin", "자동 로그인 완" +
+                                        "\n회원번호: ${tokenInfo.id}" +
+                                        "\n만료시간: ${tokenInfo.expiresIn} 초")
+                        }
                     }
-                } else if (tokenInfo != null) {  // 토큰이 있으면
-                    Log.d(
-                        "tokenInfo", "토큰 정보 보기 성공" +
-                                "\n회원번호: ${tokenInfo.id}" +
-                                "\n만료시간: ${tokenInfo.expiresIn} 초"
-                    )
-
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                }
+            } else {  // 토큰X 로그인 필요
+                if (isFinished) {  // 최초 실행이 아닌 경우 로그인 화면 전환
+                    startActivity(Intent(this, LoginActivity::class.java))
                     finish()
-                }  /* 만약에 태스크에 호출하려는 엑티비티의 인스턴스가 이미 존재하고 있을 경우에
-                 새로운 인스턴스를 생성하는 것 대신에 존재하고 있는 액티비티를 포그라운드로 가져온다.
-                 그리고 호출한 인스턴스를 포그라운드로 가져올때까지 있었던 위의 인스턴스들을 모두 삭제한다. */
+                } else {  // 최초 실행인 경우 온보딩 화면 전환
+                    startActivity(Intent(this, OnboardingActivity::class.java))
+                    prefs.edit().putBoolean("isFinished", true).apply()
+                    finish()
+                }
             }
         }, 1000)
     }

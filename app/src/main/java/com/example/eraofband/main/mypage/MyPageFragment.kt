@@ -39,8 +39,7 @@ class MyPageFragment : Fragment() {
         }
 
         binding.mypageSettingIv.setOnClickListener {
-            (context as MainActivity).supportFragmentManager.beginTransaction()
-                .replace(R.id.main_frm, SettingFragment()).addToBackStack(null).commitAllowingStateLoss()
+            startActivity(Intent(activity, MyPageSettingActivity::class.java))
         }
 
         binding.mypageVp.registerOnPageChangeCallback( object :  // 뷰페이저 리스너 : 포트폴리오 페이지에서만 FAB를 표시해줌
