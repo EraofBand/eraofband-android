@@ -39,12 +39,12 @@ class ProfileEditActivity : AppCompatActivity(), GetUserView {
         val getUserService = GetUserService()
 
         getUserService.setUserView(this)
-        getUserService.getUser(5)
+        getUserService.getUser(12)
 
         // 소개 글 글자 수 실시간 연동
         binding.profileEditIntroduceEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding.profileEditIntroduceEt.hint = ""
+                binding.profileEditIntroduceEt.hint = "이거 때문인가?"
             }
 
             @SuppressLint("SetTextI18n")

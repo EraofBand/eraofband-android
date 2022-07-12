@@ -1,5 +1,6 @@
 package com.example.eraofband.main
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -28,12 +29,6 @@ class MainActivity : AppCompatActivity() {
         // 바텀네비
         initBottomNav()
 
-        // 바텀 네비게이션 모서리 둥글게 만들기
-        val bottomNavBg = binding.mainBottomNav.background as MaterialShapeDrawable
-        bottomNavBg.shapeAppearanceModel = bottomNavBg.shapeAppearanceModel.toBuilder()
-            .setTopLeftCorner(CornerFamily.ROUNDED, 70.0f)
-            .setTopRightCorner(CornerFamily.ROUNDED, 70.0f).build()
-
         UserApiClient.instance.me { user, error ->
             if (error != null) {
                 Log.e("kakaoinfo", "사용자 정보 요청 실패", error)
@@ -57,6 +52,8 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.main_frm, HomeFragment())
                 .commitAllowingStateLoss()
+
+            binding.mainBottomNav.setBackgroundResource(R.drawable.bottom_nav_bg)
             binding.mainBottomNav.selectedItemId = R.id.home
         }
 
@@ -68,6 +65,8 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.main_frm, CommunityFragment())
                         .commitAllowingStateLoss()
+
+                    binding.mainBottomNav.setBackgroundResource(R.drawable.bottom_nav_bg)
                     return@setOnItemSelectedListener true
                 }
 
@@ -75,6 +74,8 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.main_frm, BoardFragment())
                         .commitAllowingStateLoss()
+
+                    binding.mainBottomNav.setBackgroundResource(R.drawable.bottom_nav_bg)
                     return@setOnItemSelectedListener true
                 }
 
@@ -82,6 +83,8 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.main_frm, ChatFragment())
                         .commitAllowingStateLoss()
+
+                    binding.mainBottomNav.setBackgroundResource(R.drawable.bottom_nav_bg)
                     return@setOnItemSelectedListener true
                 }
 
@@ -89,6 +92,8 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.main_frm, MyPageFragment())
                         .commitAllowingStateLoss()
+
+                    binding.mainBottomNav.setBackgroundResource(R.drawable.bottom_nav_bg_none)
                     return@setOnItemSelectedListener true
                 }
             }
