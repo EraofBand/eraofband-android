@@ -34,7 +34,7 @@ import java.util.*
 class SignUpProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignupProfileBinding
-    private var user = User("", "", "", "", "", 0)
+    private var user = User("", "", "", "", "", "", 0)
     private lateinit var bitmap: Bitmap
 
     override fun onCreate(savedInstanceState: Bundle?) {

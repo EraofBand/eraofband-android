@@ -10,7 +10,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:background="@color/transparent"
-        android:src="@drawable/ic_arrow_left"
+        android:src="@drawable/ic_back"
         android:scaleType="fitCenter"
         android:layout_marginTop="50dp"
         android:layout_marginStart="20dp"
