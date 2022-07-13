@@ -126,7 +126,7 @@ class MyPageFragment : Fragment(), GetUserView {
         binding.mypageDetailInfoTv.text = "$city | $age | $gender"
 
         binding.mypageIntroductionTv.text = result.instroduction  // 내 소개 연동
-        binding.mypageIntroductionTv.text = "ddddddddddddddddddddddddddddddddddddddffffddddddddddddddddddddddddddddddddddddddddddd"  // 3줄 테스트용
+//        binding.mypageIntroductionTv.text = "ddddddddddddddddddddddddddddddddddddddffffddddddddddddddddddddddddddddddddddddddddddd"  // 3줄 테스트용
 
         if(binding.mypageIntroductionTv.lineCount > 3) {
             binding.mypageLookMoreTv.visibility = View.VISIBLE  // 더보기 표시

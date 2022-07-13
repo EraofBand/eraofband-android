@@ -82,6 +82,9 @@
         <activity
             android:name=".main.mypage.portfolio.PortfolioMakeActivity"
             android:exported="true" />
+        <activity
+            android:name=".main.mypage.portfolio.PortfolioListActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

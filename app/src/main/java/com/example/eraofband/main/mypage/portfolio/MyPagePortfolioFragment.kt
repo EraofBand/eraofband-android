@@ -1,5 +1,6 @@
 package com.example.eraofband.main.mypage.portfolio
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,26 +16,24 @@ class MyPagePortfolioFragment : Fragment() {
     private val binding get() = _binding!! // 바인딩 누수 방지
 
     private var portfolioItem = arrayListOf(
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare),
-        Portfolio(R.drawable.portfolio_spare)
+        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
+        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
+        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
+        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
+        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
+        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
+        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
+        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
+        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
+        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
+        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
+        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
+        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
+        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
+        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
+        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
+        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
+        Portfolio("", R.drawable.portfolio_spare, "", 0, "")
     )
 
     override fun onCreateView(
@@ -56,6 +55,12 @@ class MyPagePortfolioFragment : Fragment() {
 
         val gridLayoutManager = GridLayoutManager(context,3)
         binding.mypagePortfolioRv.layoutManager = gridLayoutManager
+
+        mAdapter.setMyItemClickListener(object : MyPagePortfolioRVAdapter.MyItemClickListener {
+            override fun onLookDetail() {  // 프로필 리스트 화면 전환
+                startActivity(Intent(context, PortfolioListActivity::class.java))
+            }
+        })
     }
 
     override fun onDestroyView() {
