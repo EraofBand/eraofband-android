@@ -57,8 +57,10 @@ class MyPagePortfolioFragment : Fragment() {
         binding.mypagePortfolioRv.layoutManager = gridLayoutManager
 
         mAdapter.setMyItemClickListener(object : MyPagePortfolioRVAdapter.MyItemClickListener {
-            override fun onLookDetail() {  // 프로필 리스트 화면 전환
-                startActivity(Intent(context, PortfolioListActivity::class.java))
+            override fun onLookDetail(position : Int) {  // 프로필 리스트 화면 전환
+                val intent = Intent(context, PortfolioListActivity::class.java)
+                intent.putExtra("position", position)
+                startActivity(intent)
             }
         })
     }

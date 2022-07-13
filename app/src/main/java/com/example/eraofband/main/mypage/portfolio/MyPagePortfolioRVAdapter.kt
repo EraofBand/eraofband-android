@@ -9,7 +9,8 @@ import com.example.eraofband.databinding.ItemPortfolioBinding
 class MyPagePortfolioRVAdapter(private var pofolItemList: ArrayList<Portfolio>) : RecyclerView.Adapter<MyPagePortfolioRVAdapter.ViewHolder>() {
 
     interface MyItemClickListener {
-        fun onLookDetail()
+        // 자기가 누른 포트폴리오 position을 넘겨주면서 activity 전환
+        fun onLookDetail(position : Int)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -26,7 +27,7 @@ class MyPagePortfolioRVAdapter(private var pofolItemList: ArrayList<Portfolio>) 
         holder.bind(pofolItemList[position])
 
         // 클릭 이벤트
-        holder.binding.itemPortfolioIv.setOnClickListener { mItemClickListener.onLookDetail() }  // 게시물 리스트 화면 띄우기
+        holder.binding.itemPortfolioIv.setOnClickListener { mItemClickListener.onLookDetail(position) }  // 게시물 리스트 화면 띄우기
     }
 
     override fun getItemCount(): Int = pofolItemList.size

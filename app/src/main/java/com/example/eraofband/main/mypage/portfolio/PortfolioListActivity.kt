@@ -2,8 +2,11 @@ package com.example.eraofband.main.mypage.portfolio
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
+import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
 import com.example.eraofband.data.Portfolio
 import com.example.eraofband.databinding.ActivityPortfolioListBinding
@@ -39,6 +42,16 @@ class PortfolioListActivity : AppCompatActivity() {
         val portfolioAdapter = PortfolioListRVAdapter(pofolList)
         binding.portfolioListPortfolioRv.adapter = portfolioAdapter
         binding.portfolioListPortfolioRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        // 자기가 누른 포트폴리오로 넘어가는 거
+        val smoothScroller: RecyclerView.SmoothScroller by lazy {
+            object : LinearSmoothScroller(this) {
+                override fun getVerticalSnapPreference() = SNAP_TO_START
+            }
+        }
+
+        smoothScroller.targetPosition = intent.getIntExtra("position", 0)
+        binding.portfolioListPortfolioRv.layoutManager?.startSmoothScroll(smoothScroller)
 
         portfolioAdapter.setMyItemClickListener(object : PortfolioListRVAdapter.MyItemListener {
             override fun urlParse(url: String): Uri {
