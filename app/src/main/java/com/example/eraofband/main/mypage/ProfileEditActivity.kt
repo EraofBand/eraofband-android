@@ -8,13 +8,12 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityProfileEditBinding
-import com.example.eraofband.remote.GetUserResult
-import com.example.eraofband.remote.GetUserService
-import com.example.eraofband.remote.GetUserView
+import com.example.eraofband.remote.getuser.GetUserResult
+import com.example.eraofband.remote.getuser.GetUserService
+import com.example.eraofband.remote.getuser.GetUserView
 import com.example.eraofband.signup.DialogDatePicker
 
 class ProfileEditActivity : AppCompatActivity(), GetUserView {
