@@ -6,12 +6,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityLoginBinding
+import com.example.eraofband.main.MainActivity
+import com.example.eraofband.remote.checkUser.CheckUserResult
+import com.example.eraofband.remote.checkUser.CheckUserService
+import com.example.eraofband.remote.checkUser.CheckUserView
 import com.example.eraofband.signup.SignUpNicknameActivity
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.user.UserApiClient
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), CheckUserView {
 
     private lateinit var binding : ActivityLoginBinding
 
@@ -63,9 +67,20 @@ class LoginActivity : AppCompatActivity() {
                 tokenEditor.apply()
                 Log.d("tokenInfo",token.accessToken)
 
-                Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, SignUpNicknameActivity::class.java)
-                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                UserApiClient.instance.me { user, error ->
+                    if(user != null) {
+//                        val email = user.kakaoAccount?.email.toString()
+
+                        val email = "ex@naver.com"
+
+
+                        Log.d("EMAIL", email)
+
+                        val checkUserService = CheckUserService()
+                        checkUserService.setUserView(this)
+                        checkUserService.checkUser(email)
+                    }
+                }
             }
         }
 
@@ -77,5 +92,17 @@ class LoginActivity : AppCompatActivity() {
                 UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
             }
         }
+    }
+
+    override fun onCheckSuccess(result: CheckUserResult) {
+        Log.d("CHECK/SUCCESS", result.toString())
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+    }
+
+    override fun onCheckFailure(code: Int, message: String) {
+        Log.d("CHECK/FAIL", "$code $message")
+        val intent = Intent(this, SignUpNicknameActivity::class.java)
+        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
     }
 }
