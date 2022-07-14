@@ -6,5 +6,5 @@ import retrofit2.http.Path
 
 interface CheckUserInterface {
     @PATCH("/users/login/{kakao-email}")
-    fun CheckUser(@Path("kakao-email") email : String) : Call<CheckUserResponse>
+    fun checkUser(@Path("kakao-email") email : String) : Call<CheckUserResponse>
 }

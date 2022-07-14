@@ -69,10 +69,7 @@ class LoginActivity : AppCompatActivity(), CheckUserView {
 
                 UserApiClient.instance.me { user, error ->
                     if(user != null) {
-//                        val email = user.kakaoAccount?.email.toString()
-
-                        val email = "ex@naver.com"
-
+                        val email = user.kakaoAccount?.email.toString()
 
                         Log.d("EMAIL", email)
 
