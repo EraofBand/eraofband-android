@@ -145,8 +145,8 @@ class MyPageFragment : Fragment(), GetUserView {
         binding.mypageNicknameTv.text = result.nickName  // 닉네임 연동
 
         // 디테일한 소개 연동
-        val index = result.region.indexOf(" ")
-        val city = result.region.substring(0, index)
+        val index = result.region.split(" ")
+        val city = index[1]
 
         val age = setDate().substring(0, 4).toInt() - result.birth.substring(0, 4).toInt() + 1
 
@@ -154,7 +154,7 @@ class MyPageFragment : Fragment(), GetUserView {
             if(result.gender == "MALE") "남성"
             else "여성"
 
-        binding.mypageDetailInfoTv.text = "$city | $age | $gender"
+        binding.mypageDetailInfoTv.text = "$city | ${age}세 | $gender"
 
         binding.mypageIntroductionTv.text = result.instroduction  // 내 소개 연동
         binding.mypageIntroductionTv.text = "ddddddddddddddddddddddddddddddddddddddffffddddddddddddddddddddddddddddddddddddddddddd"  // 3줄 테스트용
