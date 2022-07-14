@@ -60,6 +60,12 @@
     <string name="region">지역</string>
     <string name="save">저장하기</string>
     <string name="title_activity_portfolio_make">PortfolioMakeActivity</string>
+
+    <!-- 댓글 관련 String -->
+    <string name="comment">댓글</string>
+    <string name="comment_hint">댓글을 입력해주세요.</string>
+    <string name="upload">입력</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>

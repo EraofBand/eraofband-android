@@ -20,6 +20,7 @@
 
     // 글 관련 색
     <color name="content">#E2E2E2</color>
+    <color name="half_blue">#80000000</color>
 
     // bottom navigation 관련 색
     <color name="bottom_nav">#202228</color>

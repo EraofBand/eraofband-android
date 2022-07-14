@@ -10,6 +10,7 @@ import com.example.eraofband.databinding.ItemPortfolioListBinding
 class PortfolioListRVAdapter(private val portfolio : ArrayList<Portfolio>) : RecyclerView.Adapter<PortfolioListRVAdapter.ViewHolder>() {
     interface MyItemListener {
         fun urlParse(url : String) : Uri
+        fun onShowComment(position : Int)
     }
 
     private lateinit var mItemListener: MyItemListener
@@ -24,6 +25,9 @@ class PortfolioListRVAdapter(private val portfolio : ArrayList<Portfolio>) : Rec
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(portfolio[position])
+
+        // 클릭 이벤트
+        holder.binding.portfolioListComment.setOnClickListener { mItemListener.onShowComment(position) }
     }
 
     override fun getItemCount(): Int = portfolio.size

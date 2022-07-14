@@ -1,5 +1,6 @@
 package com.example.eraofband.main.mypage.portfolio
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -57,6 +58,11 @@ class PortfolioListActivity : AppCompatActivity() {
             override fun urlParse(url: String): Uri {
                 return Uri.parse("android.resource://$packageName/raw/video3")
 //                return Uri.parse(url)  원래는 이걸 사용해야함
+            }
+
+            override fun onShowComment(position: Int) {
+                // 나중에 댓글 불러오기 기능이 생기면 액티비티 전환 후 해당 포트폴리오의 댓글만 불러오면 됩니다
+                startActivity(Intent(this@PortfolioListActivity, PortfolioCommentActivity::class.java))
             }
         })
     }
