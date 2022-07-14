@@ -34,7 +34,7 @@ class MyPageSettingActivity : AppCompatActivity() {
                     Toast.makeText(this, "로그아웃 실패 $error", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "로그아웃 성공", Toast.LENGTH_SHORT).show()
-                    removeToken()
+                    removeUser()
 
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
@@ -51,7 +51,7 @@ class MyPageSettingActivity : AppCompatActivity() {
                     Toast.makeText(this, "회원탈퇴 실패 $error", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "회원탈퇴 성공", Toast.LENGTH_SHORT).show()
-                    removeToken()
+                    removeUser()
 
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
@@ -61,12 +61,15 @@ class MyPageSettingActivity : AppCompatActivity() {
         }
     }
 
-    private fun removeToken() {
-        // 현재 로그인 한 사람의 ACCESS-TOKEN 정보 지우기
-        val tokenSP = getSharedPreferences("token", MODE_PRIVATE)
-        val tokenEdit = tokenSP.edit()
+    private fun removeUser() {
+        // 현재 로그인 한 사람의 정보 지우기
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        val userEdit = userSP.edit()
 
-        tokenEdit.remove("tokenInfo")
-        tokenEdit.apply()
+        userEdit.remove("token")
+        userEdit.remove("userIdx")
+        userEdit.remove("jwt")
+
+        userEdit.apply()
     }
 }
