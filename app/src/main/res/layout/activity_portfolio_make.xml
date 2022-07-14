@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.mypage.PortfolioMakeActivity">
+    tools:context=".main.mypage.portfolio.PortfolioMakeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/portfolio_make_cl"

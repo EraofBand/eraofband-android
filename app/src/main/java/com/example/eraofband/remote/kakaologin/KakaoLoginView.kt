@@ -1,4 +1,4 @@
-package com.example.eraofband.remote
+package com.example.eraofband.remote.kakaologin
 
 interface KakaoLoginView {
     fun onLoginSuccess(code: Int, result : LoginResult)

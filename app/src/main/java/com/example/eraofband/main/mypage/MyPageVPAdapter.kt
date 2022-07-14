@@ -2,7 +2,7 @@ package com.example.eraofband.main.mypage
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.eraofband.databinding.FragmentMypageBinding
+import com.example.eraofband.main.mypage.portfolio.MyPagePortfolioFragment
 
 class MyPageVPAdapter (fragment : Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int = 3

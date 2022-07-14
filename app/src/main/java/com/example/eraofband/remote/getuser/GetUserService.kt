@@ -1,6 +1,7 @@
-package com.example.eraofband.remote
+package com.example.eraofband.remote.getuser
 
 import android.util.Log
+import com.example.eraofband.remote.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

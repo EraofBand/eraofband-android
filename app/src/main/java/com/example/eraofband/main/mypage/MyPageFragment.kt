@@ -2,26 +2,20 @@ package com.example.eraofband.main.mypage
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentMypageBinding
-import com.example.eraofband.login.LoginActivity
-import com.example.eraofband.remote.GetUserResult
-import com.example.eraofband.remote.GetUserService
-import com.example.eraofband.remote.GetUserView
+import com.example.eraofband.remote.getuser.GetUserResult
+import com.example.eraofband.remote.getuser.GetUserService
+import com.example.eraofband.remote.getuser.GetUserView
 import com.example.eraofband.main.MainActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
-import com.kakao.sdk.user.UserApiClient
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -73,8 +67,6 @@ class MyPageFragment : Fragment(), GetUserView {
                 .replace(R.id.main_frm, FollowFragment(1)).addToBackStack(null).commitAllowingStateLoss()
         }
         connectVP()
-        logout()
-        resign()
     }
 
     override fun onStart() {
@@ -103,35 +95,6 @@ class MyPageFragment : Fragment(), GetUserView {
         }.attach()
     }
 
-    private fun logout() {
-        binding.logout.setOnClickListener {  // 로그아웃 프로세스
-            UserApiClient.instance.logout { error ->
-                if (error != null) {
-                    Toast.makeText(context, "로그아웃 실패 $error", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(context, "로그아웃 성공", Toast.LENGTH_SHORT).show()
-                }
-                val intent = Intent(context, LoginActivity::class.java)
-                startActivity(intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP))
-                activity?.finish()  // 로그아웃시 스택에 있는 메인 액티비티 종료
-            }
-        }
-    }
-
-    private fun resign() {
-        binding.resign.setOnClickListener {  // 회원탈퇴 프로세스
-            UserApiClient.instance.unlink { error ->
-                if (error != null) {
-                    Toast.makeText(context, "회원탈퇴 실패 $error", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(context, "회원탈퇴 성공", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(context, LoginActivity::class.java)
-                    startActivity(intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP))
-                    activity?.finish()  // 로그아웃시 스택에 있는 메인 액티비티 종료
-                }
-            }
-        }
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -157,7 +120,7 @@ class MyPageFragment : Fragment(), GetUserView {
         binding.mypageDetailInfoTv.text = "$city | $age | $gender"
 
         binding.mypageIntroductionTv.text = result.instroduction  // 내 소개 연동
-        binding.mypageIntroductionTv.text = "ddddddddddddddddddddddddddddddddddddddffffddddddddddddddddddddddddddddddddddddddddddd"  // 3줄 테스트용
+//        binding.mypageIntroductionTv.text = "ddddddddddddddddddddddddddddddddddddddffffddddddddddddddddddddddddddddddddddddddddddd"  // 3줄 테스트용
 
         if(binding.mypageIntroductionTv.lineCount > 3) {
             binding.mypageLookMoreTv.visibility = View.VISIBLE  // 더보기 표시

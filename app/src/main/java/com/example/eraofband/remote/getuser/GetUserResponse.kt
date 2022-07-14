@@ -1,4 +1,4 @@
-package com.example.eraofband.remote
+package com.example.eraofband.remote.getuser
 
 import com.google.gson.annotations.SerializedName
 

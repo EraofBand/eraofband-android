@@ -1,4 +1,4 @@
-package com.example.eraofband.remote
+package com.example.eraofband.remote.getuser
 
 interface GetUserView {
     fun onGetSuccess(code: Int, result : GetUserResult)
