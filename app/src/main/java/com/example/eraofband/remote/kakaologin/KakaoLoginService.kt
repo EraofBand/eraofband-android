@@ -1,8 +1,8 @@
-package com.example.eraofband.remote
+package com.example.eraofband.remote.kakaologin
 
-import android.content.Context
 import android.util.Log
 import com.example.eraofband.data.User
+import com.example.eraofband.remote.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

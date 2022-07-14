@@ -15,9 +15,9 @@ import com.example.eraofband.R
 import com.example.eraofband.data.User
 import com.example.eraofband.databinding.ActivitySignupTermBinding
 import com.example.eraofband.main.MainActivity
-import com.example.eraofband.remote.KakaoLoginService
-import com.example.eraofband.remote.KakaoLoginView
-import com.example.eraofband.remote.LoginResult
+import com.example.eraofband.remote.kakaologin.KakaoLoginService
+import com.example.eraofband.remote.kakaologin.KakaoLoginView
+import com.example.eraofband.remote.kakaologin.LoginResult
 
 class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
