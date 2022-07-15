@@ -1,4 +1,4 @@
-package com.example.eraofband.main.mypage
+package com.example.eraofband.main.mypage.follow
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

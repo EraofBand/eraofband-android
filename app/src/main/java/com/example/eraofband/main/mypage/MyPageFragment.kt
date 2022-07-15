@@ -15,6 +15,8 @@ import com.example.eraofband.remote.getuser.GetUserService
 import com.example.eraofband.remote.getuser.GetUserView
 import com.example.eraofband.main.MainActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.example.eraofband.main.mypage.follow.FollowFragment
+import com.example.eraofband.main.mypage.portfolio.PortfolioMakeActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 import java.util.*
@@ -65,6 +67,10 @@ class MyPageFragment : Fragment(), GetUserView {
         binding.mypageFollowerCntTv.setOnClickListener {
             (context as MainActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.main_frm, FollowFragment(1)).addToBackStack(null).commitAllowingStateLoss()
+        }
+
+        binding.mypageFab.setOnClickListener{
+            startActivity(Intent(activity, PortfolioMakeActivity::class.java))
         }
         connectVP()
     }

@@ -1,4 +1,5 @@
 package com.example.eraofband.login
+
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -6,10 +7,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityLoginBinding
+import com.example.eraofband.main.MainActivity
 import com.example.eraofband.signup.SignUpNicknameActivity
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.user.UserApiClient
+import retrofit2.http.GET
 
 class LoginActivity : AppCompatActivity() {
 
@@ -71,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
 
         binding.loginKakaoBt.setOnClickListener {
             // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
-            if(UserApiClient.instance.isKakaoTalkLoginAvailable(this)){
+            if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
                 UserApiClient.instance.loginWithKakaoTalk(this, callback = callback)
             } else {
                 UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
