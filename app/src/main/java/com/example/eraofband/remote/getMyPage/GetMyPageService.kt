@@ -2,8 +2,6 @@ package com.example.eraofband.remote.getMyPage
 
 import android.util.Log
 import com.example.eraofband.remote.NetworkModule
-import com.example.eraofband.remote.getuser.GetMyPageInterface
-import com.example.eraofband.remote.getuser.GetMyPageResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -84,7 +84,7 @@ class LoginActivity : AppCompatActivity(), CheckUserView {
 
         binding.loginKakaoBt.setOnClickListener {
             // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
-            if(UserApiClient.instance.isKakaoTalkLoginAvailable(this)){
+            if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
                 UserApiClient.instance.loginWithKakaoTalk(this, callback = callback)
             } else {
                 UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
@@ -110,6 +110,8 @@ class LoginActivity : AppCompatActivity(), CheckUserView {
                 "가입한 유저입니다. userIdx = ${result.userIdx}",
                 Toast.LENGTH_SHORT
             ).show()
+            Toast.makeText(applicationContext,"가입한 유저입니다. userIdx = ${result.userIdx}", Toast.LENGTH_SHORT).show()
+
             userEdit.putInt("userIdx", result.userIdx)
             userEdit.putString("jwt", result.jwt)
             userEdit.apply()

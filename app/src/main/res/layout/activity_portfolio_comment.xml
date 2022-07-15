@@ -49,7 +49,7 @@
         app:layout_constraintTop_toBottomOf="@id/portfolio_comment_top"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toTopOf="@id/portfolio_comment_bottom"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/portfolio_comment_bottom"
