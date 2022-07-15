@@ -11,11 +11,9 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityProfileEditBinding
-import com.example.eraofband.remote.getuser.GetUserResult
 import com.example.eraofband.remote.getMyPage.GetMyPageService
 import com.example.eraofband.remote.getMyPage.GetMyPageView
-import com.example.eraofband.remote.getuser.GetMyPageResult
-import com.example.eraofband.remote.getuser.GetUserView
+import com.example.eraofband.remote.getMyPage.GetMyPageResult
 import com.example.eraofband.signup.DialogDatePicker
 
 class ProfileEditActivity : AppCompatActivity(), GetMyPageView {
