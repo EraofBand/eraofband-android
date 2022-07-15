@@ -2,14 +2,16 @@ package com.example.eraofband.main.mypage
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.databinding.ActivityMypageSettingBinding
 import com.example.eraofband.login.LoginActivity
+import com.example.eraofband.remote.signout.*
 import com.kakao.sdk.user.UserApiClient
 
 
-class MyPageSettingActivity : AppCompatActivity() {
+class MyPageSettingActivity : AppCompatActivity(), ResignView {
 
     private lateinit var binding: ActivityMypageSettingBinding
 
@@ -51,14 +53,30 @@ class MyPageSettingActivity : AppCompatActivity() {
                     Toast.makeText(this, "회원탈퇴 실패 $error", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "회원탈퇴 성공", Toast.LENGTH_SHORT).show()
+
+                    // DB에서 지우기
+                    val resignService = ResignService()
+                    resignService.setResignView(this)
+                    resignService.resign(getJwt()!!, getUserIdx())
+
                     removeUser()
 
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-                    finish()  // 로그아웃시 스택에 있는 메인 액티비티 종료
+                    finish()  // 회원탈퇴시 스택에 있는 메인 액티비티 종료
                 }
             }
         }
+    }
+
+    private fun getUserIdx() : Int {
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        return userSP.getInt("userIdx", 0)
+    }
+
+    private fun getJwt() : String? {
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        return userSP.getString("jwt", "")
     }
 
     private fun removeUser() {
@@ -71,5 +89,13 @@ class MyPageSettingActivity : AppCompatActivity() {
         userEdit.remove("jwt")
 
         userEdit.apply()
+    }
+
+    override fun onResignSuccess(code: Int, response: ResignResponse) {
+        Log.d("RESIGN/SUC", response.toString())
+    }
+
+    override fun onResignFailure(code: Int, message: String) {
+        Log.d("RESIGN/FAIL", "$code $message")
     }
 }

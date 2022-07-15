@@ -168,11 +168,14 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
     }
 
     override fun onLoginSuccess(code: Int, result: LoginResult) {
-        when(code) {
-            1000 -> {  // 로그인 완료
-                Log.d("CHECK-SUCCESS", result.toString())
-            }
-        }
+        Log.d("CHECK-SUCCESS", result.toString())
+
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        val userEdit = userSP.edit()
+
+        userEdit.putInt("userIdx", result.userIdx)
+        userEdit.putString("jwt", result.jwt)
+        userEdit.apply()
     }
 
     override fun onLoginFailure(code: Int, message: String) {
