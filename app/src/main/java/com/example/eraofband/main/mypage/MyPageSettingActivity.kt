@@ -19,9 +19,7 @@ class MyPageSettingActivity : AppCompatActivity() {
         binding = ActivityMypageSettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.settingBackIb.setOnClickListener{
-            finish()
-        }
+        binding.settingBackIb.setOnClickListener{ finish() }  // 뒤로가기
 
         logout()
         resign()
@@ -36,10 +34,12 @@ class MyPageSettingActivity : AppCompatActivity() {
                     Toast.makeText(this, "로그아웃 실패 $error", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "로그아웃 성공", Toast.LENGTH_SHORT).show()
+                    removeUser()
+
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                    finish()  // 로그아웃시 스택에 있는 메인 액티비티 종료
                 }
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-                finish()  // 로그아웃시 스택에 있는 메인 액티비티 종료
             }
         }
     }
@@ -51,11 +51,25 @@ class MyPageSettingActivity : AppCompatActivity() {
                     Toast.makeText(this, "회원탈퇴 실패 $error", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "회원탈퇴 성공", Toast.LENGTH_SHORT).show()
+                    removeUser()
+
                     val intent = Intent(this, LoginActivity::class.java)
                     startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     finish()  // 로그아웃시 스택에 있는 메인 액티비티 종료
                 }
             }
         }
+    }
+
+    private fun removeUser() {
+        // 현재 로그인 한 사람의 정보 지우기
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        val userEdit = userSP.edit()
+
+        userEdit.remove("token")
+        userEdit.remove("userIdx")
+        userEdit.remove("jwt")
+
+        userEdit.apply()
     }
 }

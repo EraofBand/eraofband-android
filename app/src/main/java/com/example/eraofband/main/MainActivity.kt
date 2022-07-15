@@ -40,6 +40,13 @@ class MainActivity : AppCompatActivity() {
                         "\n닉네임: ${user.kakaoAccount?.profile?.nickname}")
             }
         }
+
+        Log.d("USERIDX", "${getUserIdx()}")
+    }
+
+    private fun getUserIdx() : Int {
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        return userSP.getInt("userIdx", 0)
     }
 
     private fun initBottomNav(){

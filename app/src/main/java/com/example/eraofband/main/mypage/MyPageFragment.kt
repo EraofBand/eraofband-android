@@ -7,21 +7,25 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentMypageBinding
 import com.example.eraofband.remote.getuser.GetUserResult
-import com.example.eraofband.remote.getuser.GetUserService
+import com.example.eraofband.remote.getMyPage.GetMyPageService
 import com.example.eraofband.remote.getuser.GetUserView
 import com.example.eraofband.main.MainActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.eraofband.main.mypage.follow.FollowFragment
 import com.example.eraofband.main.mypage.portfolio.PortfolioMakeActivity
+import com.example.eraofband.remote.getMyPage.GetMyPageView
+import com.example.eraofband.remote.getuser.GetMyPageResult
+import com.example.eraofband.remote.getuser.GetUserService
 import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MyPageFragment : Fragment(), GetUserView {
+class MyPageFragment : Fragment(), GetMyPageView {
 
     private var _binding: FragmentMypageBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
@@ -80,13 +84,23 @@ class MyPageFragment : Fragment(), GetUserView {
 
         // 나중에 프로필 편집 하게 되면 값이 바껴야하니까 onStart에 넣어줬어요
         // 유저 정보를 받아온 후 프로필 편집 화면에 연동
-        val getUserService = GetUserService()
+        val getMyPageService = GetMyPageService()
 
-        getUserService.setUserView(this)
-        getUserService.getUser(12)
+        getMyPageService.setUserView(this)
+        getMyPageService.getUser(getJwt()!!, getUserIdx())
     }
 
 //----------------------------------------------------------------------------------------------------
+
+    private fun getUserIdx() : Int {
+        val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        return userSP.getInt("userIdx", 0)
+    }
+
+    private fun getJwt() : String? {
+        val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        return userSP.getString("jwt", "")
+    }
 
     private fun connectVP() {
         val myPageAdapter = MyPageVPAdapter(this)
@@ -108,24 +122,27 @@ class MyPageFragment : Fragment(), GetUserView {
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onGetSuccess(code: Int, result: GetUserResult) {
+    override fun onGetSuccess(code: Int, result: GetMyPageResult) {
         // 나중에 프사도 연동 예정, 포트폴리오는 아직
 
-        binding.mypageNicknameTv.text = result.nickName  // 닉네임 연동
+        Log.d("MYPAGE", result.toString())
+        binding.mypageNicknameTv.text = result.getUser.nickName  // 닉네임 연동
 
         // 디테일한 소개 연동
+        val index = result.getUser.region.indexOf(" ")
+        val city = result.getUser.region.substring(0, index)
         val index = result.region.split(" ")
         val city = index[1]
 
-        val age = setDate().substring(0, 4).toInt() - result.birth.substring(0, 4).toInt() + 1
+        val age = setDate().substring(0, 4).toInt() - result.getUser.birth.substring(0, 4).toInt() + 1
 
         val gender =
-            if(result.gender == "MALE") "남성"
+            if(result.getUser.gender == "MALE") "남성"
             else "여성"
 
         binding.mypageDetailInfoTv.text = "$city | ${age}세 | $gender"
 
-        binding.mypageIntroductionTv.text = result.instroduction  // 내 소개 연동
+        binding.mypageIntroductionTv.text = result.getUser.instroduction  // 내 소개 연동
 //        binding.mypageIntroductionTv.text = "ddddddddddddddddddddddddddddddddddddddffffddddddddddddddddddddddddddddddddddddddddddd"  // 3줄 테스트용
 
         if(binding.mypageIntroductionTv.lineCount > 3) {
@@ -145,11 +162,11 @@ class MyPageFragment : Fragment(), GetUserView {
         }
 
         // 숫자 연동
-        binding.mypageFollowingCntTv.text = result.followeeCount.toString()
-        binding.mypageFollowerCntTv.text = result.followerCount.toString()
-        binding.mypagePortfolioCntTv.text = result.pofolCount.toString()
+        binding.mypageFollowingCntTv.text = result.getUser.followeeCount.toString()
+        binding.mypageFollowerCntTv.text = result.getUser.followerCount.toString()
+        binding.mypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
-        setSession(result.session)  // 세션 연동
+        setSession(result.getUser.session)  // 세션 연동
     }
 
     override fun onGetFailure(code: Int, message: String) {
