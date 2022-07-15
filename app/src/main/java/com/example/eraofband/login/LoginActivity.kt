@@ -92,7 +92,7 @@ class LoginActivity : AppCompatActivity(), CheckUserView {
         }
     }
 
-    override fun onCheckSuccess(result: CheckUserResult) {
+    override fun onCheckSuccess(message: String, result: CheckUserResult) {
         // DB에 유저가 있으면 정보 저장 후 메인으로
         Log.d("CHECK/SUCCESS", result.toString())
 
@@ -105,7 +105,13 @@ class LoginActivity : AppCompatActivity(), CheckUserView {
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
 
         } else {  // DB에 유저가 있는 case
+            Toast.makeText(
+                applicationContext,
+                "가입한 유저입니다. userIdx = ${result.userIdx}",
+                Toast.LENGTH_SHORT
+            ).show()
             Toast.makeText(applicationContext,"가입한 유저입니다. userIdx = ${result.userIdx}", Toast.LENGTH_SHORT).show()
+
             userEdit.putInt("userIdx", result.userIdx)
             userEdit.putString("jwt", result.jwt)
             userEdit.apply()
@@ -114,7 +120,6 @@ class LoginActivity : AppCompatActivity(), CheckUserView {
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
             finish()
         }
-
     }
 
     override fun onCheckFailure(code: Int, message: String) {
