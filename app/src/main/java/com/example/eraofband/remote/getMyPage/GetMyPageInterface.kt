@@ -1,5 +1,6 @@
-package com.example.eraofband.remote.getuser
+package com.example.eraofband.remote.getMyPage
 
+import com.example.eraofband.remote.getMyPage.GetMyPageResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header

@@ -11,16 +11,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentMypageBinding
-import com.example.eraofband.remote.getuser.GetUserResult
-import com.example.eraofband.remote.getMyPage.GetMyPageService
-import com.example.eraofband.remote.getuser.GetUserView
 import com.example.eraofband.main.MainActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.eraofband.main.mypage.follow.FollowFragment
 import com.example.eraofband.main.mypage.portfolio.PortfolioMakeActivity
+import com.example.eraofband.remote.getMyPage.GetMyPageService
 import com.example.eraofband.remote.getMyPage.GetMyPageView
-import com.example.eraofband.remote.getuser.GetMyPageResult
-import com.example.eraofband.remote.getuser.GetUserService
+import com.example.eraofband.remote.getMyPage.GetMyPageResult
 import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 import java.util.*
@@ -129,9 +126,8 @@ class MyPageFragment : Fragment(), GetMyPageView {
         binding.mypageNicknameTv.text = result.getUser.nickName  // 닉네임 연동
 
         // 디테일한 소개 연동
-        val index = result.getUser.region.indexOf(" ")
-        val city = result.getUser.region.substring(0, index)
-        val index = result.region.split(" ")
+
+        val index = result.getUser.region.split(" ")
         val city = index[1]
 
         val age = setDate().substring(0, 4).toInt() - result.getUser.birth.substring(0, 4).toInt() + 1

@@ -10,9 +10,7 @@ import com.example.eraofband.main.MainActivity
 import com.example.eraofband.remote.checkUser.CheckUserResult
 import com.example.eraofband.remote.checkUser.CheckUserService
 import com.example.eraofband.remote.checkUser.CheckUserView
-import com.example.eraofband.main.MainActivity
 import com.example.eraofband.signup.SignUpNicknameActivity
-import com.google.gson.Gson
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.user.UserApiClient
@@ -97,22 +95,29 @@ class LoginActivity : AppCompatActivity(), CheckUserView {
     override fun onCheckSuccess(result: CheckUserResult) {
         // DB에 유저가 있으면 정보 저장 후 메인으로
         Log.d("CHECK/SUCCESS", result.toString())
-        val intent = Intent(this, MainActivity::class.java)
 
         val userSP = getSharedPreferences("user", MODE_PRIVATE)
         val userEdit = userSP.edit()
 
-        userEdit.putInt("userIdx", result.userIdx)
-        userEdit.putString("jwt", result.jwt)
-        userEdit.apply()
+        if (result.jwt == "NULL" && result.userIdx == 0) {  // DB에 유저가 없는 case
+            Toast.makeText(applicationContext,"처음 가입한 유저입니다.", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, SignUpNicknameActivity::class.java)
+            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
 
-        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+        } else {  // DB에 유저가 있는 case
+            Toast.makeText(applicationContext,"가입한 유저입니다. userIdx = ${result.userIdx}", Toast.LENGTH_SHORT).show()
+            userEdit.putInt("userIdx", result.userIdx)
+            userEdit.putString("jwt", result.jwt)
+            userEdit.apply()
+
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+            finish()
+        }
+
     }
 
     override fun onCheckFailure(code: Int, message: String) {
-        // DB에 유저가 없으면 회원가입으로
         Log.d("CHECK/FAIL", "$code $message")
-        val intent = Intent(this, SignUpNicknameActivity::class.java)
-        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
     }
 }
