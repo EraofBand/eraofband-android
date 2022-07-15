@@ -16,5 +16,8 @@ class PortfolioMakeActivity : AppCompatActivity() {
         binding = ActivityPortfolioMakeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.portfolioMakeBackIb.setOnClickListener {
+            finish()
+        }
     }
 }

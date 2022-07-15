@@ -84,7 +84,7 @@ class LoginActivity : AppCompatActivity(), CheckUserView {
 
         binding.loginKakaoBt.setOnClickListener {
             // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
-            if(UserApiClient.instance.isKakaoTalkLoginAvailable(this)){
+            if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
                 UserApiClient.instance.loginWithKakaoTalk(this, callback = callback)
             } else {
                 UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
@@ -92,9 +92,10 @@ class LoginActivity : AppCompatActivity(), CheckUserView {
         }
     }
 
-    override fun onCheckSuccess(message: String, result: CheckUserResult) {
+    override fun onCheckSuccess(result: CheckUserResult) {
         // DB에 유저가 있으면 정보 저장 후 메인으로
         Log.d("CHECK/SUCCESS", result.toString())
+        val intent = Intent(this, MainActivity::class.java)
 
         val userSP = getSharedPreferences("user", MODE_PRIVATE)
         val userEdit = userSP.edit()
@@ -105,11 +106,7 @@ class LoginActivity : AppCompatActivity(), CheckUserView {
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
 
         } else {  // DB에 유저가 있는 case
-            Toast.makeText(
-                applicationContext,
-                "가입한 유저입니다. userIdx = ${result.userIdx}",
-                Toast.LENGTH_SHORT
-            ).show()
+            Toast.makeText(applicationContext,"가입한 유저입니다. userIdx = ${result.userIdx}", Toast.LENGTH_SHORT).show()
             userEdit.putInt("userIdx", result.userIdx)
             userEdit.putString("jwt", result.jwt)
             userEdit.apply()
@@ -118,6 +115,7 @@ class LoginActivity : AppCompatActivity(), CheckUserView {
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
             finish()
         }
+
     }
 
     override fun onCheckFailure(code: Int, message: String) {
