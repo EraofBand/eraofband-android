@@ -12,11 +12,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityProfileEditBinding
 import com.example.eraofband.remote.getuser.GetUserResult
-import com.example.eraofband.remote.getuser.GetUserService
+import com.example.eraofband.remote.getMyPage.GetMyPageService
+import com.example.eraofband.remote.getMyPage.GetMyPageView
+import com.example.eraofband.remote.getuser.GetMyPageResult
 import com.example.eraofband.remote.getuser.GetUserView
 import com.example.eraofband.signup.DialogDatePicker
 
-class ProfileEditActivity : AppCompatActivity(), GetUserView {
+class ProfileEditActivity : AppCompatActivity(), GetMyPageView {
 
     private lateinit var binding : ActivityProfileEditBinding
 
@@ -35,10 +37,10 @@ class ProfileEditActivity : AppCompatActivity(), GetUserView {
         initDatePicker()
 
         // 유저 정보를 받아온 후 프로필 편집 화면에 연동
-        val getUserService = GetUserService()
+        val getMyPageService = GetMyPageService()
 
-        getUserService.setUserView(this)
-        getUserService.getUser(12)
+        getMyPageService.setUserView(this)
+        getMyPageService.getUser(getJwt()!!, getUserIdx())
 
         // 소개 글 글자 수 실시간 연동
         binding.profileEditIntroduceEt.addTextChangedListener(object : TextWatcher {
@@ -65,6 +67,16 @@ class ProfileEditActivity : AppCompatActivity(), GetUserView {
             }
         }
 
+    }
+
+    private fun getUserIdx() : Int {
+        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        return userSP.getInt("userIdx", 0)
+    }
+
+    private fun getJwt() : String? {
+        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        return userSP.getString("jwt", "")
     }
 
     private fun initSpinner() {  // 스피너 초기화
@@ -120,18 +132,18 @@ class ProfileEditActivity : AppCompatActivity(), GetUserView {
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onGetSuccess(code: Int, result: GetUserResult) {
-        binding.profileEditNicknameEt.setText(result.nickName)  // 닉네임 연결
+    override fun onGetSuccess(code: Int, result: GetMyPageResult) {
+        binding.profileEditNicknameEt.setText(result.getUser.nickName)  // 닉네임 연결
 
-        binding.profileEditIntroduceEt.setText(result.instroduction)  // 내 소개 연결
+        binding.profileEditIntroduceEt.setText(result.getUser.instroduction)  // 내 소개 연결
         binding.profileEditIntroduceNumTv.text = binding.profileEditIntroduceEt.text.length.toString() + "/ 100"  // 내 소개 글자 수 연결
 
-        if(result.gender == "MALE") binding.profileEditManRb.isChecked = true  // 성별 연결
+        if(result.getUser.gender == "MALE") binding.profileEditManRb.isChecked = true  // 성별 연결
         else binding.profileEditWomanRb.isChecked = true
 
-        binding.profileEditRealBirthdayTv.text = result.birth  // 생일 연결
+        binding.profileEditRealBirthdayTv.text = result.getUser.birth  // 생일 연결
 
-        findRegion(result.region)  // 지역 연결
+        findRegion(result.getUser.region)  // 지역 연결
 
         Log.d("GETUSER/SUC", result.toString())
     }

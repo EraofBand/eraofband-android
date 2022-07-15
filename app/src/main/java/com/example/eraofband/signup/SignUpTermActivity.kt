@@ -36,12 +36,12 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
         binding.signupTermNextBtn.setOnClickListener {
 
-            val tokenSP = getSharedPreferences("token", MODE_PRIVATE)
+            val tokenSP = getSharedPreferences("user", MODE_PRIVATE)
 
             val loginService = KakaoLoginService()
-
             loginService.setLoginView(this)
-            loginService.login(user, tokenSP.getString("tokenInfo", ""))
+            loginService.login(user, tokenSP.getString("token", ""))
+
             intent = Intent(this@SignUpTermActivity, MainActivity::class.java)
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
             finishAffinity()

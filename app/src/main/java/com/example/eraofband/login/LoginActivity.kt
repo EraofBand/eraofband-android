@@ -6,12 +6,17 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityLoginBinding
+import com.example.eraofband.main.MainActivity
+import com.example.eraofband.remote.checkUser.CheckUserResult
+import com.example.eraofband.remote.checkUser.CheckUserService
+import com.example.eraofband.remote.checkUser.CheckUserView
 import com.example.eraofband.signup.SignUpNicknameActivity
+import com.google.gson.Gson
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.user.UserApiClient
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), CheckUserView {
 
     private lateinit var binding : ActivityLoginBinding
 
@@ -56,16 +61,25 @@ class LoginActivity : AppCompatActivity() {
                 }
             } else if (token != null) {
                 // 토큰 정보 임시 저장
-                val tokenSP = getSharedPreferences("token", MODE_PRIVATE)
-                val tokenEditor = tokenSP.edit()
+                val userSP = getSharedPreferences("user", MODE_PRIVATE)
+                val userEdit = userSP.edit()
 
-                tokenEditor.putString("tokenInfo", token.accessToken)
-                tokenEditor.apply()
-                Log.d("tokenInfo",token.accessToken)
+                userEdit.putString("token", token.accessToken)
+                userEdit.apply()
+                Log.d("token",token.accessToken)
 
-                Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, SignUpNicknameActivity::class.java)
-                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+                // 이메일 불러와서 DB에 유저가 있는지 확인
+                UserApiClient.instance.me { user, _ ->
+                    if(user != null) {
+                        val email = user.kakaoAccount?.email.toString()
+
+                        Log.d("EMAIL", email)
+
+                        val checkUserService = CheckUserService()
+                        checkUserService.setUserView(this)
+                        checkUserService.checkUser(email)
+                    }
+                }
             }
         }
 
@@ -77,5 +91,27 @@ class LoginActivity : AppCompatActivity() {
                 UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
             }
         }
+    }
+
+    override fun onCheckSuccess(result: CheckUserResult) {
+        // DB에 유저가 있으면 정보 저장 후 메인으로
+        Log.d("CHECK/SUCCESS", result.toString())
+        val intent = Intent(this, MainActivity::class.java)
+
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        val userEdit = userSP.edit()
+
+        userEdit.putInt("userIdx", result.userIdx)
+        userEdit.putString("jwt", result.jwt)
+        userEdit.apply()
+
+        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+    }
+
+    override fun onCheckFailure(code: Int, message: String) {
+        // DB에 유저가 없으면 회원가입으로
+        Log.d("CHECK/FAIL", "$code $message")
+        val intent = Intent(this, SignUpNicknameActivity::class.java)
+        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
     }
 }
