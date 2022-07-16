@@ -92,7 +92,7 @@ class LoginActivity : AppCompatActivity(), CheckUserView {
         }
     }
 
-    override fun onCheckSuccess(message: String, result: CheckUserResult) {
+    override fun onCheckSuccess(result: CheckUserResult) {
         // DB에 유저가 있으면 정보 저장 후 메인으로
         Log.d("CHECK/SUCCESS", result.toString())
 
