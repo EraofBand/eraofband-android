@@ -112,12 +112,6 @@ class MyPageFragment : Fragment(), GetMyPageView {
         }.attach()
     }
 
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     @SuppressLint("SetTextI18n")
     override fun onGetSuccess(code: Int, result: GetMyPageResult) {
         // 나중에 프사도 연동 예정, 포트폴리오는 아직
@@ -187,6 +181,10 @@ class MyPageFragment : Fragment(), GetMyPageView {
             3 -> binding.mypageSessionTv.text = "드럼"
             else ->  binding.mypageSessionTv.text = "키보드"
         }
+    }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
 
