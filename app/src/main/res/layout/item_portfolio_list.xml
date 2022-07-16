@@ -50,10 +50,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <VideoView
-            android:id="@+id/portfolio_list_video_vv"
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/portfolio_list_video_pv"
             android:layout_width="match_parent"
-            android:layout_height="280dp"/>
+            android:layout_height="280dp"
+            app:auto_show="false"
+            app:resize_mode="fixed_width"
+            app:show_buffering="always"
+            app:use_controller="true" />
 
     </FrameLayout>
 
