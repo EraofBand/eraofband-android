@@ -6,6 +6,6 @@ import retrofit2.http.PATCH
 import retrofit2.http.Path
 
 interface ResignInterface {
-    @PATCH("/users/{userIdx}/delete")
+    @PATCH("/users/delete/{userIdx}")
     fun resign(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<ResignResponse>
 }
