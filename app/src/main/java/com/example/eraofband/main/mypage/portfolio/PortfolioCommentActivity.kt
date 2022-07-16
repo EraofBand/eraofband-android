@@ -29,6 +29,8 @@ class PortfolioCommentActivity : AppCompatActivity() {
         binding = ActivityPortfolioCommentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.portfolioCommentBackIv.setOnClickListener { finish() }  // 뒤로 가기
+
         textWatcher()  // 댓글 창에 뭐가 있는지 확인하는 용도, 입력 색을 바꾸기 위해
     }
 
