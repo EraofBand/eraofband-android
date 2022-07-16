@@ -38,10 +38,14 @@ class FollowFragment(private val current: Int) : Fragment() {
         }.attach()
 
         if(current == 0){
-            binding.followVp.currentItem = 0
-        }else{
-            binding.followVp.currentItem = 1
+            binding.followVp.post{
+                binding.followVp.currentItem = 0
+            }
+        } else if (current == 1){
+            binding.followVp.post{
+                binding.followVp.currentItem = 1
+            }
         }
+   
     }
-
 }

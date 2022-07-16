@@ -15,9 +15,9 @@ import com.example.eraofband.R
 import com.example.eraofband.data.User
 import com.example.eraofband.databinding.ActivitySignupTermBinding
 import com.example.eraofband.main.MainActivity
-import com.example.eraofband.remote.KakaoLoginService
-import com.example.eraofband.remote.KakaoLoginView
-import com.example.eraofband.remote.LoginResult
+import com.example.eraofband.remote.kakaologin.KakaoLoginService
+import com.example.eraofband.remote.kakaologin.KakaoLoginView
+import com.example.eraofband.remote.kakaologin.LoginResult
 
 class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
@@ -36,12 +36,12 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
         binding.signupTermNextBtn.setOnClickListener {
 
-            val tokenSP = getSharedPreferences("token", MODE_PRIVATE)
+            val tokenSP = getSharedPreferences("user", MODE_PRIVATE)
 
             val loginService = KakaoLoginService()
-
             loginService.setLoginView(this)
-            loginService.login(user, tokenSP.getString("tokenInfo", ""))
+            loginService.login(user, tokenSP.getString("token", ""))
+
             intent = Intent(this@SignUpTermActivity, MainActivity::class.java)
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
             finishAffinity()
@@ -168,11 +168,14 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
     }
 
     override fun onLoginSuccess(code: Int, result: LoginResult) {
-        when(code) {
-            1000 -> {  // 로그인 완료
-                Log.d("CHECK-SUCCESS", result.toString())
-            }
-        }
+        Log.d("CHECK-SUCCESS", result.toString())
+
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        val userEdit = userSP.edit()
+
+        userEdit.putInt("userIdx", result.userIdx)
+        userEdit.putString("jwt", result.jwt)
+        userEdit.apply()
     }
 
     override fun onLoginFailure(code: Int, message: String) {

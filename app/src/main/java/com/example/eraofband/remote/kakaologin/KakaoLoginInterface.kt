@@ -1,4 +1,4 @@
-package com.example.eraofband.remote
+package com.example.eraofband.remote.kakaologin
 
 import com.example.eraofband.data.User
 import retrofit2.Call
