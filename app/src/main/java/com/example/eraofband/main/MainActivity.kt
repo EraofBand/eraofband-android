@@ -63,7 +63,6 @@ class MainActivity : AppCompatActivity() {
 
         // 중앙 버튼을 누르면 HomeFragment 실행
         binding.mainBottomHomeBt.setOnClickListener {
-
             if(homeFragment != null)  supportFragmentManager.beginTransaction().show(homeFragment!!).commitAllowingStateLoss()
             if(communityFragment != null)  supportFragmentManager.beginTransaction().hide(communityFragment!!).commitAllowingStateLoss()
             if(boardFragment != null)  supportFragmentManager.beginTransaction().hide(boardFragment!!).commitAllowingStateLoss()

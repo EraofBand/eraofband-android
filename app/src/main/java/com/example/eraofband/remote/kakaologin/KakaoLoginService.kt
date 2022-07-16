@@ -2,6 +2,7 @@ package com.example.eraofband.remote.kakaologin
 
 import android.util.Log
 import com.example.eraofband.data.User
+import com.example.eraofband.remote.API
 import com.example.eraofband.remote.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,7 +17,7 @@ class KakaoLoginService {
 
     fun login(user: User, token : String?) {
 
-        val loginService =  NetworkModule().getRetrofit()?.create(KakaoLoginInterface::class.java)
+        val loginService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
         loginService?.kakaoLogin(user, token!!)?.enqueue(object : Callback<KakaoLoginResponse> {
             override fun onResponse(call: Call<KakaoLoginResponse>, response: Response<KakaoLoginResponse>) {
