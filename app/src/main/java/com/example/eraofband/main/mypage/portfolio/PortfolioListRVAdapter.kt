@@ -6,8 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.data.Portfolio
 import com.example.eraofband.databinding.ItemPortfolioListBinding
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
+
 
 class PortfolioListRVAdapter(private val portfolio : ArrayList<Portfolio>) : RecyclerView.Adapter<PortfolioListRVAdapter.ViewHolder>() {
+
+    private var videoPlayer: ExoPlayer? = null
+
     interface MyItemListener {
         fun urlParse(url : String) : Uri
         fun onShowComment(position : Int)
@@ -20,6 +26,8 @@ class PortfolioListRVAdapter(private val portfolio : ArrayList<Portfolio>) : Rec
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: ItemPortfolioListBinding = ItemPortfolioListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        videoPlayer = ExoPlayer.Builder(parent.context).build()
+
         return ViewHolder(binding)
     }
 
@@ -34,6 +42,9 @@ class PortfolioListRVAdapter(private val portfolio : ArrayList<Portfolio>) : Rec
 
     inner class ViewHolder(val binding: ItemPortfolioListBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(portfolio: Portfolio) {
+            val mediaItem = MediaItem.fromUri(mItemListener.urlParse(portfolio.vidioUrl))  // 비디오 url
+            videoPlayer?.setMediaItem(mediaItem)
+
             // 포폴 받아오는 게 아직 안되기 때문에 다 임시로 했습니다 나중에 수정 예정
             binding.portfolioListProfileIv.setImageResource(portfolio.imgUrl)
             binding.portfolioListNicknameTv.text = "해리"
@@ -41,9 +52,9 @@ class PortfolioListRVAdapter(private val portfolio : ArrayList<Portfolio>) : Rec
             binding.portfolioListTitleTv.text = portfolio.title
             binding.portfolioListContentTv.text = portfolio.content
 
-            binding.portfolioListVideo.clipToOutline = true
-            binding.portfolioListVideoVv.setVideoURI(mItemListener.urlParse(portfolio.vidioUrl))
-            binding.portfolioListVideoVv.start()
+            binding.portfolioListVideo.clipToOutline = true  // 모서리 둥글게
+            binding.portfolioListVideoPv.player = videoPlayer
+            videoPlayer?.prepare()
         }
     }
 
@@ -51,4 +62,8 @@ class PortfolioListRVAdapter(private val portfolio : ArrayList<Portfolio>) : Rec
 
     }
 
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        videoPlayer?.release() // 비디오플레이어 해제
+    }
 }

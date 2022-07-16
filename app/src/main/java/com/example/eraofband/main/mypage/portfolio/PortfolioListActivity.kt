@@ -56,7 +56,7 @@ class PortfolioListActivity : AppCompatActivity() {
 
         portfolioAdapter.setMyItemClickListener(object : PortfolioListRVAdapter.MyItemListener {
             override fun urlParse(url: String): Uri {
-                return Uri.parse("android.resource://$packageName/raw/video3")
+                return Uri.parse("https://eraofband.s3.ap-northeast-2.amazonaws.com/32851e33-0460-4536-853c-c0f50fccd623.mp4")
 //                return Uri.parse(url)  원래는 이걸 사용해야함
             }
 
