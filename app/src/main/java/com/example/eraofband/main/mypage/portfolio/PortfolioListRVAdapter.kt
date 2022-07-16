@@ -11,7 +11,6 @@ import com.example.eraofband.data.Portfolio
 import com.example.eraofband.databinding.ItemPortfolioListBinding
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
-
 import com.example.eraofband.remote.pofollike.PofolLikeResult
 import com.example.eraofband.remote.pofollike.PofolLikeService
 import com.example.eraofband.remote.pofollike.PofolLikeView
@@ -20,13 +19,13 @@ class PortfolioListRVAdapter(private val portfolio: ArrayList<Portfolio>, privat
 
     private var videoPlayer: ExoPlayer? = null
     private val pofolLikeService = PofolLikeService()
+    private lateinit var mItemListener: MyItemListener
 
     interface MyItemListener {
         fun urlParse(url : String) : Uri
         fun onShowComment(position : Int)
     }
 
-    private lateinit var mItemListener: MyItemListener
     fun setMyItemClickListener(itemListener: MyItemListener) {
         mItemListener = itemListener
     }
@@ -75,12 +74,12 @@ class PortfolioListRVAdapter(private val portfolio: ArrayList<Portfolio>, privat
             binding.portfolioListTitleTv.text = portfolio.title
             binding.portfolioListContentTv.text = portfolio.content
 
-            // 비디오 모서리 둥글게
-            binding.portfolioListVideo.clipToOutline = true
+            // 비디오플레이어 관련
+            binding.portfolioListVideo.clipToOutline = true             // 비디오 모서리 둥글게
             binding.portfolioListVideoPv.player = videoPlayer
             videoPlayer?.prepare()
 
-            // 좋아요
+            // 좋아요 관련
             if(portfolio.likeOrNot == "Y") binding.portfolioListLikeIv.setImageResource(R.drawable.ic_heart_on)
             else binding.portfolioListLikeIv.setImageResource(R.drawable.ic_heart_off)
         }
