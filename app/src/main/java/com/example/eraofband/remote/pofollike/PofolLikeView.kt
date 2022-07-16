@@ -7,5 +7,5 @@ interface PofolLikeView {
 
     // 좋아요 취소
     fun onDeleteLikeSuccess(code: Int, result : String)
-    fun onDeleteLikeFailure(code: Int, result : String)
+    fun onDeleteLikeFailure(code: Int, message : String)
 }

@@ -11,17 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
 import com.example.eraofband.data.Portfolio
 import com.example.eraofband.databinding.ActivityPortfolioListBinding
+import com.example.eraofband.remote.getMyPofol.GetMyPofolResult
+import com.example.eraofband.remote.getMyPofol.GetMyPofolService
+import com.example.eraofband.remote.getMyPofol.GetMyPofolView
 
-class PortfolioListActivity : AppCompatActivity() {
+class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
 
     private lateinit var binding : ActivityPortfolioListBinding
-    private var pofolList = arrayListOf(
-        Portfolio(1, "나의 소중한 포트폴리오", R.drawable.ic_captain, "제목입니다", 0, "", "N"),
-        Portfolio(2, "나의 소중한 포트폴리오", R.drawable.ic_captain, "제목입니다", 0, "", "N"),
-        Portfolio(3, "나의 소중한 포트폴리오", R.drawable.ic_captain, "제목입니다", 0, "", "N"),
-        Portfolio(4, "나의 소중한 포트폴리오", R.drawable.ic_captain, "제목입니다", 0, "", "N"),
-        Portfolio(5, "나의 소중한 포트폴리오", R.drawable.ic_captain, "제목입니다", 0, "", "N")
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +32,14 @@ class PortfolioListActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        initRecyclerView()
+        val getMypofol = GetMyPofolService()
+        getMypofol.setPofolView(this)
+        getMypofol.getPortfolio(getUserIdx())
+    }
+
+    private fun getUserIdx() : Int {
+        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        return userSP.getInt("userIdx", 0)
     }
 
     private fun getJwt() : String? {
@@ -44,10 +47,12 @@ class PortfolioListActivity : AppCompatActivity() {
         return userSP.getString("jwt", "")
     }
 
-    private fun initRecyclerView() {
-        val portfolioAdapter = PortfolioListRVAdapter(pofolList, getJwt()!!)
+    private fun initRecyclerView(item: List<GetMyPofolResult>) {
+        val portfolioAdapter = PortfolioListRVAdapter(getJwt()!!)
         binding.portfolioListPortfolioRv.adapter = portfolioAdapter
         binding.portfolioListPortfolioRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        portfolioAdapter.initPortfolio(item)
 
         // 자기가 누른 포트폴리오로 넘어가는 거
         val smoothScroller: RecyclerView.SmoothScroller by lazy {
@@ -61,8 +66,7 @@ class PortfolioListActivity : AppCompatActivity() {
 
         portfolioAdapter.setMyItemClickListener(object : PortfolioListRVAdapter.MyItemListener {
             override fun urlParse(url: String): Uri {
-                return Uri.parse("android.resource://$packageName/raw/video3")
-//                return Uri.parse(url)  원래는 이걸 사용해야함
+                return Uri.parse(url)
             }
 
             override fun onShowComment(position: Int) {
@@ -70,5 +74,14 @@ class PortfolioListActivity : AppCompatActivity() {
                 startActivity(Intent(this@PortfolioListActivity, PortfolioCommentActivity::class.java))
             }
         })
+    }
+
+    override fun onGetSuccess(result: List<GetMyPofolResult>) {
+        Log.d("MYPORTFOLIO/FAIL", result.toString())
+        initRecyclerView(result)
+    }
+
+    override fun onGetFailure(code: Int, message: String) {
+        Log.d("MYPORTFOLIO/FAIL", "$code $message")
     }
 }
