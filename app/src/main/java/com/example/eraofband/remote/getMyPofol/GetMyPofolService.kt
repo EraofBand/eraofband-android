@@ -1,6 +1,7 @@
 package com.example.eraofband.remote.getMyPofol
 
 import android.util.Log
+import com.example.eraofband.remote.API
 import com.example.eraofband.remote.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,9 +16,9 @@ class GetMyPofolService {
 
     fun getPortfolio(userIdx: Int) {
 
-        val getMyPofolService =  NetworkModule().getRetrofit()?.create(GetMyPofolInterface::class.java)
+        val getMyPofolService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
-        getMyPofolService?.getUser(userIdx)?.enqueue(object : Callback<GetMyPofolResponse> {
+        getMyPofolService?.getMyPofol(userIdx)?.enqueue(object : Callback<GetMyPofolResponse> {
             override fun onResponse(call: Call<GetMyPofolResponse>, response: Response<GetMyPofolResponse>) {
                 // 응답이 왔을 때 처리
                 Log.d("GETPOFOL / SUCCESS", response.toString())

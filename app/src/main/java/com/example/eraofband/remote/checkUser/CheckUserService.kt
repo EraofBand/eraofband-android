@@ -1,10 +1,8 @@
 package com.example.eraofband.remote.checkUser
 
 import android.util.Log
+import com.example.eraofband.remote.API
 import com.example.eraofband.remote.NetworkModule
-import com.example.eraofband.remote.getuser.GetUserInterface
-import com.example.eraofband.remote.getuser.GetUserResponse
-import com.example.eraofband.remote.getuser.GetUserView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,7 +16,7 @@ class CheckUserService {
 
     fun checkUser(email: String) {
 
-        val checkUserService =  NetworkModule().getRetrofit()?.create(CheckUserInterface::class.java)
+        val checkUserService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
         checkUserService?.checkUser(email)?.enqueue(object : Callback<CheckUserResponse> {
             override fun onResponse(call: Call<CheckUserResponse>, response: Response<CheckUserResponse>) {
