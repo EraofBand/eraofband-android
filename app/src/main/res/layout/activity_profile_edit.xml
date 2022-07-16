@@ -280,7 +280,7 @@
                 app:layout_constraintStart_toEndOf="@id/profile_edit_city_sp"/>
 
             <Button
-                android:id="@+id/signup_gender_next_btn"
+                android:id="@+id/signup_save_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/save"

@@ -46,5 +46,6 @@ class FollowFragment(private val current: Int) : Fragment() {
                 binding.followVp.currentItem = 1
             }
         }
+   
     }
 }

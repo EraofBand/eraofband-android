@@ -10,15 +10,21 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
+import com.example.eraofband.data.User
 import com.example.eraofband.databinding.ActivityProfileEditBinding
+import com.example.eraofband.remote.patchuser.PatchUserResult
+import com.example.eraofband.remote.patchuser.PatchUserService
+import com.example.eraofband.remote.patchuser.PatchUserView
+import com.example.eraofband.signup.DialogDatePicker
 import com.example.eraofband.remote.getMyPage.GetMyPageService
 import com.example.eraofband.remote.getMyPage.GetMyPageView
 import com.example.eraofband.remote.getMyPage.GetMyPageResult
-import com.example.eraofband.signup.DialogDatePicker
 
-class ProfileEditActivity : AppCompatActivity(), GetMyPageView {
+class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView {
 
     private lateinit var binding : ActivityProfileEditBinding
+    private var user = User("", "", "", "", "", "", 0)
+    private lateinit var location: String
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,11 +66,31 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView {
         // 라디오그룹 클릭 리스너 <- 나중에 프로필 편집 api 연동할 때 사용하시면 돼용
         binding.profileEditGenderRg.setOnCheckedChangeListener { _, id ->
             when (id) {
-//                R.id.profile_edit_man_rb -> Toast.makeText(applicationContext, "남자 선택", Toast.LENGTH_SHORT).show()
-//                R.id.profile_edit_woman_rb -> Toast.makeText(applicationContext, "여자 선택", Toast.LENGTH_SHORT).show()
+                R.id.profile_edit_man_rb -> user.gender = "MALE"
+                R.id.profile_edit_woman_rb -> user.gender = "FEMALE"
             }
         }
 
+
+        binding.signupSaveBtn.setOnClickListener {
+            val patchUserService = PatchUserService()
+            patchUserService.setPatchUserView(this)
+
+            user = updateUser()
+
+            patchUserService.patchUser(getJwt()!!, user)
+            finish()
+        }
+    }
+
+    private fun updateUser(): User {
+        user.birth = binding.profileEditRealBirthdayTv.toString()
+        user.introduction = binding.profileEditIntroduceEt.toString()
+        user.nickName = binding.profileEditNicknameEt.toString()
+        user.profileImgUrl = binding.profileEditProfileIv.toString()
+        user.region = location
+
+        return user
     }
 
     private fun getUserIdx() : Int {
@@ -92,12 +118,16 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView {
 
                     val areaAdapter = ArrayAdapter(applicationContext, R.layout.item_spinner, area)
                     binding.profileEditAreaSp.adapter = areaAdapter
+
+                    location = "서울 " + binding.profileEditAreaSp.selectedItem.toString()
                 }
                 else {  // 경기도면 경기도 지역 연결
                     val area = resources.getStringArray(R.array.gyeonggido)
 
                     val areaAdapter = ArrayAdapter(applicationContext, R.layout.item_spinner, area)
                     binding.profileEditAreaSp.adapter = areaAdapter
+
+                    location = "경기도 " + binding.profileEditAreaSp.selectedItem.toString()
                 }
             }
 
@@ -174,5 +204,13 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView {
                 break
             }
         }
+    }
+
+    override fun onPatchSuccess(code: Int, result: PatchUserResult) {
+        Log.d("PATCH / SUCCESS", result.toString())
+    }
+
+    override fun onPatchFailure(code: Int, message: String) {
+        Log.d("PATCH / FAIL", "$code $message")
     }
 }
