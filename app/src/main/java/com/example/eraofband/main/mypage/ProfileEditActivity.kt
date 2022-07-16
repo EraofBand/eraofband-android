@@ -12,9 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.data.User
 import com.example.eraofband.databinding.ActivityProfileEditBinding
-import com.example.eraofband.remote.GetUserResult
-import com.example.eraofband.remote.GetUserService
-import com.example.eraofband.remote.GetUserView
 import com.example.eraofband.remote.patchuser.PatchUserResult
 import com.example.eraofband.remote.patchuser.PatchUserService
 import com.example.eraofband.remote.patchuser.PatchUserView
@@ -23,7 +20,7 @@ import com.example.eraofband.remote.getMyPage.GetMyPageService
 import com.example.eraofband.remote.getMyPage.GetMyPageView
 import com.example.eraofband.remote.getMyPage.GetMyPageResult
 
-class ProfileEditActivity : AppCompatActivity(), GetUserView, PatchUserView {
+class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView {
 
     private lateinit var binding : ActivityProfileEditBinding
     private var user = User("", "", "", "", "", "", 0)
@@ -94,16 +91,6 @@ class ProfileEditActivity : AppCompatActivity(), GetUserView, PatchUserView {
         user.region = location
 
         return user
-    }
-
-    private fun getUserIdx() : Int {
-        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
-        return userSP.getInt("userIdx", 0)
-    }
-
-    private fun getJwt() : String? {
-        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
-        return userSP.getString("jwt", "")
     }
 
     private fun getUserIdx() : Int {
