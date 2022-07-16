@@ -2,6 +2,8 @@ package com.example.eraofband.main.mypage.follow
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.eraofband.main.mypage.follow.FollowerFragment
+import com.example.eraofband.main.mypage.follow.FollowingFragment
 
 class FollowVPAdapter (fragment : Fragment) : FragmentStateAdapter(fragment) {
 

@@ -9,13 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ItemPortfolioListBinding
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResult
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
 import com.example.eraofband.remote.pofollike.PofolLikeResult
 import com.example.eraofband.remote.pofollike.PofolLikeService
 import com.example.eraofband.remote.pofollike.PofolLikeView
 
 class PortfolioListRVAdapter(private val jwt: String) : RecyclerView.Adapter<PortfolioListRVAdapter.ViewHolder>(), PofolLikeView {
     private val portfolio = arrayListOf<GetMyPofolResult>()
+    private var videoPlayer: ExoPlayer? = null
+
     private val pofolLikeService = PofolLikeService()
+    private lateinit var mItemListener: MyItemListener
 
     @SuppressLint("NotifyDataSetChanged")
     fun initPortfolio(portfolio : List<GetMyPofolResult>) {
@@ -41,13 +46,14 @@ class PortfolioListRVAdapter(private val jwt: String) : RecyclerView.Adapter<Por
         fun onShowComment(position : Int)
     }
 
-    private lateinit var mItemListener: MyItemListener
     fun setMyItemClickListener(itemListener: MyItemListener) {
         mItemListener = itemListener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: ItemPortfolioListBinding = ItemPortfolioListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        videoPlayer = ExoPlayer.Builder(parent.context).build()
+
         return ViewHolder(binding)
     }
 
@@ -85,14 +91,17 @@ class PortfolioListRVAdapter(private val jwt: String) : RecyclerView.Adapter<Por
     inner class ViewHolder(val binding: ItemPortfolioListBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(portfolio: GetMyPofolResult) {
+            val mediaItem = MediaItem.fromUri(mItemListener.urlParse(portfolio.vidioUrl))  // 비디오 url
+            videoPlayer?.setMediaItem(mediaItem)
+            
             // 내 정보
             binding.portfolioListProfileIv.setImageResource(R.drawable.ic_captain)  // 프사 임의로 지정
             binding.portfolioListNicknameTv.text = portfolio.nickName
 
-            // 비디오 모서리 둥글게
-            binding.portfolioListVideo.clipToOutline = true
-            binding.portfolioListVideoVv.setVideoURI(mItemListener.urlParse(portfolio.videoUrl))
-            binding.portfolioListVideoVv.start()
+            // 비디오플레이어 관련
+            binding.portfolioListVideo.clipToOutline = true             // 비디오 모서리 둥글게
+            binding.portfolioListVideoPv.player = videoPlayer
+            videoPlayer?.prepare()
 
             binding.portfolioListDateTv.text = portfolio.updatedAt
             binding.portfolioListTitleTv.text = portfolio.title
@@ -123,4 +132,8 @@ class PortfolioListRVAdapter(private val jwt: String) : RecyclerView.Adapter<Por
         Log.d("POFOLLIKEDELETE", message)
     }
 
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        videoPlayer?.release() // 비디오플레이어 해제
+    }
 }
