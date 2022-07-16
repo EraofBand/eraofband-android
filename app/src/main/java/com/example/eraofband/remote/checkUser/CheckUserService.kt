@@ -28,7 +28,7 @@ class CheckUserService {
                 val resp : CheckUserResponse = response.body()!!
 
                 when(val code = resp.code) {
-                    1000 -> checkUserView.onCheckSuccess(resp.message, resp.result)  // 성공
+                    1000 -> checkUserView.onCheckSuccess(resp.result)  // 성공
                     else -> checkUserView.onCheckFailure(code, resp.message)
                 }
             }

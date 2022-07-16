@@ -16,24 +16,24 @@ class MyPagePortfolioFragment : Fragment() {
     private val binding get() = _binding!! // 바인딩 누수 방지
 
     private var portfolioItem = arrayListOf(
-        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
-        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
-        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
-        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
-        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
-        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
-        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
-        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
-        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
-        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
-        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
-        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
-        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
-        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
-        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
-        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
-        Portfolio("", R.drawable.portfolio_spare, "", 0, ""),
-        Portfolio("", R.drawable.portfolio_spare, "", 0, "")
+        Portfolio(1 ,"", R.drawable.portfolio_spare, "", 0, "", "N"),
+        Portfolio(2, "", R.drawable.portfolio_spare, "", 0, "", "N"),
+        Portfolio(3, "", R.drawable.portfolio_spare, "", 0, "", "N"),
+        Portfolio(4, "", R.drawable.portfolio_spare, "", 0, "", "N"),
+        Portfolio(5, "", R.drawable.portfolio_spare, "", 0, "", "N"),
+        Portfolio(1, "", R.drawable.portfolio_spare, "", 0, "", "N"),
+        Portfolio(2, "", R.drawable.portfolio_spare, "", 0, "", "N"),
+        Portfolio(3, "", R.drawable.portfolio_spare, "", 0, "", "N"),
+        Portfolio(4, "", R.drawable.portfolio_spare, "", 0, "", "N"),
+        Portfolio(5, "", R.drawable.portfolio_spare, "", 0, "", "N"),
+        Portfolio(1, "", R.drawable.portfolio_spare, "", 0, "", "N"),
+        Portfolio(2, "", R.drawable.portfolio_spare, "", 0, "", "N"),
+        Portfolio(3, "", R.drawable.portfolio_spare, "", 0, "", "N"),
+        Portfolio(4, "", R.drawable.portfolio_spare, "", 0, "", "N"),
+        Portfolio(5, "", R.drawable.portfolio_spare, "", 0, "", "N"),
+        Portfolio(1, "", R.drawable.portfolio_spare, "", 0, "", "N"),
+        Portfolio(2, "", R.drawable.portfolio_spare, "", 0, "", "N"),
+        Portfolio(3, "", R.drawable.portfolio_spare, "", 0, "", "N")
     )
 
     override fun onCreateView(

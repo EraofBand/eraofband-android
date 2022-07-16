@@ -16,11 +16,11 @@ class PortfolioListActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityPortfolioListBinding
     private var pofolList = arrayListOf(
-        Portfolio("나의 소중한 포트폴리오", R.drawable.ic_captain, "제목입니다", 0, ""),
-        Portfolio("나의 소중한 포트폴리오", R.drawable.ic_captain, "제목입니다", 0, ""),
-        Portfolio("나의 소중한 포트폴리오", R.drawable.ic_captain, "제목입니다", 0, ""),
-        Portfolio("나의 소중한 포트폴리오", R.drawable.ic_captain, "제목입니다", 0, ""),
-        Portfolio("나의 소중한 포트폴리오", R.drawable.ic_captain, "제목입니다", 0, "")
+        Portfolio(1, "나의 소중한 포트폴리오", R.drawable.ic_captain, "제목입니다", 0, "", "N"),
+        Portfolio(2, "나의 소중한 포트폴리오", R.drawable.ic_captain, "제목입니다", 0, "", "N"),
+        Portfolio(3, "나의 소중한 포트폴리오", R.drawable.ic_captain, "제목입니다", 0, "", "N"),
+        Portfolio(4, "나의 소중한 포트폴리오", R.drawable.ic_captain, "제목입니다", 0, "", "N"),
+        Portfolio(5, "나의 소중한 포트폴리오", R.drawable.ic_captain, "제목입니다", 0, "", "N")
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,8 +39,13 @@ class PortfolioListActivity : AppCompatActivity() {
         initRecyclerView()
     }
 
+    private fun getJwt() : String? {
+        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        return userSP.getString("jwt", "")
+    }
+
     private fun initRecyclerView() {
-        val portfolioAdapter = PortfolioListRVAdapter(pofolList)
+        val portfolioAdapter = PortfolioListRVAdapter(pofolList, getJwt()!!)
         binding.portfolioListPortfolioRv.adapter = portfolioAdapter
         binding.portfolioListPortfolioRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
