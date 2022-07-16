@@ -1,15 +1,11 @@
-package com.example.eraofband.main.mypage
+package com.example.eraofband.main.mypage.follow
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.viewpager2.widget.ViewPager2
-import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentFollowBinding
-import com.example.eraofband.databinding.FragmentFollowerBinding
-import com.example.eraofband.onboarding.*
 import com.google.android.material.tabs.TabLayoutMediator
 
 class FollowFragment(private val current: Int) : Fragment() {
