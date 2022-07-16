@@ -7,7 +7,7 @@ import retrofit2.http.Header
 import retrofit2.http.Path
 
 interface GetMyPageInterface {
-    @GET("/users/myPage/{userIdx}")
+    @GET("/users/my-page/{userIdx}")
     fun getUser(@Header("X-ACCESS-TOKEN") jwt : String, @Path("userIdx") userIdx : Int) : Call<GetMyPageResponse>
 
 }
