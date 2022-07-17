@@ -63,42 +63,74 @@ class SignUpSessionActivity : AppCompatActivity() {
             binding.signupSessionBaseCb.isChecked = false
             binding.signupSessionKeyboardCb.isChecked = false
             binding.signupSessionDrumCb.isChecked = false
+
+            binding.signupSessionVocalTv.setTextColor(Color.parseColor("#1864FD"))
+            binding.signupSessionGuitarTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionBaseTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionKeyboardTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionDrumTv.setTextColor(Color.parseColor("#FFFFFF"))
+
         }
 
         binding.signupSessionGuitarCb.setOnClickListener {
             session = 1
-            binding.signupSessionGuitarCb.isChecked = true
             binding.signupSessionVocalCb.isChecked = false
+            binding.signupSessionGuitarCb.isChecked = true
             binding.signupSessionBaseCb.isChecked = false
             binding.signupSessionKeyboardCb.isChecked = false
             binding.signupSessionDrumCb.isChecked = false
+
+            binding.signupSessionVocalTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionGuitarTv.setTextColor(Color.parseColor("#1864FD"))
+            binding.signupSessionBaseTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionKeyboardTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionDrumTv.setTextColor(Color.parseColor("#FFFFFF"))
         }
 
         binding.signupSessionBaseCb.setOnClickListener {
             session = 2
-            binding.signupSessionBaseCb.isChecked = true
-            binding.signupSessionGuitarCb.isChecked = false
+
             binding.signupSessionVocalCb.isChecked = false
+            binding.signupSessionGuitarCb.isChecked = false
+            binding.signupSessionBaseCb.isChecked = true
             binding.signupSessionKeyboardCb.isChecked = false
             binding.signupSessionDrumCb.isChecked = false
+
+            binding.signupSessionVocalTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionGuitarTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionBaseTv.setTextColor(Color.parseColor("#1864FD"))
+            binding.signupSessionKeyboardTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionDrumTv.setTextColor(Color.parseColor("#FFFFFF"))
         }
 
         binding.signupSessionKeyboardCb.setOnClickListener {
             session = 3
-            binding.signupSessionKeyboardCb.isChecked = true
+            binding.signupSessionVocalCb.isChecked = false
             binding.signupSessionGuitarCb.isChecked = false
             binding.signupSessionBaseCb.isChecked = false
-            binding.signupSessionVocalCb.isChecked = false
+            binding.signupSessionKeyboardCb.isChecked = true
             binding.signupSessionDrumCb.isChecked = false
+
+            binding.signupSessionVocalTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionGuitarTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionBaseTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionKeyboardTv.setTextColor(Color.parseColor("#1864FD"))
+            binding.signupSessionDrumTv.setTextColor(Color.parseColor("#FFFFFF"))
         }
 
         binding.signupSessionDrumCb.setOnClickListener {
             session = 4
-            binding.signupSessionDrumCb.isChecked = true
+            binding.signupSessionVocalCb.isChecked = false
             binding.signupSessionGuitarCb.isChecked = false
             binding.signupSessionBaseCb.isChecked = false
             binding.signupSessionKeyboardCb.isChecked = false
-            binding.signupSessionVocalCb.isChecked = false
+            binding.signupSessionDrumCb.isChecked = true
+
+            binding.signupSessionVocalTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionGuitarTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionBaseTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionKeyboardTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionDrumTv.setTextColor(Color.parseColor("#1864FD"))
         }
     }
 
