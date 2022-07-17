@@ -58,7 +58,7 @@ class SignUpGenderActivity : AppCompatActivity() {
 
         // 기본 설정
         setTextColor()
-        binding.signupGenderRealBirthdayTv.text = setDate()
+        binding.signupGenderRealBirthdayTv.text = "1990-01-01"
         binding.signupGenderManRb.isChecked = true
 
         binding.signupGenderRealBirthdayTv.setOnClickListener {
@@ -95,14 +95,5 @@ class SignUpGenderActivity : AppCompatActivity() {
         spannableString.setSpan(ForegroundColorSpan(Color.parseColor("#1864FD")), start2, end2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         spannableString.setSpan(StyleSpan(Typeface.BOLD), start2, end2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.signupGenderTitleTv.text = spannableString
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    private fun setDate() : String {  // 오늘 날짜 불러오기
-        val today = System.currentTimeMillis()  // 현재 날짜, 시각 불러오기
-        val date = Date(today)
-        val mFormat = SimpleDateFormat("yyyy-MM-dd")
-
-        return mFormat.format(date)
     }
 }
