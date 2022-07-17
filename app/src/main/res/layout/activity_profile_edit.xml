@@ -175,14 +175,14 @@
                     android:id="@+id/profile_edit_man_rb"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
-                    android:background="@drawable/white_checkbox"
+                    android:background="@drawable/check_selector"
                     android:button="@null" />
 
                 <RadioButton
                     android:id="@+id/profile_edit_woman_rb"
                     android:layout_width="23dp"
                     android:layout_height="23dp"
-                    android:background="@drawable/white_checkbox"
+                    android:background="@drawable/check_selector"
                     android:button="@null"
                     android:layout_marginStart="90dp"/>
 
