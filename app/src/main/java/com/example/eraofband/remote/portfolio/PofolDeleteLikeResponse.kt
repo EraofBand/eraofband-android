@@ -1,4 +1,4 @@
-package com.example.eraofband.remote.pofollike
+package com.example.eraofband.remote.portfolio
 
 import com.google.gson.annotations.SerializedName
 

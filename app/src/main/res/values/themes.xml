@@ -36,4 +36,9 @@
 
     <style name="Theme.EraofBand.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!-- Popup Menu -->
+    <style name="AppTheme" parent="Widget.AppCompat.Light.PopupMenu">
+        <item name="android:itemBackground">@android:color/black</item>
+    </style>
+
 </resources>

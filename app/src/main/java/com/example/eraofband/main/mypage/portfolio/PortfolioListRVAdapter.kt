@@ -11,9 +11,9 @@ import com.example.eraofband.databinding.ItemPortfolioListBinding
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResult
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
-import com.example.eraofband.remote.pofollike.PofolLikeResult
-import com.example.eraofband.remote.pofollike.PofolLikeService
-import com.example.eraofband.remote.pofollike.PofolLikeView
+import com.example.eraofband.remote.portfolio.PofolLikeResult
+import com.example.eraofband.remote.portfolio.PofolLikeService
+import com.example.eraofband.remote.portfolio.PofolLikeView
 
 class PortfolioListRVAdapter(private val jwt: String) : RecyclerView.Adapter<PortfolioListRVAdapter.ViewHolder>(), PofolLikeView {
     private val portfolio = arrayListOf<GetMyPofolResult>()
@@ -43,7 +43,7 @@ class PortfolioListRVAdapter(private val jwt: String) : RecyclerView.Adapter<Por
 
     interface MyItemListener {
         fun urlParse(url : String) : Uri
-        fun onShowComment(position : Int)
+        fun onShowComment(pofolIdx : Int)
     }
 
     fun setMyItemClickListener(itemListener: MyItemListener) {
@@ -83,7 +83,7 @@ class PortfolioListRVAdapter(private val jwt: String) : RecyclerView.Adapter<Por
         }
 
         // 댓글 창 관련
-        holder.binding.portfolioListComment.setOnClickListener { mItemListener.onShowComment(position) }
+        holder.binding.portfolioListComment.setOnClickListener { mItemListener.onShowComment(portfolio[position].pofolIdx) }
     }
 
     override fun getItemCount(): Int = portfolio.size
