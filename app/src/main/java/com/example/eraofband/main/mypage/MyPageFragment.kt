@@ -2,20 +2,18 @@ package com.example.eraofband.main.mypage
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentMypageBinding
 import com.example.eraofband.main.MainActivity
 import androidx.viewpager2.widget.ViewPager2
-import com.example.eraofband.main.mypage.follow.FollowFragment
+import com.example.eraofband.main.mypage.follow.FollowActivity
 import com.example.eraofband.main.mypage.portfolio.PortfolioMakeActivity
 import com.example.eraofband.remote.getMyPage.GetMyPageService
 import com.example.eraofband.remote.getMyPage.GetMyPageView
@@ -28,6 +26,7 @@ class MyPageFragment : Fragment(), GetMyPageView {
 
     private var _binding: FragmentMypageBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
+    private var mySession : Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,6 +48,11 @@ class MyPageFragment : Fragment(), GetMyPageView {
         binding.mypageSettingIv.setOnClickListener {
             startActivity(Intent(activity, MyPageSettingActivity::class.java))
         }
+        binding.mypageSessionChangeTv.setOnClickListener {
+            var intent = Intent(activity, MyPageSessionActivity::class.java)
+            intent.putExtra("session", mySession)
+            startActivity(intent)
+        }
 
         binding.mypageVp.registerOnPageChangeCallback( object :  // 뷰페이저 리스너 : 포트폴리오 페이지에서만 FAB를 표시해줌
             ViewPager2.OnPageChangeCallback() {
@@ -62,14 +66,16 @@ class MyPageFragment : Fragment(), GetMyPageView {
         })
 
 
-        binding.mypageFollowingCntTv.setOnClickListener {
-            (context as MainActivity).supportFragmentManager.beginTransaction()
-                .replace(R.id.main_frm, FollowFragment(0)).addToBackStack(null).commitAllowingStateLoss()
+        binding.mypageFollowing.setOnClickListener {
+            var intent = Intent(context, FollowActivity::class.java)
+            intent.putExtra("current", 0)
+            startActivity(intent)
         }
 
-        binding.mypageFollowerCntTv.setOnClickListener {
-            (context as MainActivity).supportFragmentManager.beginTransaction()
-                .replace(R.id.main_frm, FollowFragment(1)).addToBackStack(null).commitAllowingStateLoss()
+        binding.mypageFollower.setOnClickListener {
+            var intent = Intent(context, FollowActivity::class.java)
+            intent.putExtra("current", 1)
+            startActivity(intent)
         }
 
         binding.mypageFab.setOnClickListener{
@@ -159,6 +165,7 @@ class MyPageFragment : Fragment(), GetMyPageView {
         binding.mypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
         setSession(result.getUser.session)  // 세션 연동
+        mySession = result.getUser.session
     }
 
     override fun onGetFailure(code: Int, message: String) {
@@ -180,8 +187,8 @@ class MyPageFragment : Fragment(), GetMyPageView {
             0 -> binding.mypageSessionTv.text = "보컬"
             1 -> binding.mypageSessionTv.text = "기타"
             2 -> binding.mypageSessionTv.text = "베이스"
-            3 -> binding.mypageSessionTv.text = "드럼"
-            else ->  binding.mypageSessionTv.text = "키보드"
+            3 -> binding.mypageSessionTv.text = "키보드"
+            else ->  binding.mypageSessionTv.text = "드럼"
         }
     }
     override fun onDestroyView() {

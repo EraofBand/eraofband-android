@@ -1,7 +1,9 @@
 package com.example.eraofband.signup
 
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Spannable
@@ -9,6 +11,10 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.Log
+import android.view.Gravity
+import android.view.View
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.data.User
@@ -33,13 +39,14 @@ class SignUpSessionActivity : AppCompatActivity() {
 
         binding.signupSessionNextBtn.setOnClickListener {
             allFalse()
-            if(session == -1) binding.signupSessionNextBtn.isClickable = false
-            binding.signupSessionNextBtn.isClickable
-
-            user.session = session
-            intent.putExtra("user", user)
-            startActivity(intent)
-            overridePendingTransition(R.anim.slide_right, R.anim.slide_left)
+            if(session == -1) {
+                setToast()
+            } else {
+                user.session = session
+                intent.putExtra("user", user)
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_right, R.anim.slide_left)
+            }
         }
 
         binding.signupSessionBackIv.setOnClickListener {
@@ -51,22 +58,79 @@ class SignUpSessionActivity : AppCompatActivity() {
 
         binding.signupSessionVocalCb.setOnClickListener {
             session = 0
+            binding.signupSessionVocalCb.isChecked = true
+            binding.signupSessionGuitarCb.isChecked = false
+            binding.signupSessionBaseCb.isChecked = false
+            binding.signupSessionKeyboardCb.isChecked = false
+            binding.signupSessionDrumCb.isChecked = false
+
+            binding.signupSessionVocalTv.setTextColor(Color.parseColor("#1864FD"))
+            binding.signupSessionGuitarTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionBaseTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionKeyboardTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionDrumTv.setTextColor(Color.parseColor("#FFFFFF"))
+
         }
 
         binding.signupSessionGuitarCb.setOnClickListener {
             session = 1
+            binding.signupSessionVocalCb.isChecked = false
+            binding.signupSessionGuitarCb.isChecked = true
+            binding.signupSessionBaseCb.isChecked = false
+            binding.signupSessionKeyboardCb.isChecked = false
+            binding.signupSessionDrumCb.isChecked = false
+
+            binding.signupSessionVocalTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionGuitarTv.setTextColor(Color.parseColor("#1864FD"))
+            binding.signupSessionBaseTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionKeyboardTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionDrumTv.setTextColor(Color.parseColor("#FFFFFF"))
         }
 
         binding.signupSessionBaseCb.setOnClickListener {
             session = 2
+
+            binding.signupSessionVocalCb.isChecked = false
+            binding.signupSessionGuitarCb.isChecked = false
+            binding.signupSessionBaseCb.isChecked = true
+            binding.signupSessionKeyboardCb.isChecked = false
+            binding.signupSessionDrumCb.isChecked = false
+
+            binding.signupSessionVocalTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionGuitarTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionBaseTv.setTextColor(Color.parseColor("#1864FD"))
+            binding.signupSessionKeyboardTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionDrumTv.setTextColor(Color.parseColor("#FFFFFF"))
         }
 
         binding.signupSessionKeyboardCb.setOnClickListener {
             session = 3
+            binding.signupSessionVocalCb.isChecked = false
+            binding.signupSessionGuitarCb.isChecked = false
+            binding.signupSessionBaseCb.isChecked = false
+            binding.signupSessionKeyboardCb.isChecked = true
+            binding.signupSessionDrumCb.isChecked = false
+
+            binding.signupSessionVocalTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionGuitarTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionBaseTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionKeyboardTv.setTextColor(Color.parseColor("#1864FD"))
+            binding.signupSessionDrumTv.setTextColor(Color.parseColor("#FFFFFF"))
         }
 
         binding.signupSessionDrumCb.setOnClickListener {
             session = 4
+            binding.signupSessionVocalCb.isChecked = false
+            binding.signupSessionGuitarCb.isChecked = false
+            binding.signupSessionBaseCb.isChecked = false
+            binding.signupSessionKeyboardCb.isChecked = false
+            binding.signupSessionDrumCb.isChecked = true
+
+            binding.signupSessionVocalTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionGuitarTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionBaseTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionKeyboardTv.setTextColor(Color.parseColor("#FFFFFF"))
+            binding.signupSessionDrumTv.setTextColor(Color.parseColor("#1864FD"))
         }
     }
 
@@ -93,4 +157,24 @@ class SignUpSessionActivity : AppCompatActivity() {
         binding.signupSessionTitleTv.text = spannableString
 
     }
+
+    private fun setToast() {
+        val view : View = layoutInflater.inflate(R.layout.toast_signup, findViewById(R.id.toast_signup))
+        val toast = Toast(this)
+
+        val text = view.findViewById<TextView>(R.id.toast_signup_text_tv)
+        text.text = "세션을 선택해주세요!"
+
+        val display = windowManager.defaultDisplay // in case of Activity
+        val size = Point()
+        display.getSize(size)  // 상단바 등을 제외한 스크린 전체 크기 구하기
+        val height = size.y / 2  // 토스트 메세지가 중간에 고정되어있기 때문에 높이 / 2
+
+        // 중간부터 marginBottom, 버튼 높이 / 2 만큼 빼줌
+        toast.view = view
+        toast.setGravity(Gravity.FILL_HORIZONTAL, 0, height - 80.toPx() - binding.signupSessionNextBtn.height / 2)
+        toast.show()
+    }
+
+    private fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 }

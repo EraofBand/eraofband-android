@@ -18,14 +18,6 @@ class DialogDatePicker(private val selectedDate : String) : DialogFragment() {
 
     private lateinit var binding : DialogDatepickerBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-
-        // 화면 밖 클릭 혹은 뒤로가기 해도 dialog가 없어지지 않도록
-        isCancelable = false
-
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,32 +29,25 @@ class DialogDatePicker(private val selectedDate : String) : DialogFragment() {
         val date = selectedDate  // 넘겨받은 날짜를 기본으로
 
         // 날짜 저장
-        binding.dialogDatepicker.init(date.substring(0, 4).toInt(), date.substring(5, 7).toInt() - 1, date.substring(8).toInt(), object : DatePicker.OnDateChangedListener{
-            @SuppressLint("SetTextI18n")
-            override fun onDateChanged(view: DatePicker?, year: Int, month: Int, day: Int) {
-                // string으로 넣어주기 편하게 미리 변환
-                val selectedYear = year.toString()
+        binding.dialogDatepicker.init(date.substring(0, 4).toInt(),(date.substring(6,7).toInt()) - 1,date.substring(9,10).toInt()) { _, year, month, day -> // string으로 넣어주기 편하게 미리 변환
+            val selectedYear = year.toString()
 
-                val selectedMonth =
-                    if(month + 1 < 10) {
+            val selectedMonth =
+                if (month + 1 < 10) {
                     "0" + (month + 1).toString()
-                    }
-                    else {
-                        (month + 1).toString()
-                    }
+                } else {
+                    (month + 1).toString()
+                }
 
-                val selectedDay =
-                    if(day < 10) {
-                        "0$day"
-                    }
-                    else {
-                        day.toString()
-                    }
+            val selectedDay =
+                if (day < 10) {
+                    "0$day"
+                } else {
+                    day.toString()
+                }
 
-                mItemClickListener.saveBirthday("$selectedYear-$selectedMonth-$selectedDay")
-            }
-
-        })
+            mItemClickListener.saveBirthday("$selectedYear-$selectedMonth-$selectedDay")
+        }
 
         binding.dialogNextTv.setOnClickListener {
             dismiss()
