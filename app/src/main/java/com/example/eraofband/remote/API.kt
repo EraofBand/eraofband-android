@@ -1,7 +1,9 @@
 package com.example.eraofband.remote
 
+import com.example.eraofband.data.Session
 import com.example.eraofband.data.User
 import com.example.eraofband.remote.checkUser.CheckUserResponse
+import com.example.eraofband.remote.patchSession.PatchSessionResponse
 import com.example.eraofband.remote.getMyPage.GetMyPageResponse
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResponse
 import com.example.eraofband.remote.getuser.GetUserResponse
@@ -30,6 +32,10 @@ interface API {
     // 회원 정보 변경
     @PATCH("/users/user-info")
     fun patchUser(@Header("X-ACCESS-TOKEN") jwt : String, @Body user : User): Call<PatchUserResponse>
+
+    // 회원 세션 변경
+    @PATCH("/users/user-session")
+    fun patchSession(@Header("X-ACCESS-TOKEN") jwt : String, @Body session: Session): Call<PatchSessionResponse>
 
     // 회원 탈퇴
     @PATCH("/users/delete/{userIdx}")

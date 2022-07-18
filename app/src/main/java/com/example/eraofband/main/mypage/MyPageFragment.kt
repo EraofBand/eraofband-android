@@ -26,6 +26,7 @@ class MyPageFragment : Fragment(), GetMyPageView {
 
     private var _binding: FragmentMypageBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
+    private var mySession : Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +48,11 @@ class MyPageFragment : Fragment(), GetMyPageView {
         binding.mypageSettingIv.setOnClickListener {
             startActivity(Intent(activity, MyPageSettingActivity::class.java))
         }
+        binding.mypageSessionChangeTv.setOnClickListener {
+            var intent = Intent(activity, MyPageSessionActivity::class.java)
+            intent.putExtra("session", mySession)
+            startActivity(intent)
+        }
 
         binding.mypageVp.registerOnPageChangeCallback( object :  // 뷰페이저 리스너 : 포트폴리오 페이지에서만 FAB를 표시해줌
             ViewPager2.OnPageChangeCallback() {
@@ -60,13 +66,13 @@ class MyPageFragment : Fragment(), GetMyPageView {
         })
 
 
-        binding.mypageFollowingCntTv.setOnClickListener {
+        binding.mypageFollowing.setOnClickListener {
             var intent = Intent(context, FollowActivity::class.java)
             intent.putExtra("current", 0)
             startActivity(intent)
         }
 
-        binding.mypageFollowerCntTv.setOnClickListener {
+        binding.mypageFollower.setOnClickListener {
             var intent = Intent(context, FollowActivity::class.java)
             intent.putExtra("current", 1)
             startActivity(intent)
@@ -159,6 +165,7 @@ class MyPageFragment : Fragment(), GetMyPageView {
         binding.mypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
         setSession(result.getUser.session)  // 세션 연동
+        mySession = result.getUser.session
     }
 
     override fun onGetFailure(code: Int, message: String) {
@@ -180,8 +187,8 @@ class MyPageFragment : Fragment(), GetMyPageView {
             0 -> binding.mypageSessionTv.text = "보컬"
             1 -> binding.mypageSessionTv.text = "기타"
             2 -> binding.mypageSessionTv.text = "베이스"
-            3 -> binding.mypageSessionTv.text = "드럼"
-            else ->  binding.mypageSessionTv.text = "키보드"
+            3 -> binding.mypageSessionTv.text = "키보드"
+            else ->  binding.mypageSessionTv.text = "드럼"
         }
     }
     override fun onDestroyView() {
