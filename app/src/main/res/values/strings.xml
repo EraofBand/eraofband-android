@@ -65,6 +65,8 @@
     <string name="comment">댓글</string>
     <string name="comment_hint">댓글을 입력해주세요.</string>
     <string name="upload">입력</string>
+    <string name="comment_delete">댓글 삭제하기</string>
+    <string name="comment_report">댓글 신고하기</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

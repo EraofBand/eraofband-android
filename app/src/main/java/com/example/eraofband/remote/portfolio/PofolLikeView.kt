@@ -1,4 +1,4 @@
-package com.example.eraofband.remote.pofollike
+package com.example.eraofband.remote.portfolio
 
 interface PofolLikeView {
     // 좋아요

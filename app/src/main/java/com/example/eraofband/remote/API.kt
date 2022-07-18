@@ -1,5 +1,6 @@
 package com.example.eraofband.remote
 
+import com.example.eraofband.data.Comment
 import com.example.eraofband.data.User
 import com.example.eraofband.remote.checkUser.CheckUserResponse
 import com.example.eraofband.remote.getMyPage.GetMyPageResponse
@@ -7,8 +8,7 @@ import com.example.eraofband.remote.getMyPofol.GetMyPofolResponse
 import com.example.eraofband.remote.getuser.GetUserResponse
 import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
 import com.example.eraofband.remote.patchuser.PatchUserResponse
-import com.example.eraofband.remote.pofollike.PofolDeleteLikeResponse
-import com.example.eraofband.remote.pofollike.PofolLikeResponse
+import com.example.eraofband.remote.portfolio.*
 import com.example.eraofband.remote.signout.ResignResponse
 import retrofit2.Call
 import retrofit2.http.*
@@ -44,10 +44,22 @@ interface API {
     fun pofolLike(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx : Int) : Call<PofolLikeResponse>
 
     // 포트폴리오 좋아요 취소
-    @DELETE("/pofol/{pofolIdx}/unlikes")  // 좋아요 취소
+    @DELETE("/pofol/{pofolIdx}/unlikes")
     fun pofolDeleteLike(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx : Int) : Call<PofolDeleteLikeResponse>
 
-    // 다른 회원 정보 조회
+    // 포트폴리오 댓글 불러오기
+    @GET("/pofol/comment/")
+    fun pofolComment(@Query("pofolIdx") pofolIdx: Int) : Call<PofolCommentResponse>
+
+    // 포트폴리오 댓글 달기
+    @POST("/pofol/{pofolIdx}/comment")
+    fun pofolWriteComment(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx: Int, @Body comment: Comment) : Call<PofolCommentWriteResponse>
+
+    // 포트폴리오 댓글 삭제하기
+    @PATCH("/pofol/{pofolCommentIdx}/comment/status")
+    fun pofolDeleteComment(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolCommentIdx") commentIdx: Int, @Query("userIdx") userIdx: Int) : Call<PofolCommentDeleteResponse>
+
+    // 다른회원 정보 조회
     @GET("/users/{userIdx}")
     fun getUser(@Path("userIdx") userIdx : Int) : Call<GetUserResponse>
 

@@ -69,9 +69,11 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
                 return Uri.parse(url)
             }
 
-            override fun onShowComment(position: Int) {
+            override fun onShowComment(pofolIdx: Int) {
                 // 나중에 댓글 불러오기 기능이 생기면 액티비티 전환 후 해당 포트폴리오의 댓글만 불러오면 됩니다
-                startActivity(Intent(this@PortfolioListActivity, PortfolioCommentActivity::class.java))
+                val intent = Intent(this@PortfolioListActivity, PortfolioCommentActivity::class.java)
+                intent.putExtra("pofolIdx", pofolIdx)
+                startActivity(intent)
             }
         })
     }
