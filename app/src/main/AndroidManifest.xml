@@ -90,6 +90,9 @@
             android:name=".main.mypage.portfolio.PortfolioCommentActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustUnspecified|adjustPan"/>
+        <activity
+            android:name=".main.mypage.follow.FollowActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

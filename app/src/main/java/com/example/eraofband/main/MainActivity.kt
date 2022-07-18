@@ -1,6 +1,5 @@
 package com.example.eraofband.main
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -11,8 +10,6 @@ import com.example.eraofband.main.chat.ChatFragment
 import com.example.eraofband.main.community.CommunityFragment
 import com.example.eraofband.main.home.HomeFragment
 import com.example.eraofband.main.mypage.MyPageFragment
-import com.google.android.material.shape.CornerFamily
-import com.google.android.material.shape.MaterialShapeDrawable
 import com.kakao.sdk.user.UserApiClient
 
 class MainActivity : AppCompatActivity() {
@@ -24,7 +21,6 @@ class MainActivity : AppCompatActivity() {
     private var homeFragment: HomeFragment? = null
     private var chatFragment: ChatFragment? = null
     private var myPageFragment: MyPageFragment? = null
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,6 +116,7 @@ class MainActivity : AppCompatActivity() {
                     if(boardFragment != null)  supportFragmentManager.beginTransaction().hide(boardFragment!!).commitAllowingStateLoss()
                     if(chatFragment != null)  supportFragmentManager.beginTransaction().show(chatFragment!!).commitAllowingStateLoss()
                     if(myPageFragment != null)  supportFragmentManager.beginTransaction().hide(myPageFragment!!).commitAllowingStateLoss()
+
 
                     binding.mainBottomNav.setBackgroundResource(R.drawable.bottom_nav_bg)
                     return@setOnItemSelectedListener true
