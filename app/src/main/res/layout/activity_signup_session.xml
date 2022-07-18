@@ -1,64 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/signup_session_back_iv"
         android:layout_width="13dp"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:src="@drawable/ic_back"
         android:layout_marginStart="20dp"
         android:layout_marginTop="55dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/signup_session_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginStart="20dp"
         android:layout_marginTop="45dp"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/signup_session_back_iv">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="5dp"
             android:layout_height="5dp"
-            android:src="@drawable/ic_signup_progress"/>
+            android:src="@drawable/ic_signup_progress" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="5dp"
             android:layout_height="5dp"
-            android:src="@drawable/ic_signup_progress"
-            android:layout_marginStart="7dp"/>
+            android:layout_marginStart="7dp"
+            android:src="@drawable/ic_signup_progress" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="5dp"
             android:layout_height="5dp"
-            android:src="@drawable/ic_signup_progress"
-            android:layout_marginStart="7dp"/>
+            android:layout_marginStart="7dp"
+            android:src="@drawable/ic_signup_progress" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="5dp"
             android:layout_height="5dp"
-            android:src="@drawable/ic_signup_progress"
-            android:layout_marginStart="7dp"/>
+            android:layout_marginStart="7dp"
+            android:src="@drawable/ic_signup_progress" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="25dp"
             android:layout_height="5dp"
-            android:src="@drawable/ic_signup_progress_selected"
-            android:layout_marginStart="7dp"/>
+            android:layout_marginStart="7dp"
+            android:src="@drawable/ic_signup_progress_selected" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="5dp"
             android:layout_height="5dp"
-            android:src="@drawable/ic_signup_progress"
-            android:layout_marginStart="7dp"/>
+            android:layout_marginStart="7dp"
+            android:src="@drawable/ic_signup_progress" />
 
     </LinearLayout>
 
@@ -66,82 +66,147 @@
         android:id="@+id/signup_session_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/pretendard_regular"
         android:text="@string/signup_session_title"
         android:textColor="@color/white"
         android:textSize="25sp"
-        android:fontFamily="@font/pretendard_regular"
-        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signup_session_progress" />
+
+
+    <CheckBox
+        android:id="@+id/signup_session_vocal_cb"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/session_selector"
+        android:button="@null"
+        app:layout_constraintStart_toStartOf="@id/signup_session_title_tv"
+        app:layout_constraintTop_toBottomOf="@id/signup_session_title_tv" />
+
+    <TextView
+        android:id="@+id/signup_session_vocal_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="보컬"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/signup_session_vocal_cb"
+        app:layout_constraintStart_toStartOf="@+id/signup_session_vocal_cb"
+        app:layout_constraintTop_toBottomOf="@+id/signup_session_vocal_cb" />
+
+
+    <CheckBox
+        android:id="@+id/signup_session_guitar_cb"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/session_selector"
+        android:button="@null"
+        app:layout_constraintEnd_toStartOf="@id/signup_session_base_cb"
+        app:layout_constraintStart_toEndOf="@id/signup_session_vocal_cb"
+        app:layout_constraintTop_toTopOf="@id/signup_session_vocal_cb" />
+
+    <TextView
+        android:id="@+id/signup_session_guitar_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="기타"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/signup_session_guitar_cb"
+        app:layout_constraintStart_toStartOf="@+id/signup_session_guitar_cb"
+        app:layout_constraintTop_toBottomOf="@+id/signup_session_guitar_cb" />
+
+
+    <CheckBox
+        android:id="@+id/signup_session_base_cb"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/session_selector"
+        android:button="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/signup_session_vocal_cb" />
+
+    <TextView
+        android:id="@+id/signup_session_base_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="베이스"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/signup_session_base_cb"
+        app:layout_constraintStart_toStartOf="@+id/signup_session_base_cb"
+        app:layout_constraintTop_toBottomOf="@+id/signup_session_base_cb" />
+
+    <CheckBox
+        android:id="@+id/signup_session_keyboard_cb"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginTop="50dp"
-        app:layout_constraintTop_toBottomOf="@id/signup_session_progress"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:background="@drawable/session_selector"
+        android:button="@null"
+        app:layout_constraintStart_toStartOf="@id/signup_session_vocal_cb"
+        app:layout_constraintTop_toBottomOf="@id/signup_session_vocal_cb" />
 
+    <TextView
+        android:id="@+id/signup_session_keyboard_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="키보드"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/signup_session_keyboard_cb"
+        app:layout_constraintStart_toStartOf="@+id/signup_session_keyboard_cb"
+        app:layout_constraintTop_toBottomOf="@+id/signup_session_keyboard_cb" />
 
-        <CheckBox
-            android:id="@+id/signup_session_vocal_cb"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:button="@null"
-            android:background="@drawable/white_checkbox"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="50dp"
-            app:layout_constraintTop_toBottomOf="@id/signup_session_title_tv"
-            app:layout_constraintStart_toStartOf="@id/signup_session_title_tv"/>
+    <CheckBox
+        android:id="@+id/signup_session_drum_cb"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/session_selector"
+        android:button="@null"
+        app:layout_constraintStart_toStartOf="@id/signup_session_guitar_cb"
+        app:layout_constraintTop_toTopOf="@id/signup_session_keyboard_cb" />
 
-        <CheckBox
-            android:id="@+id/signup_session_guitar_cb"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:button="@null"
-            android:background="@drawable/white_checkbox"
-            app:layout_constraintTop_toTopOf="@id/signup_session_vocal_cb"
-            app:layout_constraintStart_toEndOf="@id/signup_session_vocal_cb"
-            app:layout_constraintEnd_toStartOf="@id/signup_session_base_cb"/>
-
-        <CheckBox
-            android:id="@+id/signup_session_base_cb"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:button="@null"
-            android:background="@drawable/white_checkbox"
-            android:layout_marginEnd="30dp"
-            app:layout_constraintTop_toTopOf="@id/signup_session_vocal_cb"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <CheckBox
-            android:id="@+id/signup_session_keyboard_cb"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:button="@null"
-            android:background="@drawable/white_checkbox"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/signup_session_vocal_cb"
-            app:layout_constraintStart_toStartOf="@id/signup_session_vocal_cb"
-            app:layout_constraintEnd_toEndOf="@id/signup_session_guitar_cb"/>
-
-        <CheckBox
-            android:id="@+id/signup_session_drum_cb"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:button="@null"
-            android:background="@drawable/white_checkbox"
-            app:layout_constraintTop_toTopOf="@id/signup_session_keyboard_cb"
-            app:layout_constraintStart_toStartOf="@id/signup_session_guitar_cb"
-            app:layout_constraintEnd_toEndOf="@id/signup_session_base_cb"/>
+    <TextView
+        android:id="@+id/signup_session_drum_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="드럼"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/signup_session_drum_cb"
+        app:layout_constraintStart_toStartOf="@+id/signup_session_drum_cb"
+        app:layout_constraintTop_toBottomOf="@+id/signup_session_drum_cb" />
 
 
     <Button
         android:id="@+id/signup_session_next_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/next"
-        android:textSize="17sp"
-        android:fontFamily="@font/pretendard_regular"
-        android:background="@drawable/blue_round_bg"
-        android:paddingVertical="10dp"
         android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="80dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/blue_round_bg"
+        android:fontFamily="@font/pretendard_regular"
+        android:paddingVertical="10dp"
+        android:text="@string/next"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

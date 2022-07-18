@@ -17,6 +17,7 @@ import com.example.eraofband.remote.getMyPofol.GetMyPofolService
 import com.example.eraofband.remote.getMyPofol.GetMyPofolView
 
 class MyPagePortfolioFragment : Fragment(), GetMyPofolView {
+
     private var _binding: FragmentMypagePortfolioBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
 

@@ -1,27 +1,19 @@
 package com.example.eraofband.main.mypage.follow
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.example.eraofband.databinding.FragmentFollowBinding
+import androidx.appcompat.app.AppCompatActivity
+import com.example.eraofband.databinding.ActivityFollowBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
-class FollowFragment(private val current: Int) : Fragment() {
-    private lateinit var binding: FragmentFollowBinding
+class FollowActivity() : AppCompatActivity() {
+    private lateinit var binding: ActivityFollowBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentFollowBinding.inflate(inflater, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityFollowBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        var current = intent.getIntExtra("current", 0)
 
         //뷰페이저 어뎁터 연결
         val fragmentList = listOf(FollowingFragment(), FollowerFragment())
@@ -46,6 +38,9 @@ class FollowFragment(private val current: Int) : Fragment() {
                 binding.followVp.currentItem = 1
             }
         }
-   
+
+        binding.followBackIb.setOnClickListener{
+            finish()
+        }
     }
 }
