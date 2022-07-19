@@ -184,6 +184,7 @@ class SignUpProfileActivity : AppCompatActivity() {
                         .into(binding.signupProfileProfileIv)
                     user.profileImgUrl = selectedImageUri.toString()
                     /*try {
+                        bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, selectedImageUri))
                         bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
                         binding.signupProfileProfileIv.setImageBitmap(bitmap)
                     } catch (e: IOException) {
