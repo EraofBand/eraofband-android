@@ -2,6 +2,7 @@ package com.example.eraofband.remote
 
 
 import com.example.eraofband.data.Comment
+import com.example.eraofband.data.EditUser
 import com.example.eraofband.data.Session
 import com.example.eraofband.data.User
 import com.example.eraofband.remote.checkUser.CheckUserResponse
@@ -32,7 +33,7 @@ interface API {
 
     // 회원 정보 변경
     @PATCH("/users/user-info")
-    fun patchUser(@Header("X-ACCESS-TOKEN") jwt : String, @Body user : User): Call<PatchUserResponse>
+    fun patchUser(@Header("X-ACCESS-TOKEN") jwt: String, @Body user: EditUser): Call<PatchUserResponse>
 
     // 회원 세션 변경
     @PATCH("/users/user-session")

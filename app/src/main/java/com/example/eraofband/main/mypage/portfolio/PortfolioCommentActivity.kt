@@ -15,10 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
 import com.example.eraofband.data.Comment
 import com.example.eraofband.databinding.ActivityPortfolioCommentBinding
+import com.example.eraofband.main.usermypage.UserMyPageFragment
 import com.example.eraofband.remote.portfolio.PofolCommentResult
 import com.example.eraofband.remote.portfolio.PofolCommentService
 import com.example.eraofband.remote.portfolio.PofolCommentView
 import com.example.eraofband.remote.portfolio.PofolCommentWriteResult
+
 
 
 class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
@@ -35,6 +37,7 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
         setContentView(binding.root)
 
         binding.portfolioCommentBackIv.setOnClickListener { finish() }  // 뒤로 가기
+
 
         textWatcher()  // 댓글 창에 뭐가 있는지 확인하는 용도, 입력 색을 바꾸기 위해
     }
@@ -57,6 +60,11 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
             override fun onShowPopUp(commentIdx: Int, position: Int, userIdx: Int, view: View) {
                 if(userIdx == getUserIdx()) showMyPopup(commentIdx, position, view)  // 내가 단 댓글
                 else showOtherPopup(commentIdx, position, view)  // 다른 사람이 단 댓글
+            }
+
+            override fun onItemClick() {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.main_frm, UserMyPageFragment()).commitAllowingStateLoss()
             }
         })
     }
@@ -198,5 +206,5 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
 
     override fun onCommentDeleteFailure(code: Int, message: String) {
         Log.d("DELETECOMMENT/FAIL", message)
+        }
     }
-}

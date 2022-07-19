@@ -1,23 +1,23 @@
-package com.example.eraofband.remote.getMyPage
+package com.example.eraofband.remote.getotheruser
 
 import com.google.gson.annotations.SerializedName
 
-data class GetMyPageResponse (
+data class GetOtherUserResponse (
     @SerializedName(value = "code") var code : Int,
     @SerializedName(value = "isSuccess") var isSuccess : Boolean,
     @SerializedName(value = "message") var message : String,
-    @SerializedName(value = "result") var result : GetMyPageResult
+    @SerializedName(value = "result") var result : GetOtherUserResult
 )
 
-data class GetMyPageResult (
+data class GetOtherUserResult (
     @SerializedName(value = "getUser") var getUser: GetUser,
     @SerializedName(value = "getUserBand") var getUserBand: List<GetUserBand>,
-    @SerializedName(value = "getUserLesson") var getUserLesson: List<GetUserLesson>,
     @SerializedName(value = "getUserPofol") var getUserPofol: List<GetUserPofol>
 )
 
 data class GetUser (
     @SerializedName(value = "birth") var birth : String,
+    @SerializedName(value = "follow") var follow : Int,
     @SerializedName(value = "followeeCount") var followeeCount : Int,
     @SerializedName(value = "followerCount") var followerCount : Int,
     @SerializedName(value = "gender") var gender : String,
@@ -35,15 +35,9 @@ data class GetUserBand (
     @SerializedName(value = "bandImgUrl") var bandImgUrl : String,
     @SerializedName(value = "bandIntroduction") var bandIntroduction : String,
     @SerializedName(value = "bandRegion") var bandRegion : String,
-    @SerializedName(value = "bandTitle") var bandTitle : String
-)
-
-data class GetUserLesson (
-    @SerializedName(value = "bandIdx") var lessonIdx : Int,
-    @SerializedName(value = "bandImgUrl") var lessonImgUrl : String,
-    @SerializedName(value = "bandIntroduction") var lessonIntroduction : String,
-    @SerializedName(value = "bandRegion") var lessonRegion : String,
-    @SerializedName(value = "bandTitle") var lessonTitle : String
+    @SerializedName(value = "bandTitle") var bandTitle : String,
+    @SerializedName(value = "capacity") var capacity : Int,
+    @SerializedName(value = "memberCount") var memberCount : Int
 )
 
 data class GetUserPofol (

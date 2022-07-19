@@ -140,7 +140,7 @@ class MyPageFragment : Fragment(), GetMyPageView {
 
         binding.mypageDetailInfoTv.text = "$city | ${age}세 | $gender"
 
-        binding.mypageIntroductionTv.text = result.getUser.instroduction  // 내 소개 연동
+        binding.mypageIntroductionTv.text = result.getUser.introduction  // 내 소개 연동
 //        binding.mypageIntroductionTv.text = "ddddddddddddddddddddddddddddddddddddddffffddddddddddddddddddddddddddddddddddddddddddd"  // 3줄 테스트용
 
         if(binding.mypageIntroductionTv.lineCount > 3) {
