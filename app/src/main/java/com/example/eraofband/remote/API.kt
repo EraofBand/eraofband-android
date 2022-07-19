@@ -13,7 +13,9 @@ import com.example.eraofband.remote.getuser.GetUserResponse
 import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
 import com.example.eraofband.remote.patchuser.PatchUserResponse
 import com.example.eraofband.remote.portfolio.*
+import com.example.eraofband.remote.sendimg.SendImgResponse
 import com.example.eraofband.remote.signout.ResignResponse
+import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -70,5 +72,10 @@ interface API {
     // 다른회원 정보 조회
     @GET("/users/{userIdx}")
     fun getUser(@Path("userIdx") userIdx : Int) : Call<GetUserResponse>
+
+    // 이미지 전송
+    @Multipart
+    @POST("/api/v1/upload")
+    fun sendImg(@Part url: MultipartBody.Part) : Call<SendImgResponse>
 
 }

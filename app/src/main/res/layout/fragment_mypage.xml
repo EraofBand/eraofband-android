@@ -85,7 +85,7 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="30dp"
                     android:elevation="10dp"
-                    android:src="@drawable/ic_captain"
+                    android:src="@drawable/ic_basic_profile"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
                     android:fontFamily="@font/pretendard_bold"
-                    android:text="승희는해리야"
+                    android:text="닉네임"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     app:layout_constraintStart_toEndOf="@+id/mypage_profileimg_iv"

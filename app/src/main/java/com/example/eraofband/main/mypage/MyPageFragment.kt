@@ -2,23 +2,30 @@ package com.example.eraofband.main.mypage
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.createBitmap
 import androidx.fragment.app.Fragment
 import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentMypageBinding
 import com.example.eraofband.main.MainActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.main.mypage.follow.FollowActivity
 import com.example.eraofband.main.mypage.portfolio.PortfolioMakeActivity
 import com.example.eraofband.remote.getMyPage.GetMyPageService
 import com.example.eraofband.remote.getMyPage.GetMyPageView
 import com.example.eraofband.remote.getMyPage.GetMyPageResult
 import com.google.android.material.tabs.TabLayoutMediator
+import java.lang.Byte.decode
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -122,13 +129,20 @@ class MyPageFragment : Fragment(), GetMyPageView {
 
     @SuppressLint("SetTextI18n")
     override fun onGetSuccess(code: Int, result: GetMyPageResult) {
-        // 나중에 프사도 연동 예정, 포트폴리오는 아직
+
 
         Log.d("MYPAGE", result.toString())
-        binding.mypageNicknameTv.text = result.getUser.nickName  // 닉네임 연동
+        // 닉네임 연동
+        binding.mypageNicknameTv.text = result.getUser.nickName
+
+        // 글라이드르 이용한 프로필사진 연동
+        Glide.with(this)
+            .load(result.getUser.profileImgUrl)
+            .apply(RequestOptions.centerCropTransform())
+            .apply(RequestOptions.circleCropTransform())
+            .into(binding.mypageProfileimgIv)
 
         // 디테일한 소개 연동
-
         val index = result.getUser.region.split(" ")
         val city = index[1]
 
@@ -139,9 +153,7 @@ class MyPageFragment : Fragment(), GetMyPageView {
             else "여성"
 
         binding.mypageDetailInfoTv.text = "$city | ${age}세 | $gender"
-
-        binding.mypageIntroductionTv.text = result.getUser.introduction  // 내 소개 연동
-//        binding.mypageIntroductionTv.text = "ddddddddddddddddddddddddddddddddddddddffffddddddddddddddddddddddddddddddddddddddddddd"  // 3줄 테스트용
+        binding.mypageIntroductionTv.text = result.getUser.instroduction  // 내 소개 연동
 
         if(binding.mypageIntroductionTv.lineCount > 3) {
             binding.mypageLookMoreTv.visibility = View.VISIBLE  // 더보기 표시
