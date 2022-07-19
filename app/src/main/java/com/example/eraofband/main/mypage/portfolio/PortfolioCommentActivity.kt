@@ -8,8 +8,11 @@ import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.eraofband.R
 import com.example.eraofband.data.Comment
 import com.example.eraofband.databinding.ActivityPortfolioCommentBinding
+import com.example.eraofband.main.MainActivity
+import com.example.eraofband.main.mypage.usermypage.UserMyPageFragment
 
 class PortfolioCommentActivity : AppCompatActivity() {
 
@@ -31,6 +34,7 @@ class PortfolioCommentActivity : AppCompatActivity() {
 
         binding.portfolioCommentBackIv.setOnClickListener { finish() }  // 뒤로 가기
 
+
         textWatcher()  // 댓글 창에 뭐가 있는지 확인하는 용도, 입력 색을 바꾸기 위해
     }
 
@@ -44,6 +48,13 @@ class PortfolioCommentActivity : AppCompatActivity() {
         val commentRVAdapter = PortfolioCommentRVAdapter(commentList)
         binding.portfolioCommentCommentRv.adapter = commentRVAdapter
         binding.portfolioCommentCommentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        commentRVAdapter.setMyItemClickListener(object : PortfolioCommentRVAdapter.MyItemClickListener {
+            override fun onItemClick(){
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.main_frm, UserMyPageFragment()).commitAllowingStateLoss()
+            }
+        })
     }
 
     private fun textWatcher() {  // 댓글 입력 감시

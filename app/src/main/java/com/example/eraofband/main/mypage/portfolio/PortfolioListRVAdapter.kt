@@ -91,7 +91,7 @@ class PortfolioListRVAdapter(private val jwt: String) : RecyclerView.Adapter<Por
     inner class ViewHolder(val binding: ItemPortfolioListBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(portfolio: GetMyPofolResult) {
-            val mediaItem = MediaItem.fromUri(mItemListener.urlParse(portfolio.vidioUrl))  // 비디오 url
+            val mediaItem = MediaItem.fromUri(mItemListener.urlParse(portfolio.videoUrl))  // 비디오 url
             videoPlayer?.setMediaItem(mediaItem)
             
             // 내 정보

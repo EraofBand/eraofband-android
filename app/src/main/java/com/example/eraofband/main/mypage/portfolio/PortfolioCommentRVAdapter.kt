@@ -12,7 +12,7 @@ import com.example.eraofband.databinding.ItemPortfolioListBinding
 
 class PortfolioCommentRVAdapter(private val comment : ArrayList<Comment>) : RecyclerView.Adapter<PortfolioCommentRVAdapter.ViewHolder>() {
     interface MyItemClickListener {
-
+        fun onItemClick()
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -38,6 +38,10 @@ class PortfolioCommentRVAdapter(private val comment : ArrayList<Comment>) : Recy
             binding.commentNicknameTv.text = "해리"
             binding.commentCommentTv.text = comment.comment
             binding.commentTimeTv.text = "1시간 전"
+
+            binding.commentProfileIv.setOnClickListener {
+                mItemClickListener.onItemClick()
+            }
        }
     }
 }

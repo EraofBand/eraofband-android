@@ -135,6 +135,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
                 android:hint="@null"
+                android:fontFamily="@font/pretendard_regular"
                 android:textColor="@color/white"
                 android:textSize="17sp"
                 android:maxLength="100"
