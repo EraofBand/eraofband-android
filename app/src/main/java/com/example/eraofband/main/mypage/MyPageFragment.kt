@@ -153,7 +153,6 @@ class MyPageFragment : Fragment(), GetMyPageView {
             else "여성"
 
         binding.mypageDetailInfoTv.text = "$city | ${age}세 | $gender"
-
         binding.mypageIntroductionTv.text = result.getUser.instroduction  // 내 소개 연동
 
         if(binding.mypageIntroductionTv.lineCount > 3) {
@@ -204,7 +203,6 @@ class MyPageFragment : Fragment(), GetMyPageView {
             else ->  binding.mypageSessionTv.text = "드럼"
         }
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

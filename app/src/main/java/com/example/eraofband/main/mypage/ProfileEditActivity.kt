@@ -10,6 +10,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
+import com.example.eraofband.data.EditUser
 import com.example.eraofband.data.User
 import com.example.eraofband.databinding.ActivityProfileEditBinding
 import com.example.eraofband.remote.patchuser.PatchUserResult
@@ -23,8 +24,8 @@ import com.example.eraofband.remote.getMyPage.GetMyPageResult
 class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView {
 
     private lateinit var binding : ActivityProfileEditBinding
-    private var user = User("", "", "", "", "", "", 0)
-    private lateinit var location: String
+    private var editUser = EditUser("", "", "", "", "", "", 0)
+    private var location = ""
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +40,7 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView {
 
         initSpinner()  // 스피너 초기화
         initDatePicker()
+
 
         // 유저 정보를 받아온 후 프로필 편집 화면에 연동
         val getMyPageService = GetMyPageService()
@@ -58,6 +60,7 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView {
             }
 
             override fun afterTextChanged(p0: Editable?) {
+                editUser.introduction = binding.profileEditIntroduceEt.text.toString()
                 binding.profileEditIntroduceEt.hint = ""
             }
 
@@ -66,8 +69,8 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView {
         // 라디오그룹 클릭 리스너 <- 나중에 프로필 편집 api 연동할 때 사용하시면 돼용
         binding.profileEditGenderRg.setOnCheckedChangeListener { _, id ->
             when (id) {
-                R.id.profile_edit_man_rb -> user.gender = "MALE"
-                R.id.profile_edit_woman_rb -> user.gender = "FEMALE"
+                R.id.profile_edit_man_rb -> editUser.gender = "MALE"
+                R.id.profile_edit_woman_rb -> editUser.gender = "FEMALE"
             }
         }
 
@@ -76,21 +79,22 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView {
             val patchUserService = PatchUserService()
             patchUserService.setPatchUserView(this)
 
-            user = updateUser()
+            editUser = updateUser()
+            Log.d("USER PATCH", editUser.toString())
 
-            patchUserService.patchUser(getJwt()!!, user)
+            patchUserService.patchUser(getJwt()!!, editUser)
             finish()
         }
     }
 
-    private fun updateUser(): User {
-        user.birth = binding.profileEditRealBirthdayTv.toString()
-        user.introduction = binding.profileEditIntroduceEt.toString()
-        user.nickName = binding.profileEditNicknameEt.toString()
-        user.profileImgUrl = binding.profileEditProfileIv.toString()
-        user.region = location
+    private fun updateUser(): EditUser {
+        editUser.birth = binding.profileEditRealBirthdayTv.text.toString()
+        editUser.nickName = binding.profileEditNicknameEt.text.toString()
+        editUser.profileImgUrl = binding.profileEditProfileIv.toString()
+        editUser.userIdx = getUserIdx()
+        editUser.region = location
 
-        return user
+        return editUser
     }
 
     private fun getUserIdx() : Int {
@@ -107,8 +111,10 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView {
         // 도시 스피너 어뎁터 연결
         val city = resources.getStringArray(R.array.city)  // 도시 목록
 
+
         val cityAdapter = ArrayAdapter(this, R.layout.item_spinner, city)
         binding.profileEditCitySp.adapter = cityAdapter
+        binding.profileEditCitySp.setSelection(0)
 
         // 도시 스피너 클릭 이벤트
         binding.profileEditCitySp.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener{
@@ -120,6 +126,7 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView {
                     binding.profileEditAreaSp.adapter = areaAdapter
 
                     location = "서울 " + binding.profileEditAreaSp.selectedItem.toString()
+                    Log.d("LOCATION", location)
                 }
                 else {  // 경기도면 경기도 지역 연결
                     val area = resources.getStringArray(R.array.gyeonggido)
@@ -163,7 +170,7 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView {
     override fun onGetSuccess(code: Int, result: GetMyPageResult) {
         binding.profileEditNicknameEt.setText(result.getUser.nickName)  // 닉네임 연결
 
-        binding.profileEditIntroduceEt.setText(result.getUser.instroduction)  // 내 소개 연결
+        binding.profileEditIntroduceEt.setText(result.getUser.introduction)  // 내 소개 연결
         binding.profileEditIntroduceNumTv.text = binding.profileEditIntroduceEt.text.length.toString() + "/ 100"  // 내 소개 글자 수 연결
 
         if(result.getUser.gender == "MALE") binding.profileEditManRb.isChecked = true  // 성별 연결
