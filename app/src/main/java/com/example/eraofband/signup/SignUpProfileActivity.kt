@@ -2,9 +2,11 @@ package com.example.eraofband.signup
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Point
@@ -16,7 +18,7 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
-import android.util.Base64
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
@@ -28,12 +30,16 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.data.User
 import com.example.eraofband.databinding.ActivitySignupProfileBinding
-import java.io.ByteArrayOutputStream
-import java.io.IOException
-import java.util.*
+import com.example.eraofband.remote.sendimg.SendImgResponse
+import com.example.eraofband.remote.sendimg.SendImgService
+import com.example.eraofband.remote.sendimg.SendImgView
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 
 
-class SignUpProfileActivity : AppCompatActivity() {
+class SignUpProfileActivity : AppCompatActivity(), SendImgView {
 
     private lateinit var binding: ActivitySignupProfileBinding
     private var user = User("", "", "", "", "", "", 0)
@@ -182,9 +188,16 @@ class SignUpProfileActivity : AppCompatActivity() {
                         .apply(RequestOptions.centerCropTransform())
                         .apply(RequestOptions.circleCropTransform())
                         .into(binding.signupProfileProfileIv)
-                    user.profileImgUrl = selectedImageUri.toString()
+
+                    val imgPath = absolutelyPath(selectedImageUri, this)
+                    val file = File(imgPath)
+                    val requestBody = RequestBody.create(MediaType.parse("image/*"), file)
+                    val body = MultipartBody.Part.createFormData("file", file.name, requestBody)
+
+                    val sendImgService = SendImgService()
+                    sendImgService.setImageView(this)
+                    sendImgService.sendImg(body)
                     /*try {
-                        bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, selectedImageUri))
                         bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
                         binding.signupProfileProfileIv.setImageBitmap(bitmap)
                     } catch (e: IOException) {
@@ -223,5 +236,24 @@ class SignUpProfileActivity : AppCompatActivity() {
             .setNegativeButton("취소하기") { _, _ -> }
             .create()
             .show()
+    }
+
+    private fun absolutelyPath(path: Uri?, context : Context): String {
+        var proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
+        var c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
+        var index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        c?.moveToFirst()
+
+        var result = c?.getString(index!!)
+
+        return result!!
+    }
+    override fun onSendSuccess(response: SendImgResponse) {
+        Log.d("SENDIMGss", response.toString())
+        user.profileImgUrl = response.result
+    }
+
+    override fun onSendFailure(code: Int, message: String) {
+        Log.d("SENDIMGss", "$code $message")
     }
 }
