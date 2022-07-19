@@ -29,11 +29,11 @@ class DialogDatePicker(private val selectedDate : String) : DialogFragment() {
         val date = selectedDate  // 넘겨받은 날짜를 기본으로
 
         // 날짜 저장
-        binding.dialogDatepicker.init(date.substring(0, 4).toInt(),(date.substring(6,7).toInt()) - 1,date.substring(9,10).toInt()) { _, year, month, day -> // string으로 넣어주기 편하게 미리 변환
+        binding.dialogDatepicker.init(date.substring(0, 4).toInt(),date.substring(5,7).toInt() - 1 ,date.substring(8,10).toInt()) { _, year, month, day -> // string으로 넣어주기 편하게 미리 변환
             val selectedYear = year.toString()
 
             val selectedMonth =
-                if (month + 1 < 10) {
+                if (month < 10) {
                     "0" + (month + 1).toString()
                 } else {
                     (month + 1).toString()

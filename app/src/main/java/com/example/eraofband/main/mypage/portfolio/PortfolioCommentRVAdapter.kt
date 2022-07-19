@@ -31,6 +31,7 @@ class PortfolioCommentRVAdapter : RecyclerView.Adapter<PortfolioCommentRVAdapter
     }
 
     interface MyItemClickListener {
+        fun onItemClick()
         fun onShowPopUp(commentIdx: Int,position: Int, userIdx: Int, view: View)
     }
 
@@ -54,11 +55,16 @@ class PortfolioCommentRVAdapter : RecyclerView.Adapter<PortfolioCommentRVAdapter
     override fun getItemCount(): Int = comment.size
 
     inner class ViewHolder(val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(comment: PofolCommentResult) {
             binding.commentProfileIv.setImageResource(R.drawable.ic_captain)  // 나중에 img 넣을 예정
             binding.commentNicknameTv.text = comment.nickName
             binding.commentCommentTv.text = comment.content
             binding.commentTimeTv.text = comment.updatedAt
+
+            binding.commentProfileIv.setOnClickListener {
+                mItemClickListener.onItemClick()
+            }
        }
     }
 }
