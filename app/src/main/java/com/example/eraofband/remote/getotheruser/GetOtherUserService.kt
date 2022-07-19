@@ -1,12 +1,10 @@
 package com.example.eraofband.remote.getotheruser
 
 import android.util.Log
-import com.example.eraofband.main.mypage.usermypage.UserMyPageFragment
 import com.example.eraofband.remote.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 
 
 class GetOtherUserService {
