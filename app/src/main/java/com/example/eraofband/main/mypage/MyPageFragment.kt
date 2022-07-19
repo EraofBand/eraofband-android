@@ -153,7 +153,7 @@ class MyPageFragment : Fragment(), GetMyPageView {
             else "여성"
 
         binding.mypageDetailInfoTv.text = "$city | ${age}세 | $gender"
-        binding.mypageIntroductionTv.text = result.getUser.instroduction  // 내 소개 연동
+        binding.mypageIntroductionTv.text = result.getUser.introduction  // 내 소개 연동
 
         if(binding.mypageIntroductionTv.lineCount > 3) {
             binding.mypageLookMoreTv.visibility = View.VISIBLE  // 더보기 표시

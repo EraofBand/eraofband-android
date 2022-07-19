@@ -19,6 +19,7 @@
         android:theme="@style/Theme.EraofBand"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
         <!-- 카카오 로그인 AuthCodeHandler -->
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
@@ -89,6 +90,9 @@
             android:name=".main.mypage.portfolio.PortfolioCommentActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustUnspecified|adjustPan" />
+        <activity
+            android:name=".main.mypage.portfolio.PofolEditActivity"
+            android:exported="false" />
         <activity
             android:name=".main.mypage.follow.FollowActivity"
             android:exported="false" />
