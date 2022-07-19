@@ -1,6 +1,7 @@
 package com.example.eraofband.remote.signout
 
 import android.util.Log
+import com.example.eraofband.remote.API
 import com.example.eraofband.remote.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,7 +16,7 @@ class ResignService {
 
     fun resign(jwt: String, userIdx: Int) {
 
-        val resignService =  NetworkModule().getRetrofit()?.create(ResignInterface::class.java)
+        val resignService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
         resignService?.resign(jwt, userIdx)?.enqueue(object : Callback<ResignResponse> {
             override fun onResponse(call: Call<ResignResponse>, response: Response<ResignResponse>) {

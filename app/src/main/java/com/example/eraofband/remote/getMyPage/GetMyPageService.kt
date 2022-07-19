@@ -1,6 +1,7 @@
 package com.example.eraofband.remote.getMyPage
 
 import android.util.Log
+import com.example.eraofband.remote.API
 import com.example.eraofband.remote.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,7 +16,7 @@ class GetMyPageService {
 
     fun getUser(jwt: String, userIdx: Int) {
 
-        val getMyPageService =  NetworkModule().getRetrofit()?.create(GetMyPageInterface::class.java)
+        val getMyPageService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
         getMyPageService?.getUser(jwt, userIdx)?.enqueue(object : Callback<GetMyPageResponse> {
             override fun onResponse(call: Call<GetMyPageResponse>, response: Response<GetMyPageResponse>) {

@@ -2,7 +2,7 @@ package com.example.eraofband.remote.patchuser
 
 import android.util.Log
 import com.example.eraofband.data.EditUser
-import com.example.eraofband.data.User
+import com.example.eraofband.remote.API
 import com.example.eraofband.remote.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,7 +18,7 @@ class PatchUserService {
 
     fun patchUser(jwt: String, user: EditUser) {
 
-        val patchUserService =  NetworkModule().getRetrofit()?.create(PatchUserInterface::class.java)
+        val patchUserService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
         patchUserService?.patchUser(jwt, user)?.enqueue(object : Callback<PatchUserResponse> {
                 override fun onResponse(

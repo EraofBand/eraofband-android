@@ -1,6 +1,7 @@
-package com.example.eraofband.main.mypage.usermypage
+package com.example.eraofband.main.usermypage
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,7 +12,7 @@ import androidx.fragment.app.Fragment
 import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentUserMypageBinding
 import com.example.eraofband.main.MainActivity
-import com.example.eraofband.main.mypage.follow.FollowFragment
+import com.example.eraofband.main.mypage.follow.FollowActivity
 import com.example.eraofband.remote.getotheruser.GetOtherUserResult
 import com.example.eraofband.remote.getotheruser.GetOtherUserService
 import com.example.eraofband.remote.getotheruser.GetOtherUserView
@@ -41,16 +42,17 @@ class UserMyPageFragment : Fragment(), GetOtherUserView {
             }
         }.attach()
 
-        binding.userMypageFollowingCntTv.setOnClickListener {
-            (context as MainActivity).supportFragmentManager.beginTransaction()
-                .replace(R.id.main_frm, FollowFragment(0)).addToBackStack(null).commitAllowingStateLoss()
+        binding.userMypageFollowing.setOnClickListener {
+            var intent = Intent(context, FollowActivity::class.java)
+            intent.putExtra("current", 0)
+            startActivity(intent)
         }
 
-        binding.userMypageFollowerCntTv.setOnClickListener {
-            (context as MainActivity).supportFragmentManager.beginTransaction()
-                .replace(R.id.main_frm, FollowFragment(1)).addToBackStack(null).commitAllowingStateLoss()
+        binding.userMypageFollower.setOnClickListener {
+            var intent = Intent(context, FollowActivity::class.java)
+            intent.putExtra("current", 1)
+            startActivity(intent)
         }
-
         return binding.root
     }
 

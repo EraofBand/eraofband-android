@@ -1,6 +1,5 @@
 package com.example.eraofband.main
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -11,14 +10,17 @@ import com.example.eraofband.main.chat.ChatFragment
 import com.example.eraofband.main.community.CommunityFragment
 import com.example.eraofband.main.home.HomeFragment
 import com.example.eraofband.main.mypage.MyPageFragment
-import com.google.android.material.shape.CornerFamily
-import com.google.android.material.shape.MaterialShapeDrawable
 import com.kakao.sdk.user.UserApiClient
 
-//test commit
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    private var boardFragment: BoardFragment? = null
+    private var communityFragment: CommunityFragment? = null
+    private var homeFragment: HomeFragment? = null
+    private var chatFragment: ChatFragment? = null
+    private var myPageFragment: MyPageFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,14 +53,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun initBottomNav(){
         // 시작 화면은 홈 화면으로 설정
-        supportFragmentManager.beginTransaction().replace(R.id.main_frm, HomeFragment()).commitAllowingStateLoss()
+        homeFragment = HomeFragment()
+        supportFragmentManager.beginTransaction().add(R.id.main_frm, homeFragment!!).commitAllowingStateLoss()
         binding.mainBottomNav.selectedItemId = R.id.home
 
         // 중앙 버튼을 누르면 HomeFragment 실행
         binding.mainBottomHomeBt.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.main_frm, HomeFragment())
-                .commitAllowingStateLoss()
+            if(homeFragment != null)  supportFragmentManager.beginTransaction().show(homeFragment!!).commitAllowingStateLoss()
+            if(communityFragment != null)  supportFragmentManager.beginTransaction().hide(communityFragment!!).commitAllowingStateLoss()
+            if(boardFragment != null)  supportFragmentManager.beginTransaction().hide(boardFragment!!).commitAllowingStateLoss()
+            if(chatFragment != null)  supportFragmentManager.beginTransaction().hide(chatFragment!!).commitAllowingStateLoss()
+            if(myPageFragment != null)  supportFragmentManager.beginTransaction().hide(myPageFragment!!).commitAllowingStateLoss()
 
             binding.mainBottomNav.setBackgroundResource(R.drawable.bottom_nav_bg)
             binding.mainBottomNav.selectedItemId = R.id.home
@@ -69,36 +74,65 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
 
                 R.id.community -> {  // 소셜 화면 실행
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_frm, CommunityFragment())
-                        .commitAllowingStateLoss()
+                    if(communityFragment == null){
+                        communityFragment = CommunityFragment()
+                        supportFragmentManager.beginTransaction().add(R.id.main_frm, communityFragment!!).commitAllowingStateLoss()
+                    }
+
+                    if(homeFragment != null)  supportFragmentManager.beginTransaction().hide(homeFragment!!).commitAllowingStateLoss()
+                    if(communityFragment != null)  supportFragmentManager.beginTransaction().show(communityFragment!!).commitAllowingStateLoss()
+                    if(boardFragment != null)  supportFragmentManager.beginTransaction().hide(boardFragment!!).commitAllowingStateLoss()
+                    if(chatFragment != null)  supportFragmentManager.beginTransaction().hide(chatFragment!!).commitAllowingStateLoss()
+                    if(myPageFragment != null)  supportFragmentManager.beginTransaction().hide(myPageFragment!!).commitAllowingStateLoss()
 
                     binding.mainBottomNav.setBackgroundResource(R.drawable.bottom_nav_bg)
                     return@setOnItemSelectedListener true
                 }
 
                 R.id.board -> {  // 게시판 화면 실행
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_frm, BoardFragment())
-                        .commitAllowingStateLoss()
+                    if(boardFragment == null){
+                        boardFragment = BoardFragment()
+                        supportFragmentManager.beginTransaction().add(R.id.main_frm,boardFragment!!).commitAllowingStateLoss()
+                    }
+
+                    if(homeFragment != null)  supportFragmentManager.beginTransaction().hide(homeFragment!!).commitAllowingStateLoss()
+                    if(communityFragment != null)  supportFragmentManager.beginTransaction().hide(communityFragment!!).commitAllowingStateLoss()
+                    if(boardFragment != null)  supportFragmentManager.beginTransaction().show(boardFragment!!).commitAllowingStateLoss()
+                    if(chatFragment != null)  supportFragmentManager.beginTransaction().hide(chatFragment!!).commitAllowingStateLoss()
+                    if(myPageFragment != null)  supportFragmentManager.beginTransaction().hide(myPageFragment!!).commitAllowingStateLoss()
 
                     binding.mainBottomNav.setBackgroundResource(R.drawable.bottom_nav_bg)
                     return@setOnItemSelectedListener true
                 }
 
                 R.id.chat -> {  // 채팅 화면 실행
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_frm, ChatFragment())
-                        .commitAllowingStateLoss()
+                    if(chatFragment == null){
+                        chatFragment = ChatFragment()
+                        supportFragmentManager.beginTransaction().add(R.id.main_frm, chatFragment!!).commitAllowingStateLoss()
+                    }
+
+                    if(homeFragment != null)  supportFragmentManager.beginTransaction().hide(homeFragment!!).commitAllowingStateLoss()
+                    if(communityFragment != null)  supportFragmentManager.beginTransaction().hide(communityFragment!!).commitAllowingStateLoss()
+                    if(boardFragment != null)  supportFragmentManager.beginTransaction().hide(boardFragment!!).commitAllowingStateLoss()
+                    if(chatFragment != null)  supportFragmentManager.beginTransaction().show(chatFragment!!).commitAllowingStateLoss()
+                    if(myPageFragment != null)  supportFragmentManager.beginTransaction().hide(myPageFragment!!).commitAllowingStateLoss()
+
 
                     binding.mainBottomNav.setBackgroundResource(R.drawable.bottom_nav_bg)
                     return@setOnItemSelectedListener true
                 }
 
                 R.id.mypage -> {  // 프로필 화면 실행
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.main_frm, MyPageFragment())
-                        .commitAllowingStateLoss()
+                    if(myPageFragment == null){
+                        myPageFragment = MyPageFragment()
+                        supportFragmentManager.beginTransaction().add(R.id.main_frm, myPageFragment!!).commitAllowingStateLoss()
+                    }
+
+                    if(homeFragment != null)  supportFragmentManager.beginTransaction().hide(homeFragment!!).commitAllowingStateLoss()
+                    if(communityFragment != null)  supportFragmentManager.beginTransaction().hide(communityFragment!!).commitAllowingStateLoss()
+                    if(boardFragment != null)  supportFragmentManager.beginTransaction().hide(boardFragment!!).commitAllowingStateLoss()
+                    if(chatFragment != null)  supportFragmentManager.beginTransaction().hide(chatFragment!!).commitAllowingStateLoss()
+                    if(myPageFragment != null)  supportFragmentManager.beginTransaction().show(myPageFragment!!).commitAllowingStateLoss()
 
                     binding.mainBottomNav.setBackgroundResource(R.drawable.bottom_nav_bg_none)
                     return@setOnItemSelectedListener true

@@ -33,7 +33,8 @@ class SplashActivity : AppCompatActivity() {
         //실행여부 체크 위해 선언
         val prefs = getSharedPreferences("onboarding", Context.MODE_PRIVATE)
         val isFinished = prefs.getBoolean("isFinished", false)
-
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        val userIdx = userSP.getInt("userIdx", -1)
         val handler = Handler(Looper.getMainLooper())
 
         handler.postDelayed({
@@ -50,13 +51,19 @@ class SplashActivity : AppCompatActivity() {
                             Log.d("kakaoLogin", error.toString())
                         }
                     } else {  // 토큰 유효성 체크 성공(필요 시 토큰 갱신)
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
-                        if (tokenInfo != null) {
-                            Log.d(
-                                "kakaoLogin", "자동 로그인 완" +
-                                        "\n회원번호: ${tokenInfo.id}" +
-                                        "\n만료시간: ${tokenInfo.expiresIn} 초")
+                        if (userIdx == -1) {  // 카카오로그인 버튼을 누르고 회원가입 도중에 종료했을때
+                            startActivity(Intent(this, LoginActivity::class.java))
+                            finish()
+                        } else {
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()
+                            if (tokenInfo != null) {
+                                Log.d(
+                                    "kakaoLogin", "자동 로그인 완" +
+                                            "\n회원번호: ${tokenInfo.id}" +
+                                            "\n만료시간: ${tokenInfo.expiresIn} 초"
+                                )
+                            }
                         }
                     }
                 }

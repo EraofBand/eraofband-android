@@ -5,26 +5,30 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Gravity
+import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
 import com.example.eraofband.data.Comment
 import com.example.eraofband.databinding.ActivityPortfolioCommentBinding
-import com.example.eraofband.main.MainActivity
-import com.example.eraofband.main.mypage.usermypage.UserMyPageFragment
+import com.example.eraofband.main.usermypage.UserMyPageFragment
+import com.example.eraofband.remote.portfolio.PofolCommentResult
+import com.example.eraofband.remote.portfolio.PofolCommentService
+import com.example.eraofband.remote.portfolio.PofolCommentView
+import com.example.eraofband.remote.portfolio.PofolCommentWriteResult
 
-class PortfolioCommentActivity : AppCompatActivity() {
+
+
+class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
 
     private lateinit var binding : ActivityPortfolioCommentBinding
-    private var commentList = arrayListOf(
-        Comment("정말 대단해요!", 0),
-        Comment("정말 대단해요!", 0),
-        Comment("정말 대단해요!", 0),
-        Comment("정말 대단해요!", 0),
-        Comment("정말 대단해요!", 0),
-        Comment("정말 대단해요!", 0)
-    )
+
+    private val commentService = PofolCommentService()
+    private val commentRVAdapter = PortfolioCommentRVAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,16 +45,24 @@ class PortfolioCommentActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        initRecyclerView()
+        commentService.setCommentView(this)
+        commentService.getComment(intent.getIntExtra("pofolIdx", 0))
     }
 
-    private fun initRecyclerView() {
-        val commentRVAdapter = PortfolioCommentRVAdapter(commentList)
+    private fun initRecyclerView(item: List<PofolCommentResult>) {
         binding.portfolioCommentCommentRv.adapter = commentRVAdapter
         binding.portfolioCommentCommentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
+        commentRVAdapter.initComment(item)
+
         commentRVAdapter.setMyItemClickListener(object : PortfolioCommentRVAdapter.MyItemClickListener {
-            override fun onItemClick(){
+            // 팝업 메뉴 띄우기
+            override fun onShowPopUp(commentIdx: Int, position: Int, userIdx: Int, view: View) {
+                if(userIdx == getUserIdx()) showMyPopup(commentIdx, position, view)  // 내가 단 댓글
+                else showOtherPopup(commentIdx, position, view)  // 다른 사람이 단 댓글
+            }
+
+            override fun onItemClick() {
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.main_frm, UserMyPageFragment()).commitAllowingStateLoss()
             }
@@ -81,15 +93,118 @@ class PortfolioCommentActivity : AppCompatActivity() {
         })
 
         binding.portfolioCommentUploadTv.setOnClickListener {
-            if(binding.portfolioCommentWriteEt.text.isNotEmpty()) {
-                // 댓글 달기 창 원래대로 되돌리기
-                binding.portfolioCommentWriteEt.text = null
-                binding.portfolioCommentUploadTv.setTextColor(Color.parseColor("#7FA8FF"))
-
-                // 키보드 내리기
-                val inputManager : InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-                inputManager.hideSoftInputFromWindow(currentFocus!!.windowToken!!, InputMethodManager.HIDE_NOT_ALWAYS)
+            if(binding.portfolioCommentWriteEt.text.isNotEmpty()) {  // 댓글에 적은 내용이 있는 경우 댓글 업로드
+                commentService.writeComment(getJwt()!!, intent.getIntExtra("pofolIdx", 0), Comment(binding.portfolioCommentWriteEt.text.toString(), getUserIdx()))
             }
         }
     }
-}
+
+    private fun getUserIdx() : Int {  // 내 userIdx를 불러옴
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        return userSP.getInt("userIdx", 0)
+    }
+
+    private fun getJwt() : String? {  // 내 jwt를 불러옴
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        return userSP.getString("jwt", "")
+    }
+
+    private fun showMyPopup(commentIdx: Int, position: Int, view: View) {  // 내 댓글인 경우 삭제, 신고 둘 다 가능
+        val themeWrapper = ContextThemeWrapper(applicationContext , R.style.MyPopupMenu)
+        val popupMenu = PopupMenu(themeWrapper, view, Gravity.END, 0, R.style.MyPopupMenu)
+        popupMenu.menuInflater.inflate(R.menu.my_comment_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
+
+//        val popup = androidx.appcompat.widget.PopupMenu(applicationContext, view) // PopupMenu 객체 선언
+//        popup.menuInflater.inflate(R.menu.my_comment_menu, popup.menu) // 메뉴 레이아웃 inflate
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            if (item!!.itemId == R.id.comment_delete) {
+                // position을 넘겨줌 이거 말고 생각이 안나요ㅠㅠ
+                val commentSP = getSharedPreferences("comment", MODE_PRIVATE)
+                val editor = commentSP.edit()
+
+                editor.putInt("position", position)
+                editor.apply()
+
+                // 댓글 삭제
+                commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
+            }
+            else if (item.itemId == R.id.comment_report) {
+                Log.d("REPORT", "COMMENT")
+            }
+
+            false
+        }
+
+        popupMenu.show() // 팝업 보여주기
+    }
+
+    private fun showOtherPopup(commentIdx: Int, position: Int, view: View) {  // 다른 사람 댓글인 경우 신고만 가능
+        val popup = androidx.appcompat.widget.PopupMenu(applicationContext, view) // PopupMenu 객체 선언
+        popup.menuInflater.inflate(R.menu.other_comment_menu2, popup.menu) // 메뉴 레이아웃 inflate
+
+        popup.setOnMenuItemClickListener { item ->
+            if (item!!.itemId == R.id.comment_delete) {
+                // position을 넘겨줌 이거 말고 생각이 안나요ㅠㅠ
+                val commentSP = getSharedPreferences("comment", MODE_PRIVATE)
+                val editor = commentSP.edit()
+
+                editor.putInt("position", position)
+                editor.apply()
+
+                // 댓글 삭제
+                commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
+            }
+            else if (item.itemId == R.id.comment_report) {
+                Log.d("REPORT", "COMMENT")
+            }
+
+            false
+        }
+
+        popup.show() // 팝업 보여주기
+    }
+
+    override fun onCommentSuccess(code: Int, result: List<PofolCommentResult>) {
+        Log.d("GETCOMMENT/SUC", result.toString())
+        initRecyclerView(result)  // 댓글 목록을 불러옴
+    }
+
+    override fun onCommentFailure(code: Int, message: String) {
+        Log.d("GETCOMMENT/FAIL", "$code $message")
+    }
+
+    override fun onCommentWriteSuccess(code: Int, result: List<PofolCommentWriteResult>) {
+        Log.d("WRITECOMMENT/SUC", result.toString())
+        commentRVAdapter.addComment(PofolCommentResult(result[0].content, result[0].nickName, result[0].pofolCommentIdx, result[0].pofolIdx, result[0].profileImgUrl,result[0].updatedAt, result[0].userIdx))
+
+        // 키보드 원상태로 되돌리기
+        binding.portfolioCommentWriteEt.text = null
+        binding.portfolioCommentUploadTv.setTextColor(Color.parseColor("#7FA8FF"))
+
+        // 키보드 내리기
+        val inputManager : InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(currentFocus!!.windowToken!!, InputMethodManager.HIDE_NOT_ALWAYS)
+    }
+
+    override fun onCommentWriteFailure(code: Int, message: String) {
+        Log.d("WRITECOMMENT/FAIL", message)
+    }
+
+    override fun onCommentDeleteSuccess(code: Int, result: String) {
+        Log.d("WRITECOMMENT/SUC", result)
+        val commentSP = getSharedPreferences("comment", MODE_PRIVATE)
+
+        // 리사이클러뷰에서도 삭제
+        commentRVAdapter.deleteComment(commentSP.getInt("position", 0))
+
+        // 사용한 position은 지워줌
+        val editor = commentSP.edit()
+        editor.remove("position")
+        editor.apply()
+    }
+
+    override fun onCommentDeleteFailure(code: Int, message: String) {
+        Log.d("DELETECOMMENT/FAIL", message)
+        }
+    }

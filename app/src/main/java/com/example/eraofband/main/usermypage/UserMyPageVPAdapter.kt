@@ -1,4 +1,4 @@
-package com.example.eraofband.main.mypage.usermypage
+package com.example.eraofband.main.usermypage
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter

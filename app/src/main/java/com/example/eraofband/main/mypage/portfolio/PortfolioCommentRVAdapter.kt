@@ -1,18 +1,38 @@
 package com.example.eraofband.main.mypage.portfolio
 
-import android.net.Uri
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
-import com.example.eraofband.data.Comment
-import com.example.eraofband.data.Portfolio
 import com.example.eraofband.databinding.ItemCommentBinding
-import com.example.eraofband.databinding.ItemPortfolioListBinding
+import com.example.eraofband.remote.portfolio.PofolCommentResult
 
-class PortfolioCommentRVAdapter(private val comment : ArrayList<Comment>) : RecyclerView.Adapter<PortfolioCommentRVAdapter.ViewHolder>() {
+class PortfolioCommentRVAdapter : RecyclerView.Adapter<PortfolioCommentRVAdapter.ViewHolder>() {
+    private var comment = arrayListOf<PofolCommentResult>()
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun initComment(comment: List<PofolCommentResult>) {
+        this.comment.addAll(comment)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun addComment(comment: PofolCommentResult) {
+        this.comment.add(comment)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun deleteComment(position: Int) {
+        this.comment.removeAt(position)
+        notifyDataSetChanged()
+    }
+
     interface MyItemClickListener {
         fun onItemClick()
+        fun onShowPopUp(commentIdx: Int,position: Int, userIdx: Int, view: View)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -27,17 +47,20 @@ class PortfolioCommentRVAdapter(private val comment : ArrayList<Comment>) : Recy
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(comment[position])
+
+        // 댓글 팝업 메뉴 띄우기
+        holder.binding.commentMoreIv.setOnClickListener { mItemClickListener.onShowPopUp(comment[position].pofolCommentIdx, position, comment[position].userIdx, holder.binding.commentMoreIv) }
     }
 
     override fun getItemCount(): Int = comment.size
 
     inner class ViewHolder(val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(comment: Comment) {
-            // 여기도 포폴이랑 마찬가지로 데이터 받으면 바뀔 예정입니다, 데이터 클래스도 마찬가지
-            binding.commentProfileIv.setImageResource(R.drawable.ic_captain)
-            binding.commentNicknameTv.text = "해리"
-            binding.commentCommentTv.text = comment.comment
-            binding.commentTimeTv.text = "1시간 전"
+
+        fun bind(comment: PofolCommentResult) {
+            binding.commentProfileIv.setImageResource(R.drawable.ic_captain)  // 나중에 img 넣을 예정
+            binding.commentNicknameTv.text = comment.nickName
+            binding.commentCommentTv.text = comment.content
+            binding.commentTimeTv.text = comment.updatedAt
 
             binding.commentProfileIv.setOnClickListener {
                 mItemClickListener.onItemClick()

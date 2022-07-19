@@ -1,6 +1,7 @@
-package com.example.eraofband.remote.pofollike
+package com.example.eraofband.remote.portfolio
 
 import android.util.Log
+import com.example.eraofband.remote.API
 import com.example.eraofband.remote.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,7 +16,7 @@ class PofolLikeService {
 
     fun like(jwt: String, pofolIdx: Int) {  // 좋아요
 
-        val pofolLikeService =  NetworkModule().getRetrofit()?.create(PofolLikeInterface::class.java)
+        val pofolLikeService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
         pofolLikeService?.pofolLike(jwt, pofolIdx)?.enqueue(object : Callback<PofolLikeResponse> {
             override fun onResponse(call: Call<PofolLikeResponse>, response: Response<PofolLikeResponse>) {
@@ -40,7 +41,7 @@ class PofolLikeService {
 
     fun deleteLike(jwt: String, pofolIdx : Int) {  // 좋아요 취소
 
-        val pofolLikeService =  NetworkModule().getRetrofit()?.create(PofolLikeInterface::class.java)
+        val pofolLikeService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
         pofolLikeService?.pofolDeleteLike(jwt, pofolIdx)?.enqueue(object : Callback<PofolDeleteLikeResponse> {
             override fun onResponse(call: Call<PofolDeleteLikeResponse>, response: Response<PofolDeleteLikeResponse>) {
