@@ -1,16 +1,14 @@
 package com.example.eraofband.remote
 
 
-import com.example.eraofband.data.Comment
-import com.example.eraofband.data.EditUser
-import com.example.eraofband.data.Session
-import com.example.eraofband.data.User
+import com.example.eraofband.data.*
 import com.example.eraofband.remote.checkUser.CheckUserResponse
 import com.example.eraofband.remote.patchSession.PatchSessionResponse
 import com.example.eraofband.remote.getMyPage.GetMyPageResponse
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResponse
 import com.example.eraofband.remote.getuser.GetUserResponse
 import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
+import com.example.eraofband.remote.makePofol.MakePofolResponse
 import com.example.eraofband.remote.patchuser.PatchUserResponse
 import com.example.eraofband.remote.portfolio.*
 import com.example.eraofband.remote.sendimg.SendImgResponse
@@ -48,6 +46,10 @@ interface API {
     // 내 포트폴리오 리스트 조회
     @GET("/pofol/my/")
     fun getMyPofol(@Query("userIdx") userIdx: Int) : Call<GetMyPofolResponse>
+
+    // 내 포트폴리오 등록
+    @POST("/pofol")
+    fun makePofol(@Header("X-ACCESS-TOKEN") jwt: String, @Body portfolio: Portfolio) : Call<MakePofolResponse>
 
     // 포트폴리오 좋아요
     @POST("/pofol/{pofolIdx}/likes")

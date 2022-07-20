@@ -185,9 +185,11 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
     @SuppressLint("SetTextI18n")
     override fun onGetSuccess(code: Int, result: GetMyPageResult) {
         // Glide로 이미지 표시하기
-        // Glide로 이미지 표시하기
         profileUrl = result.getUser.profileImgUrl
-        Glide.with(this).load(profileUrl).into(binding.profileEditProfileIv)
+        Glide.with(this).load(profileUrl)
+            .apply(RequestOptions.centerCropTransform())
+            .apply(RequestOptions.circleCropTransform())
+            .into(binding.profileEditProfileIv)
 
         binding.profileEditNicknameEt.setText(result.getUser.nickName)  // 닉네임 연결
 
@@ -301,10 +303,8 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
                 // 이미지 가져오기 성공하면 원래 이미지를 없애고 가져온 사진을 넣어줌
                 // 이미지 동그랗게 + CenterCrop
                 if (selectedImageUri != null) {
-                    Glide.with(this)
-                        .load(selectedImageUri)
-                        .apply(RequestOptions.centerCropTransform())
-                        .apply(RequestOptions.circleCropTransform())
+                    Glide.with(this).load(selectedImageUri)
+                        .apply(RequestOptions.centerCropTransform()).apply(RequestOptions.circleCropTransform())
                         .into(binding.profileEditProfileIv)
 
                     val imgPath = absolutelyPath(selectedImageUri, this)
