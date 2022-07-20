@@ -72,23 +72,11 @@ class MyPageFragment : Fragment(), GetMyPageView {
             }
         })
 
-
-        binding.mypageFollowing.setOnClickListener {
-            var intent = Intent(context, FollowActivity::class.java)
-            intent.putExtra("current", 0)
-            startActivity(intent)
-        }
-
-        binding.mypageFollower.setOnClickListener {
-            var intent = Intent(context, FollowActivity::class.java)
-            intent.putExtra("current", 1)
-            startActivity(intent)
-        }
-
         binding.mypageFab.setOnClickListener{
             startActivity(Intent(activity, PortfolioMakeActivity::class.java))
         }
         connectVP()
+        moveFollowActivity()
     }
 
     override fun onStart() {
@@ -103,6 +91,20 @@ class MyPageFragment : Fragment(), GetMyPageView {
     }
 
 //----------------------------------------------------------------------------------------------------
+
+    private fun moveFollowActivity() {
+        binding.mypageFollowing.setOnClickListener {
+            var intent = Intent(context, FollowActivity::class.java)
+            intent.putExtra("current", 0)
+            startActivity(intent)
+        }
+
+        binding.mypageFollower.setOnClickListener {
+            var intent = Intent(context, FollowActivity::class.java)
+            intent.putExtra("current", 1)
+            startActivity(intent)
+        }
+    }
 
     private fun getUserIdx() : Int {
         val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
@@ -203,6 +205,7 @@ class MyPageFragment : Fragment(), GetMyPageView {
             else ->  binding.mypageSessionTv.text = "드럼"
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

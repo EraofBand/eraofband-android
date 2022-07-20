@@ -13,17 +13,24 @@ import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentUserMypageBinding
 import com.example.eraofband.main.MainActivity
 import com.example.eraofband.main.mypage.follow.FollowActivity
+import com.example.eraofband.remote.getMyPage.GetMyPageService
 import com.example.eraofband.remote.getotheruser.GetOtherUserResult
 import com.example.eraofband.remote.getotheruser.GetOtherUserService
 import com.example.eraofband.remote.getotheruser.GetOtherUserView
+import com.example.eraofband.remote.userfollow.UserFollowResponse
+import com.example.eraofband.remote.userfollow.UserFollowService
+import com.example.eraofband.remote.userfollow.UserFollowView
+import com.example.eraofband.remote.userunfollow.UserUnfollowResponse
+import com.example.eraofband.remote.userunfollow.UserUnfollowView
 import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 import java.util.*
 
-class UserMyPageFragment : Fragment(), GetOtherUserView {
+class UserMyPageFragment : Fragment(), GetOtherUserView, UserFollowView, UserUnfollowView {
 
     private var _binding: FragmentUserMypageBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
+    private var otherUserIdx : Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +38,12 @@ class UserMyPageFragment : Fragment(), GetOtherUserView {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentUserMypageBinding.inflate(inflater, container, false)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val userMyPageAdapter = UserMyPageVPAdapter(this)
         binding.userMypageVp.adapter = userMyPageAdapter
@@ -42,6 +55,32 @@ class UserMyPageFragment : Fragment(), GetOtherUserView {
             }
         }.attach()
 
+        binding.userMypageFollowTv.setOnClickListener {
+            binding.userMypageFollowTv.visibility = View.GONE
+            binding.userMypageUnfollowTv.visibility = View.VISIBLE
+            val userFollowService = UserFollowService()
+            userFollowService.setUserFollowView(this)
+            userFollowService.userFollow(getJwt()!!, otherUserIdx!!)
+        }
+
+        binding.userMypageUnfollowTv.setOnClickListener {
+            binding.userMypageFollowTv.visibility = View.VISIBLE
+            binding.userMypageUnfollowTv.visibility = View.GONE
+            val userFollowService = UserFollowService()
+            userFollowService.setUserFollowView(this)
+            userFollowService.userFollow(getJwt()!!, otherUserIdx!!)
+        }
+        moveFollowActivity()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val getOtherUserService = GetOtherUserService()
+        getOtherUserService.setOtherUserView(this)
+        getOtherUserService.getOtherUser(getJwt()!!, getUserIdx())
+    }
+
+    private fun moveFollowActivity() {
         binding.userMypageFollowing.setOnClickListener {
             var intent = Intent(context, FollowActivity::class.java)
             intent.putExtra("current", 0)
@@ -53,15 +92,6 @@ class UserMyPageFragment : Fragment(), GetOtherUserView {
             intent.putExtra("current", 1)
             startActivity(intent)
         }
-        return binding.root
-    }
-
-    override fun onStart() {
-        super.onStart()
-        val getOtherUserService = GetOtherUserService()
-
-        getOtherUserService.setOtherUserView(this)
-        getOtherUserService.getOtherUser(getJwt()!!, getUserIdx())
     }
 
     private fun getUserIdx() : Int {
@@ -74,9 +104,23 @@ class UserMyPageFragment : Fragment(), GetOtherUserView {
         return userSP.getString("jwt", "")
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    @SuppressLint("SimpleDateFormat")
+    private fun setDate() : String {  // 오늘 날짜 불러오기
+        val today = System.currentTimeMillis()  // 현재 날짜, 시각 불러오기
+        val date = Date(today)
+        val mFormat = SimpleDateFormat("yyyy-MM-dd")
+
+        return mFormat.format(date)
+    }
+
+    private fun setSession(session : Int) {
+        when (session) {
+            0 -> binding.userMypageSessionTv.text = "보컬"
+            1 -> binding.userMypageSessionTv.text = "기타"
+            2 -> binding.userMypageSessionTv.text = "베이스"
+            3 -> binding.userMypageSessionTv.text = "드럼"
+            else ->  binding.userMypageSessionTv.text = "키보드"
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -86,6 +130,8 @@ class UserMyPageFragment : Fragment(), GetOtherUserView {
         Log.d("MYPAGE", result.toString())
         binding.userMypageNicknameTv.text = result.getUser.nickName
         binding.userMypageInfoNicknameTv.text = result.getUser.nickName // 닉네임 연동
+
+        otherUserIdx = result.getUser.userIdx // This page userIdx
 
         // 디테일한 소개 연동
 
@@ -102,7 +148,7 @@ class UserMyPageFragment : Fragment(), GetOtherUserView {
 
         binding.userMypageIntroductionTv.text = result.getUser.introduction  // 내 소개 연동
 
-        if(binding.userMypageIntroductionTv.lineCount > 3) {
+        if (binding.userMypageIntroductionTv.lineCount > 3) {
             binding.userMypageLookMoreTv.visibility = View.VISIBLE  // 더보기 표시
 
             // 더보기 클릭 이벤트
@@ -130,23 +176,26 @@ class UserMyPageFragment : Fragment(), GetOtherUserView {
         Log.d("USER MYPAGE / FAIL", "$code $message")
     }
 
-
-    @SuppressLint("SimpleDateFormat")
-    private fun setDate() : String {  // 오늘 날짜 불러오기
-        val today = System.currentTimeMillis()  // 현재 날짜, 시각 불러오기
-        val date = Date(today)
-        val mFormat = SimpleDateFormat("yyyy-MM-dd")
-
-        return mFormat.format(date)
+    // 팔로우 리스폰스----------------------------------------------------------------
+    override fun onUserFollowSuccess(code: Int, response: UserFollowResponse) {
+        Log.d("USER FOLLOW / SUCCESS", "코드 : $code / 응답 : $response")
     }
 
-    private fun setSession(session : Int) {
-        when (session) {
-            0 -> binding.userMypageSessionTv.text = "보컬"
-            1 -> binding.userMypageSessionTv.text = "기타"
-            2 -> binding.userMypageSessionTv.text = "베이스"
-            3 -> binding.userMypageSessionTv.text = "드럼"
-            else ->  binding.userMypageSessionTv.text = "키보드"
-        }
+    override fun onUserFollowFailure(code: Int, message: String) {
+        Log.d("USER FOLLOW / FAIL", "$code $message")
+    }
+
+    // 언팔로우 리스폰스-------------------------------------------------------------------
+    override fun onUserUnfollowSuccess(code: Int, response: UserUnfollowResponse) {
+        Log.d("USER UNFOLLOW / SUCCESS", "코드 : $code / 응답 : $response")
+    }
+
+    override fun onUserUnfollowFailure(code: Int, message: String) {
+        Log.d("USER UNLLOW / FAIL", "$code $message")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

@@ -89,6 +89,7 @@ interface API {
     @DELETE("/users/unfollow/{userIdx}")
     fun userUnfollow(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<UserUnfollowResponse>
 
+    // 유저 팔로우 리스트 불러오기
     @GET("/users/follow-info/{userIdx}")
     fun userFollowList(@Path("userIdx") userIdx: Int) : Call<UserFollowListResponse>
 
