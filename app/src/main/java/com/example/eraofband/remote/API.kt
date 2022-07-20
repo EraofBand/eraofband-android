@@ -1,12 +1,10 @@
 package com.example.eraofband.remote
 
-
 import com.example.eraofband.data.*
 import com.example.eraofband.remote.checkUser.CheckUserResponse
 import com.example.eraofband.remote.patchSession.PatchSessionResponse
 import com.example.eraofband.remote.getMyPage.GetMyPageResponse
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResponse
-import com.example.eraofband.remote.getuser.GetUserResponse
 import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
 import com.example.eraofband.remote.makePofol.MakePofolResponse
 import com.example.eraofband.remote.patchuser.PatchUserResponse
@@ -24,7 +22,7 @@ interface API {
     fun kakaoLogin(@Body user: User, @Path("access-token") token : String) : Call<KakaoLoginResponse>
 
     // 가입된 유저인지 확인
-    @PATCH("/users/login/{kakao-email}")
+    @POST("/users/login/{kakao-email}")
     fun checkUser(@Path("kakao-email") email : String) : Call<CheckUserResponse>
 
     // 마이페이지 정보 조회
@@ -68,16 +66,12 @@ interface API {
     fun pofolComment(@Query("pofolIdx") pofolIdx: Int) : Call<PofolCommentResponse>
 
     // 포트폴리오 댓글 달기
-    @POST("/pofol/comment/{pofolIdx}")
+    @POST("/pofols/comment/{pofolIdx}")
     fun pofolWriteComment(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx: Int, @Body comment: Comment) : Call<PofolCommentWriteResponse>
 
     // 포트폴리오 댓글 삭제하기
     @PATCH("/pofols/comment/status/{pofolCommentIdx}")
     fun pofolDeleteComment(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolCommentIdx") commentIdx: Int, @Body userIdx: Int) : Call<PofolCommentDeleteResponse>
-
-    // 다른회원 정보 조회
-    @GET("/users/info/{userIdx}")
-    fun getUser(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx : Int) : Call<GetUserResponse>
 
     // 이미지 전송
     @Multipart

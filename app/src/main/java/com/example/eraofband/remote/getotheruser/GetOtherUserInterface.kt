@@ -7,7 +7,7 @@ import retrofit2.http.Header
 import retrofit2.http.Path
 
 interface GetOtherUserInterface {
-    @GET("/users/{userIdx}")
+    @GET("/users/info/{userIdx}")
     fun getUser(@Header("X-ACCESS-TOKEN") jwt : String, @Path("userIdx") userIdx : Int) : Call<GetOtherUserResponse>
 
 }

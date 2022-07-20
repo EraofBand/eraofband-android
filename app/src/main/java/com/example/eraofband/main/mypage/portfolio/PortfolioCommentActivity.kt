@@ -171,9 +171,9 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
         Log.d("GETCOMMENT/FAIL", "$code $message")
     }
 
-    override fun onCommentWriteSuccess(code: Int, result: List<PofolCommentWriteResult>) {
+    override fun onCommentWriteSuccess(code: Int, result: PofolCommentWriteResult) {
         Log.d("WRITECOMMENT/SUC", result.toString())
-        commentRVAdapter.addComment(PofolCommentResult(result[0].content, result[0].nickName, result[0].pofolCommentIdx, result[0].pofolIdx, result[0].profileImgUrl,result[0].updatedAt, result[0].userIdx))
+        commentRVAdapter.addComment(PofolCommentResult(result.content, result.nickName, result.pofolCommentIdx, result.pofolIdx, result.profileImgUrl,result.updatedAt, result.userIdx))
 
         // 키보드 원상태로 되돌리기
         binding.portfolioCommentWriteEt.text = null

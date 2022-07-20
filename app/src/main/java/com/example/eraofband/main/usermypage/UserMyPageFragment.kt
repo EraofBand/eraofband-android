@@ -123,7 +123,7 @@ class UserMyPageFragment : Fragment(), GetOtherUserView {
         binding.userMypageFollowerCntTv.text = result.getUser.followerCount.toString()
         binding.userMypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
-        setSession(result.getUser.session)  // 세션 연동
+        setSession(result.getUser.userSession)  // 세션 연동
     }
 
     override fun onGetFailure(code: Int, message: String) {
