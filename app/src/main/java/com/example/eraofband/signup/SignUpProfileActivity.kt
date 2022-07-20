@@ -239,15 +239,16 @@ class SignUpProfileActivity : AppCompatActivity(), SendImgView {
     }
 
     private fun absolutelyPath(path: Uri?, context : Context): String {
-        var proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
-        var c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
-        var index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
+        val c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
+        val index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
         c?.moveToFirst()
 
-        var result = c?.getString(index!!)
+        val result = c?.getString(index!!)
 
         return result!!
     }
+
     override fun onSendSuccess(response: SendImgResponse) {
         Log.d("SENDIMGss", response.toString())
         user.profileImgUrl = response.result

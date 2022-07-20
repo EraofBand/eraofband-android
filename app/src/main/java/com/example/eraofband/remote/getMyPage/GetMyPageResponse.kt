@@ -26,8 +26,7 @@ data class GetUser (
     @SerializedName(value = "pofolCount") var pofolCount : Int,
     @SerializedName(value = "profileImgUrl") var profileImgUrl : String,
     @SerializedName(value = "region") var region : String,
-    @SerializedName(value = "session") var session : Int,
-    @SerializedName(value = "userIdx") var userIdx : Int
+    @SerializedName(value = "userSession") var userSession : Int
 )
 
 data class GetUserBand (
@@ -35,15 +34,19 @@ data class GetUserBand (
     @SerializedName(value = "bandImgUrl") var bandImgUrl : String,
     @SerializedName(value = "bandIntroduction") var bandIntroduction : String,
     @SerializedName(value = "bandRegion") var bandRegion : String,
-    @SerializedName(value = "bandTitle") var bandTitle : String
+    @SerializedName(value = "bandTitle") var bandTitle : String,
+    @SerializedName(value = "capacity") var capacity : Int,
+    @SerializedName(value = "memberCount") var memberCount : Int
 )
 
 data class GetUserLesson (
-    @SerializedName(value = "bandIdx") var lessonIdx : Int,
-    @SerializedName(value = "bandImgUrl") var lessonImgUrl : String,
-    @SerializedName(value = "bandIntroduction") var lessonIntroduction : String,
-    @SerializedName(value = "bandRegion") var lessonRegion : String,
-    @SerializedName(value = "bandTitle") var lessonTitle : String
+    @SerializedName(value = "capacity") var capacity : Int,
+    @SerializedName(value = "lessonIdx") var lessonIdx : Int,
+    @SerializedName(value = "lessonImgUrl") var lessonImgUrl : String,
+    @SerializedName(value = "lessonIntroduction") var lessonIntroduction : String,
+    @SerializedName(value = "lessonRegion") var lessonRegion : String,
+    @SerializedName(value = "lessonTitle") var lessonTitle : String,
+    @SerializedName(value = "memberCount") var memberCount : Int
 )
 
 data class GetUserPofol (
