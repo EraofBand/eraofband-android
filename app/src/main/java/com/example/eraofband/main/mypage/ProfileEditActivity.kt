@@ -64,7 +64,7 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
         val getMyPageService = GetMyPageService()
 
         getMyPageService.setUserView(this)
-        getMyPageService.getUser(getJwt()!!, getUserIdx())
+        getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
 
         binding.profileEditCameraIv.setOnClickListener {
             initImageViewProfile()

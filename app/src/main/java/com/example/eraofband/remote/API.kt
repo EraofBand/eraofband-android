@@ -28,8 +28,8 @@ interface API {
     fun checkUser(@Path("kakao-email") email : String) : Call<CheckUserResponse>
 
     // 마이페이지 정보 조회
-    @GET("/users/my-page/{userIdx}")
-    fun getUser(@Header("X-ACCESS-TOKEN") jwt : String, @Path("userIdx") userIdx : Int) : Call<GetMyPageResponse>
+    @GET("/users/info/my-page/{userIdx}")
+    fun getMyInfo(@Header("X-ACCESS-TOKEN") jwt : String, @Path("userIdx") userIdx : Int) : Call<GetMyPageResponse>
 
     // 회원 정보 변경
     @PATCH("/users/user-info")
@@ -40,40 +40,44 @@ interface API {
     fun patchSession(@Header("X-ACCESS-TOKEN") jwt : String, @Body session: Session): Call<PatchSessionResponse>
 
     // 회원 탈퇴
-    @PATCH("/users/delete/{userIdx}")
+    @PATCH("/users/status/{userIdx}")
     fun resign(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<ResignResponse>
 
     // 내 포트폴리오 리스트 조회
-    @GET("/pofol/my/")
-    fun getMyPofol(@Query("userIdx") userIdx: Int) : Call<GetMyPofolResponse>
+    @GET("/pofols/info/{userIdx}")
+    fun getMyPofol(@Path("userIdx") userIdx: Int) : Call<GetMyPofolResponse>
 
     // 내 포트폴리오 등록
-    @POST("/pofol")
+    @POST("/pofols")
     fun makePofol(@Header("X-ACCESS-TOKEN") jwt: String, @Body portfolio: Portfolio) : Call<MakePofolResponse>
 
+    // 내 포트폴리오 수정
+    @PATCH("/pofols/pofol-info/{pofolIdx}/")
+    fun patchPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx: Int)
+
     // 포트폴리오 좋아요
-    @POST("/pofol/{pofolIdx}/likes")
+    @POST("/pofols/likes/{pofolIdx}")
     fun pofolLike(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx : Int) : Call<PofolLikeResponse>
 
     // 포트폴리오 좋아요 취소
-    @DELETE("/pofol/{pofolIdx}/unlikes")
+    @DELETE("/pofols/unlikes/{pofolIdx}")
     fun pofolDeleteLike(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx : Int) : Call<PofolDeleteLikeResponse>
 
     // 포트폴리오 댓글 불러오기
-    @GET("/pofol/comment/")
+    @GET("/pofols/info/comment")
     fun pofolComment(@Query("pofolIdx") pofolIdx: Int) : Call<PofolCommentResponse>
 
     // 포트폴리오 댓글 달기
-    @POST("/pofol/{pofolIdx}/comment")
+    @POST("/pofol/comment/{pofolIdx}")
     fun pofolWriteComment(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx: Int, @Body comment: Comment) : Call<PofolCommentWriteResponse>
 
     // 포트폴리오 댓글 삭제하기
-    @PATCH("/pofol/{pofolCommentIdx}/comment/status")
-    fun pofolDeleteComment(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolCommentIdx") commentIdx: Int, @Query("userIdx") userIdx: Int) : Call<PofolCommentDeleteResponse>
+    @PATCH("/pofols/comment/status/{pofolCommentIdx}")
+    fun pofolDeleteComment(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolCommentIdx") commentIdx: Int, @Body userIdx: Int) : Call<PofolCommentDeleteResponse>
 
     // 다른회원 정보 조회
-    @GET("/users/{userIdx}")
-    fun getUser(@Path("userIdx") userIdx : Int) : Call<GetUserResponse>
+    @GET("/users/info/{userIdx}")
+    fun getUser(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx : Int) : Call<GetUserResponse>
 
     // 이미지 전송
     @Multipart

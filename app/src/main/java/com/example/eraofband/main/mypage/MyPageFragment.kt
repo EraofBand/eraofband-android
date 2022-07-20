@@ -100,7 +100,7 @@ class MyPageFragment : Fragment(), GetMyPageView {
         val getMyPageService = GetMyPageService()
 
         getMyPageService.setUserView(this)
-        getMyPageService.getUser(getJwt()!!, getUserIdx())
+        getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
     }
 
 //----------------------------------------------------------------------------------------------------
@@ -180,8 +180,8 @@ class MyPageFragment : Fragment(), GetMyPageView {
         binding.mypageFollowerCntTv.text = result.getUser.followerCount.toString()
         binding.mypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
-        setSession(result.getUser.session)  // 세션 연동
-        mySession = result.getUser.session
+        setSession(result.getUser.userSession)  // 세션 연동
+        mySession = result.getUser.userSession
     }
 
     override fun onGetFailure(code: Int, message: String) {

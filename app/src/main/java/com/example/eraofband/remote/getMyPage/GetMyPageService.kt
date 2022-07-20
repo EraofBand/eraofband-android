@@ -14,11 +14,11 @@ class GetMyPageService {
         this.getMyPageView = getMyPageView
     }
 
-    fun getUser(jwt: String, userIdx: Int) {
+    fun getMyInfo(jwt: String, userIdx: Int) {
 
         val getMyPageService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
-        getMyPageService?.getUser(jwt, userIdx)?.enqueue(object : Callback<GetMyPageResponse> {
+        getMyPageService?.getMyInfo(jwt, userIdx)?.enqueue(object : Callback<GetMyPageResponse> {
             override fun onResponse(call: Call<GetMyPageResponse>, response: Response<GetMyPageResponse>) {
                 // 응답이 왔을 때 처리
                 Log.d("GET / SUCCESS", response.toString())
