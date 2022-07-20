@@ -1,6 +1,7 @@
 package com.example.eraofband.main.mypage
 
 import android.annotation.SuppressLint
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -99,7 +100,7 @@ class MyPageFragment : Fragment(), GetMyPageView {
         val getMyPageService = GetMyPageService()
 
         getMyPageService.setUserView(this)
-        getMyPageService.getUser(getJwt()!!, getUserIdx())
+        getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
     }
 
 //----------------------------------------------------------------------------------------------------
@@ -129,18 +130,21 @@ class MyPageFragment : Fragment(), GetMyPageView {
 
     @SuppressLint("SetTextI18n")
     override fun onGetSuccess(code: Int, result: GetMyPageResult) {
-
-
         Log.d("MYPAGE", result.toString())
         // 닉네임 연동
         binding.mypageNicknameTv.text = result.getUser.nickName
 
-        // 글라이드르 이용한 프로필사진 연동
-        Glide.with(this)
-            .load(result.getUser.profileImgUrl)
+        // 글라이드를 이용한 프로필사진 연동
+        Glide.with(this).load(result.getUser.profileImgUrl)
             .apply(RequestOptions.centerCropTransform())
             .apply(RequestOptions.circleCropTransform())
             .into(binding.mypageProfileimgIv)
+
+        // 프사 url 저장
+        val profileSP = requireActivity().getSharedPreferences("profile", MODE_PRIVATE)
+        val editor = profileSP.edit()
+        editor.putString("url", result.getUser.profileImgUrl)
+        editor.apply()
 
         // 디테일한 소개 연동
         val index = result.getUser.region.split(" ")
@@ -176,8 +180,8 @@ class MyPageFragment : Fragment(), GetMyPageView {
         binding.mypageFollowerCntTv.text = result.getUser.followerCount.toString()
         binding.mypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
-        setSession(result.getUser.session)  // 세션 연동
-        mySession = result.getUser.session
+        setSession(result.getUser.userSession)  // 세션 연동
+        mySession = result.getUser.userSession
     }
 
     override fun onGetFailure(code: Int, message: String) {

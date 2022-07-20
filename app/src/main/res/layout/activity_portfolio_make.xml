@@ -29,7 +29,7 @@
             android:id="@+id/portfolio_make_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="포트폴리오 등록"
+            android:text="@string/makePortfolio"
             android:textSize="20sp"
             android:fontFamily="@font/pretendard_medium"
             android:textColor="@color/white"
@@ -47,7 +47,8 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/medium_gray_round_bg"
-        android:hint="제목"
+        android:hint="@string/title"
+        android:inputType="textMultiLine"
         android:lineSpacingExtra="5dp"
         android:maxLength="20"
         android:maxLines="2"
@@ -58,15 +59,15 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/portfolio_make_cl" />
+        app:layout_constraintTop_toBottomOf="@id/portfolio_make_cl"
+        tools:ignore="Autofill" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/portfolio_make_video_cl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="280dp"
         android:layout_margin="20dp"
         android:background="@drawable/medium_gray_round_bg"
-        android:paddingVertical="60dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/portfolio_make_title_et">
@@ -76,9 +77,11 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:src="@drawable/ic_portfolio_make_video"
+            app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/portfolio_make_video_title_tv"/>
 
         <TextView
             android:id="@+id/portfolio_make_video_title_tv"
@@ -86,12 +89,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/pretendard_medium"
-            android:text="포트폴리오 영상 등록"
+            android:text="@string/uploadVideo"
             android:textColor="@color/blue"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@+id/portfolio_make_video_iv"
             app:layout_constraintStart_toStartOf="@+id/portfolio_make_video_iv"
-            app:layout_constraintTop_toBottomOf="@+id/portfolio_make_video_iv" />
+            app:layout_constraintTop_toBottomOf="@+id/portfolio_make_video_iv"
+            app:layout_constraintBottom_toTopOf="@id/portfolio_make_video_explain_tv"/>
 
         <TextView
             android:id="@+id/portfolio_make_video_explain_tv"
@@ -105,8 +109,22 @@
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@+id/portfolio_make_video_title_tv"
             app:layout_constraintStart_toStartOf="@+id/portfolio_make_video_title_tv"
-            app:layout_constraintTop_toBottomOf="@+id/portfolio_make_video_title_tv" />
+            app:layout_constraintTop_toBottomOf="@+id/portfolio_make_video_title_tv"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/portfolio_thumbnail_iv"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:scaleType="centerCrop"
+        android:background="@drawable/medium_gray_round_bg"
+        android:visibility="gone"
+        android:layout_margin="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/portfolio_make_title_et"/>
 
     <EditText
         android:id="@+id/portfolio_make_video_intro_et"
@@ -115,7 +133,7 @@
         android:layout_margin="20dp"
         android:background="@drawable/medium_gray_round_bg"
         android:gravity="top"
-        android:hint="포트폴리오에 대해 설명해주세요."
+        android:hint="@string/explainPortfolio"
         android:inputType="textMultiLine"
         android:lineSpacingExtra="5dp"
         android:maxLength="100"
@@ -126,13 +144,14 @@
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/portfolio_make_video_cl" />
+        app:layout_constraintTop_toBottomOf="@id/portfolio_make_video_cl"
+        tools:ignore="Autofill" />
 
     <Button
         android:id="@+id/portfolio_make_save_bt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="등록하기"
+        android:text="@string/make"
         android:textSize="17sp"
         android:fontFamily="@font/pretendard_medium"
         android:background="@drawable/blue_round_bg"
