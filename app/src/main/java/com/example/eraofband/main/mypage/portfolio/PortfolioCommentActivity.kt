@@ -29,7 +29,7 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
     private lateinit var binding : ActivityPortfolioCommentBinding
 
     private val commentService = PofolCommentService()
-    private val commentRVAdapter = PortfolioCommentRVAdapter()
+    private val commentRVAdapter = PortfolioCommentRVAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,9 +115,6 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
         val themeWrapper = ContextThemeWrapper(applicationContext , R.style.MyPopupMenu)
         val popupMenu = PopupMenu(themeWrapper, view, Gravity.END, 0, R.style.MyPopupMenu)
         popupMenu.menuInflater.inflate(R.menu.my_comment_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
-
-//        val popup = androidx.appcompat.widget.PopupMenu(applicationContext, view) // PopupMenu 객체 선언
-//        popup.menuInflater.inflate(R.menu.my_comment_menu, popup.menu) // 메뉴 레이아웃 inflate
 
         popupMenu.setOnMenuItemClickListener { item ->
             if (item!!.itemId == R.id.comment_delete) {

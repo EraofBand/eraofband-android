@@ -48,7 +48,7 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
     }
 
     private fun initRecyclerView(item: List<GetMyPofolResult>) {
-        val portfolioAdapter = PortfolioListRVAdapter(getJwt()!!)
+        val portfolioAdapter = PortfolioListRVAdapter(getJwt()!!, this)
         binding.portfolioListPortfolioRv.adapter = portfolioAdapter
         binding.portfolioListPortfolioRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 

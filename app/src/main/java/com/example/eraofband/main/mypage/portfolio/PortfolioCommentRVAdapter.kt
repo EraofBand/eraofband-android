@@ -1,15 +1,18 @@
 package com.example.eraofband.main.mypage.portfolio
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ItemCommentBinding
 import com.example.eraofband.remote.portfolio.PofolCommentResult
 
-class PortfolioCommentRVAdapter : RecyclerView.Adapter<PortfolioCommentRVAdapter.ViewHolder>() {
+class PortfolioCommentRVAdapter(private val context: Context) : RecyclerView.Adapter<PortfolioCommentRVAdapter.ViewHolder>() {
     private var comment = arrayListOf<PofolCommentResult>()
 
     @SuppressLint("NotifyDataSetChanged")
@@ -57,10 +60,13 @@ class PortfolioCommentRVAdapter : RecyclerView.Adapter<PortfolioCommentRVAdapter
     inner class ViewHolder(val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(comment: PofolCommentResult) {
-            binding.commentProfileIv.setImageResource(R.drawable.ic_captain)  // 나중에 img 넣을 예정
-            binding.commentNicknameTv.text = comment.nickName
-            binding.commentCommentTv.text = comment.content
-            binding.commentTimeTv.text = comment.updatedAt
+            Glide.with(context).load(comment.profileImgUrl)  // 프로필 사진
+                .apply(RequestOptions.centerCropTransform())
+                .apply(RequestOptions.circleCropTransform()).into(binding.commentProfileIv)
+
+            binding.commentNicknameTv.text = comment.nickName  // 닉네임
+            binding.commentCommentTv.text = comment.content  // 댓글 내용
+            binding.commentTimeTv.text = comment.updatedAt  // 댓글 단 시간
 
             binding.commentProfileIv.setOnClickListener {
                 mItemClickListener.onItemClick(comment)

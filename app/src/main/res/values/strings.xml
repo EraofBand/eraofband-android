@@ -54,6 +54,13 @@
     <string name="portfolio">포트폴리오</string>
     <string name="belong_band">소속밴드</string>
 
+    <!-- 포트폴리오 등록 관련 String -->
+    <string name="makePortfolio">포트폴리오 등록</string>
+    <string name="title">제목</string>
+    <string name="uploadVideo">포트폴리오 영상 등록</string>
+    <string name="explainPortfolio">포트폴리오에 대해 설명해주세요.</string>
+    <string name="make">등록하기</string>
+
     <!-- 프로필 편집 관련 String -->
     <string name="profile_edit">프로필 편집</string>
     <string name="my_introduce">내 소개</string>

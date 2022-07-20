@@ -1,6 +1,5 @@
 package com.example.eraofband.signup
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
@@ -10,19 +9,15 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.Log
-import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.data.User
 import com.example.eraofband.databinding.ActivitySignupGenderBinding
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 class SignUpGenderActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignupGenderBinding
-    private var gender = 0
     private var user = User("", "", "", "", "", "", 0)
 
 

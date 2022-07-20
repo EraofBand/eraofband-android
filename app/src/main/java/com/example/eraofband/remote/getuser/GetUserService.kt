@@ -14,11 +14,11 @@ class GetUserService {
         this.getUserView = getUserView
     }
 
-    fun getUser(userIdx: Int) {
+    fun getUser(jwt: String, userIdx: Int) {
 
         val getUserService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
-        getUserService?.getUser(userIdx)?.enqueue(object : Callback<GetUserResponse> {
+        getUserService?.getUser(jwt, userIdx)?.enqueue(object : Callback<GetUserResponse> {
             override fun onResponse(call: Call<GetUserResponse>, response: Response<GetUserResponse>) {
                 // 응답이 왔을 때 처리
                 Log.d("GET / SUCCESS", response.toString())

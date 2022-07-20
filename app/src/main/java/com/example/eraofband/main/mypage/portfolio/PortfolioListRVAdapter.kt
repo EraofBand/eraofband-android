@@ -1,11 +1,14 @@
 package com.example.eraofband.main.mypage.portfolio
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ItemPortfolioListBinding
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResult
@@ -15,7 +18,7 @@ import com.example.eraofband.remote.portfolio.PofolLikeResult
 import com.example.eraofband.remote.portfolio.PofolLikeService
 import com.example.eraofband.remote.portfolio.PofolLikeView
 
-class PortfolioListRVAdapter(private val jwt: String) : RecyclerView.Adapter<PortfolioListRVAdapter.ViewHolder>(), PofolLikeView {
+class PortfolioListRVAdapter(private val jwt: String, private val context: Context) : RecyclerView.Adapter<PortfolioListRVAdapter.ViewHolder>(), PofolLikeView {
     private val portfolio = arrayListOf<GetMyPofolResult>()
     private var videoPlayer: ExoPlayer? = null
 
@@ -95,8 +98,10 @@ class PortfolioListRVAdapter(private val jwt: String) : RecyclerView.Adapter<Por
             videoPlayer?.setMediaItem(mediaItem)
             
             // 내 정보
-            binding.portfolioListProfileIv.setImageResource(R.drawable.ic_captain)  // 프사 임의로 지정
-            binding.portfolioListNicknameTv.text = portfolio.nickName
+            Glide.with(context).load(portfolio.profileImgUrl)  // 프로필 사진
+                .apply(RequestOptions.centerCropTransform())
+                .apply(RequestOptions.circleCropTransform()).into(binding.portfolioListProfileIv)
+            binding.portfolioListNicknameTv.text = portfolio.nickName  // 닉네임
 
             // 비디오플레이어 관련
             binding.portfolioListVideo.clipToOutline = true             // 비디오 모서리 둥글게

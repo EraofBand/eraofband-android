@@ -20,7 +20,6 @@ class SignUpLocationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignupLocationBinding
     private var user = User("", "", "", "", "", "", 0)
-    private lateinit var location: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,12 +28,12 @@ class SignUpLocationActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         var intent = intent
-        var user = intent.extras?.getSerializable("user") as User
+        user = intent.extras?.getSerializable("user") as User
 
         intent = Intent(this, SignUpSessionActivity::class.java)
 
         binding.signupLocationNextBtn.setOnClickListener {
-            user.region = location
+            user.region = binding.signupLocationCitySp.selectedItem.toString() + " " + binding.signupLocationAreaSp.selectedItem.toString()
             intent.putExtra("user", user)
             startActivity(intent)
             overridePendingTransition(R.anim.slide_right, R.anim.slide_left)
@@ -80,8 +79,6 @@ class SignUpLocationActivity : AppCompatActivity() {
                     val areaAdapter = ArrayAdapter(applicationContext, R.layout.item_spinner, area)
                     binding.signupLocationAreaSp.adapter = areaAdapter
                     binding.signupLocationAreaSp.setSelection(0)
-
-                    location = "서울 " + binding.signupLocationAreaSp.selectedItem.toString()
                 }
                 else {  // 경기도면 경기도 지역 연결
                     val area = resources.getStringArray(R.array.gyeonggido)
@@ -89,8 +86,6 @@ class SignUpLocationActivity : AppCompatActivity() {
                     val areaAdapter = ArrayAdapter(applicationContext, R.layout.item_spinner, area)
                     binding.signupLocationAreaSp.adapter = areaAdapter
                     binding.signupLocationAreaSp.setSelection(0)
-
-                    location = "경기도 " + binding.signupLocationAreaSp.selectedItem.toString()
                 }
             }
 
