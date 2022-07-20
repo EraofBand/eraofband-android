@@ -31,7 +31,7 @@ class PortfolioCommentRVAdapter : RecyclerView.Adapter<PortfolioCommentRVAdapter
     }
 
     interface MyItemClickListener {
-        fun onItemClick()
+        fun onItemClick(comment: PofolCommentResult)
         fun onShowPopUp(commentIdx: Int,position: Int, userIdx: Int, view: View)
     }
 
@@ -63,7 +63,7 @@ class PortfolioCommentRVAdapter : RecyclerView.Adapter<PortfolioCommentRVAdapter
             binding.commentTimeTv.text = comment.updatedAt
 
             binding.commentProfileIv.setOnClickListener {
-                mItemClickListener.onItemClick()
+                mItemClickListener.onItemClick(comment)
             }
        }
     }

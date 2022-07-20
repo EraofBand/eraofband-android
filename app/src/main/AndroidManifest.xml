@@ -95,6 +95,9 @@
         <activity
             android:name=".main.chat.ChatContentActivity"
             android:exported="false" />
+        <activity
+            android:name=".main.usermypage.UserMyPageActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>
