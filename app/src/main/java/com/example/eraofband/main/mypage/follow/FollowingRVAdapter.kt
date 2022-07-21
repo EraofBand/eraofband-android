@@ -43,6 +43,9 @@ class FollowingRVAdapter() : RecyclerView.Adapter<FollowingRVAdapter.ViewHolder>
         holder.binding.itemFollowNicknameTv.setOnClickListener{  // 팔로우리스트에 있는 유저 클릭 시 이동
             mItemClickListener.onItemClick(followList[position])
         }
+        holder.binding.itemFollowProfileIv.setOnClickListener {
+            mItemClickListener.onItemClick(followList[position])
+        }
     }
 
     override fun getItemCount(): Int = followList.size
