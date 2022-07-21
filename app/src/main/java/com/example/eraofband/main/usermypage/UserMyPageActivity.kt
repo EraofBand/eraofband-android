@@ -4,33 +4,35 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.example.eraofband.R
-import com.example.eraofband.databinding.FragmentUserMypageBinding
-import com.example.eraofband.main.MainActivity
+import com.example.eraofband.databinding.ActivityUserMypageBinding
 import com.example.eraofband.main.mypage.follow.FollowActivity
 import com.example.eraofband.remote.getotheruser.GetOtherUserResult
 import com.example.eraofband.remote.getotheruser.GetOtherUserService
 import com.example.eraofband.remote.getotheruser.GetOtherUserView
+import com.example.eraofband.remote.portfolio.PofolCommentResult
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
 
-class UserMyPageFragment : Fragment(), GetOtherUserView {
+class UserMyPageActivity : AppCompatActivity(), GetOtherUserView {
 
-    private var _binding: FragmentUserMypageBinding? = null
-    private val binding get() = _binding!! // 바인딩 누수 방지
+    private lateinit var binding: ActivityUserMypageBinding
+    private var userIdx = 0
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentUserMypageBinding.inflate(inflater, container, false)
+    override fun onCreate(savedInstanceState: Bundle?){
+        super.onCreate(savedInstanceState)
+
+        binding = ActivityUserMypageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val intent = intent
+        userIdx = intent.extras?.getInt("comment")!!
+        Log.d("USER INDEX", userIdx.toString())
 
         val userMyPageAdapter = UserMyPageVPAdapter(this)
         binding.userMypageVp.adapter = userMyPageAdapter
@@ -43,17 +45,17 @@ class UserMyPageFragment : Fragment(), GetOtherUserView {
         }.attach()
 
         binding.userMypageFollowing.setOnClickListener {
-            var intent = Intent(context, FollowActivity::class.java)
+            var intent = Intent(this, FollowActivity::class.java)
             intent.putExtra("current", 0)
             startActivity(intent)
         }
 
         binding.userMypageFollower.setOnClickListener {
-            var intent = Intent(context, FollowActivity::class.java)
+            var intent = Intent(this, FollowActivity::class.java)
             intent.putExtra("current", 1)
             startActivity(intent)
         }
-        return binding.root
+
     }
 
     override fun onStart() {
@@ -61,23 +63,14 @@ class UserMyPageFragment : Fragment(), GetOtherUserView {
         val getOtherUserService = GetOtherUserService()
 
         getOtherUserService.setOtherUserView(this)
-        getOtherUserService.getOtherUser(getJwt()!!, getUserIdx())
-    }
-
-    private fun getUserIdx() : Int {
-        val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
-        return userSP.getInt("userIdx", 0)
+        getOtherUserService.getOtherUser(getJwt()!!, userIdx)
     }
 
     private fun getJwt() : String? {
-        val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
         return userSP.getString("jwt", "")
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 
     @SuppressLint("SetTextI18n")
     override fun onGetSuccess(code: Int, result: GetOtherUserResult) {
@@ -123,7 +116,7 @@ class UserMyPageFragment : Fragment(), GetOtherUserView {
         binding.userMypageFollowerCntTv.text = result.getUser.followerCount.toString()
         binding.userMypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
-        setSession(result.getUser.session)  // 세션 연동
+        setSession(result.getUser.userSession)  // 세션 연동
     }
 
     override fun onGetFailure(code: Int, message: String) {

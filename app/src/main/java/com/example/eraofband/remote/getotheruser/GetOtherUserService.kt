@@ -1,6 +1,7 @@
 package com.example.eraofband.remote.getotheruser
 
 import android.util.Log
+import com.example.eraofband.remote.API
 import com.example.eraofband.remote.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -15,7 +16,7 @@ class GetOtherUserService {
     }
 
     fun getOtherUser(jwt : String, userIdx : Int){
-        val getOtherUserService = NetworkModule().getRetrofit()?.create(GetOtherUserInterface::class.java)
+        val getOtherUserService = NetworkModule().getRetrofit()?.create(API::class.java)
 
         getOtherUserService?.getUser(jwt, userIdx)?.enqueue(object : Callback<GetOtherUserResponse> {
             override fun onResponse(

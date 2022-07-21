@@ -26,8 +26,8 @@ data class GetUser (
     @SerializedName(value = "pofolCount") var pofolCount : Int,
     @SerializedName(value = "profileImgUrl") var profileImgUrl : String,
     @SerializedName(value = "region") var region : String,
-    @SerializedName(value = "session") var session : Int,
-    @SerializedName(value = "userIdx") var userIdx : Int
+    @SerializedName(value = "userIdx") var userIdx : Int,
+    @SerializedName(value = "userSession") var userSession : Int
 )
 
 data class GetUserBand (
@@ -42,5 +42,5 @@ data class GetUserBand (
 
 data class GetUserPofol (
     @SerializedName(value = "imgUrl") var imgUrl : String,
-    @SerializedName(value = "pofolIdx") var pofolIdx : Int,
+    @SerializedName(value = "pofolIdx") var pofolIdx : Int
 )
