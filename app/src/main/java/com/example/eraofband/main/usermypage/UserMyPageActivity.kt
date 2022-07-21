@@ -160,6 +160,15 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         binding.userMypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
         setSession(result.getUser.mySession)  // 세션 연동
+
+        if (result.getUser.follow == 0){
+            binding.userMypageFollowTv.visibility = View.VISIBLE
+            binding.userMypageUnfollowTv.visibility = View.INVISIBLE
+        } else {
+            binding.userMypageFollowTv.visibility = View.INVISIBLE
+            binding.userMypageUnfollowTv.visibility = View.VISIBLE
+        }
+
     }
 
     override fun onGetFailure(code: Int, message: String) {
