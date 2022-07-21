@@ -76,7 +76,7 @@ interface API {
     fun pofolComment(@Query("pofolIdx") pofolIdx: Int) : Call<PofolCommentResponse>
 
     // 포트폴리오 댓글 달기
-    @POST("/pofol/comment/{pofolIdx}")
+    @POST("/pofols/comment/{pofolIdx}")
     fun pofolWriteComment(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx: Int, @Body comment: Comment) : Call<PofolCommentWriteResponse>
 
     // 포트폴리오 댓글 삭제하기

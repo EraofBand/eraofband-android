@@ -15,9 +15,12 @@ import com.example.eraofband.databinding.FragmentFollowerBinding
 import com.example.eraofband.databinding.FragmentFollowingBinding
 import com.example.eraofband.databinding.FragmentMypagePortfolioBinding
 import com.example.eraofband.main.mypage.portfolio.MyPagePortfolioRVAdapter
+import com.example.eraofband.main.mypage.portfolio.PortfolioCommentRVAdapter
 import com.example.eraofband.main.mypage.portfolio.PortfolioListActivity
+import com.example.eraofband.main.usermypage.UserMyPageActivity
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResult
 import com.example.eraofband.remote.getMyPofol.GetMyPofolService
+import com.example.eraofband.remote.portfolio.PofolCommentResult
 import com.example.eraofband.remote.userfollowlist.FollowerInfo
 import com.example.eraofband.remote.userfollowlist.UserFollowListResult
 import com.example.eraofband.remote.userfollowlist.UserFollowListService
@@ -41,12 +44,23 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
         val userFollowList = UserFollowListService() // GET 해당 유저 팔로우리스트
         userFollowList.setUserFollowListView(this)
         userFollowList.userFollowList(userIdx)
+
+
     }
 
     private fun connectAdapter(item : List<FollowerInfo>) {
         val mAdapter = FollowerRVAdapter()
         binding.followingRv.adapter = mAdapter // 리사이클러뷰 어댑터 연결
         binding.followingRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        mAdapter.setMyItemClickListener(object : FollowerRVAdapter.MyItemClickListener {
+
+            override fun onItemClick(item: FollowerInfo) {
+                val intent = Intent(context, UserMyPageActivity::class.java)
+                intent.putExtra("comment", item.userIdx)
+                startActivity(intent)
+            }
+        })
         mAdapter.initFollowList(item) // 팔로우리스트 초기화
     }
 

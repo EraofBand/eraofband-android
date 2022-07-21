@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.ActivityUserMypageBinding
 import com.example.eraofband.main.mypage.follow.FollowActivity
 import com.example.eraofband.remote.getotheruser.GetOtherUserResult
@@ -47,7 +49,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             }
         }.attach()
 
-        binding.userMypageFollowTv.setOnClickListener {                 // 팔로우 리스트에서 언팔 및 팔로우 시 visibility 변경
+        binding.userMypageFollowTv.setOnClickListener {  // 팔로우 리스트에서 언팔 및 팔로우 시 visibility 변경
             binding.userMypageFollowTv.visibility = View.INVISIBLE
             binding.userMypageUnfollowTv.visibility = View.VISIBLE
             val userFollowService = UserFollowService() // 팔로우
@@ -117,6 +119,11 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     @SuppressLint("SetTextI18n")
     override fun onGetSuccess(code: Int, result: GetOtherUserResult) {
         // 나중에 프사도 연동 예정, 포트폴리오는 아직
+
+        Glide.with(this).load(result.getUser.profileImgUrl)
+            .apply(RequestOptions.centerCropTransform())
+            .apply(RequestOptions.circleCropTransform())
+            .into(binding.userMypageProfileimgIv)
 
         Log.d("MYPAGE", result.toString())
         nickName = result.getUser.nickName
