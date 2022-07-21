@@ -1,5 +1,6 @@
 package com.example.eraofband.main.mypage.portfolio
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -15,12 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
 import com.example.eraofband.data.Comment
 import com.example.eraofband.databinding.ActivityPortfolioCommentBinding
-import com.example.eraofband.main.usermypage.UserMyPageFragment
+import com.example.eraofband.main.usermypage.UserMyPageActivity
 import com.example.eraofband.remote.portfolio.PofolCommentResult
 import com.example.eraofband.remote.portfolio.PofolCommentService
 import com.example.eraofband.remote.portfolio.PofolCommentView
 import com.example.eraofband.remote.portfolio.PofolCommentWriteResult
-
+import com.google.gson.Gson
 
 
 class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
@@ -58,13 +59,14 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
         commentRVAdapter.setMyItemClickListener(object : PortfolioCommentRVAdapter.MyItemClickListener {
             // 팝업 메뉴 띄우기
             override fun onShowPopUp(commentIdx: Int, position: Int, userIdx: Int, view: View) {
-                if(userIdx == getUserIdx()) showMyPopup(commentIdx, position, view)  // 내가 단 댓글
+                if (userIdx == getUserIdx()) showMyPopup(commentIdx, position, view)  // 내가 단 댓글
                 else showOtherPopup(commentIdx, position, view)  // 다른 사람이 단 댓글
             }
 
-            override fun onItemClick() {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.main_frm, UserMyPageFragment()).commitAllowingStateLoss()
+            override fun onItemClick(item: PofolCommentResult) {
+                val intent = Intent(this@PortfolioCommentActivity, UserMyPageActivity::class.java)
+                intent.putExtra("comment", item.userIdx)
+                startActivity(intent)
             }
         })
     }

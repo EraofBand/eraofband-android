@@ -42,5 +42,5 @@ data class GetUserBand (
 
 data class GetUserPofol (
     @SerializedName(value = "imgUrl") var imgUrl : String,
-    @SerializedName(value = "pofolIdx") var pofolIdx : Int,
+    @SerializedName(value = "pofolIdx") var pofolIdx : Int
 )

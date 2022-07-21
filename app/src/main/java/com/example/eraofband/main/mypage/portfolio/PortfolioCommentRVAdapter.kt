@@ -34,7 +34,7 @@ class PortfolioCommentRVAdapter(private val context: Context) : RecyclerView.Ada
     }
 
     interface MyItemClickListener {
-        fun onItemClick()
+        fun onItemClick(comment: PofolCommentResult)
         fun onShowPopUp(commentIdx: Int,position: Int, userIdx: Int, view: View)
     }
 
@@ -69,7 +69,7 @@ class PortfolioCommentRVAdapter(private val context: Context) : RecyclerView.Ada
             binding.commentTimeTv.text = comment.updatedAt  // 댓글 단 시간
 
             binding.commentProfileIv.setOnClickListener {
-                mItemClickListener.onItemClick()
+                mItemClickListener.onItemClick(comment)
             }
        }
     }
