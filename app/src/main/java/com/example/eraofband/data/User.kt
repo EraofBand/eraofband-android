@@ -11,5 +11,5 @@ data class User (
     @SerializedName(value = "nickName") var nickName : String,
     @SerializedName(value = "profileImgUrl") var profileImgUrl : String,
     @SerializedName(value = "region") var region : String,
-    @SerializedName(value = "session") var session : Int
+    @SerializedName(value = "userSession") var userSession : Int
 ) : Serializable
