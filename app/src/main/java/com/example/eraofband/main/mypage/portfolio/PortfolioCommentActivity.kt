@@ -115,7 +115,7 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
         popupMenu.menuInflater.inflate(R.menu.my_comment_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
 
         popupMenu.setOnMenuItemClickListener { item ->
-            if (item!!.itemId == R.id.comment_delete) {
+            if (item!!.itemId == R.id.my_comment_delete) {
                 // position을 넘겨줌 이거 말고 생각이 안나요ㅠㅠ
                 val commentSP = getSharedPreferences("comment", MODE_PRIVATE)
                 val editor = commentSP.edit()
@@ -125,9 +125,6 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
 
                 // 댓글 삭제
                 commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
-            }
-            else if (item.itemId == R.id.comment_report) {
-                Log.d("REPORT", "COMMENT")
             }
 
             false
@@ -138,21 +135,10 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
 
     private fun showOtherPopup(commentIdx: Int, position: Int, view: View) {  // 다른 사람 댓글인 경우 신고만 가능
         val popup = androidx.appcompat.widget.PopupMenu(applicationContext, view) // PopupMenu 객체 선언
-        popup.menuInflater.inflate(R.menu.other_comment_menu2, popup.menu) // 메뉴 레이아웃 inflate
+        popup.menuInflater.inflate(R.menu.other_comment_menu, popup.menu) // 메뉴 레이아웃 inflate
 
         popup.setOnMenuItemClickListener { item ->
-            if (item!!.itemId == R.id.comment_delete) {
-                // position을 넘겨줌 이거 말고 생각이 안나요ㅠㅠ
-                val commentSP = getSharedPreferences("comment", MODE_PRIVATE)
-                val editor = commentSP.edit()
-
-                editor.putInt("position", position)
-                editor.apply()
-
-                // 댓글 삭제
-                commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
-            }
-            else if (item.itemId == R.id.comment_report) {
+            if (item.itemId == R.id.other_comment_report) {
                 Log.d("REPORT", "COMMENT")
             }
 

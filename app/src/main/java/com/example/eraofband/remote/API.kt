@@ -7,6 +7,8 @@ import com.example.eraofband.remote.getMyPage.GetMyPageResponse
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResponse
 import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
 import com.example.eraofband.remote.makePofol.MakePofolResponse
+import com.example.eraofband.remote.patchPofol.PatchPofolResponse
+import com.example.eraofband.remote.patchPofol.PatchPofolView
 import com.example.eraofband.remote.patchuser.PatchUserResponse
 import com.example.eraofband.remote.portfolio.*
 import com.example.eraofband.remote.sendimg.SendImgResponse
@@ -51,7 +53,7 @@ interface API {
 
     // 내 포트폴리오 수정
     @PATCH("/pofols/pofol-info/{pofolIdx}/")
-    fun patchPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx: Int)
+    fun patchPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx: Int, @Body portfolio: Portfolio) : Call<PatchPofolResponse>
 
     // 포트폴리오 좋아요
     @POST("/pofols/likes/{pofolIdx}")

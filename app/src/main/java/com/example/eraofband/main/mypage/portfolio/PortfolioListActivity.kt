@@ -4,7 +4,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
+import android.view.View
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
@@ -69,11 +73,15 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
                 return Uri.parse(url)
             }
 
-            override fun onShowComment(pofolIdx: Int) {
-                // 나중에 댓글 불러오기 기능이 생기면 액티비티 전환 후 해당 포트폴리오의 댓글만 불러오면 됩니다
+            override fun onShowComment(pofolIdx: Int) {  // 댓글 창 띄우기
                 val intent = Intent(this@PortfolioListActivity, PortfolioCommentActivity::class.java)
                 intent.putExtra("pofolIdx", pofolIdx)
                 startActivity(intent)
+            }
+
+            override fun onShowPopup(portfolio: GetMyPofolResult, position: Int, view: View) {
+                if(portfolio.userIdx == getUserIdx()) showMyPopup(portfolio, position, view)  // 내가 단 댓글
+                else showOtherPopup(portfolio, position, view)  // 다른 사람이 단 댓글
             }
         })
     }
@@ -85,5 +93,53 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
 
     override fun onGetFailure(code: Int, message: String) {
         Log.d("MYPORTFOLIO/FAIL", "$code $message")
+    }
+
+    private fun showMyPopup(portfolio: GetMyPofolResult, position: Int, view: View) {  // 내 댓글인 경우 삭제, 신고 둘 다 가능
+        val themeWrapper = ContextThemeWrapper(applicationContext , R.style.MyPopupMenu)
+        val popupMenu = PopupMenu(themeWrapper, view, Gravity.END, 0, R.style.MyPopupMenu)
+        popupMenu.menuInflater.inflate(R.menu.my_portfolio_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            if (item!!.itemId == R.id.my_portfolio_edit) {
+                // 포폴 수정 창 띄우기
+                val intent = Intent(this@PortfolioListActivity, PofolEditActivity::class.java)
+                intent.putExtra("pofolIdx", portfolio.pofolIdx)
+                intent.putExtra("title", portfolio.title)
+                intent.putExtra("content", portfolio.content)
+
+                startActivity(intent)
+            }
+            else if (item.itemId == R.id.my_portfolio_delete) {
+//                // position을 넘겨줌 이거 말고 생각이 안나요ㅠㅠ
+//                val commentSP = getSharedPreferences("comment", MODE_PRIVATE)
+//                val editor = commentSP.edit()
+//
+//                editor.putInt("position", position)
+//                editor.apply()
+//
+//                // 댓글 삭제
+//                commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
+            }
+
+            false
+        }
+
+        popupMenu.show() // 팝업 보여주기
+    }
+
+    private fun showOtherPopup(portfolio: GetMyPofolResult, position: Int, view: View) {  // 다른 사람 댓글인 경우 신고만 가능
+        val popup = androidx.appcompat.widget.PopupMenu(applicationContext, view) // PopupMenu 객체 선언
+        popup.menuInflater.inflate(R.menu.other_portfolio_menu, popup.menu) // 메뉴 레이아웃 inflate
+
+        popup.setOnMenuItemClickListener { item ->
+            if (item.itemId == R.id.other_portfolio_report) {
+                Log.d("REPORT", "COMMENT")
+            }
+
+            false
+        }
+
+        popup.show() // 팝업 보여주기
     }
 }

@@ -61,6 +61,11 @@
     <string name="explainPortfolio">포트폴리오에 대해 설명해주세요.</string>
     <string name="make">등록하기</string>
 
+    <!-- 포트폴리오 수정 관련 String -->
+    <string name="portfolio_edit">포트폴리오 수정하기</string>
+    <string name="portfolio_delete">포트폴리오 삭제하기</string>
+    <string name="portfolio_report">포트폴리오 신고하기</string>
+
     <!-- 프로필 편집 관련 String -->
     <string name="profile_edit">프로필 편집</string>
     <string name="my_introduce">내 소개</string>

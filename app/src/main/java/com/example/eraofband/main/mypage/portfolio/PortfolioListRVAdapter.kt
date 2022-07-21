@@ -5,11 +5,13 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
+import com.example.eraofband.data.Portfolio
 import com.example.eraofband.databinding.ItemPortfolioListBinding
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResult
 import com.google.android.exoplayer2.ExoPlayer
@@ -47,6 +49,7 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
     interface MyItemListener {
         fun urlParse(url : String) : Uri
         fun onShowComment(pofolIdx : Int)
+        fun onShowPopup(portfolio: GetMyPofolResult, position: Int, view: View)
     }
 
     fun setMyItemClickListener(itemListener: MyItemListener) {
@@ -87,8 +90,10 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
 
         // 댓글 창 관련
         holder.binding.portfolioListComment.setOnClickListener { mItemListener.onShowComment(portfolio[position].pofolIdx) }
-    }
 
+        // 댓글 수정, 신고하기 popup menu 띄우기
+        holder.binding.portfolioListListIv.setOnClickListener { mItemListener.onShowPopup(portfolio[position], position, holder.binding.portfolioListListIv) }
+    }
     override fun getItemCount(): Int = portfolio.size
 
     inner class ViewHolder(val binding: ItemPortfolioListBinding) : RecyclerView.ViewHolder(binding.root) {

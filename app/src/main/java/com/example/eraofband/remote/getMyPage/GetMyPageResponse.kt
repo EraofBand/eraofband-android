@@ -1,7 +1,5 @@
 package com.example.eraofband.remote.getMyPage
 
-import com.google.gson.annotations.SerializedName
-
 data class GetMyPageResponse (
     var code : Int,
     var isSuccess : Boolean,
@@ -51,5 +49,5 @@ data class GetUserLesson (
 
 data class GetUserPofol (
     var imgUrl : String,
-    var pofolIdx : Int,
+    var pofolIdx : Int
 )
