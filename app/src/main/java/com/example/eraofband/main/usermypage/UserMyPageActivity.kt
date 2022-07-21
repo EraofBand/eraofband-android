@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.ActivityUserMypageBinding
 import com.example.eraofband.main.mypage.follow.FollowActivity
 import com.example.eraofband.remote.getotheruser.GetOtherUserResult
@@ -25,6 +27,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
 
     private lateinit var binding: ActivityUserMypageBinding
     private var otherUserIdx : Int? = null
+    private lateinit var nickName : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +49,11 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             }
         }.attach()
 
-        binding.userMypageFollowTv.setOnClickListener {                 // 팔로우 리스트에서 언팔 및 팔로우 시 visibility 변경
+        binding.userMypageBackIb.setOnClickListener{
+            finish()
+        }
+
+        binding.userMypageFollowTv.setOnClickListener {  // 팔로우 리스트에서 언팔 및 팔로우 시 visibility 변경
             binding.userMypageFollowTv.visibility = View.INVISIBLE
             binding.userMypageUnfollowTv.visibility = View.VISIBLE
             val userFollowService = UserFollowService() // 팔로우
@@ -74,21 +81,19 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     private fun moveFollowActivity() {
         binding.userMypageFollowing.setOnClickListener {
             var intent = Intent(this, FollowActivity::class.java)
+            intent.putExtra("nickName", nickName)
             intent.putExtra("current", 0)
+            intent.putExtra("userIdx", otherUserIdx)
             startActivity(intent)
         }
 
         binding.userMypageFollower.setOnClickListener {
             var intent = Intent(this, FollowActivity::class.java)
+            intent.putExtra("nickName", nickName)
             intent.putExtra("current", 1)
+            intent.putExtra("userIdx", otherUserIdx)
             startActivity(intent)
         }
-    }
-
-    private fun getUserIdx() : Int {
-        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
-        return userSP.getInt("userIdx", 0)
-
     }
 
     private fun getJwt() : String? {
@@ -119,9 +124,15 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     override fun onGetSuccess(code: Int, result: GetOtherUserResult) {
         // 나중에 프사도 연동 예정, 포트폴리오는 아직
 
+        Glide.with(this).load(result.getUser.profileImgUrl)
+            .apply(RequestOptions.centerCropTransform())
+            .apply(RequestOptions.circleCropTransform())
+            .into(binding.userMypageProfileimgIv)
+
         Log.d("MYPAGE", result.toString())
-        binding.userMypageNicknameTv.text = result.getUser.nickName
-        binding.userMypageInfoNicknameTv.text = result.getUser.nickName // 닉네임 연동
+        nickName = result.getUser.nickName
+        binding.userMypageNicknameTv.text = nickName
+        binding.userMypageInfoNicknameTv.text = nickName // 닉네임 연동
 
         // 디테일한 소개 연동
 

@@ -13,11 +13,13 @@ class FollowActivity() : AppCompatActivity() {
         binding = ActivityFollowBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var current = intent.getIntExtra("current", 0)
+        val current = intent.getIntExtra("current", 0)
+        val nickName = intent.getStringExtra("nickName")
+        val userIdx = intent.getIntExtra("userIdx",0)
 
         //뷰페이저 어뎁터 연결
-        val fragmentList = listOf(FollowingFragment(), FollowerFragment())
-        val followVPAdapter = FollowVPAdapter(this)
+        val fragmentList = listOf(FollowingFragment(userIdx), FollowerFragment(userIdx))
+        val followVPAdapter = FollowVPAdapter(this, userIdx)
         followVPAdapter.fragments = fragmentList
         binding.followVp.adapter = followVPAdapter
 
@@ -38,6 +40,9 @@ class FollowActivity() : AppCompatActivity() {
                 binding.followVp.currentItem = 1
             }
         }
+
+        // 마이페이지 닉네임 설정
+        binding.followNicknameTv.text = nickName
 
         binding.followBackIb.setOnClickListener{
             finish()
