@@ -3,30 +3,23 @@ package com.example.eraofband.main.mypage
 import android.annotation.SuppressLint
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.createBitmap
 import androidx.fragment.app.Fragment
-import com.example.eraofband.R
-import com.example.eraofband.databinding.FragmentMypageBinding
-import com.example.eraofband.main.MainActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.eraofband.databinding.FragmentMypageBinding
 import com.example.eraofband.main.mypage.follow.FollowActivity
 import com.example.eraofband.main.mypage.portfolio.PortfolioMakeActivity
+import com.example.eraofband.remote.getMyPage.GetMyPageResult
 import com.example.eraofband.remote.getMyPage.GetMyPageService
 import com.example.eraofband.remote.getMyPage.GetMyPageView
-import com.example.eraofband.remote.getMyPage.GetMyPageResult
 import com.google.android.material.tabs.TabLayoutMediator
-import java.lang.Byte.decode
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -48,6 +41,10 @@ class MyPageFragment : Fragment(), GetMyPageView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val getMyPageService = GetMyPageService()
+
+        getMyPageService.setUserView(this)
+        getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
 
         binding.mypageProfileEditIv.setOnClickListener {
             startActivity(Intent(activity, ProfileEditActivity::class.java))
@@ -73,23 +70,11 @@ class MyPageFragment : Fragment(), GetMyPageView {
             }
         })
 
-
-        binding.mypageFollowing.setOnClickListener {
-            var intent = Intent(context, FollowActivity::class.java)
-            intent.putExtra("current", 0)
-            startActivity(intent)
-        }
-
-        binding.mypageFollower.setOnClickListener {
-            var intent = Intent(context, FollowActivity::class.java)
-            intent.putExtra("current", 1)
-            startActivity(intent)
-        }
-
         binding.mypageFab.setOnClickListener{
             startActivity(Intent(activity, PortfolioMakeActivity::class.java))
         }
         connectVP()
+        moveFollowActivity()
     }
 
     override fun onStart() {
@@ -101,9 +86,24 @@ class MyPageFragment : Fragment(), GetMyPageView {
 
         getMyPageService.setUserView(this)
         getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
+
     }
 
 //----------------------------------------------------------------------------------------------------
+
+    private fun moveFollowActivity() {
+        binding.mypageFollowing.setOnClickListener {
+            var intent = Intent(context, FollowActivity::class.java)
+            intent.putExtra("current", 0)
+            startActivity(intent)
+        }
+
+        binding.mypageFollower.setOnClickListener {
+            var intent = Intent(context, FollowActivity::class.java)
+            intent.putExtra("current", 1)
+            startActivity(intent)
+        }
+    }
 
     private fun getUserIdx() : Int {
         val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
@@ -176,8 +176,8 @@ class MyPageFragment : Fragment(), GetMyPageView {
         }
 
         // 숫자 연동
-        binding.mypageFollowingCntTv.text = result.getUser.followeeCount.toString()
-        binding.mypageFollowerCntTv.text = result.getUser.followerCount.toString()
+        binding.mypageFollowingCntTv.text = result.getUser.followerCount.toString()
+        binding.mypageFollowerCntTv.text = result.getUser.followeeCount.toString()
         binding.mypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
         setSession(result.getUser.userSession)  // 세션 연동
@@ -207,6 +207,7 @@ class MyPageFragment : Fragment(), GetMyPageView {
             else ->  binding.mypageSessionTv.text = "드럼"
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

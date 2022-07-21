@@ -4,7 +4,7 @@ data class PofolCommentWriteResponse(
     var code: Int,
     var isSuccess: Boolean,
     var message: String,
-    var result: List<PofolCommentWriteResult>
+    var result: PofolCommentWriteResult
 )
 data class PofolCommentWriteResult(
     var content: String,

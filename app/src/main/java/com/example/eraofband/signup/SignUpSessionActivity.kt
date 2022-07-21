@@ -42,7 +42,7 @@ class SignUpSessionActivity : AppCompatActivity() {
             if(session == -1) {
                 setToast()
             } else {
-                user.session = session
+                user.userSession = session
                 intent.putExtra("user", user)
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_right, R.anim.slide_left)

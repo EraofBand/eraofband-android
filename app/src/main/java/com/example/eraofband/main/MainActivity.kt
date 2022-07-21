@@ -43,12 +43,17 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        Log.d("USERIDX", "${getUserIdx()}")
+        Log.d("USERIDX", "${getUserIdx()} ${getUserJwt()}")
     }
 
     private fun getUserIdx() : Int {
         val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getInt("userIdx", 0)
+    }
+
+    private fun getUserJwt() : String? {
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        return userSP.getString("jwt", "")
     }
 
     private fun initBottomNav(){

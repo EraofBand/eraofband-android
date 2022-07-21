@@ -56,8 +56,6 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
                 val makeService = MakePofolService()
                 makeService.setMakeView(this)
                 makeService.makePortfolio(getJwt()!!, Portfolio(content, getProfileUrl()!!, title, getUserIdx(), videoUrl))
-
-                finish()
             }
         }
     }
@@ -226,6 +224,8 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
 
     override fun onMakeSuccess(code: Int, result: MakePofolResult) {
         Log.d("MAKE/SUC", result.toString())
+
+        finish()  // 올리기 성공하면 창 닫기
     }
 
     override fun onMakeFailure(code: Int, message: String) {
