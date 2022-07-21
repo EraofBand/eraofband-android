@@ -182,8 +182,8 @@ class MyPageFragment : Fragment(), GetMyPageView {
         }
 
         // 숫자 연동
-        binding.mypageFollowingCntTv.text = result.getUser.followeeCount.toString()
-        binding.mypageFollowerCntTv.text = result.getUser.followerCount.toString()
+        binding.mypageFollowingCntTv.text = result.getUser.followerCount.toString()
+        binding.mypageFollowerCntTv.text = result.getUser.followeeCount.toString()
         binding.mypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
         setSession(result.getUser.userSession)  // 세션 연동

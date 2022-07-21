@@ -5,14 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import com.example.eraofband.R
-import com.example.eraofband.databinding.ActivityUserMypageBinding
-import com.example.eraofband.main.MainActivity
 import com.example.eraofband.databinding.ActivityUserMypageBinding
 import com.example.eraofband.main.mypage.follow.FollowActivity
-import com.example.eraofband.remote.getMyPage.GetMyPageService
 import com.example.eraofband.remote.getotheruser.GetOtherUserResult
 import com.example.eraofband.remote.getotheruser.GetOtherUserService
 import com.example.eraofband.remote.getotheruser.GetOtherUserView
@@ -22,9 +17,7 @@ import com.example.eraofband.remote.userfollow.UserFollowView
 import com.example.eraofband.remote.userunfollow.UserUnfollowResponse
 import com.example.eraofband.remote.userunfollow.UserUnfollowService
 import com.example.eraofband.remote.userunfollow.UserUnfollowView
-import com.example.eraofband.remote.portfolio.PofolCommentResult
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,13 +29,12 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(binding.root)
         binding = ActivityUserMypageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val intent = intent
-        userIdx = intent.extras?.getInt("comment")!!
-        Log.d("USER INDEX", userIdx.toString())
+        otherUserIdx = intent.extras?.getInt("comment")!!
+        Log.d("USER INDEX", otherUserIdx.toString())
 
         val userMyPageAdapter = UserMyPageVPAdapter(this)
         binding.userMypageVp.adapter = userMyPageAdapter
@@ -131,8 +123,6 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         binding.userMypageNicknameTv.text = result.getUser.nickName
         binding.userMypageInfoNicknameTv.text = result.getUser.nickName // 닉네임 연동
 
-        otherUserIdx = result.getUser.userIdx // 해당 유저 인덱스
-
         // 디테일한 소개 연동
 
         val index = result.getUser.region.split(" ")
@@ -165,11 +155,20 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         }
 
         // 숫자 연동
-        binding.userMypageFollowingCntTv.text = result.getUser.followeeCount.toString()
-        binding.userMypageFollowerCntTv.text = result.getUser.followerCount.toString()
+        binding.userMypageFollowingCntTv.text = result.getUser.followerCount.toString()
+        binding.userMypageFollowerCntTv.text = result.getUser.followeeCount.toString()
         binding.userMypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
         setSession(result.getUser.mySession)  // 세션 연동
+
+        if (result.getUser.follow == 0){
+            binding.userMypageFollowTv.visibility = View.VISIBLE
+            binding.userMypageUnfollowTv.visibility = View.INVISIBLE
+        } else {
+            binding.userMypageFollowTv.visibility = View.INVISIBLE
+            binding.userMypageUnfollowTv.visibility = View.VISIBLE
+        }
+
     }
 
     override fun onGetFailure(code: Int, message: String) {
