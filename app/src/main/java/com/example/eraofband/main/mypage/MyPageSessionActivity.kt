@@ -45,7 +45,7 @@ class MyPageSessionActivity : AppCompatActivity(), PatchSessionView{
         }
 
         binding.mypageSessionVocalCb.setOnClickListener {
-            session.session = 0
+            session.userSession = 0
             binding.mypageSessionVocalCb.isChecked = true
             binding.mypageSessionGuitarCb.isChecked = false
             binding.mypageSessionBaseCb.isChecked = false
@@ -61,7 +61,7 @@ class MyPageSessionActivity : AppCompatActivity(), PatchSessionView{
         }
 
         binding.mypageSessionGuitarCb.setOnClickListener {
-            session.session = 1
+            session.userSession = 1
 
             binding.mypageSessionVocalCb.isChecked = false
             binding.mypageSessionGuitarCb.isChecked = true
@@ -77,7 +77,7 @@ class MyPageSessionActivity : AppCompatActivity(), PatchSessionView{
         }
 
         binding.mypageSessionBaseCb.setOnClickListener {
-            session.session = 2
+            session.userSession = 2
 
             binding.mypageSessionVocalCb.isChecked = false
             binding.mypageSessionGuitarCb.isChecked = false
@@ -93,7 +93,7 @@ class MyPageSessionActivity : AppCompatActivity(), PatchSessionView{
         }
 
         binding.mypageSessionKeyboardCb.setOnClickListener {
-            session.session = 3
+            session.userSession = 3
 
             binding.mypageSessionVocalCb.isChecked = false
             binding.mypageSessionGuitarCb.isChecked = false
@@ -109,7 +109,7 @@ class MyPageSessionActivity : AppCompatActivity(), PatchSessionView{
         }
 
         binding.mypageSessionDrumCb.setOnClickListener {
-            session.session = 4
+            session.userSession = 4
 
             binding.mypageSessionVocalCb.isChecked = false
             binding.mypageSessionGuitarCb.isChecked = false
@@ -135,7 +135,7 @@ class MyPageSessionActivity : AppCompatActivity(), PatchSessionView{
     }
 
     override fun onPatchSessionSuccess(result: String) {
-        Log.d("SESSIOM/SUCCESS", result)
+        Log.d("SESSION/SUCCESS", result)
     }
 
     override fun onPatchSessionFailure(code: Int, message: String) {

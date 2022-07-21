@@ -48,6 +48,10 @@ class MyPageFragment : Fragment(), GetMyPageView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val getMyPageService = GetMyPageService()
+
+        getMyPageService.setUserView(this)
+        getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
 
         binding.mypageProfileEditIv.setOnClickListener {
             startActivity(Intent(activity, ProfileEditActivity::class.java))

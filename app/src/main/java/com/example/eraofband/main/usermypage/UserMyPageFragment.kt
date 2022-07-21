@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.eraofband.R
-import com.example.eraofband.databinding.FragmentUserMypageBinding
+import com.example.eraofband.databinding.ActivityUserMypageBinding
 import com.example.eraofband.main.MainActivity
 import com.example.eraofband.main.mypage.follow.FollowActivity
 import com.example.eraofband.remote.getMyPage.GetMyPageService
@@ -21,29 +21,23 @@ import com.example.eraofband.remote.userfollow.UserFollowResponse
 import com.example.eraofband.remote.userfollow.UserFollowService
 import com.example.eraofband.remote.userfollow.UserFollowView
 import com.example.eraofband.remote.userunfollow.UserUnfollowResponse
+import com.example.eraofband.remote.userunfollow.UserUnfollowService
 import com.example.eraofband.remote.userunfollow.UserUnfollowView
 import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 import java.util.*
 
-class UserMyPageFragment : Fragment(), GetOtherUserView, UserFollowView, UserUnfollowView {
+class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView, UserUnfollowView {
 
-    private var _binding: FragmentUserMypageBinding? = null
-    private val binding get() = _binding!! // 바인딩 누수 방지
+    private lateinit var binding: ActivityUserMypageBinding
     private var otherUserIdx : Int? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentUserMypageBinding.inflate(inflater, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        return binding.root
-    }
+        binding = ActivityUserMypageBinding.inflate(layoutInflater)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        setContentView(binding.root)
 
         val userMyPageAdapter = UserMyPageVPAdapter(this)
         binding.userMypageVp.adapter = userMyPageAdapter
@@ -55,20 +49,20 @@ class UserMyPageFragment : Fragment(), GetOtherUserView, UserFollowView, UserUnf
             }
         }.attach()
 
-        binding.userMypageFollowTv.setOnClickListener {
-            binding.userMypageFollowTv.visibility = View.GONE
+        binding.userMypageFollowTv.setOnClickListener {                 // 팔로우 리스트에서 언팔 및 팔로우 시 visibility 변경
+            binding.userMypageFollowTv.visibility = View.INVISIBLE
             binding.userMypageUnfollowTv.visibility = View.VISIBLE
-            val userFollowService = UserFollowService()
+            val userFollowService = UserFollowService() // 팔로우
             userFollowService.setUserFollowView(this)
             userFollowService.userFollow(getJwt()!!, otherUserIdx!!)
         }
 
         binding.userMypageUnfollowTv.setOnClickListener {
             binding.userMypageFollowTv.visibility = View.VISIBLE
-            binding.userMypageUnfollowTv.visibility = View.GONE
-            val userFollowService = UserFollowService()
-            userFollowService.setUserFollowView(this)
-            userFollowService.userFollow(getJwt()!!, otherUserIdx!!)
+            binding.userMypageUnfollowTv.visibility = View.INVISIBLE
+            val userUnfollowService = UserUnfollowService() // 언팔로우
+            userUnfollowService.setUserUnfollowView(this)
+            userUnfollowService.userUnfollow(getJwt()!!, otherUserIdx!!)
         }
         moveFollowActivity()
     }
@@ -77,30 +71,30 @@ class UserMyPageFragment : Fragment(), GetOtherUserView, UserFollowView, UserUnf
         super.onStart()
         val getOtherUserService = GetOtherUserService()
         getOtherUserService.setOtherUserView(this)
-        getOtherUserService.getOtherUser(getJwt()!!, getUserIdx())
+        getOtherUserService.getOtherUser(getJwt()!!, 82)
     }
 
     private fun moveFollowActivity() {
         binding.userMypageFollowing.setOnClickListener {
-            var intent = Intent(context, FollowActivity::class.java)
+            var intent = Intent(this, FollowActivity::class.java)
             intent.putExtra("current", 0)
             startActivity(intent)
         }
 
         binding.userMypageFollower.setOnClickListener {
-            var intent = Intent(context, FollowActivity::class.java)
+            var intent = Intent(this, FollowActivity::class.java)
             intent.putExtra("current", 1)
             startActivity(intent)
         }
     }
 
     private fun getUserIdx() : Int {
-        val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
         return userSP.getInt("userIdx", 0)
     }
 
     private fun getJwt() : String? {
-        val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
         return userSP.getString("jwt", "")
     }
 
@@ -131,7 +125,7 @@ class UserMyPageFragment : Fragment(), GetOtherUserView, UserFollowView, UserUnf
         binding.userMypageNicknameTv.text = result.getUser.nickName
         binding.userMypageInfoNicknameTv.text = result.getUser.nickName // 닉네임 연동
 
-        otherUserIdx = result.getUser.userIdx // This page userIdx
+        otherUserIdx = result.getUser.userIdx // 해당 유저 인덱스
 
         // 디테일한 소개 연동
 
@@ -169,7 +163,7 @@ class UserMyPageFragment : Fragment(), GetOtherUserView, UserFollowView, UserUnf
         binding.userMypageFollowerCntTv.text = result.getUser.followerCount.toString()
         binding.userMypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
-        setSession(result.getUser.session)  // 세션 연동
+        setSession(result.getUser.mySession)  // 세션 연동
     }
 
     override fun onGetFailure(code: Int, message: String) {
@@ -192,10 +186,5 @@ class UserMyPageFragment : Fragment(), GetOtherUserView, UserFollowView, UserUnf
 
     override fun onUserUnfollowFailure(code: Int, message: String) {
         Log.d("USER UNLLOW / FAIL", "$code $message")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

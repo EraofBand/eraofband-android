@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
 import com.example.eraofband.data.Comment
 import com.example.eraofband.databinding.ActivityPortfolioCommentBinding
-import com.example.eraofband.main.usermypage.UserMyPageFragment
 import com.example.eraofband.remote.portfolio.PofolCommentResult
 import com.example.eraofband.remote.portfolio.PofolCommentService
 import com.example.eraofband.remote.portfolio.PofolCommentView
@@ -63,8 +62,7 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
             }
 
             override fun onItemClick() {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.main_frm, UserMyPageFragment()).commitAllowingStateLoss()
+
             }
         })
     }

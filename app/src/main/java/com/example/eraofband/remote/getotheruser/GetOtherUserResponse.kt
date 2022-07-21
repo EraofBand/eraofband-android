@@ -26,7 +26,7 @@ data class GetUser (
     @SerializedName(value = "pofolCount") var pofolCount : Int,
     @SerializedName(value = "profileImgUrl") var profileImgUrl : String,
     @SerializedName(value = "region") var region : String,
-    @SerializedName(value = "session") var session : Int,
+    @SerializedName(value = "userSession") var mySession : Int,
     @SerializedName(value = "userIdx") var userIdx : Int
 )
 

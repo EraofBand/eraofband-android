@@ -6,7 +6,7 @@ import com.example.eraofband.remote.checkUser.CheckUserResponse
 import com.example.eraofband.remote.patchSession.PatchSessionResponse
 import com.example.eraofband.remote.getMyPage.GetMyPageResponse
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResponse
-import com.example.eraofband.remote.getuser.GetUserResponse
+import com.example.eraofband.remote.getotheruser.GetOtherUserResponse
 import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
 import com.example.eraofband.remote.makePofol.MakePofolResponse
 import com.example.eraofband.remote.patchuser.PatchUserResponse
@@ -32,7 +32,7 @@ interface API {
     fun kakaoLogin(@Body user: User, @Path("access-token") token : String) : Call<KakaoLoginResponse>
 
     // 가입된 유저인지 확인
-    @PATCH("/users/login/{kakao-email}")
+    @POST("/users/login/{kakao-email}")
     fun checkUser(@Path("kakao-email") email : String) : Call<CheckUserResponse>
 
     // 마이페이지 정보 조회
@@ -83,10 +83,9 @@ interface API {
     @PATCH("/pofols/comment/status/{pofolCommentIdx}")
     fun pofolDeleteComment(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolCommentIdx") commentIdx: Int, @Body userIdx: Int) : Call<PofolCommentDeleteResponse>
 
-    // 다른회원 정보 조회
+    // 다른 유저 정보 불러오기
     @GET("/users/info/{userIdx}")
-    fun getUser(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx : Int) : Call<GetUserResponse>
-
+    fun getUser(@Header("X-ACCESS-TOKEN") jwt : String, @Path("userIdx") userIdx : Int) : Call<GetOtherUserResponse>
     // 유저 팔로우 처리
     @POST("/users/follow/{userIdx}")
     fun userFollow(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<UserFollowResponse>
@@ -98,5 +97,4 @@ interface API {
     // 유저 팔로우 리스트 불러오기
     @GET("/users/follow-info/{userIdx}")
     fun userFollowList(@Path("userIdx") userIdx: Int) : Call<UserFollowListResponse>
-
 }
