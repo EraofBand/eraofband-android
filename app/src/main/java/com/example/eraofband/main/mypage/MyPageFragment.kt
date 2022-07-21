@@ -35,6 +35,7 @@ class MyPageFragment : Fragment(), GetMyPageView {
     private var _binding: FragmentMypageBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
     private var mySession : Int = -1
+    private lateinit var nickName : String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -101,12 +102,16 @@ class MyPageFragment : Fragment(), GetMyPageView {
         binding.mypageFollowing.setOnClickListener {
             var intent = Intent(context, FollowActivity::class.java)
             intent.putExtra("current", 0)
+            intent.putExtra("nickName", nickName)
+            intent.putExtra("userIdx", getUserIdx())
             startActivity(intent)
         }
 
         binding.mypageFollower.setOnClickListener {
             var intent = Intent(context, FollowActivity::class.java)
             intent.putExtra("current", 1)
+            intent.putExtra("nickName", nickName)
+            intent.putExtra("userIdx", getUserIdx())
             startActivity(intent)
         }
     }
@@ -138,7 +143,8 @@ class MyPageFragment : Fragment(), GetMyPageView {
     override fun onGetSuccess(code: Int, result: GetMyPageResult) {
         Log.d("MYPAGE", result.toString())
         // 닉네임 연동
-        binding.mypageNicknameTv.text = result.getUser.nickName
+        nickName = result.getUser.nickName
+        binding.mypageNicknameTv.text = nickName
 
         // 글라이드를 이용한 프로필사진 연동
         Glide.with(this).load(result.getUser.profileImgUrl)

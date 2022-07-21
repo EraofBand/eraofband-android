@@ -31,7 +31,7 @@ class UserFollowListService {
                 val resp: UserFollowListResponse = response.body()!!
 
                 when (val code = resp.code) {
-                    1000 -> userFollowListView.onUserFollowListSuccess(code, resp)
+                    1000 -> userFollowListView.onUserFollowListSuccess(code, resp.result)
                     else -> userFollowListView.onUserFollowListFailure(code, resp.message)
                 }
             }

@@ -1,27 +1,53 @@
 package com.example.eraofband.main.mypage.follow
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.ItemFollowBinding
+import com.example.eraofband.databinding.ItemPortfolioBinding
 import com.example.eraofband.databinding.ItemPortfolioListBinding
+import com.example.eraofband.main.mypage.portfolio.MyPagePortfolioRVAdapter
 import com.example.eraofband.main.mypage.portfolio.PortfolioListRVAdapter
+import com.example.eraofband.remote.getMyPofol.GetMyPofolResult
+import com.example.eraofband.remote.portfolio.PofolCommentResult
+import com.example.eraofband.remote.userfollowlist.FollowerInfo
+import com.example.eraofband.remote.userfollowlist.UserFollowListResponse
+import com.example.eraofband.remote.userfollowlist.UserFollowListResult
+import com.example.eraofband.remote.userfollowlist.UserFollowListView
 
-class FollowerRVAdapter : RecyclerView.Adapter<FollowerRVAdapter.ViewHolder>() {
+class FollowerRVAdapter() : RecyclerView.Adapter<FollowerRVAdapter.ViewHolder>() {
+    private var followList = arrayListOf<FollowerInfo>()
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun initFollowList(followList : List<FollowerInfo>) {
+        this.followList.addAll(followList)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        TODO()
+        val binding: ItemFollowBinding = ItemFollowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO()
+        holder.bind(followList[position])
     }
 
-    override fun getItemCount(): Int{
-        TODO()
-    }
+    override fun getItemCount(): Int = followList.size
 
     inner class ViewHolder(val binding: ItemFollowBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(list: FollowerInfo) {
 
+            Glide.with(itemView).load(list.profileImgUrl)
+                .apply(RequestOptions.centerCropTransform())
+                .apply(RequestOptions.circleCropTransform()).into(binding.itemFollowProfileIv)
+
+            binding.itemFollowNicknameTv.text = list.nickName
+        }
     }
 }

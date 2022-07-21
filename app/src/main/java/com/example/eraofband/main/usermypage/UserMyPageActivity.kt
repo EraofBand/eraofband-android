@@ -25,6 +25,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
 
     private lateinit var binding: ActivityUserMypageBinding
     private var otherUserIdx : Int? = null
+    private lateinit var nickName : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,21 +75,19 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     private fun moveFollowActivity() {
         binding.userMypageFollowing.setOnClickListener {
             var intent = Intent(this, FollowActivity::class.java)
+            intent.putExtra("nickName", nickName)
             intent.putExtra("current", 0)
+            intent.putExtra("userIdx", otherUserIdx)
             startActivity(intent)
         }
 
         binding.userMypageFollower.setOnClickListener {
             var intent = Intent(this, FollowActivity::class.java)
+            intent.putExtra("nickName", nickName)
             intent.putExtra("current", 1)
+            intent.putExtra("userIdx", otherUserIdx)
             startActivity(intent)
         }
-    }
-
-    private fun getUserIdx() : Int {
-        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
-        return userSP.getInt("userIdx", 0)
-
     }
 
     private fun getJwt() : String? {
@@ -120,8 +119,9 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         // 나중에 프사도 연동 예정, 포트폴리오는 아직
 
         Log.d("MYPAGE", result.toString())
-        binding.userMypageNicknameTv.text = result.getUser.nickName
-        binding.userMypageInfoNicknameTv.text = result.getUser.nickName // 닉네임 연동
+        nickName = result.getUser.nickName
+        binding.userMypageNicknameTv.text = nickName
+        binding.userMypageInfoNicknameTv.text = nickName // 닉네임 연동
 
         // 디테일한 소개 연동
 

@@ -1,23 +1,59 @@
 package com.example.eraofband.main.mypage.follow
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
+import com.example.eraofband.databinding.FragmentFollowerBinding
 import com.example.eraofband.databinding.FragmentFollowingBinding
+import com.example.eraofband.remote.userfollowlist.*
 
-class FollowingFragment : Fragment() {
-    private lateinit var binding:FragmentFollowingBinding
+class FollowingFragment(var userIdx: Int) : Fragment(), UserFollowListView {
+
+    private var _binding: FragmentFollowingBinding? = null
+    private val binding get() = _binding!! // 바인딩 누수 방지
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_following, container, false)
+        _binding = FragmentFollowingBinding.inflate(inflater, container, false)
+
+        return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        val userFollowList = UserFollowListService()
+        userFollowList.setUserFollowListView(this)
+        userFollowList.userFollowList(userIdx)
+    }
+
+    private fun connectAdapter(item: List<FollowingInfo>) {
+        val mAdapter = FollowingRVAdapter()
+        binding.followingRv.adapter = mAdapter
+        binding.followingRv.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        mAdapter.initFollowList(item)
+    }
+
+    override fun onUserFollowListSuccess(code: Int, result: UserFollowListResult) {
+        Log.d("FOLLOWLIST", "$code $result")
+        connectAdapter(result.getfollowing)
+    }
+
+    override fun onUserFollowListFailure(code: Int, message: String) {
+        Log.d("FOLLOWLIST", "$code $message")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
