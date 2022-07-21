@@ -1,15 +1,13 @@
 package com.example.eraofband.data
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class User (
-    @SerializedName(value = "birth") var birth : String,
-    @SerializedName(value = "gender") var gender : String,
-    @SerializedName(value = "introduction") var introduction : String,
-    @SerializedName(value = "nickName") var nickName : String,
-    @SerializedName(value = "profileImgUrl") var profileImgUrl : String,
-    @SerializedName(value = "region") var region : String,
-    @SerializedName(value = "userSession") var userSession : Int
+    var birth : String,
+    var gender : String,
+    var introduction : String,
+    var nickName : String,
+    var profileImgUrl : String,
+    var region : String,
+    var userSession : Int
 ) : Serializable

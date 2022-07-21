@@ -111,13 +111,13 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
         return userSP.getString("jwt", "")
     }
 
-    private fun showMyPopup(commentIdx: Int, position: Int, view: View) {  // 내 댓글인 경우 삭제, 신고 둘 다 가능
+    private fun showMyPopup(commentIdx: Int, position: Int, view: View) {  // 내 댓글인 경우 삭제 가능
         val themeWrapper = ContextThemeWrapper(applicationContext , R.style.MyPopupMenu)
         val popupMenu = PopupMenu(themeWrapper, view, Gravity.END, 0, R.style.MyPopupMenu)
         popupMenu.menuInflater.inflate(R.menu.my_comment_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
 
         popupMenu.setOnMenuItemClickListener { item ->
-            if (item!!.itemId == R.id.comment_delete) {
+            if (item!!.itemId == R.id.my_comment_delete) {
                 // position을 넘겨줌 이거 말고 생각이 안나요ㅠㅠ
                 val commentSP = getSharedPreferences("comment", MODE_PRIVATE)
                 val editor = commentSP.edit()
@@ -127,9 +127,6 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
 
                 // 댓글 삭제
                 commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
-            }
-            else if (item.itemId == R.id.comment_report) {
-                Log.d("REPORT", "COMMENT")
             }
 
             false
@@ -140,21 +137,10 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
 
     private fun showOtherPopup(commentIdx: Int, position: Int, view: View) {  // 다른 사람 댓글인 경우 신고만 가능
         val popup = androidx.appcompat.widget.PopupMenu(applicationContext, view) // PopupMenu 객체 선언
-        popup.menuInflater.inflate(R.menu.other_comment_menu2, popup.menu) // 메뉴 레이아웃 inflate
+        popup.menuInflater.inflate(R.menu.other_comment_menu, popup.menu) // 메뉴 레이아웃 inflate
 
         popup.setOnMenuItemClickListener { item ->
-            if (item!!.itemId == R.id.comment_delete) {
-                // position을 넘겨줌 이거 말고 생각이 안나요ㅠㅠ
-                val commentSP = getSharedPreferences("comment", MODE_PRIVATE)
-                val editor = commentSP.edit()
-
-                editor.putInt("position", position)
-                editor.apply()
-
-                // 댓글 삭제
-                commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
-            }
-            else if (item.itemId == R.id.comment_report) {
+            if (item.itemId == R.id.other_comment_report) {
                 Log.d("REPORT", "COMMENT")
             }
 
@@ -173,9 +159,9 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
         Log.d("GETCOMMENT/FAIL", "$code $message")
     }
 
-    override fun onCommentWriteSuccess(code: Int, result: List<PofolCommentWriteResult>) {
+    override fun onCommentWriteSuccess(code: Int, result: PofolCommentWriteResult) {
         Log.d("WRITECOMMENT/SUC", result.toString())
-        commentRVAdapter.addComment(PofolCommentResult(result[0].content, result[0].nickName, result[0].pofolCommentIdx, result[0].pofolIdx, result[0].profileImgUrl,result[0].updatedAt, result[0].userIdx))
+        commentRVAdapter.addComment(PofolCommentResult(result.content, result.nickName, result.pofolCommentIdx, result.pofolIdx, result.profileImgUrl,result.updatedAt, result.userIdx))
 
         // 키보드 원상태로 되돌리기
         binding.portfolioCommentWriteEt.text = null
@@ -191,7 +177,7 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
     }
 
     override fun onCommentDeleteSuccess(code: Int, result: String) {
-        Log.d("WRITECOMMENT/SUC", result)
+        Log.d("DELETECOMMENT/SUC", result)
         val commentSP = getSharedPreferences("comment", MODE_PRIVATE)
 
         // 리사이클러뷰에서도 삭제

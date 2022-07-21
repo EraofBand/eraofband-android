@@ -3,12 +3,15 @@ package com.example.eraofband.remote
 
 import com.example.eraofband.data.*
 import com.example.eraofband.remote.checkUser.CheckUserResponse
+import com.example.eraofband.remote.deletePofol.DeletePofolResponse
 import com.example.eraofband.remote.patchSession.PatchSessionResponse
 import com.example.eraofband.remote.getMyPage.GetMyPageResponse
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResponse
 import com.example.eraofband.remote.getotheruser.GetOtherUserResponse
 import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
 import com.example.eraofband.remote.makePofol.MakePofolResponse
+import com.example.eraofband.remote.patchPofol.PatchPofolResponse
+import com.example.eraofband.remote.patchPofol.PatchPofolView
 import com.example.eraofband.remote.patchuser.PatchUserResponse
 import com.example.eraofband.remote.portfolio.*
 import com.example.eraofband.remote.sendimg.SendImgResponse
@@ -61,7 +64,11 @@ interface API {
 
     // 내 포트폴리오 수정
     @PATCH("/pofols/pofol-info/{pofolIdx}/")
-    fun patchPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx: Int)
+    fun patchPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx: Int, @Body portfolio: Portfolio) : Call<PatchPofolResponse>
+
+    // 내 포트폴리오 삭제
+    @PATCH("/pofols/status/{pofolIdx}")
+    fun deletePofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx: Int, @Body userIdx: Int) : Call<DeletePofolResponse>
 
     // 포트폴리오 좋아요
     @POST("/pofols/likes/{pofolIdx}")
@@ -76,7 +83,7 @@ interface API {
     fun pofolComment(@Query("pofolIdx") pofolIdx: Int) : Call<PofolCommentResponse>
 
     // 포트폴리오 댓글 달기
-    @POST("/pofol/comment/{pofolIdx}")
+    @POST("/pofols/comment/{pofolIdx}")
     fun pofolWriteComment(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx: Int, @Body comment: Comment) : Call<PofolCommentWriteResponse>
 
     // 포트폴리오 댓글 삭제하기
