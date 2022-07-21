@@ -49,6 +49,7 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
         fun urlParse(url : String) : Uri
         fun onShowComment(pofolIdx : Int)
         fun onShowPopup(portfolio: GetMyPofolResult, position: Int, view: View)
+        fun onShowInfoPage(userIdx: Int)
     }
 
     fun setMyItemClickListener(itemListener: MyItemListener) {
@@ -86,6 +87,9 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
                 portfolio[position].likeOrNot = "Y"
             }
         }
+
+        // 프사 누르면 유저 페이지로 전환
+        holder.binding.portfolioListProfileIv.setOnClickListener { mItemListener.onShowInfoPage(portfolio[position].userIdx) }
 
         // 댓글 창 관련
         holder.binding.portfolioListComment.setOnClickListener { mItemListener.onShowComment(portfolio[position].pofolIdx) }

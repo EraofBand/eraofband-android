@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
-import com.example.eraofband.data.Portfolio
 import com.example.eraofband.databinding.ActivityPortfolioListBinding
 import com.example.eraofband.remote.deletePofol.DeletePofolResponse
 import com.example.eraofband.remote.deletePofol.DeletePofolService
@@ -21,7 +20,6 @@ import com.example.eraofband.remote.deletePofol.DeletePofolView
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResult
 import com.example.eraofband.remote.getMyPofol.GetMyPofolService
 import com.example.eraofband.remote.getMyPofol.GetMyPofolView
-import com.google.android.exoplayer2.source.hls.playlist.HlsPlaylistParser
 
 class PortfolioListActivity : AppCompatActivity(), GetMyPofolView, DeletePofolView {
 
@@ -87,6 +85,11 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView, DeletePofolVi
             override fun onShowPopup(portfolio: GetMyPofolResult, position: Int, view: View) {
                 if(portfolio.userIdx == getUserIdx()) showMyPopup(portfolio, position, view)  // 내가 단 댓글
                 else showOtherPopup(portfolio, position, view)  // 다른 사람이 단 댓글
+            }
+
+            override fun onShowInfoPage(userIdx: Int) {
+                // 내가 올린 포트포
+//                if(userIdx == getUserIdx()) startActivity(Intent(this@PortfolioListActivity, my))
             }
         })
     }
