@@ -15,13 +15,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
 import com.example.eraofband.data.Portfolio
 import com.example.eraofband.databinding.ActivityPortfolioListBinding
+import com.example.eraofband.remote.deletePofol.DeletePofolResponse
+import com.example.eraofband.remote.deletePofol.DeletePofolService
+import com.example.eraofband.remote.deletePofol.DeletePofolView
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResult
 import com.example.eraofband.remote.getMyPofol.GetMyPofolService
 import com.example.eraofband.remote.getMyPofol.GetMyPofolView
+import com.google.android.exoplayer2.source.hls.playlist.HlsPlaylistParser
 
-class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
+class PortfolioListActivity : AppCompatActivity(), GetMyPofolView, DeletePofolView {
 
     private lateinit var binding : ActivityPortfolioListBinding
+    private lateinit var portfolioAdapter : PortfolioListRVAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,17 +47,17 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
     }
 
     private fun getUserIdx() : Int {
-        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getInt("userIdx", 0)
     }
 
     private fun getJwt() : String? {
-        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getString("jwt", "")
     }
 
     private fun initRecyclerView(item: List<GetMyPofolResult>) {
-        val portfolioAdapter = PortfolioListRVAdapter(getJwt()!!, this)
+        portfolioAdapter = PortfolioListRVAdapter(getJwt()!!, this)
         binding.portfolioListPortfolioRv.adapter = portfolioAdapter
         binding.portfolioListPortfolioRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
@@ -101,7 +106,7 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
         popupMenu.menuInflater.inflate(R.menu.my_portfolio_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
 
         popupMenu.setOnMenuItemClickListener { item ->
-            if (item!!.itemId == R.id.my_portfolio_edit) {
+            if (item!!.itemId == R.id.my_portfolio_edit) {  // 포트폴리오 수정
                 // 포폴 수정 창 띄우기
                 val intent = Intent(this@PortfolioListActivity, PofolEditActivity::class.java)
                 intent.putExtra("pofolIdx", portfolio.pofolIdx)
@@ -110,16 +115,18 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
 
                 startActivity(intent)
             }
-            else if (item.itemId == R.id.my_portfolio_delete) {
-//                // position을 넘겨줌 이거 말고 생각이 안나요ㅠㅠ
-//                val commentSP = getSharedPreferences("comment", MODE_PRIVATE)
-//                val editor = commentSP.edit()
-//
-//                editor.putInt("position", position)
-//                editor.apply()
-//
-//                // 댓글 삭제
-//                commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
+            else if (item.itemId == R.id.my_portfolio_delete) {  // 포트폴리오 삭제
+                // position을 넘겨줌 이거 말고 생각이 안나요ㅠㅠ
+                val portfolioSP = getSharedPreferences("portfolio", MODE_PRIVATE)
+                val editor = portfolioSP.edit()
+
+                editor.putInt("position", position)
+                editor.apply()
+
+                // 포폴 삭제
+                val deletePofolService = DeletePofolService()
+                deletePofolService.setDeleteView(this)
+                deletePofolService.deletePortfolio(getJwt()!!, portfolio.pofolIdx, getUserIdx())
             }
 
             false
@@ -141,5 +148,22 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
         }
 
         popup.show() // 팝업 보여주기
+    }
+
+    override fun onDeleteSuccess(code: Int, result: String) {  // 포트폴리오 삭제
+        Log.d("DELETE/SUC", result)
+        val portfolioSP = getSharedPreferences("portfolio", MODE_PRIVATE)
+
+        // 리사이클러뷰에서도 삭제
+        portfolioAdapter.deletePortfolio(portfolioSP.getInt("position", 0))
+
+        // 사용한 position은 지워줌
+        val editor = portfolioSP.edit()
+        editor.remove("position")
+        editor.apply()
+    }
+
+    override fun onDeleteFailure(response: DeletePofolResponse) {
+        Log.d("DELETE/FAIL", response.toString())
     }
 }

@@ -35,8 +35,8 @@ class PofolEditActivity : AppCompatActivity(), PatchPofolView {
                 val intro = binding.portfolioEditVideoIntroEt.text.toString()
 
                 val patchService = PatchPofolService()
-                patchService.setMakeView(this)
-                patchService.makePortfolio(getJwt()!!, intent.getIntExtra("pofolIdx", 0), Portfolio(intro, "", title, getUserIdx(), ""))
+                patchService.setPatchView(this)
+                patchService.patchPortfolio(getJwt()!!, intent.getIntExtra("pofolIdx", 0), Portfolio(intro, "", title, getUserIdx(), ""))
             }
         }
     }

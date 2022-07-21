@@ -109,7 +109,7 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
         return userSP.getString("jwt", "")
     }
 
-    private fun showMyPopup(commentIdx: Int, position: Int, view: View) {  // 내 댓글인 경우 삭제, 신고 둘 다 가능
+    private fun showMyPopup(commentIdx: Int, position: Int, view: View) {  // 내 댓글인 경우 삭제 가능
         val themeWrapper = ContextThemeWrapper(applicationContext , R.style.MyPopupMenu)
         val popupMenu = PopupMenu(themeWrapper, view, Gravity.END, 0, R.style.MyPopupMenu)
         popupMenu.menuInflater.inflate(R.menu.my_comment_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
@@ -175,7 +175,7 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
     }
 
     override fun onCommentDeleteSuccess(code: Int, result: String) {
-        Log.d("WRITECOMMENT/SUC", result)
+        Log.d("DELETECOMMENT/SUC", result)
         val commentSP = getSharedPreferences("comment", MODE_PRIVATE)
 
         // 리사이클러뷰에서도 삭제

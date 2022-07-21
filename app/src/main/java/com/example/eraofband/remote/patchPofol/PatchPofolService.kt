@@ -11,18 +11,18 @@ import retrofit2.Response
 class PatchPofolService {
     private lateinit var patchView : PatchPofolView
 
-    fun setMakeView(patchView: PatchPofolView) {
+    fun setPatchView(patchView: PatchPofolView) {
         this.patchView = patchView
     }
 
-    fun makePortfolio(jwt: String, pofolIdx: Int, portfolio : Portfolio) {
+    fun patchPortfolio(jwt: String, pofolIdx: Int, portfolio : Portfolio) {
 
-        val makeService =  NetworkModule().getRetrofit()?.create(API::class.java)
+        val patchService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
-        makeService?.patchPofol(jwt, pofolIdx, portfolio)?.enqueue(object : Callback<PatchPofolResponse> {
+        patchService?.patchPofol(jwt, pofolIdx, portfolio)?.enqueue(object : Callback<PatchPofolResponse> {
             override fun onResponse(call: Call<PatchPofolResponse>, response: Response<PatchPofolResponse>) {
                 // 응답이 왔을 때 처리
-                Log.d("MAKE / SUCCESS", response.toString())
+                Log.d("PATCH / SUCCESS", response.toString())
 
                 val resp : PatchPofolResponse = response.body()!!
 
@@ -34,7 +34,7 @@ class PatchPofolService {
 
             override fun onFailure(call: Call<PatchPofolResponse>, t: Throwable) {
                 // 네트워크 연결이 실패했을 때 실행
-                Log.d("MAKE / FAILURE", t.message.toString())
+                Log.d("PATCH / FAILURE", t.message.toString())
             }
 
         })  // 포트폴리오 정보를 넣어주면서 api 호출, enqueue에서 응답 처리

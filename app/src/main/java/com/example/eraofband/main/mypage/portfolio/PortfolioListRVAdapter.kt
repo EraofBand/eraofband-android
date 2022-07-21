@@ -11,14 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
-import com.example.eraofband.data.Portfolio
 import com.example.eraofband.databinding.ItemPortfolioListBinding
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResult
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
 import com.example.eraofband.remote.portfolio.PofolLikeResult
 import com.example.eraofband.remote.portfolio.PofolLikeService
 import com.example.eraofband.remote.portfolio.PofolLikeView
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
 
 class PortfolioListRVAdapter(private val jwt: String, private val context: Context) : RecyclerView.Adapter<PortfolioListRVAdapter.ViewHolder>(), PofolLikeView {
     private val portfolio = arrayListOf<GetMyPofolResult>()
@@ -41,8 +40,8 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun deletePortfolio(portfolio: GetMyPofolResult) {
-        this.portfolio.remove(portfolio)
+    fun deletePortfolio(position: Int) {
+        this.portfolio.removeAt(position)
         notifyDataSetChanged()
     }
 
