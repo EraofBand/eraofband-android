@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/home_band_top"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/home_band_back_iv"
+            android:layout_width="13dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_back"
+            android:layout_marginStart="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/home_band_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/band_list"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/pretendard_medium"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/home_band_search_iv"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:src="@drawable/ic_search"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/home_band_city_sp"
+        android:layout_width="90dp"
+        android:layout_height="40dp"
+        android:spinnerMode="dropdown"
+        android:background="@drawable/spinner_bg"
+        android:popupBackground="@color/background"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/home_band_top"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/home_band_session_cg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:singleLine="true"
+        app:singleSelection="true"
+        app:chipSpacingHorizontal="5dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_band_city_sp">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/home_band_total_cp"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="@string/total"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="13sp"
+            android:checked="true"
+            app:chipBackgroundColor="@color/session_chip_color" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/home_band_vocal_cp"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="@string/vocal"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="13sp"
+            app:chipBackgroundColor="@color/session_chip_color" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/home_band_guitar_cp"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="@string/guitar"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="13sp"
+            app:chipBackgroundColor="@color/session_chip_color" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/home_band_base_cp"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="@string/base"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="13sp"
+            app:chipBackgroundColor="@color/session_chip_color" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/home_band_drum_cp"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="@string/drum"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="13sp"
+            app:chipBackgroundColor="@color/session_chip_color" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/home_band_keyboard_cp"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="@string/keyboard"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="13sp"
+            app:chipBackgroundColor="@color/session_chip_color" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_band_list_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        tools:listitem="@layout/item_band_recruit"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/home_band_session_cg"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

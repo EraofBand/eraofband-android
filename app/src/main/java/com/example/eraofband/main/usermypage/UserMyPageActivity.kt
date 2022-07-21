@@ -170,7 +170,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         binding.userMypageFollowerCntTv.text = result.getUser.followeeCount.toString()
         binding.userMypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
-        setSession(result.getUser.mySession)  // 세션 연동
+        setSession(result.getUser.userSession)  // 세션 연동
 
         if (result.getUser.follow == 0){
             binding.userMypageFollowTv.visibility = View.VISIBLE
