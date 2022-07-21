@@ -4,14 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityUserMypageBinding
 import com.example.eraofband.main.MainActivity
+import com.example.eraofband.databinding.ActivityUserMypageBinding
 import com.example.eraofband.main.mypage.follow.FollowActivity
 import com.example.eraofband.remote.getMyPage.GetMyPageService
 import com.example.eraofband.remote.getotheruser.GetOtherUserResult
@@ -23,7 +22,9 @@ import com.example.eraofband.remote.userfollow.UserFollowView
 import com.example.eraofband.remote.userunfollow.UserUnfollowResponse
 import com.example.eraofband.remote.userunfollow.UserUnfollowService
 import com.example.eraofband.remote.userunfollow.UserUnfollowView
+import com.example.eraofband.remote.portfolio.PofolCommentResult
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,9 +36,13 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityUserMypageBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
+        binding = ActivityUserMypageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        val intent = intent
+        userIdx = intent.extras?.getInt("comment")!!
+        Log.d("USER INDEX", userIdx.toString())
 
         val userMyPageAdapter = UserMyPageVPAdapter(this)
         binding.userMypageVp.adapter = userMyPageAdapter
@@ -71,7 +76,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         super.onStart()
         val getOtherUserService = GetOtherUserService()
         getOtherUserService.setOtherUserView(this)
-        getOtherUserService.getOtherUser(getJwt()!!, 82)
+        getOtherUserService.getOtherUser(getJwt()!!, otherUserIdx!!)
     }
 
     private fun moveFollowActivity() {
@@ -91,6 +96,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     private fun getUserIdx() : Int {
         val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
         return userSP.getInt("userIdx", 0)
+
     }
 
     private fun getJwt() : String? {

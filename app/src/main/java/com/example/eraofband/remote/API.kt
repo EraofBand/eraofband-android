@@ -7,6 +7,8 @@ import com.example.eraofband.remote.patchSession.PatchSessionResponse
 import com.example.eraofband.remote.getMyPage.GetMyPageResponse
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResponse
 import com.example.eraofband.remote.getotheruser.GetOtherUserResponse
+import com.example.eraofband.remote.getotheruser.GetOtherUserResponse
+import com.example.eraofband.remote.getuser.GetUserResponse
 import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
 import com.example.eraofband.remote.makePofol.MakePofolResponse
 import com.example.eraofband.remote.patchuser.PatchUserResponse
@@ -86,6 +88,7 @@ interface API {
     // 다른 유저 정보 불러오기
     @GET("/users/info/{userIdx}")
     fun getUser(@Header("X-ACCESS-TOKEN") jwt : String, @Path("userIdx") userIdx : Int) : Call<GetOtherUserResponse>
+
     // 유저 팔로우 처리
     @POST("/users/follow/{userIdx}")
     fun userFollow(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<UserFollowResponse>
