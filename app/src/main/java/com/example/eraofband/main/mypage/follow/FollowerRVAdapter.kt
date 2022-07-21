@@ -5,18 +5,23 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.ItemFollowBinding
 import com.example.eraofband.remote.userfollow.UserFollowResponse
+import com.example.eraofband.remote.userfollow.UserFollowService
 import com.example.eraofband.remote.userfollow.UserFollowView
 import com.example.eraofband.remote.userfollowlist.FollowerInfo
 import com.example.eraofband.remote.userunfollow.UserUnfollowResponse
+import com.example.eraofband.remote.userunfollow.UserUnfollowService
 import com.example.eraofband.remote.userunfollow.UserUnfollowView
 
 class FollowerRVAdapter() : RecyclerView.Adapter<FollowerRVAdapter.ViewHolder>(), UserFollowView, UserUnfollowView {
     private var followList = arrayListOf<FollowerInfo>()
+    private var userFollowService = UserFollowService()
+    private var userUnfollowService = UserUnfollowService()
 
     @SuppressLint("NotifyDataSetChanged")
     fun initFollowList(followList : List<FollowerInfo>) {
@@ -31,16 +36,8 @@ class FollowerRVAdapter() : RecyclerView.Adapter<FollowerRVAdapter.ViewHolder>()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(followList[position])
-
-        holder.binding.itemFollowFollowingButtonIv.setOnClickListener {
-            holder.binding.itemFollowButtonIv.visibility = View.VISIBLE
-            holder.binding.itemFollowFollowingButtonIv.visibility = View.INVISIBLE
-        }
-
-        holder.binding.itemFollowButtonIv.setOnClickListener {
-            holder.binding.itemFollowButtonIv.visibility = View.INVISIBLE
-            holder.binding.itemFollowFollowingButtonIv.visibility = View.VISIBLE
-        }
+        userFollowService.setUserFollowView(this)
+        userUnfollowService.setUserUnfollowView(this)
 
         holder.binding.itemFollowNicknameTv.setOnClickListener{  // 팔로우리스트에 있는 유저 클릭 시 이동
             mItemClickListener.onItemClick(followList[position])
@@ -50,16 +47,28 @@ class FollowerRVAdapter() : RecyclerView.Adapter<FollowerRVAdapter.ViewHolder>()
 
     inner class ViewHolder(val binding: ItemFollowBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(list: FollowerInfo) {
-
             Glide.with(itemView).load(list.profileImgUrl)
                 .apply(RequestOptions.centerCropTransform())
                 .apply(RequestOptions.circleCropTransform()).into(binding.itemFollowProfileIv)
 
             binding.itemFollowNicknameTv.text = list.nickName
+
+            binding.itemFollowFollowingButtonIv.setOnClickListener {  // 회색 버튼 눌러서 팔로우 취소
+                binding.itemFollowButtonIv.visibility = View.VISIBLE
+                binding.itemFollowFollowingButtonIv.visibility = View.INVISIBLE
+                userUnfollowService.userUnfollow(mItemClickListener.getJwt()!!,list.userIdx)
+            }
+
+            binding.itemFollowButtonIv.setOnClickListener {  // 파란 색버튼 다시 눌러서 팔로우
+                binding.itemFollowButtonIv.visibility = View.INVISIBLE
+                binding.itemFollowFollowingButtonIv.visibility = View.VISIBLE
+                userFollowService.userFollow(mItemClickListener.getJwt()!!,list.userIdx)
+            }
         }
     }
     interface MyItemClickListener {
         fun onItemClick(item: FollowerInfo)
+        fun getJwt() : String?
     }
 
     private lateinit var mItemClickListener: MyItemClickListener

@@ -44,14 +44,13 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
         val userFollowList = UserFollowListService() // GET 해당 유저 팔로우리스트
         userFollowList.setUserFollowListView(this)
         userFollowList.userFollowList(userIdx)
-
-
     }
 
     private fun connectAdapter(item : List<FollowerInfo>) {
         val mAdapter = FollowerRVAdapter()
         binding.followingRv.adapter = mAdapter // 리사이클러뷰 어댑터 연결
-        binding.followingRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.followingRv.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         mAdapter.setMyItemClickListener(object : FollowerRVAdapter.MyItemClickListener {
 
@@ -59,6 +58,12 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
                 val intent = Intent(context, UserMyPageActivity::class.java)
                 intent.putExtra("comment", item.userIdx)
                 startActivity(intent)
+            }
+
+            override fun getJwt(): String? {
+                val userSP =
+                    requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+                return userSP.getString("jwt", "")
             }
         })
         mAdapter.initFollowList(item) // 팔로우리스트 초기화

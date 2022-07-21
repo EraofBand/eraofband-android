@@ -48,6 +48,12 @@ class FollowingFragment(var userIdx: Int) : Fragment(), UserFollowListView {
                 intent.putExtra("comment", item.userIdx)
                 startActivity(intent)
             }
+
+            override fun getJwt(): String? {
+                val userSP =
+                    requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+                return userSP.getString("jwt", "")
+            }
         })
         mAdapter.initFollowList(item)
     }
