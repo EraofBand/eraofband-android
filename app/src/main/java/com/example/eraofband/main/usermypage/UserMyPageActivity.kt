@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityUserMypageBinding
 import com.example.eraofband.main.mypage.follow.FollowActivity
@@ -29,6 +31,10 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView {
 
         binding = ActivityUserMypageBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.userMypageBackIb.setOnClickListener {
+            finishAffinity()
+        }
 
         val intent = intent
         userIdx = intent.extras?.getInt("comment")!!
@@ -117,6 +123,12 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView {
         binding.userMypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
         setSession(result.getUser.userSession)  // 세션 연동
+
+        //프사 연동
+        Glide.with(this).load(result.getUser.profileImgUrl)
+            .apply(RequestOptions.centerCropTransform())
+            .apply(RequestOptions.circleCropTransform())
+            .into(binding.userMypageProfileimgIv)
     }
 
     override fun onGetFailure(code: Int, message: String) {
