@@ -6,6 +6,7 @@ import com.example.eraofband.remote.checkUser.CheckUserResponse
 import com.example.eraofband.remote.patchSession.PatchSessionResponse
 import com.example.eraofband.remote.getMyPage.GetMyPageResponse
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResponse
+import com.example.eraofband.remote.getotheruser.GetOtherUserResponse
 import com.example.eraofband.remote.getuser.GetUserResponse
 import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
 import com.example.eraofband.remote.makePofol.MakePofolResponse
@@ -24,7 +25,7 @@ interface API {
     fun kakaoLogin(@Body user: User, @Path("access-token") token : String) : Call<KakaoLoginResponse>
 
     // 가입된 유저인지 확인
-    @PATCH("/users/login/{kakao-email}")
+    @POST("/users/login/{kakao-email}")
     fun checkUser(@Path("kakao-email") email : String) : Call<CheckUserResponse>
 
     // 마이페이지 정보 조회
@@ -77,7 +78,7 @@ interface API {
 
     // 다른회원 정보 조회
     @GET("/users/info/{userIdx}")
-    fun getUser(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx : Int) : Call<GetUserResponse>
+    fun getUser(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx : Int) : Call<GetOtherUserResponse>
 
     // 이미지 전송
     @Multipart

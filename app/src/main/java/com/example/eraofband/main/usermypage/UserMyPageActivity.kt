@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityUserMypageBinding
-import com.example.eraofband.main.MainActivity
 import com.example.eraofband.main.mypage.follow.FollowActivity
 import com.example.eraofband.remote.getotheruser.GetOtherUserResult
 import com.example.eraofband.remote.getotheruser.GetOtherUserService
@@ -33,6 +32,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView {
 
         val intent = intent
         userIdx = intent.extras?.getInt("comment")!!
+        Log.d("USER INDEX", userIdx.toString())
 
         val userMyPageAdapter = UserMyPageVPAdapter(this)
         binding.userMypageVp.adapter = userMyPageAdapter
@@ -65,11 +65,6 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView {
         getOtherUserService.setOtherUserView(this)
         getOtherUserService.getOtherUser(getJwt()!!, userIdx)
     }
-
-    /*private fun getUserIdx() : Int {
-        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
-        return userSP.getInt("userIdx", 0)
-    }*/
 
     private fun getJwt() : String? {
         val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
@@ -121,7 +116,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView {
         binding.userMypageFollowerCntTv.text = result.getUser.followerCount.toString()
         binding.userMypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
-        setSession(result.getUser.session)  // 세션 연동
+        setSession(result.getUser.userSession)  // 세션 연동
     }
 
     override fun onGetFailure(code: Int, message: String) {
