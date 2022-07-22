@@ -44,7 +44,7 @@
             android:id="@+id/mypage_profile_edit_iv"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="25dp"
             android:src="@drawable/ic_mypage_edit"
             app:layout_constraintBottom_toBottomOf="@+id/mypage_title_tv"
             app:layout_constraintEnd_toStartOf="@+id/mypage_setting_iv"
