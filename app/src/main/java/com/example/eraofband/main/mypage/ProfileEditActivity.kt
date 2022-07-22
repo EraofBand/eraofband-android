@@ -69,6 +69,9 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
         binding.profileEditCameraIv.setOnClickListener {
             initImageViewProfile()
         }
+        binding.profileEditProfileIv.setOnClickListener {
+            initImageViewProfile()
+        }
 
         // 소개 글 글자 수 실시간 연동
         binding.profileEditIntroduceEt.addTextChangedListener(object : TextWatcher {
