@@ -1,7 +1,7 @@
-package com.example.eraofband.main.home.recruit
+package com.example.eraofband.main.home.bandlist
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -9,20 +9,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
 import com.example.eraofband.data.Band
-import com.example.eraofband.databinding.ActivityHomeBandRecruitBinding
+import com.example.eraofband.databinding.ActivityHomeBandListBinding
 
-class HomeBandRecruitActivity: AppCompatActivity() {
+class HomeBandListActivity: AppCompatActivity() {
 
-    private lateinit var binding: ActivityHomeBandRecruitBinding
-    private lateinit var recruitRVAdapter: RecruitRVAdapter
+    private lateinit var binding: ActivityHomeBandListBinding
+    private lateinit var recruitRVAdapter: BandListRVAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityHomeBandRecruitBinding.inflate(layoutInflater)
+        binding = ActivityHomeBandListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.homeBandBackIv.setOnClickListener { finish() }
+        binding.homeBandListBackIv.setOnClickListener { finish() }
 
         initSpinner()
 
@@ -33,11 +33,11 @@ class HomeBandRecruitActivity: AppCompatActivity() {
         val city = resources.getStringArray(R.array.capital)  // 전체, 서울, 경기도
 
         val cityAdapter = ArrayAdapter(this, R.layout.item_spinner, city)
-        binding.homeBandCitySp.adapter = cityAdapter
-        binding.homeBandCitySp.setSelection(0)
+        binding.homeBandListCitySp.adapter = cityAdapter
+        binding.homeBandListCitySp.setSelection(0)
 
         // 지역 스피너 클릭 이벤트
-        binding.homeBandCitySp.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener{
+        binding.homeBandListCitySp.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if(position == 0) {  // 모든 지역이 뜨도록
                     initRecyclerView()
@@ -51,7 +51,7 @@ class HomeBandRecruitActivity: AppCompatActivity() {
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {  // 아무것도 클릭되어있지 않을 때는 기본으로 전체를 띄워줌
-                binding.homeBandCitySp.setSelection(0)
+                binding.homeBandListCitySp.setSelection(0)
                 initRecyclerView()
             }
 
@@ -59,9 +59,9 @@ class HomeBandRecruitActivity: AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        recruitRVAdapter = RecruitRVAdapter()
-        binding.homeBandListRv.adapter = recruitRVAdapter
-        binding.homeBandListRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        recruitRVAdapter = BandListRVAdapter()
+        binding.homeBandListListRv.adapter = recruitRVAdapter
+        binding.homeBandListListRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         val bandList = arrayListOf(
             Band(R.drawable.band_profile, "", ""),
@@ -69,5 +69,11 @@ class HomeBandRecruitActivity: AppCompatActivity() {
             Band(R.drawable.band_profile, "", ""))
 
         recruitRVAdapter.initBandList(bandList)
+
+        recruitRVAdapter.setMyItemClickListener(object : BandListRVAdapter.MyItemClickListener{
+            override fun onShowDetail(bandIdx: Int) {  // 밴드 모집 페이지로 전환
+                startActivity(Intent(this@HomeBandListActivity, HomeBandRecruitActivity::class.java))
+            }
+        })
     }
 }
