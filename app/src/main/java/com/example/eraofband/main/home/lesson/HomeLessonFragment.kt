@@ -1,5 +1,6 @@
 package com.example.eraofband.main.home.lesson
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -74,5 +75,11 @@ class HomeLessonFragment: Fragment() {
         )
 
         lessonRVAdapter.initLessonList(bandList)
+
+        lessonRVAdapter.setMyItemClickListener(object : LessonRVAdapter.MyItemClickListener{
+            override fun onShowDetail(lessonIdx: Int) {  // 레슨 모집 페이지로 전환
+                startActivity(Intent(context, LessonInfoActivity::class.java))
+            }
+        })
     }
 }

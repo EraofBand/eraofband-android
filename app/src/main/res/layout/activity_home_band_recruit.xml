@@ -115,6 +115,7 @@
                 app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
+                android:id="@+id/home_band_recruit_share_tv"
                 android:layout_width="0dp"
                 android:layout_height="45dp"
                 android:text="@string/share"

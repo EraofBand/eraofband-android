@@ -13,7 +13,7 @@ class LessonRVAdapter : RecyclerView.Adapter<LessonRVAdapter.ViewHolder>() {
 
     interface MyItemClickListener {
         // 클릭 이벤트
-
+        fun onShowDetail(lessonIdx: Int)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -37,17 +37,17 @@ class LessonRVAdapter : RecyclerView.Adapter<LessonRVAdapter.ViewHolder>() {
         holder.bind(lessonList[position])
 
         // 클릭 이벤트
-
+        holder.binding.lessonLayout.setOnClickListener { mItemClickListener.onShowDetail(position) }  // 나중에는 레슨 아이디를 넣어서 정보 연동
     }
     override fun getItemCount(): Int = lessonList.size
 
     inner class ViewHolder(val binding: ItemLessonBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(lessonList: Band) {
-            binding.bandListImgIv.setImageResource(R.drawable.band_profile)
-            binding.bandListImgIv.clipToOutline = true  // 모서리 깎기
+            binding.lessonImgIv.setImageResource(R.drawable.band_profile)
+            binding.lessonImgIv.clipToOutline = true  // 모서리 깎기
 
-            binding.bandListTitleTv.text = "제목입니다"
-            binding.bandListIntroduceTv.text = "소개입니다"
+            binding.lessonTitleTv.text = "제목입니다"
+            binding.lessonIntroduceTv.text = "소개입니다"
         }
     }
 }

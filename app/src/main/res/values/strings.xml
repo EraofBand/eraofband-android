@@ -59,6 +59,13 @@
     <string name="recruiting">모집 중</string>
     <string name="volunteer">지원하기</string>
     
+    <!-- 레슨 모집 페이지 관련 String -->
+    <string name="lesson_info">레슨 정보</string>
+    <string name="lesson_session">레슨 종목</string>
+    <string name="teacher_info">강사 정보</string>
+    <string name="lesson_intro">레슨 소개</string>
+    <string name="student_list">수강생 목록</string>
+    
     <!-- 마이페이지 관련 String -->
     <string name="mypage">마이페이지</string>
     <string name="look_more">더보기</string>

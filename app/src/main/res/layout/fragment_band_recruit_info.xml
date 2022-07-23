@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:overScrollMode="never">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,7 +60,7 @@
             android:id="@+id/band_recruit_info_activity_area_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/show_or_not"
+            android:text="@string/activity_area"
             android:textColor="@color/white"
             android:textSize="15sp"
             android:fontFamily="@font/pretendard_medium"
@@ -149,6 +148,7 @@
                 android:ellipsize="end"/>
 
             <TextView
+                android:id="@+id/band_recruit_info_leader_intro_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="나는 대장입니다"
@@ -216,7 +216,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/member"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textColor="@color/white"
             android:fontFamily="@font/pretendard_medium"
             android:layout_marginStart="20dp"

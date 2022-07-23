@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentHomeBinding
+import com.example.eraofband.main.MainActivity
 import com.example.eraofband.main.home.bandlist.HomeBandListActivity
+import com.example.eraofband.main.home.lesson.HomeLessonFragment
 
 class HomeFragment : Fragment() {
 
@@ -22,7 +25,12 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
+        // 생성된 밴드 리스트 확인 용
         binding.title.setOnClickListener{ startActivity(Intent(context, HomeBandListActivity::class.java)) }
+        // 레슨 모집 확인 용
+        binding.title.setOnClickListener{ (context as MainActivity).supportFragmentManager.beginTransaction().add(R.id.main_frm, HomeLessonFragment()).commitAllowingStateLoss() }
+        // 이었습니다..ㅎㅎ
+
 
         return binding.root
     }
