@@ -85,11 +85,8 @@ class MyPageFragment : Fragment(), GetMyPageView {
         moveFollowActivity()
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        // 나중에 프로필 편집 하게 되면 값이 바껴야하니까 onStart에 넣어줬어요
-        // 유저 정보를 받아온 후 프로필 편집 화면에 연동
+    override fun onResume() {
+        super.onResume()
         val getMyPageService = GetMyPageService()
 
         getMyPageService.setUserView(this)
