@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityPortfolioListBinding
+import com.example.eraofband.main.usermypage.UserMyPageActivity
 import com.example.eraofband.remote.deletePofol.DeletePofolResponse
 import com.example.eraofband.remote.deletePofol.DeletePofolService
 import com.example.eraofband.remote.deletePofol.DeletePofolView
@@ -88,8 +89,10 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView, DeletePofolVi
             }
 
             override fun onShowInfoPage(userIdx: Int) {
-                // 내가 올린 포트포
-//                if(userIdx == getUserIdx()) startActivity(Intent(this@PortfolioListActivity, my))
+                // 내가 올린 포트폴리오기 때문에 무조건 내 정보를 띄움
+                val intent = Intent(this@PortfolioListActivity, UserMyPageActivity::class.java)
+                intent.putExtra("comment", userIdx)
+                startActivity(intent)
             }
         })
     }

@@ -77,6 +77,9 @@ class PortfolioCommentRVAdapter(private val context: Context) : RecyclerView.Ada
             binding.commentProfileIv.setOnClickListener {
                 mItemClickListener.onItemClick(comment)
             }
+            binding.commentNicknameTv.setOnClickListener {
+                mItemClickListener.onItemClick(comment)
+            }
        }
     }
 }

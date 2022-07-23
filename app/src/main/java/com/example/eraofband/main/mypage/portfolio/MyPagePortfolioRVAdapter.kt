@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
 import com.example.eraofband.data.Portfolio
 import com.example.eraofband.databinding.ItemPortfolioBinding
+import com.example.eraofband.main.mypage.follow.FollowerRVAdapter
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResult
 
 class MyPagePortfolioRVAdapter() : RecyclerView.Adapter<MyPagePortfolioRVAdapter.ViewHolder>() {

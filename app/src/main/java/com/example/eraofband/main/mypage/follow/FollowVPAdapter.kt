@@ -7,7 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.eraofband.main.mypage.follow.FollowerFragment
 import com.example.eraofband.main.mypage.follow.FollowingFragment
 
-class FollowVPAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
+class FollowVPAdapter(fragmentActivity: FragmentActivity, var userIdx: Int) : FragmentStateAdapter(fragmentActivity) {
 
     var fragments = listOf<Fragment>()
 
@@ -15,8 +15,8 @@ class FollowVPAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {  // 프레그먼트 포지션에 따른 프레그먼트 띄우기
-            0 -> FollowingFragment()
-            else -> FollowerFragment()
+            0 -> FollowingFragment(userIdx)
+            else -> FollowerFragment(userIdx)
         }
     }
 }
