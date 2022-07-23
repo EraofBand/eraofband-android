@@ -5,6 +5,8 @@
     <string name="next">다음</string>
     <string name="start">시작하기</string>
     <string name="see_all">모두보기</string>
+    <string name="total">전체</string>
+    <string name="more">더보기</string>
 
     <!-- 회원가입 관련 String -->
     <string name="nickname">닉네임</string>
@@ -33,15 +35,43 @@
     <string name="kakao_app_key">ccf29d74d82be869acd9bcd90e665533</string>
     <string name="kakao_native_key">kakaoccf29d74d82be869acd9bcd90e665533</string>
 
+    <!-- 밴드 리스트 관련 String -->
+    <string name="band_list">생성된 밴드 리스트</string>
+
+    <!-- 밴드 모집 페이지 관련 String -->
+    <string name="share">공유하기</string>
+    <string name="band_intro">밴드 소개</string>
+    <string name="session_recruit">세션 모집</string>
+    <string name="album">앨범</string>
+
+    <string name="show_or_not">공연 여부</string>
+    <string name="activity_area">활동 지역</string>
+    <string name="leader_info">리더 정보</string>
+    <string name="member">멤버</string>
+    <string name="show_date">공연 일정</string>
+    <string name="chat_link">채팅방 링크</string>
+
+    <string name="volunteer_list">지원자 목록</string>
+    <string name="recruit_decide">모집 결정</string>
+    <string name="recruiting">모집 중</string>
+    <string name="volunteer">지원하기</string>
+    
+    <!-- 레슨 모집 페이지 관련 String -->
+    <string name="lesson_info">레슨 정보</string>
+    <string name="lesson_session">레슨 종목</string>
+    <string name="teacher_info">강사 정보</string>
+    <string name="lesson_intro">레슨 소개</string>
+    <string name="student_list">수강생 목록</string>
+    
     <!-- 마이페이지 관련 String -->
     <string name="mypage">마이페이지</string>
     <string name="look_more">더보기</string>
 
+    <string name="vocal">보컬</string>
+    <string name="keyboard">키보드</string>
     <string name="drum">드럼</string>
     <string name="guitar">기타</string>
-    <string name="piano">피아노</string>
     <string name="base">베이스</string>
-    <string name="sing">노래</string>
 
     <string name="following">팔로잉</string>
     <string name="follower">팔로워</string>
@@ -57,6 +87,11 @@
     <string name="uploadVideo">포트폴리오 영상 등록</string>
     <string name="explainPortfolio">포트폴리오에 대해 설명해주세요.</string>
     <string name="make">등록하기</string>
+
+    <!-- 포트폴리오 수정 관련 String -->
+    <string name="portfolio_edit">포트폴리오 수정하기</string>
+    <string name="portfolio_delete">포트폴리오 삭제하기</string>
+    <string name="portfolio_report">포트폴리오 신고하기</string>
 
     <!-- 프로필 편집 관련 String -->
     <string name="profile_edit">프로필 편집</string>

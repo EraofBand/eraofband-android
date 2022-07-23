@@ -1,10 +1,11 @@
 package com.example.eraofband.main.mypage
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.eraofband.main.mypage.portfolio.MyPagePortfolioFragment
 
-class MyPageVPAdapter (fragment : Fragment) : FragmentStateAdapter(fragment) {
+class MyPageVPAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment {

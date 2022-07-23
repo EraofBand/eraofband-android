@@ -140,11 +140,10 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
             // 2000: 이미지 컨텐츠를 가져오는 액티비티를 수행한 후 실행되는 Activity 일 때만 수행하기 위해서
             2000 -> {
                 val selectedVideoUri: Uri? = data?.data
-
-
                 // 이미지 가져오기 성공하면 원래 이미지를 없애고 가져온 사진을 넣어줌
                 if (selectedVideoUri != null) {
 //                    Glide.with(this).load(selectedImageUri).into(binding.profileEditProfileIv)
+
                     // 썸네일 띄우기
                     binding.portfolioThumbnailIv.visibility = View.VISIBLE
                     binding.portfolioThumbnailIv.clipToOutline = true
@@ -225,6 +224,8 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
 
     override fun onMakeSuccess(code: Int, result: MakePofolResult) {
         Log.d("MAKE/SUC", result.toString())
+
+        finish()  // 올리기 성공하면 창 닫기
     }
 
     override fun onMakeFailure(code: Int, message: String) {

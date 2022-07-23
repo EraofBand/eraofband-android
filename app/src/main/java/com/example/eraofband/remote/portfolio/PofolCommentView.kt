@@ -7,7 +7,7 @@ interface PofolCommentView {
     fun onCommentFailure(code: Int, message: String)
 
     // 댓글 달기
-    fun onCommentWriteSuccess(code:Int, result: List<PofolCommentWriteResult>)
+    fun onCommentWriteSuccess(code:Int, result: PofolCommentWriteResult)
     fun onCommentWriteFailure(code: Int, message: String)
 
     // 댓글 삭제하기

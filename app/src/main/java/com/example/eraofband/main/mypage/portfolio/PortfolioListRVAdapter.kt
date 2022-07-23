@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -12,11 +13,11 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ItemPortfolioListBinding
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResult
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
 import com.example.eraofband.remote.portfolio.PofolLikeResult
 import com.example.eraofband.remote.portfolio.PofolLikeService
 import com.example.eraofband.remote.portfolio.PofolLikeView
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
 
 class PortfolioListRVAdapter(private val jwt: String, private val context: Context) : RecyclerView.Adapter<PortfolioListRVAdapter.ViewHolder>(), PofolLikeView {
     private val portfolio = arrayListOf<GetMyPofolResult>()
@@ -39,14 +40,16 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun deletePortfolio(portfolio: GetMyPofolResult) {
-        this.portfolio.remove(portfolio)
+    fun deletePortfolio(position: Int) {
+        this.portfolio.removeAt(position)
         notifyDataSetChanged()
     }
 
     interface MyItemListener {
         fun urlParse(url : String) : Uri
         fun onShowComment(pofolIdx : Int)
+        fun onShowPopup(portfolio: GetMyPofolResult, position: Int, view: View)
+        fun onShowInfoPage(userIdx: Int)
     }
 
     fun setMyItemClickListener(itemListener: MyItemListener) {
@@ -85,10 +88,15 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
             }
         }
 
+        // 프사 누르면 유저 페이지로 전환
+        holder.binding.portfolioListProfileIv.setOnClickListener { mItemListener.onShowInfoPage(portfolio[position].userIdx) }
+
         // 댓글 창 관련
         holder.binding.portfolioListComment.setOnClickListener { mItemListener.onShowComment(portfolio[position].pofolIdx) }
-    }
 
+        // 댓글 수정, 신고하기 popup menu 띄우기
+        holder.binding.portfolioListListIv.setOnClickListener { mItemListener.onShowPopup(portfolio[position], position, holder.binding.portfolioListListIv) }
+    }
     override fun getItemCount(): Int = portfolio.size
 
     inner class ViewHolder(val binding: ItemPortfolioListBinding) : RecyclerView.ViewHolder(binding.root) {
