@@ -12,7 +12,7 @@ class BandRecruitVPAdapter (fragmentActivity : FragmentActivity) : FragmentState
         return when (position) {  // 프레그먼트 포지션에 따른 프레그먼트 띄우기
             0 -> BandRecruitInfoFragment()
             1 -> BandRecruitSessionFragment()
-            else -> HomeFragment()
+            else -> BandRecruitAlbumFragment()
         }
     }
 }

@@ -76,7 +76,7 @@ class HomeLessonFragment: Fragment() {
 
         lessonRVAdapter.initLessonList(bandList)
 
-        lessonRVAdapter.setMyItemClickListener(object : LessonRVAdapter.MyItemClickListener{
+        lessonRVAdapter.setMyItemClickListener(object : LessonRVAdapter.MyItemClickListener {
             override fun onShowDetail(lessonIdx: Int) {  // 레슨 모집 페이지로 전환
                 startActivity(Intent(context, LessonInfoActivity::class.java))
             }

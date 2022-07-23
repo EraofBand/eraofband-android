@@ -49,7 +49,7 @@
         <View
             android:id="@+id/band_recruit_session_line"
             android:layout_width="match_parent"
-            android:layout_height="1.5dp"
+            android:layout_height="1dp"
             android:background="@color/tablayout_gray"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="5dp"

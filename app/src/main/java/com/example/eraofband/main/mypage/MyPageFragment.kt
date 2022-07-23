@@ -78,15 +78,6 @@ class MyPageFragment : Fragment(), GetMyPageView {
         moveFollowActivity()
     }
 
-    override fun onResume() {
-        super.onResume()
-        val getMyPageService = GetMyPageService()
-
-        getMyPageService.setUserView(this)
-        getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
-
-    }
-
 //----------------------------------------------------------------------------------------------------
 
     private fun moveFollowActivity() {

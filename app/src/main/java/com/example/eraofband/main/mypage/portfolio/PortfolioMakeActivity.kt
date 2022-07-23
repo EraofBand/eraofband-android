@@ -142,8 +142,6 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
                 val selectedVideoUri: Uri? = data?.data
                 // 이미지 가져오기 성공하면 원래 이미지를 없애고 가져온 사진을 넣어줌
                 if (selectedVideoUri != null) {
-//                    Glide.with(this).load(selectedImageUri).into(binding.profileEditProfileIv)
-
                     // 썸네일 띄우기
                     binding.portfolioThumbnailIv.visibility = View.VISIBLE
                     binding.portfolioThumbnailIv.clipToOutline = true
