@@ -30,6 +30,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     private lateinit var binding: ActivityUserMypageBinding
     internal var otherUserIdx : Int? = null
     private var followerCnt = 0
+    private lateinit var nickName : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +58,11 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             }
         }.attach()
 
-        binding.userMypageFollowTv.setOnClickListener {                 // 팔로우 리스트에서 언팔 및 팔로우 시 visibility 변경
+        binding.userMypageBackIb.setOnClickListener{
+            finish()
+        }
+
+        binding.userMypageFollowTv.setOnClickListener {  // 팔로우 리스트에서 언팔 및 팔로우 시 visibility 변경
             binding.userMypageFollowTv.visibility = View.INVISIBLE
             binding.userMypageUnfollowTv.visibility = View.VISIBLE
             binding.userMypageFollowerCntTv.text = (followerCnt+ 1).toString()
@@ -89,13 +94,17 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     private fun moveFollowActivity() {
         binding.userMypageFollowing.setOnClickListener {
             var intent = Intent(this, FollowActivity::class.java)
+            intent.putExtra("nickName", nickName)
             intent.putExtra("current", 0)
+            intent.putExtra("userIdx", otherUserIdx)
             startActivity(intent)
         }
 
         binding.userMypageFollower.setOnClickListener {
             var intent = Intent(this, FollowActivity::class.java)
+            intent.putExtra("nickName", nickName)
             intent.putExtra("current", 1)
+            intent.putExtra("userIdx", otherUserIdx)
             startActivity(intent)
         }
     }
@@ -128,9 +137,15 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     override fun onGetSuccess(code: Int, result: GetOtherUserResult) {
         // 나중에 프사도 연동 예정, 포트폴리오는 아직
 
+        Glide.with(this).load(result.getUser.profileImgUrl)
+            .apply(RequestOptions.centerCropTransform())
+            .apply(RequestOptions.circleCropTransform())
+            .into(binding.userMypageProfileimgIv)
+
         Log.d("MYPAGE", result.toString())
-        binding.userMypageNicknameTv.text = result.getUser.nickName
-        binding.userMypageInfoNicknameTv.text = result.getUser.nickName // 닉네임 연동
+        nickName = result.getUser.nickName
+        binding.userMypageNicknameTv.text = nickName
+        binding.userMypageInfoNicknameTv.text = nickName // 닉네임 연동
 
         // 디테일한 소개 연동
 
@@ -170,7 +185,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         binding.userMypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
         setSession(result.getUser.userSession)  // 세션 연동
-
+        
         //프사 연동
         Glide.with(this).load(result.getUser.profileImgUrl)
             .apply(RequestOptions.centerCropTransform())
