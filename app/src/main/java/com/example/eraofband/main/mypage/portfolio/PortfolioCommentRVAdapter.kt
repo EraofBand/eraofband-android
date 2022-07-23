@@ -33,6 +33,12 @@ class PortfolioCommentRVAdapter(private val context: Context) : RecyclerView.Ada
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun clearComment() {
+        this.comment.clear()
+        notifyDataSetChanged()
+    }
+
     interface MyItemClickListener {
         fun onItemClick(comment: PofolCommentResult)
         fun onShowPopUp(commentIdx: Int,position: Int, userIdx: Int, view: View)
