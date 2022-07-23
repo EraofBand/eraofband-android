@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
@@ -27,7 +28,8 @@ import java.util.*
 class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView, UserUnfollowView {
 
     private lateinit var binding: ActivityUserMypageBinding
-    private var otherUserIdx : Int? = null
+    internal var otherUserIdx : Int? = null
+    private var followerCnt = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,12 +38,14 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         setContentView(binding.root)
 
         binding.userMypageBackIb.setOnClickListener {
-            finishAffinity()
+            finish()
         }
 
         val intent = intent
         otherUserIdx = intent.extras?.getInt("comment")!!
         Log.d("USER INDEX", otherUserIdx.toString())
+
+
 
         val userMyPageAdapter = UserMyPageVPAdapter(this)
         binding.userMypageVp.adapter = userMyPageAdapter
@@ -56,6 +60,8 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         binding.userMypageFollowTv.setOnClickListener {                 // 팔로우 리스트에서 언팔 및 팔로우 시 visibility 변경
             binding.userMypageFollowTv.visibility = View.INVISIBLE
             binding.userMypageUnfollowTv.visibility = View.VISIBLE
+            binding.userMypageFollowerCntTv.text = (followerCnt+ 1).toString()
+            followerCnt = followerCnt + 1
             val userFollowService = UserFollowService() // 팔로우
             userFollowService.setUserFollowView(this)
             userFollowService.userFollow(getJwt()!!, otherUserIdx!!)
@@ -64,6 +70,8 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         binding.userMypageUnfollowTv.setOnClickListener {
             binding.userMypageFollowTv.visibility = View.VISIBLE
             binding.userMypageUnfollowTv.visibility = View.INVISIBLE
+            binding.userMypageFollowerCntTv.text = (followerCnt - 1).toString()
+            followerCnt = followerCnt - 1
             val userUnfollowService = UserUnfollowService() // 언팔로우
             userUnfollowService.setUserUnfollowView(this)
             userUnfollowService.userUnfollow(getJwt()!!, otherUserIdx!!)
@@ -90,12 +98,6 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             intent.putExtra("current", 1)
             startActivity(intent)
         }
-    }
-
-    private fun getUserIdx() : Int {
-        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
-        return userSP.getInt("userIdx", 0)
-
     }
 
     private fun getJwt() : String? {
@@ -164,6 +166,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         // 숫자 연동
         binding.userMypageFollowingCntTv.text = result.getUser.followerCount.toString()
         binding.userMypageFollowerCntTv.text = result.getUser.followeeCount.toString()
+        followerCnt = result.getUser.followeeCount
         binding.userMypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
         setSession(result.getUser.userSession)  // 세션 연동

@@ -17,6 +17,7 @@ import com.example.eraofband.R
 import com.example.eraofband.data.Comment
 import com.example.eraofband.databinding.ActivityPortfolioCommentBinding
 import com.example.eraofband.main.usermypage.UserMyPageActivity
+import com.example.eraofband.remote.getMyPofol.GetMyPofolResult
 import com.example.eraofband.remote.portfolio.PofolCommentResult
 import com.example.eraofband.remote.portfolio.PofolCommentService
 import com.example.eraofband.remote.portfolio.PofolCommentView
@@ -31,6 +32,8 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
     private val commentService = PofolCommentService()
     private val commentRVAdapter = PortfolioCommentRVAdapter(this)
 
+    private val portfolios = arrayListOf<PofolCommentResult>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,20 +42,22 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
 
         binding.portfolioCommentBackIv.setOnClickListener { finish() }  // 뒤로 가기
 
-
         textWatcher()  // 댓글 창에 뭐가 있는지 확인하는 용도, 입력 색을 바꾸기 위해
+
+        binding.portfolioCommentCommentRv.adapter = commentRVAdapter
+        binding.portfolioCommentCommentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 
     override fun onStart() {
         super.onStart()
+
+        commentRVAdapter.clearComment()
 
         commentService.setCommentView(this)
         commentService.getComment(intent.getIntExtra("pofolIdx", 0))
     }
 
     private fun initRecyclerView(item: List<PofolCommentResult>) {
-        binding.portfolioCommentCommentRv.adapter = commentRVAdapter
-        binding.portfolioCommentCommentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         commentRVAdapter.initComment(item)
 

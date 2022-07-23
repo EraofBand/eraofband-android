@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.eraofband">
     <!-- 인터넷 사용 권한 -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- 외부 저장소 접근 권한 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 외부 저장소 접근 권한 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -20,8 +19,12 @@
         android:theme="@style/Theme.EraofBand"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
-        <!-- 카카오 로그인 AuthCodeHandler -->
+        <activity
+            android:name=".HomeLessonEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeLessonMakeActivity"
+            android:exported="false" /> <!-- 카카오 로그인 AuthCodeHandler -->
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
@@ -40,10 +43,10 @@
             android:name=".splash.SplashActivity"
             android:exported="true">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".onboarding.OnboardingActivity"
@@ -102,6 +105,21 @@
             android:exported="false" />
         <activity
             android:name=".main.usermypage.UserMyPageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".main.usermypage.UserPortfolioListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".main.home.HomeBandMakeActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".main.home.HomeBandEditActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".main.home.HomeLessonMakeActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".main.home.HomeLessonEditActivity"
             android:exported="false"/>
     </application>
 
