@@ -42,8 +42,13 @@ import java.io.File
 class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, SendImgView {
 
     private lateinit var binding : ActivityProfileEditBinding
+
     private var editUser = EditUser("", "", "", "", "", "", 0)
     private var profileUrl = ""
+
+    // 스피너 초기화 관련 변수
+    private var initial = true
+    private var currentArea = 0
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,17 +61,13 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
             finish()
         }
 
-        initSpinner()  // 스피너 초기화
-        initDatePicker()
-
-
         // 유저 정보를 받아온 후 프로필 편집 화면에 연동
         val getMyPageService = GetMyPageService()
 
         getMyPageService.setUserView(this)
         getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
 
-        binding.profileEditCameraIv.setOnClickListener {
+        binding.profileEditCameraIv.setOnClickListener {  // 프사 변경을 원하면 갤러리 접근하도록
             initImageViewProfile()
         }
         binding.profileEditProfileIv.setOnClickListener {
@@ -99,6 +100,7 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
             }
         }
 
+        initDatePicker()
 
         binding.signupSaveBtn.setOnClickListener {
             val patchUserService = PatchUserService()
@@ -132,59 +134,6 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
         return userSP.getString("jwt", "")
     }
 
-    private fun initSpinner() {  // 스피너 초기화
-        // 도시 스피너 어뎁터 연결
-        val city = resources.getStringArray(R.array.city)  // 도시 목록
-
-        val cityAdapter = ArrayAdapter(this, R.layout.item_spinner, city)
-        binding.profileEditCitySp.adapter = cityAdapter
-        binding.profileEditCitySp.setSelection(0)
-
-        // 도시 스피너 클릭 이벤트
-        binding.profileEditCitySp.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if(position == 0) {  // 서울이면 서울시 지역 연결
-                    val area = resources.getStringArray(R.array.seoul)
-
-                    val areaAdapter = ArrayAdapter(applicationContext, R.layout.item_spinner, area)
-                    binding.profileEditAreaSp.adapter = areaAdapter
-                }
-                else {  // 경기도면 경기도 지역 연결
-                    val area = resources.getStringArray(R.array.gyeonggido)
-
-                    val areaAdapter = ArrayAdapter(applicationContext, R.layout.item_spinner, area)
-                    binding.profileEditAreaSp.adapter = areaAdapter
-                }
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {  // 아무것도 클릭되어있지 않을 때는 기본으로 서울 지역을 띄워줌
-                val area = resources.getStringArray(R.array.seoul)
-
-                val areaAdapter = ArrayAdapter(applicationContext, R.layout.item_spinner, area)
-                binding.profileEditAreaSp.adapter = areaAdapter
-                binding.profileEditAreaSp.setSelection(0)
-            }
-
-        })
-
-    }
-
-    private fun initDatePicker() {
-        // 생일 날짜 설정
-        binding.profileEditRealBirthdayTv.setOnClickListener {
-            // 현재 설정되어있는 날짜를 넘겨줌
-            val dateDialog = DialogDatePicker(binding.profileEditRealBirthdayTv.text.toString())
-            dateDialog.show(supportFragmentManager, "dateDialog")
-
-            // DialogDatePicker의 날짜 변경 인터페이스를 불러와서 TextView에 날짜를 저장
-            dateDialog.setMyItemClickListener(object  : DialogDatePicker.MyItemClickListener {
-                override fun saveBirthday(birthday: String) {
-                    binding.profileEditRealBirthdayTv.text = birthday
-                }
-            })
-        }
-    }
-
     @SuppressLint("SetTextI18n")
     override fun onGetSuccess(code: Int, result: GetMyPageResult) {
         // Glide로 이미지 표시하기
@@ -204,7 +153,8 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
 
         binding.profileEditRealBirthdayTv.text = result.getUser.birth  // 생일 연결
 
-        findRegion(result.getUser.region)  // 지역 연결
+        initRegion(result.getUser.region) // 지역 연결
+        spinnerClickListener()
 
         Log.d("GETUSER/SUC", result.toString())
     }
@@ -213,29 +163,96 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
         Log.d("GETUSER/FAIL", "$code $message")
     }
 
-    private fun findRegion(region: String) {
-        // 서울, 경기도와 구, 시를 구분
-        val index = region.indexOf(" ")
-        val city = region.substring(0, index)  // 서울, 경기도
-        val area = region.substring(index + 1)
+    private fun initRegion(region: String) {  // 지역 설정
+        // 도시 스피너 어뎁터 연결
+        val cityAdapter = ArrayAdapter(this, R.layout.item_spinner, resources.getStringArray(R.array.city))
+        binding.profileEditCitySp.adapter = cityAdapter
 
-        val areaList : Array<String>
+        val array = region.split(" ")
 
-        if(city == "서울") {  // 서울인 경우
+        val city = array[0]
+        val area = array[1]
+
+        val areaList: Array<String>
+
+        if(city == "서울") {
             binding.profileEditCitySp.setSelection(0)
             areaList = resources.getStringArray(R.array.seoul)
         }
-        else {  // 경기도인 경우
+        else {
             binding.profileEditCitySp.setSelection(1)
             areaList = resources.getStringArray(R.array.gyeonggido)
         }
+
+
+        // 지역 스피너 어뎁터 연결
+        val areaAdapter = ArrayAdapter(applicationContext, R.layout.item_spinner, areaList)
+        binding.profileEditAreaSp.adapter = areaAdapter
 
         // 해당 지역의 스피너 위치를 찾음
         for(i in 0..areaList.size) {
             if(area == areaList[i]) {
                 binding.profileEditAreaSp.setSelection(i)
+                currentArea = i  // 현재 지역 지정
                 break
             }
+        }
+    }
+
+    private fun spinnerClickListener() {
+        // 도시 스피너 클릭 이벤트
+        binding.profileEditCitySp.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if(position == 0) {  // 서울이면 서울시 지역 연결
+                    val areaAdapter = ArrayAdapter(applicationContext, R.layout.item_spinner, resources.getStringArray(R.array.seoul))
+                    binding.profileEditAreaSp.adapter = areaAdapter
+
+                    if(initial) {
+                        binding.profileEditAreaSp.setSelection(currentArea)
+                        initial = false
+                    }
+                    else {
+                        binding.profileEditAreaSp.setSelection(0)
+                    }
+                }
+                else {  // 경기도면 경기도 지역 연결
+                    val areaAdapter = ArrayAdapter(applicationContext, R.layout.item_spinner, resources.getStringArray(R.array.gyeonggido))
+                    binding.profileEditAreaSp.adapter = areaAdapter
+
+                    if(initial) {
+                        binding.profileEditAreaSp.setSelection(currentArea)
+                        initial = false
+                    }
+                    else {
+                        binding.profileEditAreaSp.setSelection(0)
+                    }
+                }
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {  // 아무것도 클릭되어있지 않을 때는 기본으로 서울 지역을 띄워줌
+                val areaList = resources.getStringArray(R.array.seoul)
+
+                val areaAdapter = ArrayAdapter(applicationContext, R.layout.item_spinner, areaList)
+                binding.profileEditAreaSp.adapter = areaAdapter
+
+                binding.profileEditAreaSp.setSelection(0)
+            }
+        })
+    }
+
+    private fun initDatePicker() {
+        // 생일 날짜 설정
+        binding.profileEditRealBirthdayTv.setOnClickListener {
+            // 현재 설정되어있는 날짜를 넘겨줌
+            val dateDialog = DialogDatePicker(binding.profileEditRealBirthdayTv.text.toString())
+            dateDialog.show(supportFragmentManager, "dateDialog")
+
+            // DialogDatePicker의 날짜 변경 인터페이스를 불러와서 TextView에 날짜를 저장
+            dateDialog.setMyItemClickListener(object  : DialogDatePicker.MyItemClickListener {
+                override fun saveBirthday(birthday: String) {
+                    binding.profileEditRealBirthdayTv.text = birthday
+                }
+            })
         }
     }
 
