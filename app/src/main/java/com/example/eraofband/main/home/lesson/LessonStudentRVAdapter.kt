@@ -6,11 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
 import com.example.eraofband.data.Band
-import com.example.eraofband.databinding.ItemBandListBinding
-import com.example.eraofband.databinding.ItemBandMemberBinding
 import com.example.eraofband.databinding.ItemStudentBinding
 
-class StudentRVAdapter : RecyclerView.Adapter<StudentRVAdapter.ViewHolder>() {
+class LessonStudentRVAdapter : RecyclerView.Adapter<LessonStudentRVAdapter.ViewHolder>() {
     private var studentList = arrayListOf<Band>()
 
     interface MyItemClickListener {

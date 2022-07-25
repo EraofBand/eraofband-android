@@ -1,9 +1,8 @@
-package com.example.eraofband.main.home.bandlist
+package com.example.eraofband.main.home.session.band
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.eraofband.main.home.HomeFragment
 
 class BandRecruitVPAdapter (fragmentActivity : FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
     override fun getItemCount(): Int = 3

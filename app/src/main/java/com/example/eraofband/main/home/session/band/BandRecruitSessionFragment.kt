@@ -1,4 +1,4 @@
-package com.example.eraofband.main.home.bandlist
+package com.example.eraofband.main.home.session.band
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,8 +15,8 @@ class BandRecruitSessionFragment: Fragment() {
     private var _binding: FragmentBandRecruitSessionBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
 
-    private lateinit var volunteerRVAdapter: SessionVolunteerRVAdapter
-    private lateinit var sessionRVAdapter: SessionListRVAdapter
+    private lateinit var volunteerRVAdapter: BandRecruitSessionVolunteerRVAdapter
+    private lateinit var sessionRVAdapter: BandRecruitSessionListRVAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +34,7 @@ class BandRecruitSessionFragment: Fragment() {
 
     private fun initRecyclerView() {
         // 지원자 목록 리사이클러뷰
-        volunteerRVAdapter = SessionVolunteerRVAdapter()
+        volunteerRVAdapter = BandRecruitSessionVolunteerRVAdapter()
         binding.bandRecruitSessionVolunteerRv.adapter = volunteerRVAdapter
         binding.bandRecruitSessionVolunteerRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
@@ -48,7 +48,7 @@ class BandRecruitSessionFragment: Fragment() {
         volunteerRVAdapter.initVolunteerList(bandList)
 
         // 세션 모집 리사이클러뷰
-        sessionRVAdapter = SessionListRVAdapter()
+        sessionRVAdapter = BandRecruitSessionListRVAdapter()
         binding.bandRecruitSessionRv.adapter = sessionRVAdapter
         binding.bandRecruitSessionRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 

@@ -1,4 +1,4 @@
-package com.example.eraofband.main.home.band
+package com.example.eraofband.main.home.session
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,16 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.eraofband.R
 import com.example.eraofband.data.Band
-import com.example.eraofband.databinding.FragmentHomeBandBinding
-import com.example.eraofband.main.home.bandlist.BandMemberRVAdapter
-import com.example.eraofband.main.home.bandlist.HomeBandListActivity
+import com.example.eraofband.databinding.FragmentHomeSessionBinding
+import com.example.eraofband.main.home.session.band.BandListActivity
 
-class HomeBandFragment : Fragment() {
+class HomeSessionFragment : Fragment() {
 
 
-    private var _binding: FragmentHomeBandBinding? = null
+    private var _binding: FragmentHomeSessionBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
 
 
@@ -25,7 +23,7 @@ class HomeBandFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentHomeBandBinding.inflate(inflater, container, false)
+        _binding = FragmentHomeSessionBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -34,7 +32,7 @@ class HomeBandFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // 생성된 밴드 리스트 확인 용
-        binding.homeCl1.setOnClickListener{ startActivity(Intent(context, HomeBandListActivity::class.java)) }
+        binding.homeCl1.setOnClickListener{ startActivity(Intent(context, BandListActivity::class.java)) }
 
         initRecyclerView()
     }
@@ -49,7 +47,7 @@ class HomeBandFragment : Fragment() {
             Band(0, "", "")
         )
 
-        val homeNewBandRVAdapter = HomeNewBandRVAdapter(newBandList)
+        val homeNewBandRVAdapter = HomeSessionNewBandRVAdapter(newBandList)
 
         binding.homeNewBandRv.adapter = homeNewBandRVAdapter
         binding.homeNewBandRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

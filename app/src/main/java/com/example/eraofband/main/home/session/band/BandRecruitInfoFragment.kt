@@ -1,6 +1,5 @@
-package com.example.eraofband.main.home.bandlist
+package com.example.eraofband.main.home.session.band
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +15,7 @@ class BandRecruitInfoFragment: Fragment() {
     private var _binding: FragmentBandRecruitInfoBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
 
-    private lateinit var memberRVAdapter: BandMemberRVAdapter
+    private lateinit var bandMemberRVAdapter: BandMemberRVAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,8 +32,8 @@ class BandRecruitInfoFragment: Fragment() {
     }
 
     private fun initRecyclerView() {
-        memberRVAdapter = BandMemberRVAdapter()
-        binding.bandRecruitInfoMemberRv.adapter = memberRVAdapter
+        bandMemberRVAdapter = BandMemberRVAdapter()
+        binding.bandRecruitInfoMemberRv.adapter = bandMemberRVAdapter
         binding.bandRecruitInfoMemberRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         val bandList = arrayListOf(
@@ -44,7 +43,7 @@ class BandRecruitInfoFragment: Fragment() {
             Band(R.drawable.band_profile, "", "")
         )
 
-        memberRVAdapter.initMemberList(bandList)
+        bandMemberRVAdapter.initMemberList(bandList)
 
     }
 }

@@ -64,8 +64,8 @@ class HomeLessonFragment: Fragment() {
 
     private fun initRecyclerView() {
         // 레슨 리사이클러뷰
-        val lessonRVAdapter = LessonRVAdapter()
-        binding.homeLessonListRv.adapter = lessonRVAdapter
+        val lessonListRVAdapter = LessonListRVAdapter()
+        binding.homeLessonListRv.adapter = lessonListRVAdapter
         binding.homeLessonListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         val bandList = arrayListOf(
@@ -74,9 +74,9 @@ class HomeLessonFragment: Fragment() {
             Band(R.drawable.band_profile, "", "")
         )
 
-        lessonRVAdapter.initLessonList(bandList)
+        lessonListRVAdapter.initLessonList(bandList)
 
-        lessonRVAdapter.setMyItemClickListener(object : LessonRVAdapter.MyItemClickListener {
+        lessonListRVAdapter.setMyItemClickListener(object : LessonListRVAdapter.MyItemClickListener {
             override fun onShowDetail(lessonIdx: Int) {  // 레슨 모집 페이지로 전환
                 startActivity(Intent(context, LessonInfoActivity::class.java))
             }

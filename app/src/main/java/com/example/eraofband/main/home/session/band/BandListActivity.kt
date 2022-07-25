@@ -1,4 +1,4 @@
-package com.example.eraofband.main.home.bandlist
+package com.example.eraofband.main.home.session.band
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,17 +9,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
 import com.example.eraofband.data.Band
-import com.example.eraofband.databinding.ActivityHomeBandListBinding
+import com.example.eraofband.databinding.ActivityBandListBinding
 
-class HomeBandListActivity: AppCompatActivity() {
+class BandListActivity: AppCompatActivity() {
 
-    private lateinit var binding: ActivityHomeBandListBinding
-    private lateinit var recruitRVAdapter: BandListRVAdapter
+    private lateinit var binding: ActivityBandListBinding
+    private lateinit var bandListRVAdapter: BandListRVAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityHomeBandListBinding.inflate(layoutInflater)
+        binding = ActivityBandListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.homeBandListBackIv.setOnClickListener { finish() }
@@ -59,8 +59,8 @@ class HomeBandListActivity: AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        recruitRVAdapter = BandListRVAdapter()
-        binding.homeBandListListRv.adapter = recruitRVAdapter
+        bandListRVAdapter = BandListRVAdapter()
+        binding.homeBandListListRv.adapter = bandListRVAdapter
         binding.homeBandListListRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         val bandList = arrayListOf(
@@ -68,11 +68,11 @@ class HomeBandListActivity: AppCompatActivity() {
             Band(R.drawable.band_profile, "", ""),
             Band(R.drawable.band_profile, "", ""))
 
-        recruitRVAdapter.initBandList(bandList)
+        bandListRVAdapter.initBandList(bandList)
 
-        recruitRVAdapter.setMyItemClickListener(object : BandListRVAdapter.MyItemClickListener{
+        bandListRVAdapter.setMyItemClickListener(object : BandListRVAdapter.MyItemClickListener{
             override fun onShowDetail(bandIdx: Int) {  // 밴드 모집 페이지로 전환
-                startActivity(Intent(this@HomeBandListActivity, HomeBandRecruitActivity::class.java))
+                startActivity(Intent(this@BandListActivity, BandRecruitActivity::class.java))
             }
         })
     }

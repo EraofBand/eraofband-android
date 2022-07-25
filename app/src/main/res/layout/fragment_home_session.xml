@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.home.band.HomeBandFragment">
+    tools:context=".main.home.session.HomeSessionFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -183,7 +183,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/home_new_band_tv"
-        tools:listitem="@layout/item_new_band" />
+        tools:listitem="@layout/item_session_new_band" />
 
     <TextView
         android:id="@+id/home_popular_band_tv"
