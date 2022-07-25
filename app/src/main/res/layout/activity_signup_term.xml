@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/signup_term_back_iv"
+        android:layout_width="13dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_back"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="55dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/signup_term_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="45dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signup_term_back_iv">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:src="@drawable/ic_signup_progress"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:src="@drawable/ic_signup_progress"
+            android:layout_marginStart="7dp"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:src="@drawable/ic_signup_progress"
+            android:layout_marginStart="7dp"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:src="@drawable/ic_signup_progress"
+            android:layout_marginStart="7dp"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:src="@drawable/ic_signup_progress"
+            android:layout_marginStart="7dp"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="25dp"
+            android:layout_height="5dp"
+            android:src="@drawable/ic_signup_progress_selected"
+            android:layout_marginStart="7dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/signup_term_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/signup_term_title"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:fontFamily="@font/pretendard_regular"
+        android:lineSpacingExtra="5dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintTop_toBottomOf="@id/signup_term_progress"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/signup_term_all_agree"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gray_round_bg"
+        android:paddingVertical="15dp"
+        android:paddingHorizontal="20dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintTop_toBottomOf="@id/signup_term_title_tv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <CheckBox
+            android:id="@+id/signup_term_all_agree_cb"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/check_selector"
+            android:button="@null"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/signup_term_all_agree_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/signup_term_all_agree"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/pretendard_bold"
+            android:layout_marginStart="15dp"
+            app:layout_constraintStart_toEndOf="@id/signup_term_all_agree_cb"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <CheckBox
+        android:id="@+id/signup_term_first_cb"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:button="@null"
+        android:background="@drawable/check_selector"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/signup_term_all_agree"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/signup_term_first_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/signup_mola"
+        android:textColor="@color/gray"
+        android:textSize="15sp"
+        android:fontFamily="@font/pretendard_regular"
+        android:layout_marginStart="15dp"
+        app:layout_constraintStart_toEndOf="@id/signup_term_first_cb"
+        app:layout_constraintTop_toTopOf="@id/signup_term_first_cb"
+        app:layout_constraintBottom_toBottomOf="@id/signup_term_first_cb"/>
+
+    <CheckBox
+        android:id="@+id/signup_term_second_cb"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:button="@null"
+        android:background="@drawable/check_selector"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/signup_term_first_cb"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/signup_term_second_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/signup_mola"
+        android:textColor="@color/gray"
+        android:textSize="15sp"
+        android:fontFamily="@font/pretendard_regular"
+        android:layout_marginStart="15dp"
+        app:layout_constraintStart_toEndOf="@id/signup_term_second_cb"
+        app:layout_constraintTop_toTopOf="@id/signup_term_second_cb"
+        app:layout_constraintBottom_toBottomOf="@id/signup_term_second_cb"/>
+
+    <CheckBox
+        android:id="@+id/signup_term_third_cb"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:button="@null"
+        android:background="@drawable/check_selector"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/signup_term_second_cb"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/signup_term_third_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/signup_mola2"
+        android:textColor="@color/gray"
+        android:textSize="15sp"
+        android:fontFamily="@font/pretendard_regular"
+        android:layout_marginStart="15dp"
+        app:layout_constraintStart_toEndOf="@id/signup_term_third_cb"
+        app:layout_constraintTop_toTopOf="@id/signup_term_third_cb"
+        app:layout_constraintBottom_toBottomOf="@id/signup_term_third_cb"/>
+
+    <CheckBox
+        android:id="@+id/signup_term_forth_cb"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:button="@null"
+        android:background="@drawable/check_selector"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/signup_term_third_cb"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/signup_term_forth_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/signup_mola2"
+        android:textColor="@color/gray"
+        android:textSize="15sp"
+        android:fontFamily="@font/pretendard_regular"
+        android:layout_marginStart="15dp"
+        app:layout_constraintStart_toEndOf="@id/signup_term_forth_cb"
+        app:layout_constraintTop_toTopOf="@id/signup_term_forth_cb"
+        app:layout_constraintBottom_toBottomOf="@id/signup_term_forth_cb"/>
+
+    <CheckBox
+        android:id="@+id/signup_term_fifth_cb"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:button="@null"
+        android:background="@drawable/check_selector"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/signup_term_forth_cb"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/signup_term_fifth_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/signup_mola2"
+        android:textColor="@color/gray"
+        android:textSize="15sp"
+        android:fontFamily="@font/pretendard_regular"
+        android:layout_marginStart="15dp"
+        app:layout_constraintStart_toEndOf="@id/signup_term_fifth_cb"
+        app:layout_constraintTop_toTopOf="@id/signup_term_fifth_cb"
+        app:layout_constraintBottom_toBottomOf="@id/signup_term_fifth_cb"/>
+
+    <TextView
+        android:id="@+id/signup_term_next_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/start"
+        android:textSize="17sp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:fontFamily="@font/pretendard_regular"
+        android:background="@drawable/gray_round_bg"
+        android:clickable="false"
+        android:paddingVertical="15dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="80dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

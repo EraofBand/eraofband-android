@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/mypage_session_back_iv"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="55dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/mypage_session_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="세션 변경"
+        android:textColor="@color/white"
+
+        app:layout_constraintBottom_toBottomOf="@+id/mypage_session_back_iv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/mypage_session_back_iv" />
+
+
+    <CheckBox
+        android:id="@+id/mypage_session_vocal_cb"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="150dp"
+        android:background="@drawable/session_selector"
+        android:button="@null"
+        app:layout_constraintStart_toStartOf="@+id/mypage_session_back_iv"
+        app:layout_constraintTop_toBottomOf="@id/mypage_session_title_tv" />
+
+    <TextView
+        android:id="@+id/mypage_session_vocal_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="보컬"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/mypage_session_vocal_cb"
+        app:layout_constraintStart_toStartOf="@+id/mypage_session_vocal_cb"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_session_vocal_cb" />
+
+
+    <CheckBox
+        android:id="@+id/mypage_session_guitar_cb"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/session_selector"
+        android:button="@null"
+        app:layout_constraintEnd_toStartOf="@id/mypage_session_base_cb"
+        app:layout_constraintStart_toEndOf="@id/mypage_session_vocal_cb"
+        app:layout_constraintTop_toTopOf="@id/mypage_session_vocal_cb" />
+
+    <TextView
+        android:id="@+id/mypage_session_guitar_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="기타"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/mypage_session_guitar_cb"
+        app:layout_constraintStart_toStartOf="@+id/mypage_session_guitar_cb"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_session_guitar_cb" />
+
+
+    <CheckBox
+        android:id="@+id/mypage_session_base_cb"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/session_selector"
+        android:button="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/mypage_session_vocal_cb" />
+
+    <TextView
+        android:id="@+id/mypage_session_base_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="베이스"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/mypage_session_base_cb"
+        app:layout_constraintStart_toStartOf="@+id/mypage_session_base_cb"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_session_base_cb" />
+
+    <CheckBox
+        android:id="@+id/mypage_session_keyboard_cb"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/session_selector"
+        android:button="@null"
+        app:layout_constraintStart_toStartOf="@id/mypage_session_vocal_cb"
+        app:layout_constraintTop_toBottomOf="@id/mypage_session_vocal_cb" />
+
+    <TextView
+        android:id="@+id/mypage_session_keyboard_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="키보드"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/mypage_session_keyboard_cb"
+        app:layout_constraintStart_toStartOf="@+id/mypage_session_keyboard_cb"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_session_keyboard_cb" />
+
+    <CheckBox
+        android:id="@+id/mypage_session_drum_cb"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/session_selector"
+        android:button="@null"
+        app:layout_constraintStart_toStartOf="@id/mypage_session_guitar_cb"
+        app:layout_constraintTop_toTopOf="@id/mypage_session_keyboard_cb" />
+
+    <TextView
+        android:id="@+id/mypage_session_drum_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="드럼"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/mypage_session_drum_cb"
+        app:layout_constraintStart_toStartOf="@+id/mypage_session_drum_cb"
+        app:layout_constraintTop_toBottomOf="@+id/mypage_session_drum_cb" />
+
+
+    <Button
+        android:id="@+id/mypage_session_next_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/blue_round_bg"
+        android:fontFamily="@font/pretendard_regular"
+        android:paddingVertical="10dp"
+        android:text="변경하기"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
