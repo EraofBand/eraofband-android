@@ -71,6 +71,8 @@ class HomeLessonFragment: Fragment() {
         val bandList = arrayListOf(
             Band(R.drawable.band_profile, "", ""),
             Band(R.drawable.band_profile, "", ""),
+            Band(R.drawable.band_profile, "", ""),
+            Band(R.drawable.band_profile, "", ""),
             Band(R.drawable.band_profile, "", "")
         )
 

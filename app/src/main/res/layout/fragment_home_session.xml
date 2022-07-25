@@ -179,6 +179,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:orientation="horizontal"
+        android:paddingEnd="15dp"
+        android:clipToPadding="false"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
