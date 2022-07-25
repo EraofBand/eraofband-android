@@ -108,10 +108,10 @@
         android:id="@+id/home_lesson_list_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        tools:listitem="@layout/item_band_list"
-        android:overScrollMode="never"
-        android:layout_marginTop="5dp"
+        android:paddingTop="10dp"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/home_lesson_session_cg"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        tools:listitem="@layout/item_band_list" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
