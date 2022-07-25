@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityUserPortfolioListBinding
+import com.example.eraofband.main.mypage.portfolio.PofolEditActivity
 import com.example.eraofband.main.mypage.portfolio.PortfolioCommentActivity
+import com.example.eraofband.remote.deletePofol.DeletePofolService
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResult
 import com.example.eraofband.remote.getMyPofol.GetMyPofolService
 import com.example.eraofband.remote.getMyPofol.GetMyPofolView
@@ -81,7 +83,7 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
             }
 
             override fun onShowPopup(portfolio: GetMyPofolResult, position: Int, view: View1) {
-                 showOtherPopup(portfolio, position, view)  // 다른 사람이 단 댓글
+                 showPopup(portfolio, position, view)  // 다른 사람이 단 댓글
             }
 
             override fun onShowInfoPage(userIdx: Int) {
@@ -89,19 +91,24 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
         })
     }
 
-    private fun showOtherPopup(portfolio: GetMyPofolResult, position: Int, view: View1) {  // 다른 사람 댓글인 경우 신고만 가능
-        val popup = androidx.appcompat.widget.PopupMenu(applicationContext, view) // PopupMenu 객체 선언
-        popup.menuInflater.inflate(R.menu.other_portfolio_menu, popup.menu) // 메뉴 레이아웃 inflate
+    private fun showPopup(portfolio: GetMyPofolResult, position: Int, view: android.view.View) {  // 내 댓글인 경우 삭제, 신고 둘 다 가능
+        val themeWrapper = ContextThemeWrapper(applicationContext , R.style.MyPopupMenu)
+        val popupMenu = PopupMenu(themeWrapper, view, Gravity.END, 0, R.style.MyPopupMenu)
+        popupMenu.menuInflater.inflate(R.menu.portfolio_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
 
-        popup.setOnMenuItemClickListener { item ->
-            if (item.itemId == R.id.other_portfolio_report) {
-                Log.d("REPORT", "COMMENT")
+        popupMenu.setOnMenuItemClickListener { item ->
+            if(item.itemId == R.id.portfolio_report_gr) {  // 포트폴리오 신고하기
+                Log.d("REPORT", "PORTFOLIO")
             }
 
             false
         }
 
-        popup.show() // 팝업 보여주기
+        // 여기는 무조건 다른 사람 포트폴리오만 나오기 때문에 다른 사람 포트폴리오인 경우만 고려
+        popupMenu.menu.setGroupVisible(R.id.portfolio_edit_gr, false)
+        popupMenu.menu.setGroupVisible(R.id.portfolio_delete_gr, false)
+
+        popupMenu.show() // 팝업 보여주기
     }
 
     override fun onGetSuccess(result: List<GetMyPofolResult>) {
