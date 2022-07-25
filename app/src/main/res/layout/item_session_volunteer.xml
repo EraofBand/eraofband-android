@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:text="나는 해리다"
             android:textColor="@color/gray"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:fontFamily="@font/pretendard_medium"
             android:maxLines="1"
             android:ellipsize="end"

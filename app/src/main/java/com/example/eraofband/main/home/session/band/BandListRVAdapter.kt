@@ -1,4 +1,4 @@
-package com.example.eraofband.main.home.bandlist
+package com.example.eraofband.main.home.session.band
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

@@ -42,10 +42,6 @@ class MyPageFragment : Fragment(), GetMyPageView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val getMyPageService = GetMyPageService()
-
-        getMyPageService.setUserView(this)
-        getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
 
         binding.mypageProfileEditIv.setOnClickListener {
             startActivity(Intent(activity, ProfileEditActivity::class.java))
@@ -80,16 +76,10 @@ class MyPageFragment : Fragment(), GetMyPageView {
 
     override fun onStart() {
         super.onStart()
-
-        // 나중에 프로필 편집 하게 되면 값이 바껴야하니까 onStart에 넣어줬어요
-        // 유저 정보를 받아온 후 프로필 편집 화면에 연동
         val getMyPageService = GetMyPageService()
-
         getMyPageService.setUserView(this)
         getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
-
     }
-
 //----------------------------------------------------------------------------------------------------
 
     private fun moveFollowActivity() {

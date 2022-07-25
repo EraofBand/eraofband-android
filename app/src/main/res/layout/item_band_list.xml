@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="데이식스 커버 동아리 드럼 모집"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/pretendard_medium"
                 android:layout_marginTop="2dp"/>

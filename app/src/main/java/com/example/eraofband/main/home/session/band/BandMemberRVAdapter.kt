@@ -1,4 +1,4 @@
-package com.example.eraofband.main.home.bandlist
+package com.example.eraofband.main.home.session.band
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
 import com.example.eraofband.data.Band
-import com.example.eraofband.databinding.ItemBandListBinding
 import com.example.eraofband.databinding.ItemBandMemberBinding
 
 class BandMemberRVAdapter : RecyclerView.Adapter<BandMemberRVAdapter.ViewHolder>() {

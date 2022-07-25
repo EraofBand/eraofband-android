@@ -8,7 +8,7 @@ import com.example.eraofband.R
 import com.example.eraofband.data.Band
 import com.example.eraofband.databinding.ItemLessonBinding
 
-class LessonRVAdapter : RecyclerView.Adapter<LessonRVAdapter.ViewHolder>() {
+class LessonListRVAdapter : RecyclerView.Adapter<LessonListRVAdapter.ViewHolder>() {
     private var lessonList = arrayListOf<Band>()
 
     interface MyItemClickListener {

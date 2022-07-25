@@ -19,12 +19,7 @@
         android:theme="@style/Theme.EraofBand"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".HomeLessonEditActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HomeLessonMakeActivity"
-            android:exported="false" /> <!-- 카카오 로그인 AuthCodeHandler -->
+        <!-- 카카오 로그인 AuthCodeHandler -->
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
@@ -76,10 +71,10 @@
             android:name=".main.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".main.home.bandlist.HomeBandListActivity"
+            android:name="com.example.eraofband.main.home.session.band.BandListActivity"
             android:exported="false" />
         <activity
-            android:name=".main.home.bandlist.HomeBandRecruitActivity"
+            android:name="com.example.eraofband.main.home.session.band.BandRecruitActivity"
             android:exported="false" />
         <activity
             android:name=".main.home.lesson.LessonInfoActivity"
@@ -119,16 +114,16 @@
             android:name=".main.usermypage.UserPortfolioListActivity"
             android:exported="false" />
         <activity
-            android:name=".main.home.HomeBandMakeActivity"
+            android:name="com.example.eraofband.main.home.session.band.BandMakeActivity"
             android:exported="false"/>
         <activity
-            android:name=".main.home.HomeBandEditActivity"
+            android:name="com.example.eraofband.main.home.session.band.BandEditActivity"
             android:exported="false"/>
         <activity
-            android:name=".main.home.HomeLessonMakeActivity"
+            android:name=".main.home.lesson.LessonMakeActivity"
             android:exported="false"/>
         <activity
-            android:name=".main.home.HomeLessonEditActivity"
+            android:name=".main.home.lesson.LessonEditActivity"
             android:exported="false"/>
     </application>
 

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingStart="15dp">
+
+    <ImageView
+        android:id="@+id/item_new_band_profile_iv"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:background="@drawable/round_video_bg"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_new_band_location_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="강남구"
+        android:textColor="@color/blue"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/item_new_band_profile_iv"
+        app:layout_constraintTop_toBottomOf="@+id/item_new_band_profile_iv" />
+
+    <TextView
+        android:id="@+id/item_new_band_title_tv"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="새로운 밴드의 타이틀"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:maxLines="2"
+        app:layout_constraintStart_toStartOf="@+id/item_new_band_profile_iv"
+        app:layout_constraintTop_toBottomOf="@id/item_new_band_location_tv" />
+
+    <ImageView
+        android:id="@+id/item_new_band_member_iv"
+        android:layout_width="10dp"
+        android:layout_height="11dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/ic_member"
+        app:layout_constraintStart_toStartOf="@+id/item_new_band_profile_iv"
+        app:layout_constraintTop_toBottomOf="@+id/item_new_band_title_tv" />
+
+    <TextView
+        android:id="@+id/item_new_band_member_count_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="4/5"
+        android:textColor="#B7B7B7"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_new_band_member_iv"
+        app:layout_constraintStart_toEndOf="@+id/item_new_band_member_iv"
+        app:layout_constraintTop_toTopOf="@+id/item_new_band_member_iv" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

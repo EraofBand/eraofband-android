@@ -70,6 +70,9 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
         binding.profileEditCameraIv.setOnClickListener {  // 프사 변경을 원하면 갤러리 접근하도록
             initImageViewProfile()
         }
+        binding.profileEditProfileIv.setOnClickListener {
+            initImageViewProfile()
+        }
 
         // 소개 글 글자 수 실시간 연동
         binding.profileEditIntroduceEt.addTextChangedListener(object : TextWatcher {

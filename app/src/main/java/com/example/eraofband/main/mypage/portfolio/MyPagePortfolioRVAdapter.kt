@@ -1,33 +1,34 @@
 package com.example.eraofband.main.mypage.portfolio
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.eraofband.R
-import com.example.eraofband.data.Portfolio
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.ItemPortfolioBinding
-import com.example.eraofband.main.mypage.follow.FollowerRVAdapter
-import com.example.eraofband.remote.getMyPofol.GetMyPofolResult
+import com.example.eraofband.remote.getMyPage.GetUserPofol
 
-class MyPagePortfolioRVAdapter() : RecyclerView.Adapter<MyPagePortfolioRVAdapter.ViewHolder>() {
-    private var portfolio = arrayListOf<GetMyPofolResult>()
+
+class MyPagePortfolioRVAdapter(var context: Context) : RecyclerView.Adapter<MyPagePortfolioRVAdapter.ViewHolder>() {
+    private var portfolio = arrayListOf<GetUserPofol>()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun initPortfolio(portfolio : List<GetMyPofolResult>) {
+    fun initPortfolio(portfolio : List<GetUserPofol>) {
         this.portfolio.addAll(portfolio)
         notifyDataSetChanged()
     }
 
     // 나중에 포트폴리오 추가, 삭제를 위해서 이렇게 함수로 추가, 삭제하도록 만들었습니다 변경 값이 바로바로 화면에 나타나야하니까!
     @SuppressLint("NotifyDataSetChanged")
-    fun addPortfolio(portfolio: GetMyPofolResult) {
+    fun addPortfolio(portfolio: GetUserPofol) {
         this.portfolio.add(portfolio)
         notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun deletePortfolio(portfolio: GetMyPofolResult) {
+    fun deletePortfolio(portfolio: GetUserPofol) {
         this.portfolio.remove(portfolio)
         notifyDataSetChanged()
     }
@@ -58,9 +59,11 @@ class MyPagePortfolioRVAdapter() : RecyclerView.Adapter<MyPagePortfolioRVAdapter
 
     inner class ViewHolder(val binding: ItemPortfolioBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(portfolio: GetMyPofolResult) {
-            // 이미지가 없기 때문에 임의로 넣었습니다요
-            binding.itemPortfolioIv.setImageResource(R.drawable.portfolio_spare)
+        fun bind(portfolio: GetUserPofol) {
+
+            Glide.with(context).load(portfolio.imgUrl) // 썸네일 이미지
+                .apply(RequestOptions.centerCropTransform())
+                .into(binding.itemPortfolioIv)
         }
     }
 }

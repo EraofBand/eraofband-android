@@ -27,6 +27,12 @@
         <item name="android:fontFamily">@font/pretendard_medium</item>
     </style>
 
+    <!-- 탭레이아웃 홈 텍스트 설정 -->
+    <style name="tab_home_text" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">17sp</item>
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+    </style>
+
     <style name="Theme.EraofBand.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
