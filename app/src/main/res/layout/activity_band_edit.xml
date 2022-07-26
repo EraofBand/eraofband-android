@@ -191,7 +191,7 @@
                 app:layout_constraintTop_toBottomOf="@id/home_band_edit_area_sp"
                 app:layout_constraintStart_toStartOf="parent"/>
 
-            <View
+            <ImageView
                 android:id="@+id/home_band_edit_img_v"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"

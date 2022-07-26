@@ -185,7 +185,8 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         binding.userMypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
         setSession(result.getUser.userSession)  // 세션 연동
-        
+
+
         //프사 연동
         Glide.with(this).load(result.getUser.profileImgUrl)
             .apply(RequestOptions.centerCropTransform())

@@ -1,14 +1,19 @@
 package com.example.eraofband.main.home
 
+import android.content.Intent
 import android.graphics.Point
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentHomeBinding
 import com.example.eraofband.login.GlobalApplication
+import com.example.eraofband.main.home.lesson.LessonMakeActivity
+import com.example.eraofband.main.home.session.band.BandMakeActivity
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : Fragment() {
@@ -37,6 +42,26 @@ class HomeFragment : Fragment() {
             dateDialog.show(fragmentManager!!, "homeFAB")
         }
         connectVP()
+    }
+
+    private fun fabPopupMenu() {
+        val popupMenu = PopupMenu(context, binding.homeFab)
+        popupMenu.menuInflater.inflate(R.menu.home_fab_menu, popupMenu.menu)
+        popupMenu.show()
+
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.menu_make_band -> {
+                    startActivity(Intent(context, BandMakeActivity::class.java))
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.menu_make_lesson -> {
+                    startActivity(Intent(context, LessonMakeActivity::class.java))
+                    return@setOnMenuItemClickListener true
+                }
+                else -> return@setOnMenuItemClickListener false
+            }
+        }
     }
 
     private fun connectVP() {
