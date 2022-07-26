@@ -117,7 +117,7 @@
                 app:layout_constraintTop_toBottomOf="@id/home_lesson_make_name_tv"/>
 
             <TextView
-                android:id="@+id/home_band_make_name_cnt_tv"
+                android:id="@+id/home_lesson_make_name_cnt_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_regular"
@@ -296,7 +296,7 @@
                 app:layout_constraintTop_toBottomOf="@id/home_lesson_make_cnt_info_tv"
                 app:layout_constraintStart_toStartOf="parent"/>
 
-            <View
+            <ImageView
                 android:id="@+id/home_lesson_make_img_v"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"

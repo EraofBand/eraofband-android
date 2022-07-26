@@ -7,6 +7,8 @@ import com.kakao.sdk.common.KakaoSdk
 class GlobalApplication : Application(){
     companion object {
         const val BASE_URL = "https://eraofband.shop"
+        var width = 0
+        var height = 0
     }
 
     override fun onCreate() {

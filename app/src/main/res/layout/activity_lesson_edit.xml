@@ -297,7 +297,7 @@
                 app:layout_constraintTop_toBottomOf="@id/home_lesson_edit_cnt_info_tv"
                 app:layout_constraintStart_toStartOf="parent"/>
 
-            <View
+            <ImageView
                 android:id="@+id/home_lesson_edit_img_v"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"

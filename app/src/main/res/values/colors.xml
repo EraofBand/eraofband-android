@@ -28,4 +28,6 @@
 
     <color name="tablayout_gray">#333333</color>
 
+    <color name="datepicekr_bg">#202228</color>
+
 </resources>
