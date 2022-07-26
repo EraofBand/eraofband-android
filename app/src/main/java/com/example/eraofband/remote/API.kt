@@ -4,11 +4,15 @@ package com.example.eraofband.remote
 import com.example.eraofband.data.*
 import com.example.eraofband.remote.checkUser.CheckUserResponse
 import com.example.eraofband.remote.deletePofol.DeletePofolResponse
+import com.example.eraofband.remote.getLessonList.GetLessonListResponse
+import com.example.eraofband.remote.getLessonList.GetLessonListResult
 import com.example.eraofband.remote.patchSession.PatchSessionResponse
 import com.example.eraofband.remote.getMyPage.GetMyPageResponse
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResponse
 import com.example.eraofband.remote.getotheruser.GetOtherUserResponse
 import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
+import com.example.eraofband.remote.makeLesson.MakeLessonResponse
+import com.example.eraofband.remote.makeLesson.MakeLessonService
 import com.example.eraofband.remote.makePofol.MakePofolResponse
 import com.example.eraofband.remote.patchPofol.PatchPofolResponse
 import com.example.eraofband.remote.patchPofol.PatchPofolView
@@ -105,4 +109,12 @@ interface API {
     // 유저 팔로우 리스트 불러오기
     @GET("/users/info/follow/{userIdx}")
     fun userFollowList(@Path("userIdx") userIdx: Int) : Call<UserFollowListResponse>
+
+    // 레슨 생성
+    @POST("/lessons")
+    fun makeLesson(@Header("X-ACCESS-TOKEN") jwt: String, @Body lesson: Lesson) : Call<MakeLessonResponse>
+
+    //지역-세션 분류 레슨 정보 반환
+    @GET("/lessons/info/list/{lesson-region}/{lesson-session}")
+    fun getLessonList(@Path("lesson-region") lessonRegion: String, @Path("lesson-session") lessonSession: Int) : Call<GetLessonListResponse>
 }
