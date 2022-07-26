@@ -7,6 +7,7 @@
     <string name="see_all">모두보기</string>
     <string name="total">전체</string>
     <string name="more">더보기</string>
+    <string name="complete">완료</string>
 
     <!-- 회원가입 관련 String -->
     <string name="nickname">닉네임</string>

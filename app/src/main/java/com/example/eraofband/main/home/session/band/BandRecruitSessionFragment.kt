@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
 import com.example.eraofband.data.Band
 import com.example.eraofband.databinding.FragmentBandRecruitSessionBinding
+import com.example.eraofband.main.home.HomeFabDialog
 
 class BandRecruitSessionFragment: Fragment() {
 
@@ -59,6 +60,15 @@ class BandRecruitSessionFragment: Fragment() {
         )
 
         sessionRVAdapter.initSessionList(sessionList)
+
+        sessionRVAdapter.setMyItemClickListener(object: BandRecruitSessionListRVAdapter.MyItemClickListener{
+            override fun showApplyPopup() {
+                val applyDialog = SessionApplyDialog()
+                applyDialog.isCancelable = false
+                applyDialog.show(activity!!.supportFragmentManager, "apply")
+            }
+
+        })
 
     }
 }
