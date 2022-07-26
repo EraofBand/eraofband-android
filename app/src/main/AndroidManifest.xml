@@ -19,12 +19,7 @@
         android:theme="@style/Theme.EraofBand"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".HomeLessonEditActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HomeLessonMakeActivity"
-            android:exported="false" /> <!-- 카카오 로그인 AuthCodeHandler -->
+        <!-- 카카오 로그인 AuthCodeHandler -->
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
