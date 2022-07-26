@@ -1,14 +1,18 @@
 package com.example.eraofband.main.home
 
 import android.content.Intent
+import android.graphics.Point
 import android.os.Bundle
-import android.view.*
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentHomeBinding
+import com.example.eraofband.login.GlobalApplication
 import com.example.eraofband.main.home.lesson.LessonMakeActivity
-import com.example.eraofband.main.home.session.band.BandEditActivity
 import com.example.eraofband.main.home.session.band.BandMakeActivity
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -25,6 +29,8 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
+        sizeCheck()
+
         return binding.root
     }
 
@@ -32,7 +38,8 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.homeFab.setOnClickListener{
-            fabPopupMenu()
+            val dateDialog = HomeFABDialog()
+            dateDialog.show(fragmentManager!!, "homeFAB")
         }
         connectVP()
     }
@@ -69,6 +76,17 @@ class HomeFragment : Fragment() {
                 3 -> tab.text = "찜한 레슨"
             }
         }.attach()
+    }
+
+    private fun sizeCheck() {
+        val display = activity!!.windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)  // 상단바 등을 제외한 스크린 전체 크기 구하기
+
+        GlobalApplication.width = size.x
+        GlobalApplication.height = size.y
+
+        Log.d("SIZECHECK", "$size.x $size.y")
     }
 
     override fun onDestroyView() {

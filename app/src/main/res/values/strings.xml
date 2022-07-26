@@ -35,6 +35,10 @@
     <string name="kakao_app_key">ccf29d74d82be869acd9bcd90e665533</string>
     <string name="kakao_native_key">kakaoccf29d74d82be869acd9bcd90e665533</string>
 
+    <!-- 홈 화면 밴드, 레슨 생성 관련 String -->
+    <string name="make_band">밴드 생성</string>
+    <string name="make_lesson">레슨 생성</string>
+
     <!-- 밴드 리스트 관련 String -->
     <string name="band_list">생성된 밴드 리스트</string>
 
