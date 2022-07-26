@@ -33,7 +33,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.homeFab.setOnClickListener{
-            val dateDialog = DialogHomeFAB()
+            val dateDialog = HomeFABDialog()
             dateDialog.show(fragmentManager!!, "homeFAB")
         }
         connectVP()
