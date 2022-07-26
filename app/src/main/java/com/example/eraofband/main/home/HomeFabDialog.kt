@@ -12,7 +12,7 @@ import com.example.eraofband.login.GlobalApplication
 import com.example.eraofband.main.home.lesson.LessonMakeActivity
 import com.example.eraofband.main.home.session.band.BandMakeActivity
 
-class HomeFABDialog: DialogFragment() {
+class HomeFabDialog: DialogFragment() {
 
     private lateinit var binding: DialogHomeFabBinding
 
@@ -30,7 +30,7 @@ class HomeFABDialog: DialogFragment() {
         val params: WindowManager.LayoutParams? = dialog?.window?.attributes
 
         params?.x = GlobalApplication.width / 2 - 75.toPx()
-        params?.y = GlobalApplication.height / 2 - 230.toPx()
+        params?.y = GlobalApplication.height / 2 - 210.toPx()
 
         dialog?.window?.attributes = params
 
