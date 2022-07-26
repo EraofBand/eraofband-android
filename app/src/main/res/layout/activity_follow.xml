@@ -14,9 +14,10 @@
 
         <ImageButton
             android:id="@+id/follow_back_ib"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
+            android:layout_marginStart="15dp"
             android:background="@color/transparent"
             android:src="@drawable/ic_back"
             android:scaleType="fitCenter"
