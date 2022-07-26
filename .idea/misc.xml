@@ -31,11 +31,14 @@
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/bottom_navigation_home.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/dialog_datepicker.xml" value="0.1569078947368421" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/dialog_session_apply.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/dialog_session_complete.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/fragment_board.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/fragment_chat.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/fragment_community.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/fragment_home.xml" value="0.2484375" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/fragment_home_session.xml" value="0.12132725430597771" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/fragment_mypage.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/item_session_new_band.xml" value="0.24583333333333332" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/item_session_volunteer.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/item_spinner.xml" value="0.1569078947368421" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/spinner_item.xml" value="0.15756578947368421" />

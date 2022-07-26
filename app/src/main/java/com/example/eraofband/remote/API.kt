@@ -4,9 +4,11 @@ package com.example.eraofband.remote
 import com.example.eraofband.data.*
 import com.example.eraofband.remote.checkUser.CheckUserResponse
 import com.example.eraofband.remote.deletePofol.DeletePofolResponse
+import com.example.eraofband.remote.getBand.GetBandResponse
 import com.example.eraofband.remote.patchSession.PatchSessionResponse
 import com.example.eraofband.remote.getMyPage.GetMyPageResponse
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResponse
+import com.example.eraofband.remote.getNewBand.GetNewBandResponse
 import com.example.eraofband.remote.getotheruser.GetOtherUserResponse
 import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
 import com.example.eraofband.remote.makePofol.MakePofolResponse
@@ -37,6 +39,14 @@ interface API {
     // 가입된 유저인지 확인
     @POST("/users/login/{kakao-email}")
     fun checkUser(@Path("kakao-email") email : String) : Call<CheckUserResponse>
+
+    // 밴드 정보 조회
+    @GET("/sessions/info/{bandIdx}")
+    fun getBand(@Header("X-ACCESS-TOKEN") jwt: String, @Path("bandIdx") bandIdx: Int) : Call<GetBandResponse>
+
+    // 새로 생성된 밴드 6개 조회
+    @GET("/sessions/home/new")
+    fun getNewBand() : Call<GetNewBandResponse>
 
     // 마이페이지 정보 조회
     @GET("/users/info/my-page/{userIdx}")

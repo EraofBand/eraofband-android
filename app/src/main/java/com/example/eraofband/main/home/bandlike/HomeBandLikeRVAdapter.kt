@@ -5,8 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.data.Band
 import com.example.eraofband.databinding.ItemBandListBinding
-import com.example.eraofband.databinding.ItemSessionNewBandBinding
-import com.example.eraofband.main.home.session.HomeSessionNewBandRVAdapter
 
 
 class HomeBandLikeRVAdapter(private var likeBandList: ArrayList<Band>) :
