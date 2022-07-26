@@ -12,7 +12,7 @@ class BandRecruitSessionListRVAdapter : RecyclerView.Adapter<BandRecruitSessionL
 
     interface MyItemClickListener {
         // 클릭 이벤트
-        fun showApplyPopup()
+        fun showApplyPopup(code: String)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -36,7 +36,7 @@ class BandRecruitSessionListRVAdapter : RecyclerView.Adapter<BandRecruitSessionL
         holder.bind(sessionList[position])
 
         // 클릭 이벤트
-        holder.binding.sessionListVolunteerTv.setOnClickListener { mItemClickListener.showApplyPopup() }
+        holder.binding.sessionListVolunteerTv.setOnClickListener { mItemClickListener.showApplyPopup("apply") }
 
     }
     override fun getItemCount(): Int = sessionList.size

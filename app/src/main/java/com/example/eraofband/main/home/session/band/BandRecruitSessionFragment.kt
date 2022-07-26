@@ -48,6 +48,15 @@ class BandRecruitSessionFragment: Fragment() {
 
         volunteerRVAdapter.initVolunteerList(bandList)
 
+        volunteerRVAdapter.setMyItemClickListener(object: BandRecruitSessionVolunteerRVAdapter.MyItemClickListener{
+            override fun onShowDecisionPopup(code: String) {
+                val applyDialog = SessionApplyDialog(code)
+                applyDialog.isCancelable = false
+                applyDialog.show(activity!!.supportFragmentManager, "applicant")
+            }
+
+        })
+
         // 세션 모집 리사이클러뷰
         sessionRVAdapter = BandRecruitSessionListRVAdapter()
         binding.bandRecruitSessionRv.adapter = sessionRVAdapter
@@ -62,8 +71,8 @@ class BandRecruitSessionFragment: Fragment() {
         sessionRVAdapter.initSessionList(sessionList)
 
         sessionRVAdapter.setMyItemClickListener(object: BandRecruitSessionListRVAdapter.MyItemClickListener{
-            override fun showApplyPopup() {
-                val applyDialog = SessionApplyDialog()
+            override fun showApplyPopup(code: String) {
+                val applyDialog = SessionApplyDialog(code)
                 applyDialog.isCancelable = false
                 applyDialog.show(activity!!.supportFragmentManager, "apply")
             }

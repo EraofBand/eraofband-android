@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
 import com.example.eraofband.data.Band
 import com.example.eraofband.databinding.ItemSessionVolunteerBinding
+import com.example.eraofband.main.home.lesson.HomeLessonFragment
 
 class BandRecruitSessionVolunteerRVAdapter : RecyclerView.Adapter<BandRecruitSessionVolunteerRVAdapter.ViewHolder>() {
     private var volunteerList = arrayListOf<Band>()
 
     interface MyItemClickListener {
         // 클릭 이벤트
+        fun onShowDecisionPopup(code: String)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -36,6 +38,7 @@ class BandRecruitSessionVolunteerRVAdapter : RecyclerView.Adapter<BandRecruitSes
         holder.bind(volunteerList[position])
 
         // 클릭 이벤트
+        holder.binding.sessionVolunteerCheckTv.setOnClickListener { mItemClickListener.onShowDecisionPopup("applicant") }
     }
     override fun getItemCount(): Int = volunteerList.size
 
