@@ -39,7 +39,6 @@ class HomeFragment : Fragment() {
 
     private fun fabPopupMenu() {
         val popupMenu = PopupMenu(context, binding.homeFab)
-
         popupMenu.menuInflater.inflate(R.menu.home_fab_menu, popupMenu.menu)
         popupMenu.show()
 
