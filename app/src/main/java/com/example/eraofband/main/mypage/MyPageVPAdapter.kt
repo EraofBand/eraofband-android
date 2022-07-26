@@ -10,10 +10,7 @@ class MyPageVPAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     override fun createFragment(position: Int): Fragment {
         return when (position) {  // 프레그먼트 포지션에 따른 프레그먼트 띄우기
-            0 -> {
-                MyPagePortfolioFragment()
-
-            }
+            0 -> MyPagePortfolioFragment()
             1 -> MyPageBandFragment()
             else -> MyPageLessonFragment()
         }

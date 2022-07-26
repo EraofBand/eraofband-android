@@ -17,12 +17,10 @@ import com.example.eraofband.R
 import com.example.eraofband.data.Comment
 import com.example.eraofband.databinding.ActivityPortfolioCommentBinding
 import com.example.eraofband.main.usermypage.UserMyPageActivity
-import com.example.eraofband.remote.getMyPofol.GetMyPofolResult
 import com.example.eraofband.remote.portfolio.PofolCommentResult
 import com.example.eraofband.remote.portfolio.PofolCommentService
 import com.example.eraofband.remote.portfolio.PofolCommentView
 import com.example.eraofband.remote.portfolio.PofolCommentWriteResult
-import com.google.gson.Gson
 
 
 class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
@@ -64,8 +62,7 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
         commentRVAdapter.setMyItemClickListener(object : PortfolioCommentRVAdapter.MyItemClickListener {
             // 팝업 메뉴 띄우기
             override fun onShowPopUp(commentIdx: Int, position: Int, userIdx: Int, view: View) {
-                if (userIdx == getUserIdx()) showMyPopup(commentIdx, position, view)  // 내가 단 댓글
-                else showOtherPopup(commentIdx, position, view)  // 다른 사람이 단 댓글
+                showPopup(commentIdx, position, userIdx, view)
             }
 
             override fun onItemClick(item: PofolCommentResult) {
@@ -116,13 +113,13 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
         return userSP.getString("jwt", "")
     }
 
-    private fun showMyPopup(commentIdx: Int, position: Int, view: View) {  // 내 댓글인 경우 삭제 가능
+    private fun showPopup(commentIdx: Int, position: Int, userIdx: Int, view: View) {  // 내 댓글인 경우 삭제 가능
         val themeWrapper = ContextThemeWrapper(applicationContext , R.style.MyPopupMenu)
         val popupMenu = PopupMenu(themeWrapper, view, Gravity.END, 0, R.style.MyPopupMenu)
-        popupMenu.menuInflater.inflate(R.menu.my_comment_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
+        popupMenu.menuInflater.inflate(R.menu.comment_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
 
         popupMenu.setOnMenuItemClickListener { item ->
-            if (item!!.itemId == R.id.my_comment_delete) {
+            if (item!!.itemId == R.id.comment_delete) {  // 댓글 삭제하기
                 // position을 넘겨줌 이거 말고 생각이 안나요ㅠㅠ
                 val commentSP = getSharedPreferences("comment", MODE_PRIVATE)
                 val editor = commentSP.edit()
@@ -133,26 +130,21 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
                 // 댓글 삭제
                 commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
             }
-
-            false
-        }
-
-        popupMenu.show() // 팝업 보여주기
-    }
-
-    private fun showOtherPopup(commentIdx: Int, position: Int, view: View) {  // 다른 사람 댓글인 경우 신고만 가능
-        val popup = androidx.appcompat.widget.PopupMenu(applicationContext, view) // PopupMenu 객체 선언
-        popup.menuInflater.inflate(R.menu.other_comment_menu, popup.menu) // 메뉴 레이아웃 inflate
-
-        popup.setOnMenuItemClickListener { item ->
-            if (item.itemId == R.id.other_comment_report) {
+            else {  // 댓글 신고하기
                 Log.d("REPORT", "COMMENT")
             }
 
             false
         }
 
-        popup.show() // 팝업 보여주기
+        if(userIdx == getUserIdx()) {
+            popupMenu.menu.setGroupVisible(R.id.comment_report_gr, false)
+        }
+        else {
+            popupMenu.menu.setGroupVisible(R.id.comment_delete_gr, false)
+        }
+
+        popupMenu.show() // 팝업 보여주기
     }
 
     override fun onCommentSuccess(code: Int, result: List<PofolCommentResult>) {

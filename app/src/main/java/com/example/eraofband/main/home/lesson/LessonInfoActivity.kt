@@ -1,5 +1,6 @@
 package com.example.eraofband.main.home.lesson
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,7 +12,7 @@ class LessonInfoActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityLessonInfoBinding
 
-    private lateinit var studentRVAdapter: StudentRVAdapter
+    private lateinit var lessonStudentRVAdapter: LessonStudentRVAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,14 +21,16 @@ class LessonInfoActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         binding.lessonInfoBackIv.setOnClickListener { finish() }  // 뒤로가기
-
+        binding.lessonInfoListIv.setOnClickListener {
+            startActivity(Intent(this, LessonEditActivity::class.java))
+        }
         initRecyclerView()
     }
 
     private fun initRecyclerView() {
         // 수강생 목록 리사이클러뷰
-        studentRVAdapter = StudentRVAdapter()
-        binding.lessonInfoStudentRv.adapter = studentRVAdapter
+        lessonStudentRVAdapter = LessonStudentRVAdapter()
+        binding.lessonInfoStudentRv.adapter = lessonStudentRVAdapter
         binding.lessonInfoStudentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         val bandList = arrayListOf(
@@ -37,7 +40,7 @@ class LessonInfoActivity: AppCompatActivity() {
             Band(R.drawable.band_profile, "", "")
         )
 
-        studentRVAdapter.initStudentList(bandList)
+        lessonStudentRVAdapter.initStudentList(bandList)
 
     }
 }

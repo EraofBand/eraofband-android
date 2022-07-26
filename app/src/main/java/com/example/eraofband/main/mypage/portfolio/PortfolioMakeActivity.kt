@@ -43,9 +43,8 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
 
         binding.portfolioMakeBackIb.setOnClickListener { finish() }  // 뒤로가기
 
-        // 비디오 올리기 혹은 올린 썸네일을 누르면 갤러리에 들어갈 수 있도록 해줌
-        binding.portfolioMakeVideoIv.setOnClickListener { initImageViewProfile() }
-        binding.portfolioThumbnailIv.setOnClickListener { initImageViewProfile() }
+        // 비디오 올리기 혹은 올린 썸네일을 누르면 갤러리에 들어갈 수 있도록 해줌 (조은아 내가 그냥 레이아웃 클릭하면 갤러리로 바꿨어)
+        binding.portfolioMakeVideoCl.setOnClickListener { initImageViewProfile() }
 
         binding.portfolioMakeSaveBt.setOnClickListener {  // 포트폴리오 올리기
             if(binding.portfolioMakeTitleEt.text.isNotEmpty() && binding.portfolioMakeVideoIntroEt.text.isNotEmpty() && videoUrl != "") {
@@ -55,7 +54,9 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
 
                 val makeService = MakePofolService()
                 makeService.setMakeView(this)
-                makeService.makePortfolio(getJwt()!!, Portfolio(content, getProfileUrl()!!, title, getUserIdx(), videoUrl))
+                makeService.makePortfolio(getJwt()!!, Portfolio(content, videoUrl, title, getUserIdx(), videoUrl))
+
+                finish()
             }
         }
     }
@@ -141,8 +142,6 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
                 val selectedVideoUri: Uri? = data?.data
                 // 이미지 가져오기 성공하면 원래 이미지를 없애고 가져온 사진을 넣어줌
                 if (selectedVideoUri != null) {
-//                    Glide.with(this).load(selectedImageUri).into(binding.profileEditProfileIv)
-
                     // 썸네일 띄우기
                     binding.portfolioThumbnailIv.visibility = View.VISIBLE
                     binding.portfolioThumbnailIv.clipToOutline = true
@@ -194,8 +193,7 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
 
     override fun onSendSuccess(response: SendImgResponse) {
         Log.d("SENDIMG/SUC", response.toString())
-        videoUrl = response.result  // 비디오 url 저장
-
+        videoUrl = response.result
     }
 
     override fun onSendFailure(code: Int, message: String) {

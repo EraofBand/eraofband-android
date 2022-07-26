@@ -12,11 +12,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.eraofband.R
 import com.example.eraofband.data.Portfolio
 import com.example.eraofband.databinding.FragmentMypagePortfolioBinding
+import com.example.eraofband.remote.getMyPage.*
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResult
 import com.example.eraofband.remote.getMyPofol.GetMyPofolService
 import com.example.eraofband.remote.getMyPofol.GetMyPofolView
 
-class MyPagePortfolioFragment : Fragment(), GetMyPofolView {
+class MyPagePortfolioFragment : Fragment(), GetMyPageView {
 
     private var _binding: FragmentMypagePortfolioBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
@@ -35,9 +36,9 @@ class MyPagePortfolioFragment : Fragment(), GetMyPofolView {
     override fun onStart() {
         super.onStart()
 
-        val getMypofol = GetMyPofolService()
-        getMypofol.setPofolView(this)
-        getMypofol.getPortfolio(getUserIdx())
+        val getMyPagePofol = GetMyPageService()
+        getMyPagePofol.setUserView(this)
+        getMyPagePofol.getMyInfo(getJwt()!!, getUserIdx())
     }
 
     private fun getUserIdx() : Int {
@@ -45,8 +46,13 @@ class MyPagePortfolioFragment : Fragment(), GetMyPofolView {
         return userSP.getInt("userIdx", 0)
     }
 
-    private fun connectAdapter(item : List<GetMyPofolResult>) {
-        val mAdapter = MyPagePortfolioRVAdapter()
+    private fun getJwt() : String? {
+        val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        return userSP.getString("jwt", "")
+    }
+
+    private fun connectAdapter(item : List<GetUserPofol>) {
+        val mAdapter = MyPagePortfolioRVAdapter(context!!)
         binding.mypagePortfolioRv.adapter = mAdapter
 
         val gridLayoutManager = GridLayoutManager(context,3)
@@ -68,9 +74,9 @@ class MyPagePortfolioFragment : Fragment(), GetMyPofolView {
         _binding = null
     }
 
-    override fun onGetSuccess(result: List<GetMyPofolResult>) {
+    override fun onGetSuccess(code: Int, result: GetMyPageResult) {
         Log.d("PORTFOLIO/SUC", result.toString())
-        connectAdapter(result)
+        connectAdapter(result.getUserPofol)
     }
 
     override fun onGetFailure(code: Int, message: String) {

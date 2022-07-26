@@ -28,7 +28,6 @@ import java.util.*
 class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView, UserUnfollowView {
 
     private lateinit var binding: ActivityUserMypageBinding
-
     internal var otherUserIdx : Int? = null
     private var followerCnt = 0
     private lateinit var nickName : String
@@ -186,6 +185,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         binding.userMypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
         setSession(result.getUser.userSession)  // 세션 연동
+
 
         //프사 연동
         Glide.with(this).load(result.getUser.profileImgUrl)

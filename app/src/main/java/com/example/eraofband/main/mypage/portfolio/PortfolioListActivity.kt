@@ -84,8 +84,7 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView, DeletePofolVi
             }
 
             override fun onShowPopup(portfolio: GetMyPofolResult, position: Int, view: View) {
-                if(portfolio.userIdx == getUserIdx()) showMyPopup(portfolio, position, view)  // 내가 단 댓글
-                else showOtherPopup(portfolio, position, view)  // 다른 사람이 단 댓글
+                showPopup(portfolio, position, view)
             }
 
             override fun onShowInfoPage(userIdx: Int) {
@@ -106,13 +105,13 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView, DeletePofolVi
         Log.d("MYPORTFOLIO/FAIL", "$code $message")
     }
 
-    private fun showMyPopup(portfolio: GetMyPofolResult, position: Int, view: View) {  // 내 댓글인 경우 삭제, 신고 둘 다 가능
+    private fun showPopup(portfolio: GetMyPofolResult, position: Int, view: View) {  // 내 댓글인 경우 삭제, 신고 둘 다 가능
         val themeWrapper = ContextThemeWrapper(applicationContext , R.style.MyPopupMenu)
         val popupMenu = PopupMenu(themeWrapper, view, Gravity.END, 0, R.style.MyPopupMenu)
-        popupMenu.menuInflater.inflate(R.menu.my_portfolio_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
+        popupMenu.menuInflater.inflate(R.menu.portfolio_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
 
         popupMenu.setOnMenuItemClickListener { item ->
-            if (item!!.itemId == R.id.my_portfolio_edit) {  // 포트폴리오 수정
+            if (item!!.itemId == R.id.portfolio_edit) {  // 포트폴리오 수정하기
                 // 포폴 수정 창 띄우기
                 val intent = Intent(this@PortfolioListActivity, PofolEditActivity::class.java)
                 intent.putExtra("pofolIdx", portfolio.pofolIdx)
@@ -121,7 +120,7 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView, DeletePofolVi
 
                 startActivity(intent)
             }
-            else if (item.itemId == R.id.my_portfolio_delete) {  // 포트폴리오 삭제
+            else if (item.itemId == R.id.portfolio_delete) {  // 포트폴리오 삭제하기
                 // position을 넘겨줌 이거 말고 생각이 안나요ㅠㅠ
                 val portfolioSP = getSharedPreferences("portfolio", MODE_PRIVATE)
                 val editor = portfolioSP.edit()
@@ -134,26 +133,17 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView, DeletePofolVi
                 deletePofolService.setDeleteView(this)
                 deletePofolService.deletePortfolio(getJwt()!!, portfolio.pofolIdx, getUserIdx())
             }
-
-            false
-        }
-
-        popupMenu.show() // 팝업 보여주기
-    }
-
-    private fun showOtherPopup(portfolio: GetMyPofolResult, position: Int, view: View) {  // 다른 사람 댓글인 경우 신고만 가능
-        val popup = androidx.appcompat.widget.PopupMenu(applicationContext, view) // PopupMenu 객체 선언
-        popup.menuInflater.inflate(R.menu.other_portfolio_menu, popup.menu) // 메뉴 레이아웃 inflate
-
-        popup.setOnMenuItemClickListener { item ->
-            if (item.itemId == R.id.other_portfolio_report) {
-                Log.d("REPORT", "COMMENT")
+            else {  // 포트폴리오 신고하기
+                Log.d("REPORT", "PORTFOLIO")
             }
 
             false
         }
 
-        popup.show() // 팝업 보여주기
+        // 여기는 무조건 내 포트폴리오만 나오기 때문에 내 포트폴리오인 경우만 고려
+        popupMenu.menu.setGroupVisible(R.id.portfolio_report_gr, false)
+
+        popupMenu.show() // 팝업 보여주기
     }
 
     override fun onDeleteSuccess(code: Int, result: String) {  // 포트폴리오 삭제
