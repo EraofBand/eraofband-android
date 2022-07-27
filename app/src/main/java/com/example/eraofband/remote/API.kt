@@ -9,6 +9,7 @@ import com.example.eraofband.remote.patchSession.PatchSessionResponse
 import com.example.eraofband.remote.getMyPage.GetMyPageResponse
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResponse
 import com.example.eraofband.remote.getNewBand.GetNewBandResponse
+import com.example.eraofband.remote.getPopularBand.GetPopularBandResponse
 import com.example.eraofband.remote.getotheruser.GetOtherUserResponse
 import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
 import com.example.eraofband.remote.makePofol.MakePofolResponse
@@ -46,6 +47,10 @@ interface API {
     // 새로 생성된 밴드 6개 조회
     @GET("/sessions/home/new")
     fun getNewBand() : Call<GetNewBandResponse>
+
+    // Top3 밴드 조회
+    @GET("/sessions/home/fame")
+    fun getPopularBand() : Call<GetPopularBandResponse>
 
     // 마이페이지 정보 조회
     @GET("/users/info/my-page/{userIdx}")

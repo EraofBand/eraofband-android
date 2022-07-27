@@ -1,6 +1,6 @@
 package com.example.eraofband.remote.getNewBand
 
 interface GetNewBandView {
-    fun onGetSuccess(result : List<GetNewBandResult>)
-    fun onGetFailure(code: Int, message : String)
+    fun onGetNewSuccess(result : List<GetNewBandResult>)
+    fun onGetNewFailure(code: Int, message : String)
 }

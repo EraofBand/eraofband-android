@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/popular_band_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingVertical="10dp">
+
+    <TextView
+        android:id="@+id/popular_band_order_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pretendard_bold"
+        android:text="1"
+        android:textColor="@color/blue"
+        android:textSize="15sp"
+        android:layout_marginStart="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/popular_band_profile_iv"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="15dp"
+        android:src="@drawable/round_comment_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/popular_band_order_tv"
+        app:layout_constraintStart_toEndOf="@+id/popular_band_order_tv"
+        app:layout_constraintTop_toTopOf="@+id/popular_band_order_tv" />
+
+    <TextView
+        android:id="@+id/popular_band_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="-5dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="인기 순위 1등 밴드"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/popular_band_profile_iv"
+        app:layout_constraintTop_toTopOf="@+id/popular_band_profile_iv" />
+
+    <TextView
+        android:id="@+id/popular_band_introduction_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="1등 밴드 한 줄 소개"
+        android:textColor="@color/gray"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/popular_band_profile_iv"
+        app:layout_constraintStart_toStartOf="@+id/popular_band_title_tv"
+        app:layout_constraintTop_toBottomOf="@+id/popular_band_title_tv" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

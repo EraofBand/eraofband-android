@@ -25,8 +25,8 @@ class GetNewBandService {
                 val resp : GetNewBandResponse = response.body()!!
 
                 when(val code = resp.code) {
-                    1000 -> getBandView.onGetSuccess(resp.result)  // 성공
-                    else -> getBandView.onGetFailure(code, resp.message)
+                    1000 -> getBandView.onGetNewSuccess(resp.result)  // 성공
+                    else -> getBandView.onGetNewFailure(code, resp.message)
                 }
             }
 
