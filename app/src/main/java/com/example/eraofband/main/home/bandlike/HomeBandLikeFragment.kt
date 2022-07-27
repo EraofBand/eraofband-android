@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.data.Band
 import com.example.eraofband.databinding.FragmentHomeBandLikeBinding
-import com.example.eraofband.main.home.session.HomeSessionNewBandRVAdapter
 
 
 class HomeBandLikeFragment : Fragment() {

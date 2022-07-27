@@ -13,3 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+/wrapper/dists/gradle-7.3.3-bin/6a41zxkdtcxs8rphpq6y0069z/
+/native/
+/daemon/7.3.3/
+/caches/

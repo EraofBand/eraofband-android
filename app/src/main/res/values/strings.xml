@@ -53,10 +53,13 @@
     <string name="activity_area">활동 지역</string>
     <string name="leader_info">리더 정보</string>
     <string name="member">멤버</string>
+    <string name="no_member">아직 멤버가 존재하지 않습니다</string>
     <string name="show_date">공연 일정</string>
+    <string name="no_perform">공연을 준비중입니다!</string>
     <string name="chat_link">채팅방 링크</string>
 
     <string name="volunteer_list">지원자 목록</string>
+    <string name="no_volunteer">아직 지원자가 존재하지 않습니다</string>
     <string name="recruit_decide">모집 결정</string>
     <string name="recruiting">모집 중</string>
     <string name="volunteer">지원하기</string>

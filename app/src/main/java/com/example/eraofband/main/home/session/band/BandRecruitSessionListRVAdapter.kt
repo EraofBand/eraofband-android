@@ -5,14 +5,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.data.Band
+import com.example.eraofband.data.SessionList
 import com.example.eraofband.databinding.ItemSessionListBinding
 
-class BandRecruitSessionListRVAdapter : RecyclerView.Adapter<BandRecruitSessionListRVAdapter.ViewHolder>() {
-    private var sessionList = arrayListOf<Band>()
+class BandRecruitSessionListRVAdapter(private val bandName: String) : RecyclerView.Adapter<BandRecruitSessionListRVAdapter.ViewHolder>() {
+    private var sessionList = arrayListOf<SessionList>()
 
     interface MyItemClickListener {
         // 클릭 이벤트
-        fun showApplyPopup()
+        fun showApplyPopup(code: String)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -22,8 +23,14 @@ class BandRecruitSessionListRVAdapter : RecyclerView.Adapter<BandRecruitSessionL
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun initSessionList(volunteerList : List<Band>) {
-        this.sessionList.addAll(volunteerList)
+    fun initSessionList(sessionList : List<SessionList>) {
+        this.sessionList.addAll(sessionList)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun addSession(session : SessionList) {
+        this.sessionList.add(session)
         notifyDataSetChanged()
     }
 
@@ -36,14 +43,19 @@ class BandRecruitSessionListRVAdapter : RecyclerView.Adapter<BandRecruitSessionL
         holder.bind(sessionList[position])
 
         // 클릭 이벤트
-        holder.binding.sessionListVolunteerTv.setOnClickListener { mItemClickListener.showApplyPopup() }
+        holder.binding.sessionListVolunteerTv.setOnClickListener { mItemClickListener.showApplyPopup("apply") }
 
     }
     override fun getItemCount(): Int = sessionList.size
 
     inner class ViewHolder(val binding: ItemSessionListBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(session: Band) {
+        fun bind(session: SessionList) {
+            binding.sessionListSessionTv.text = session.session
 
+            binding.sessionListTitleTv.text = "$bandName ${session.session} 모집"
+
+            binding.sessionListIntroTv.text = session.sessionComment
+            binding.sessionListCntTv.text = "모집인원 ${session.count}"
         }
     }
 }
