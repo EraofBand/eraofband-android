@@ -1,18 +1,22 @@
 package com.example.eraofband.main.home.session.band
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
-import com.example.eraofband.data.Band
 import com.example.eraofband.databinding.ItemSessionVolunteerBinding
+import com.example.eraofband.remote.getBand.Applicants
 
-class BandRecruitSessionVolunteerRVAdapter : RecyclerView.Adapter<BandRecruitSessionVolunteerRVAdapter.ViewHolder>() {
-    private var volunteerList = arrayListOf<Band>()
+class BandRecruitSessionVolunteerRVAdapter(private val context: Context) : RecyclerView.Adapter<BandRecruitSessionVolunteerRVAdapter.ViewHolder>() {
+    private var volunteerList = arrayListOf<Applicants>()
 
     interface MyItemClickListener {
         // 클릭 이벤트
+        fun onShowDecisionPopup(code: String)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -22,7 +26,7 @@ class BandRecruitSessionVolunteerRVAdapter : RecyclerView.Adapter<BandRecruitSes
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun initVolunteerList(volunteerList : List<Band>) {
+    fun initVolunteerList(volunteerList : List<Applicants>) {
         this.volunteerList.addAll(volunteerList)
         notifyDataSetChanged()
     }
@@ -36,15 +40,32 @@ class BandRecruitSessionVolunteerRVAdapter : RecyclerView.Adapter<BandRecruitSes
         holder.bind(volunteerList[position])
 
         // 클릭 이벤트
+        holder.binding.sessionVolunteerCheckTv.setOnClickListener { mItemClickListener.onShowDecisionPopup("applicant") }
     }
     override fun getItemCount(): Int = volunteerList.size
 
     inner class ViewHolder(val binding: ItemSessionVolunteerBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(volunteer: Band) {
-            binding.sessionVolunteerProfileIv.setImageResource(R.drawable.ic_captain)
+        fun bind(volunteer: Applicants) {
+            Glide.with(context).load(volunteer.profileImgUrl)  // 프로필 사진 연동
+                .apply(RequestOptions.centerCropTransform())
+                .apply(RequestOptions.circleCropTransform())
+                .into(binding.sessionVolunteerProfileIv)
 
-            binding.sessionVolunteerNicknameTv.text = "닉네임입니다"
-            binding.sessionVolunteerIntroTv.text = "소개입니다"
+            binding.sessionVolunteerSessionTv.text = setSession(volunteer.buSession)  // 세션
+            binding.sessionVolunteerNicknameTv.text = volunteer.nickName  // 닉네임 연동
+            binding.sessionVolunteerIntroTv.text = volunteer.introduction  // 소개 연동
+            binding.sessionVolunteerTimeTv.text = volunteer.updatedAt  // 지원 시간 연동
+        }
+    }
+
+    private fun setSession(session : Int): String {
+        // 나중에 이미지 확정되면 이미지도 넣을 예정
+        return when (session) {
+            0 -> "보컬"
+            1 -> "기타"
+            2 -> "베이스"
+            3 -> "키보드"
+            else -> "드럼"
         }
     }
 }
