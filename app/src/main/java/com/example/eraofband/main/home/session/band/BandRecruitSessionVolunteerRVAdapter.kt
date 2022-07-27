@@ -46,20 +46,15 @@ class BandRecruitSessionVolunteerRVAdapter(private val context: Context) : Recyc
 
     inner class ViewHolder(val binding: ItemSessionVolunteerBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(volunteer: Applicants) {
-            binding.sessionVolunteerProfileIv.setImageResource(R.drawable.ic_captain)
-
-            binding.sessionVolunteerSessionTv.text = setSession(volunteer.buSession)
-
-            binding.sessionVolunteerNicknameTv.text = "닉네임입니다"
-            binding.sessionVolunteerIntroTv.text = "소개입니다"
-
-            Glide.with(context).load(volunteer.profileImgUrl)
+            Glide.with(context).load(volunteer.profileImgUrl)  // 프로필 사진 연동
                 .apply(RequestOptions.centerCropTransform())
                 .apply(RequestOptions.circleCropTransform())
                 .into(binding.sessionVolunteerProfileIv)
 
-            binding.sessionVolunteerNicknameTv.text = volunteer.nickName
-            binding.sessionVolunteerIntroTv.text = volunteer.introduction
+            binding.sessionVolunteerSessionTv.text = setSession(volunteer.buSession)  // 세션
+            binding.sessionVolunteerNicknameTv.text = volunteer.nickName  // 닉네임 연동
+            binding.sessionVolunteerIntroTv.text = volunteer.introduction  // 소개 연동
+            binding.sessionVolunteerTimeTv.text = volunteer.updatedAt  // 지원 시간 연동
         }
     }
 
