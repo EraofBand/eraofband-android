@@ -39,7 +39,7 @@ class BandRecruitSessionFragment: Fragment() {
         binding.bandRecruitSessionVolunteerRv.adapter = volunteerRVAdapter
         binding.bandRecruitSessionVolunteerRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        val bandList = arrayListOf(
+      /*  val bandList = arrayListOf(
             Band(R.drawable.band_profile, "", ""),
             Band(R.drawable.band_profile, "", ""),
             Band(R.drawable.band_profile, "", ""),
@@ -47,20 +47,20 @@ class BandRecruitSessionFragment: Fragment() {
         )
 
         volunteerRVAdapter.initVolunteerList(bandList)
-
+*/
         // 세션 모집 리사이클러뷰
         sessionRVAdapter = BandRecruitSessionListRVAdapter()
         binding.bandRecruitSessionRv.adapter = sessionRVAdapter
         binding.bandRecruitSessionRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        val sessionList = arrayListOf(
+       /* val sessionList = arrayListOf(
             Band(R.drawable.band_profile, "", ""),
             Band(R.drawable.band_profile, "", ""),
             Band(R.drawable.band_profile, "", "")
         )
 
         sessionRVAdapter.initSessionList(sessionList)
-
+*/
         sessionRVAdapter.setMyItemClickListener(object: BandRecruitSessionListRVAdapter.MyItemClickListener{
             override fun showApplyPopup() {
                 val applyDialog = SessionApplyDialog()

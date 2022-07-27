@@ -36,7 +36,7 @@ class BandRecruitInfoFragment: Fragment() {
         binding.bandRecruitInfoMemberRv.adapter = bandMemberRVAdapter
         binding.bandRecruitInfoMemberRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        val bandList = arrayListOf(
+        /*val bandList = arrayListOf(
             Band(R.drawable.band_profile, "", ""),
             Band(R.drawable.band_profile, "", ""),
             Band(R.drawable.band_profile, "", ""),
@@ -44,6 +44,6 @@ class BandRecruitInfoFragment: Fragment() {
         )
 
         bandMemberRVAdapter.initMemberList(bandList)
-
+*/
     }
 }

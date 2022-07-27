@@ -38,7 +38,7 @@ class HomeSessionFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        var newBandList = arrayListOf(
+       /* var newBandList = arrayListOf(
             Band(0, "", ""),
             Band(0, "", ""),
             Band(0, "", ""),
@@ -50,7 +50,7 @@ class HomeSessionFragment : Fragment() {
         val homeNewBandRVAdapter = HomeSessionNewBandRVAdapter(newBandList)
 
         binding.homeNewBandRv.adapter = homeNewBandRVAdapter
-        binding.homeNewBandRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.homeNewBandRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)*/
     }
 
     override fun onDestroyView() {

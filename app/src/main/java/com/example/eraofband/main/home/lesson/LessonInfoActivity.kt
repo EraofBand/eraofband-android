@@ -32,7 +32,7 @@ class LessonInfoActivity: AppCompatActivity() {
         lessonStudentRVAdapter = LessonStudentRVAdapter()
         binding.lessonInfoStudentRv.adapter = lessonStudentRVAdapter
         binding.lessonInfoStudentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
+/*
         val bandList = arrayListOf(
             Band(R.drawable.band_profile, "", ""),
             Band(R.drawable.band_profile, "", ""),
@@ -40,7 +40,7 @@ class LessonInfoActivity: AppCompatActivity() {
             Band(R.drawable.band_profile, "", "")
         )
 
-        lessonStudentRVAdapter.initStudentList(bandList)
+        lessonStudentRVAdapter.initStudentList(bandList)*/
 
     }
 }

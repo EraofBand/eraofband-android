@@ -63,14 +63,14 @@ class BandListActivity: AppCompatActivity() {
         binding.homeBandListListRv.adapter = bandListRVAdapter
         binding.homeBandListListRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        val bandList = arrayListOf(
+        /*val bandList = arrayListOf(
             Band(R.drawable.band_profile, "", ""),
             Band(R.drawable.band_profile, "", ""),
             Band(R.drawable.band_profile, "", ""),
             Band(R.drawable.band_profile, "", ""),
             Band(R.drawable.band_profile, "", ""))
 
-        bandListRVAdapter.initBandList(bandList)
+        bandListRVAdapter.initBandList(bandList)*/
 
         bandListRVAdapter.setMyItemClickListener(object : BandListRVAdapter.MyItemClickListener{
             override fun onShowDetail(bandIdx: Int) {  // 밴드 모집 페이지로 전환
