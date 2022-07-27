@@ -65,6 +65,7 @@ class HomeSessionFragment : Fragment(), GetNewBandView, GetPopularBandView {
         val homeNewBandRVAdapter = HomeSessionNewBandRVAdapter(context!!)
 
         binding.homeNewBandRv.adapter = homeNewBandRVAdapter
+
         binding.homeNewBandRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         homeNewBandRVAdapter.initNewBand(item)

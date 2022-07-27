@@ -12,6 +12,7 @@ import com.example.eraofband.remote.getNewBand.GetNewBandResponse
 import com.example.eraofband.remote.getPopularBand.GetPopularBandResponse
 import com.example.eraofband.remote.getotheruser.GetOtherUserResponse
 import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
+import com.example.eraofband.remote.makeBand.MakeBandResponse
 import com.example.eraofband.remote.makePofol.MakePofolResponse
 import com.example.eraofband.remote.patchPofol.PatchPofolResponse
 import com.example.eraofband.remote.patchuser.PatchUserResponse
@@ -119,4 +120,8 @@ interface API {
     // 유저 팔로우 리스트 불러오기
     @GET("/users/info/follow/{userIdx}")
     fun userFollowList(@Path("userIdx") userIdx: Int) : Call<UserFollowListResponse>
+
+    //밴드 생성 등록
+    @POST("/sessions")
+    fun makeBand(@Header("X-ACCESS-TOKEN") jwt : String, @Body band:Band) : Call<MakeBandResponse>
 }

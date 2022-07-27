@@ -81,7 +81,6 @@ class BandRecruitSessionFragment: Fragment() {
         volunteerRVAdapter = BandRecruitSessionVolunteerRVAdapter(context!!)
         binding.bandRecruitSessionVolunteerRv.adapter = volunteerRVAdapter
         binding.bandRecruitSessionVolunteerRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
         volunteerRVAdapter.initVolunteerList(applyItem)
 
         volunteerRVAdapter.setMyItemClickListener(object: BandRecruitSessionVolunteerRVAdapter.MyItemClickListener{
@@ -95,11 +94,12 @@ class BandRecruitSessionFragment: Fragment() {
     }
 
     private fun initSessionRV(band: GetBandResult) {
+
         // 세션 모집 리사이클러뷰
         sessionRVAdapter = BandRecruitSessionListRVAdapter(band.bandTitle)
         binding.bandRecruitSessionRv.adapter = sessionRVAdapter
         binding.bandRecruitSessionRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
+        
         if(band.vocal > 0) sessionRVAdapter.addSession(SessionList("보컬", band.vocal, band.vocalComment))
         if(band.guitar > 0) sessionRVAdapter.addSession(SessionList("기타", band.guitar, band.guitarComment))
         if(band.base > 0) sessionRVAdapter.addSession(SessionList("베이스", band.base, band.baseComment))

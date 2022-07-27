@@ -68,7 +68,7 @@ class HomeLessonFragment: Fragment() {
         binding.homeLessonListRv.adapter = lessonListRVAdapter
         binding.homeLessonListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
-        val bandList = arrayListOf(
+       /* val bandList = arrayListOf(
             Band(R.drawable.band_profile, "", ""),
             Band(R.drawable.band_profile, "", ""),
             Band(R.drawable.band_profile, "", ""),
@@ -76,7 +76,7 @@ class HomeLessonFragment: Fragment() {
             Band(R.drawable.band_profile, "", "")
         )
 
-        lessonListRVAdapter.initLessonList(bandList)
+        lessonListRVAdapter.initLessonList(bandList)*/
 
         lessonListRVAdapter.setMyItemClickListener(object : LessonListRVAdapter.MyItemClickListener {
             override fun onShowDetail(lessonIdx: Int) {  // 레슨 모집 페이지로 전환
