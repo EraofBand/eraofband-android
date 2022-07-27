@@ -13,7 +13,6 @@ import com.example.eraofband.remote.getotheruser.GetOtherUserResponse
 import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
 import com.example.eraofband.remote.makePofol.MakePofolResponse
 import com.example.eraofband.remote.patchPofol.PatchPofolResponse
-import com.example.eraofband.remote.patchPofol.PatchPofolView
 import com.example.eraofband.remote.patchuser.PatchUserResponse
 import com.example.eraofband.remote.portfolio.*
 import com.example.eraofband.remote.sendimg.SendImgResponse

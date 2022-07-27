@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.data.Band
 import com.example.eraofband.databinding.FragmentHomeSessionBinding
 import com.example.eraofband.main.home.session.band.BandListActivity
+import com.example.eraofband.main.home.session.band.BandRecruitActivity
 import com.example.eraofband.remote.getNewBand.GetNewBandResult
 import com.example.eraofband.remote.getNewBand.GetNewBandService
 import com.example.eraofband.remote.getNewBand.GetNewBandView
@@ -55,6 +56,15 @@ class HomeSessionFragment : Fragment(), GetNewBandView {
         binding.homeNewBandRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
         homeNewBandRVAdapter.initNewBand(item)
+        homeNewBandRVAdapter.setMyItemClickListener(object : HomeSessionNewBandRVAdapter.MyItemClickListener{
+            override fun onShowBandInfo(bandIdx: Int) {
+                // bandIdx를 넘겨주면서 밴드 모집 페이지 전환
+                val intent = Intent(activity, BandRecruitActivity::class.java)
+                intent.putExtra("bandIdx", bandIdx)
+                startActivity(intent)
+            }
+
+        })
     }
 
     override fun onDestroyView() {

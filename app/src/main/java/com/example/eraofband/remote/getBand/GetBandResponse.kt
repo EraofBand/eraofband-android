@@ -1,7 +1,5 @@
 package com.example.eraofband.remote.getBand
 
-import com.example.eraofband.remote.getNewBand.GetNewBandResult
-
 data class GetBandResponse(
     var code: Int,
     var isSuccess: Boolean,
@@ -19,6 +17,7 @@ data class GetBandResult(
     var bandTitle: String,
     var base: Int,
     var baseComment: String,
+    var capacity: Int,
     var chatRoomLink: String,
     var drum: Int,
     var drumComment: String,
@@ -26,14 +25,16 @@ data class GetBandResult(
     var guitarComment: String,
     var keyboard: Int,
     var keyboardComment: String,
+    var memberCount: Int,
     var mySession: Int,
     var nickName: String,
-    var performDate: String,
+    var performDate: String?,
     var performFee: Int,
-    var performLocation: String,
-    var performTime: String,
+    var performLocation: String?,
+    var performTime: String?,
     var sessionMembers: List<SessionMembers>,
     var userIdx: Int,
+    var userIntroduction: String,
     var vocal: Int,
     var vocalComment: String
 )

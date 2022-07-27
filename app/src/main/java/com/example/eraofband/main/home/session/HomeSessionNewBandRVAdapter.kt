@@ -38,6 +38,7 @@ class HomeSessionNewBandRVAdapter(private val context: Context) : RecyclerView.A
         holder.bind(newBandList[position])
 
         // 밴드 모집 페이지로 이동
+        holder.binding.newBandLayout.setOnClickListener { mItemClickListener.onShowBandInfo(newBandList[position].bandIdx) }
     }
     override fun getItemCount(): Int = newBandList.size
 
