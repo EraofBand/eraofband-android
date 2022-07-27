@@ -62,7 +62,7 @@ class BandRecruitInfoFragment: Fragment() {
         binding.bandRecruitInfoLeaderNicknameTv.text = band.nickName  // 리더 닉네임
         binding.bandRecruitInfoLeaderIntroTv.text = band.userIntroduction  // 리더 소개
 
-        binding.bandRecruitInfoBandIntroTv.text = band.bandIntroduction  // 밴드 소개
+        binding.bandRecruitInfoBandIntroTv.text = band.bandContent  // 밴드 소개
 
         if(band.sessionMembers.isEmpty()) {  // 밴드 멤버가 없는 경우
             binding.bandRecruitInfoMemberRv.visibility = View.GONE

@@ -66,6 +66,7 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView {
         binding.homeBandRecruitBandImgIv.clipToOutline = true  // 모서리 깎기
 
         binding.homeBandRecruitBandNameTv.text = result.bandTitle  // 밴드 이름 연동
+        binding.homeBandRecruitBandIntroTv.text = result.bandIntroduction  // 한줄 소개 연동
         binding.homeBandRecruitCntTv.text = "${result.memberCount} / ${result.capacity}"  // 멤버 수
 
         // viewPager로 데이터를 넘기기 위해 저장
