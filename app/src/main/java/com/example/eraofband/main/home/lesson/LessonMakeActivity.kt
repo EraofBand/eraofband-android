@@ -72,6 +72,9 @@ class LessonMakeActivity : AppCompatActivity(), MakeLessonView, SendImgView {
             makeLessonService.setMakeLessonView(this)
             makeLessonService.makeLesson(getJwt()!!, lesson)
         }
+        binding.homeLessonMakeImgV.setOnClickListener {
+            initImageViewLesson()
+        }
 
         // 레슨 타이틀 텍스트워쳐
         binding.homeLessonMakeNameEt.addTextChangedListener(object : TextWatcher {

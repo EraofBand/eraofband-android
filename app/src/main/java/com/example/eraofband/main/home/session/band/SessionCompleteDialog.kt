@@ -12,7 +12,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.eraofband.databinding.DialogSessionCompleteBinding
 import com.example.eraofband.login.GlobalApplication
 
-class SessionCompleteDialog: DialogFragment() {
+class SessionCompleteDialog(private val code: String): DialogFragment() {
 
     private lateinit var binding: DialogSessionCompleteBinding
 
@@ -27,7 +27,32 @@ class SessionCompleteDialog: DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
-        binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
+        if(code == "apply") {  // 지원하기
+            binding.sessionCompleteTitleTv.text = "지원 완료"
+            binding.sessionCompleteContentTv.text = "좋은 소식을 기다리겠습니다 :)"
+
+            binding.sessionCompleteAcceptTv.text = "완료"
+
+            binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
+        }
+        else if(code == "accept") {  // 지원 수락
+            binding.sessionCompleteTitleTv.text = "수락 완료"
+            binding.sessionCompleteContentTv.text = "이제부터 같은 밴드에 소속됩니다!"
+
+            binding.sessionCompleteAcceptTv.text = "완료"
+
+            binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
+        }
+        else {  // 지원 거절
+            binding.sessionCompleteTitleTv.text = "거절 완료"
+            binding.sessionCompleteContentTv.text = "거절이 완료되었습니다."
+
+            binding.sessionCompleteAcceptTv.text = "완료"
+
+            binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
+        }
+
+
 
         return binding.root
     }

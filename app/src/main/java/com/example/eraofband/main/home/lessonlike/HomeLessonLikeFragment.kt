@@ -33,7 +33,7 @@ class HomeLessonLikeFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        var likeLessonList = arrayListOf(
+       /* var likeLessonList = arrayListOf(
             Band(0, "", ""),
             Band(0, "", ""),
             Band(0, "", ""),
@@ -45,7 +45,7 @@ class HomeLessonLikeFragment : Fragment() {
         val homeLessonLikeRVAdapter = HomeLessonLikeRVAdapter(likeLessonList)
 
         binding.homeLessonLikeRv.adapter = homeLessonLikeRVAdapter
-        binding.homeLessonLikeRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.homeLessonLikeRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)*/
     }
 
     override fun onDestroyView() {

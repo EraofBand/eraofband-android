@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.data.Band
 import com.example.eraofband.databinding.FragmentHomeBandLikeBinding
-import com.example.eraofband.main.home.session.HomeSessionNewBandRVAdapter
 
 
 class HomeBandLikeFragment : Fragment() {
@@ -32,7 +31,7 @@ class HomeBandLikeFragment : Fragment() {
     }
 
     private fun initRecyclerView() {
-        var likeBandList = arrayListOf(
+        /*var likeBandList = arrayListOf(
             Band(0, "", ""),
             Band(0, "", ""),
             Band(0, "", ""),
@@ -44,7 +43,7 @@ class HomeBandLikeFragment : Fragment() {
         val homeBandLikeRVAdapter = HomeBandLikeRVAdapter(likeBandList)
 
         binding.homeBandLikeRv.adapter = homeBandLikeRVAdapter
-        binding.homeBandLikeRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.homeBandLikeRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)*/
     }
 
     override fun onDestroyView() {

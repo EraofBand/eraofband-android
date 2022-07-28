@@ -41,27 +41,8 @@ class HomeFragment : Fragment() {
             val fabDialog = HomeFabDialog()
             fabDialog.show(fragmentManager!!, "homeFAB")
         }
+
         connectVP()
-    }
-
-    private fun fabPopupMenu() {
-        val popupMenu = PopupMenu(context, binding.homeFab)
-        popupMenu.menuInflater.inflate(R.menu.home_fab_menu, popupMenu.menu)
-        popupMenu.show()
-
-        popupMenu.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.menu_make_band -> {
-                    startActivity(Intent(context, BandMakeActivity::class.java))
-                    return@setOnMenuItemClickListener true
-                }
-                R.id.menu_make_lesson -> {
-                    startActivity(Intent(context, LessonMakeActivity::class.java))
-                    return@setOnMenuItemClickListener true
-                }
-                else -> return@setOnMenuItemClickListener false
-            }
-        }
     }
 
     private fun connectVP() {

@@ -3,11 +3,14 @@ package com.example.eraofband.main.home.session.band
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -24,8 +27,14 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
+import com.example.eraofband.data.Band
 import com.example.eraofband.databinding.ActivityBandMakeBinding
+import com.example.eraofband.remote.makeBand.MakeBandResult
+import com.example.eraofband.remote.makeBand.MakeBandService
+import com.example.eraofband.remote.makeBand.MakeBandView
+import com.example.eraofband.remote.sendimg.SendImgResponse
 import com.example.eraofband.remote.sendimg.SendImgService
+import com.example.eraofband.remote.sendimg.SendImgView
 import com.example.eraofband.signup.DialogDatePicker
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -33,9 +42,12 @@ import okhttp3.RequestBody
 import java.io.File
 import java.lang.NumberFormatException
 
-class BandMakeActivity : AppCompatActivity() {
+class BandMakeActivity : AppCompatActivity(), MakeBandView, SendImgView {
 
     private lateinit var binding: ActivityBandMakeBinding
+    private var band = Band("", "", "", "", "", 0, "", "", 0,
+    "", 0, "", 0, "", 0, 0,  "")
+    private var imgUrl = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,9 +62,12 @@ class BandMakeActivity : AppCompatActivity() {
             initImageViewBand()
         }
 
+        binding.homeBandMakeImgV.setOnClickListener {
+            initImageViewBand()
+        }
+
         binding.homeBandMakeNameEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding.homeBandMakeNameEt.hint = "dmdk"
             }
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -89,6 +104,13 @@ class BandMakeActivity : AppCompatActivity() {
 
         binding.homeBandMakeBackIb.setOnClickListener { finish() }
 
+        binding.homeBandMakeRegisterBtn.setOnClickListener {
+            val makeService = MakeBandService()
+            makeService.setMakeView(this)
+            Log.d("BAND MAKE", postBand().toString())
+            makeService.makeBand(getJwt()!!, postBand())
+        }
+
         initSpinner()
         initVocalCnt()
         initGuitarCnt()
@@ -100,17 +122,40 @@ class BandMakeActivity : AppCompatActivity() {
 
     }
 
+    private fun postBand() : Band{
+
+        band.bandTitle = binding.homeBandMakeNameEt.text.toString()
+        band.bandIntroduction = binding.homeBandMakeInfoEt.text.toString()
+        band.bandContent = binding.homeBandMakeDetailEt.text.toString()
+        band.chatRoomLink = binding.homeBandMakeChatEt.text.toString()
+        band.bandRegion =  binding.homeBandMakeCitySp.selectedItem.toString() + " " + binding.homeBandMakeAreaSp.selectedItem.toString()
+        band.bandImgUrl = imgUrl
+
+        band.vocalComment = binding.homeBandMakeVocalEt.text.toString()
+        band.guitarComment = binding.homeBandMakeGuitarEt.text.toString()
+        band.baseComment = binding.homeBandMakeBaseEt.text.toString()
+        band.keyboardComment = binding.homeBandMakeKeyboardEt.text.toString()
+        band.drumComment = binding.homeBandMakeDrumEt.text.toString()
+
+        band.userIdx = getUserIdx()
+
+
+        return band
+    }
+
     private fun initVocalCnt() {
         var cnt = 0
         binding.makeVocalCntTv.text = cnt.toString()
         binding.makeVocalPlusIb.setOnClickListener {
             cnt += 1
             binding.makeVocalCntTv.text = cnt.toString()
+            band.vocal = cnt
         }
         binding.makeVocalMinusIb.setOnClickListener {
             if(cnt != 0){
                 cnt -= 1
                 binding.makeVocalCntTv.text = cnt.toString()
+                band.vocal = cnt
             } else{
                 binding.makeVocalCntTv.text = cnt.toString()
             }
@@ -123,11 +168,13 @@ class BandMakeActivity : AppCompatActivity() {
         binding.makeGuitarPlusIb.setOnClickListener {
             cnt += 1
             binding.makeGuitarCntTv.text = cnt.toString()
+            band.guitar = cnt
         }
         binding.makeGuitarMinusIb.setOnClickListener {
             if(cnt != 0){
                 cnt -= 1
                 binding.makeGuitarCntTv.text = cnt.toString()
+                band.guitar = cnt
             } else{
                 binding.makeGuitarCntTv.text = cnt.toString()
             }
@@ -140,15 +187,18 @@ class BandMakeActivity : AppCompatActivity() {
         binding.makeBasePlusIb.setOnClickListener {
             cnt += 1
             binding.makeBaseCntTv.text = cnt.toString()
+            band.base = cnt
         }
         binding.makeBaseMinusIb.setOnClickListener {
             if(cnt != 0){
                 cnt -= 1
                 binding.makeBaseCntTv.text = cnt.toString()
+                band.base = cnt
             } else{
                 binding.makeBaseCntTv.text = cnt.toString()
             }
         }
+
     }
 
     private fun initKeyboardCnt() {
@@ -157,15 +207,18 @@ class BandMakeActivity : AppCompatActivity() {
         binding.makeKeyboardPlusIb.setOnClickListener {
             cnt += 1
             binding.makeKeyboardCntTv.text = cnt.toString()
+            band.keyboard = cnt
         }
         binding.makeKeyboardMinusIb.setOnClickListener {
             if(cnt != 0){
                 cnt -= 1
                 binding.makeKeyboardCntTv.text = cnt.toString()
+                band.keyboard = cnt
             } else{
                 binding.makeKeyboardCntTv.text = cnt.toString()
             }
         }
+
     }
 
     private fun initDrumCnt() {
@@ -174,11 +227,13 @@ class BandMakeActivity : AppCompatActivity() {
         binding.makeDrumPlusIb.setOnClickListener {
             cnt += 1
             binding.makeDrumCntTv.text = cnt.toString()
+            band.drum = cnt
         }
         binding.makeDrumMinusIb.setOnClickListener {
             if(cnt != 0){
                 cnt -= 1
                 binding.makeDrumCntTv.text = cnt.toString()
+                band.drum = cnt
             } else{
                 binding.makeDrumCntTv.text = cnt.toString()
             }
@@ -293,6 +348,15 @@ class BandMakeActivity : AppCompatActivity() {
                         .transform(CenterCrop(), RoundedCorners(15))
                         .into(binding.homeBandMakeImgV)
 
+                    val imgPath = absolutelyPath(selectedImageUri, this)
+                    val file = File(imgPath)
+                    val requestBody = RequestBody.create(MediaType.parse("image/*"), file)
+                    val body = MultipartBody.Part.createFormData("file", file.name, requestBody)
+
+                    val sendImgService = SendImgService()
+                    sendImgService.setImageView(this)
+                    sendImgService.sendImg(body)
+
                     binding.homeBandMakeAddImgTv.visibility = View.INVISIBLE
                     binding.homeBandMakeAddInfoImgTv.visibility = View.INVISIBLE
                     binding.homeBandMakeImgIv.visibility = View.INVISIBLE
@@ -317,5 +381,44 @@ class BandMakeActivity : AppCompatActivity() {
             .setNegativeButton("취소하기") { _, _ -> }
             .create()
             .show()
+    }
+
+    private fun absolutelyPath(path: Uri?, context : Context): String {
+        val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
+        val c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
+        val index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        c?.moveToFirst()
+
+        val result = c?.getString(index!!)
+
+        return result!!
+    }
+
+    private fun getJwt(): String? {
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        return userSP.getString("jwt", "")
+    }
+
+    private fun getUserIdx(): Int {
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        return userSP.getInt("userIdx", 0)
+    }
+
+    override fun onMakeSuccess(code: Int, result: MakeBandResult) {
+        Log.d("MAKE BAND / SUCCESS", result.toString())
+        finish()
+    }
+
+    override fun onMakeFailure(code: Int, message: String) {
+        Log.d("MAKE BAND / FAIL","$code $message")
+    }
+
+    override fun onSendSuccess(response: SendImgResponse) {
+        Log.d("SENDIMG/SUC", response.toString())
+        imgUrl = response.result
+    }
+
+    override fun onSendFailure(code: Int, message: String) {
+        Log.d("SENDIMG/FAIL", "$code $message")
     }
 }

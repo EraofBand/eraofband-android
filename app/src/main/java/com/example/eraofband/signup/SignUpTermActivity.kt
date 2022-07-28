@@ -32,7 +32,6 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
         var intent = intent
         user = intent.extras?.getSerializable("user") as User
-        Log.d("user-do", user.toString())
 
         binding.signupTermNextBtn.setOnClickListener {
 
