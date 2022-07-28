@@ -83,9 +83,10 @@ class HomeSessionFragment : Fragment(), GetNewBandView, GetPopularBandView {
         val popularBandRVAdapter = HomeSessionPopularBandRVAdapter(context!!)
 
         binding.homePopularBandRv.adapter = popularBandRVAdapter
-        binding.homePopularBandRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.homePopularBandRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         popularBandRVAdapter.initPopularBand(item)
+
         popularBandRVAdapter.setMyItemClickListener(object : HomeSessionPopularBandRVAdapter.MyItemClickListener{
             override fun onShowBandInfo(bandIdx: Int) {
                 // bandIdx를 넘겨주면서 밴드 모집 페이지 전환

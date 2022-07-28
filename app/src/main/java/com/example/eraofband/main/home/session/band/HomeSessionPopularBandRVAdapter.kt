@@ -2,6 +2,7 @@ package com.example.eraofband.main.home.session.band
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +18,7 @@ class HomeSessionPopularBandRVAdapter(private val context: Context) : RecyclerVi
     @SuppressLint("NotifyDataSetChanged")
     fun initPopularBand(popularBandList: List<GetPopularBandResult>) {
         this.popularBandList.addAll(popularBandList)
-        notifyDataSetChanged()
+        Log.d("POPULAR", popularBandList.toString())
     }
 
     interface MyItemClickListener {
