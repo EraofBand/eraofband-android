@@ -25,6 +25,7 @@ data class GetBandResult(
     var guitarComment: String,
     var keyboard: Int,
     var keyboardComment: String,
+    var likeOrNot: String,
     var memberCount: Int,
     var mySession: Int,
     var nickName: String,
