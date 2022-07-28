@@ -2,6 +2,7 @@ package com.example.eraofband.remote
 
 
 import com.example.eraofband.data.*
+import com.example.eraofband.remote.applyBand.ApplyBandResponse
 import com.example.eraofband.remote.bandLike.BandLikeDeleteResponse
 import com.example.eraofband.remote.bandLike.BandLikeResponse
 import com.example.eraofband.remote.checkUser.CheckUserResponse
@@ -62,6 +63,10 @@ interface API {
     // 밴드 좋아요 취소
     @DELETE("/sessions/unlikes/{bandIdx}")
     fun bandLikeDelete(@Header("X-ACCESS-TOKEN") jwt : String, @Path("bandIdx") bandIdx : Int) : Call<BandLikeDeleteResponse>
+
+    // 밴드 지원하기
+    @POST("/sessions/{bandIdx}")
+    fun applyBand(@Header("X-ACCESS-TOKEN") jwt: String, @Path("bandIdx") bandIdx: Int, @Body session: Int) : Call<ApplyBandResponse>
 
     // 마이페이지 정보 조회
     @GET("/users/info/my-page/{userIdx}")
