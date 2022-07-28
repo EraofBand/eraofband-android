@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.data.Band
 import com.example.eraofband.data.Lesson
@@ -46,8 +48,11 @@ class LessonListRVAdapter : RecyclerView.Adapter<LessonListRVAdapter.ViewHolder>
 
     inner class ViewHolder(val binding: ItemLessonBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(lessonList: GetLessonListResult) {
-            binding.lessonImgIv.setImageURI(lessonList.lessonImgUrl.toUri())
+            Glide.with(itemView).load(lessonList.lessonImgUrl)
+                .apply(RequestOptions.centerCropTransform())
+                .into(binding.lessonImgIv) // 레슨 이미지
             binding.lessonImgIv.clipToOutline = true  // 모서리 깎기
+
             binding.lessonRegionTv.text = lessonList.lessonRegion
             binding.lessonTitleTv.text = lessonList.lessonTitle
             binding.lessonIntroduceTv.text = lessonList.lessonIntroduction

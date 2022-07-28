@@ -73,6 +73,7 @@
     </string-array>
 
     <string-array name="lesson">
+        <item>보컬</item>
         <item>기타</item>
         <item>베이스</item>
         <item>키보드</item>

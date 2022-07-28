@@ -4,6 +4,7 @@ package com.example.eraofband.remote
 import com.example.eraofband.data.*
 import com.example.eraofband.remote.checkUser.CheckUserResponse
 import com.example.eraofband.remote.deletePofol.DeletePofolResponse
+import com.example.eraofband.remote.getLessonInfo.GetLessonInfoResponse
 import com.example.eraofband.remote.getLessonList.GetLessonListResponse
 import com.example.eraofband.remote.getLessonList.GetLessonListResult
 import com.example.eraofband.remote.patchSession.PatchSessionResponse
@@ -14,6 +15,7 @@ import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
 import com.example.eraofband.remote.makeLesson.MakeLessonResponse
 import com.example.eraofband.remote.makeLesson.MakeLessonService
 import com.example.eraofband.remote.makePofol.MakePofolResponse
+import com.example.eraofband.remote.patchLesson.PatchLessonResponse
 import com.example.eraofband.remote.patchPofol.PatchPofolResponse
 import com.example.eraofband.remote.patchPofol.PatchPofolView
 import com.example.eraofband.remote.patchuser.PatchUserResponse
@@ -114,7 +116,15 @@ interface API {
     @POST("/lessons")
     fun makeLesson(@Header("X-ACCESS-TOKEN") jwt: String, @Body lesson: Lesson) : Call<MakeLessonResponse>
 
-    //지역-세션 분류 레슨 정보 반환
+    // 레슨 정보 반환
+    @GET("/lessons/info/{lessonIdx}")
+    fun getLessonInfo(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int) : Call<GetLessonInfoResponse>
+
+    //지역-세션 분류 레슨 리스트트 반환
     @GET("/lessons/info/list/{lesson-region}/{lesson-session}")
     fun getLessonList(@Path("lesson-region") lessonRegion: String, @Path("lesson-session") lessonSession: Int) : Call<GetLessonListResponse>
+
+    @PATCH("/lessons/lesson-info/{lessonIdx}")
+    fun patchLesson(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int, @Body lesson: Lesson) : Call<PatchLessonResponse>
+
 }

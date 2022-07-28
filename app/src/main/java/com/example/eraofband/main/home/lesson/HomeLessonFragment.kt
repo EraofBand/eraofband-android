@@ -36,7 +36,6 @@ class HomeLessonFragment: Fragment(), GetLessonListView {
 
     override fun onResume() {
         super.onResume()
-
         getLessonList.getLessonListView(this)
         getLessonList.getLessonList("전체", 5)
     }
@@ -53,15 +52,15 @@ class HomeLessonFragment: Fragment(), GetLessonListView {
         binding.homeLessonCitySp.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 when(position) {
-                    0 -> getLessonList.getLessonList("전체", 5) // 모든 지역이 뜨도록
-                    1 -> getLessonList.getLessonList("서울", 5) // 서울 지역만 뜨도록
-                    else -> getLessonList.getLessonList("경기도", 5) // 경기도 지역만 뜨도록
+//                    0 -> getLessonList.getLessonList("전체", 5) // 모든 지역이 뜨도록
+//                    1 -> getLessonList.getLessonList("서울", 5) // 서울 지역만 뜨도록
+//                    else -> getLessonList.getLessonList("경기도", 5) // 경기도 지역만 뜨도록
                 }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {  // 아무것도 클릭되어있지 않을 때는 기본으로 전체를 띄워줌
                 binding.homeLessonCitySp.setSelection(0)
-                getLessonList.getLessonList("전체", 5) // 모든 지역이 뜨도록
+//                getLessonList.getLessonList("전체", 5) // 모든 지역이 뜨도록
             }
 
         })

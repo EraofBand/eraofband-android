@@ -86,8 +86,6 @@ class LessonEditActivity : AppCompatActivity() {
                 binding.homeLessonEditDetailEt.hint = ""
             }
         })
-
-
         initLessonSpinner()
         initSpinner()
         initCnt()
