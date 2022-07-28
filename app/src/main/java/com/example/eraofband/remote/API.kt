@@ -2,6 +2,8 @@ package com.example.eraofband.remote
 
 
 import com.example.eraofband.data.*
+import com.example.eraofband.remote.bandLike.BandLikeDeleteResponse
+import com.example.eraofband.remote.bandLike.BandLikeResponse
 import com.example.eraofband.remote.checkUser.CheckUserResponse
 import com.example.eraofband.remote.deletePofol.DeletePofolResponse
 import com.example.eraofband.remote.getBand.GetBandResponse
@@ -51,6 +53,14 @@ interface API {
     // Top3 밴드 조회
     @GET("/sessions/home/fame")
     fun getPopularBand() : Call<GetPopularBandResponse>
+
+    // 밴드 좋아요
+    @POST("/sessions/likes/{bandIdx}")
+    fun bandLike(@Header("X-ACCESS-TOKEN") jwt : String, @Path("bandIdx") bandIdx : Int) : Call<BandLikeResponse>
+
+    // 밴드 좋아요 취소
+    @DELETE("/sessions/unlikes/{bandIdx}")
+    fun bandLikeDelete(@Header("X-ACCESS-TOKEN") jwt : String, @Path("bandIdx") bandIdx : Int) : Call<BandLikeDeleteResponse>
 
     // 마이페이지 정보 조회
     @GET("/users/info/my-page/{userIdx}")

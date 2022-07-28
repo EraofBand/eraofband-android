@@ -37,7 +37,7 @@ class HomeSessionPopularBandRVAdapter(private val context: Context) : RecyclerVi
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(popularBandList[position])
-        holder.binding.popularBandOrderTv.text = "$position"  // 순서 연동
+        holder.binding.popularBandOrderTv.text = "${position + 1}"  // 순서 연동
 
         // 밴드 모집 페이지로 이동
         holder.binding.popularBandLayout.setOnClickListener { mItemClickListener.onShowBandInfo(popularBandList[position].bandIdx) }
