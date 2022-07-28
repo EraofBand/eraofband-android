@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
@@ -61,7 +62,7 @@ class BandRecruitSessionFragment: Fragment() {
                 binding.bandRecruitSessionVolunteerRv.visibility = View.VISIBLE
                 binding.bandRecruitSessionNoVolunteerTv.visibility = View.GONE
 
-                initApplicantRV(band.applicants)
+                initApplicantRV(band.applicants, band.bandIdx)
             }
         }
         else {
@@ -76,16 +77,21 @@ class BandRecruitSessionFragment: Fragment() {
         return userSP.getInt("userIdx", 0)
     }
 
-    private fun initApplicantRV(applyItem: List<Applicants>) {
+    private fun getJwt() : String? {
+        val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        return userSP.getString("jwt", "")
+    }
+
+    private fun initApplicantRV(applyItem: List<Applicants>, bandIdx: Int) {
         // 지원자 목록 리사이클러뷰
-        volunteerRVAdapter = BandRecruitSessionVolunteerRVAdapter(context!!)
+        volunteerRVAdapter = BandRecruitSessionVolunteerRVAdapter(context!!, bandIdx)
         binding.bandRecruitSessionVolunteerRv.adapter = volunteerRVAdapter
         binding.bandRecruitSessionVolunteerRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         volunteerRVAdapter.initVolunteerList(applyItem)
 
         volunteerRVAdapter.setMyItemClickListener(object: BandRecruitSessionVolunteerRVAdapter.MyItemClickListener{
-            override fun onShowDecisionPopup(code: String) {
-                val applyDialog = SessionApplyDialog(code)
+            override fun onShowDecisionPopup(code: String, bandIdx: Int, session: Int) {
+                val applyDialog = SessionApplyDialog(code, getJwt()!!, bandIdx, session)
                 applyDialog.isCancelable = false
                 applyDialog.show(activity!!.supportFragmentManager, "applicant")
             }
@@ -94,21 +100,20 @@ class BandRecruitSessionFragment: Fragment() {
     }
 
     private fun initSessionRV(band: GetBandResult) {
-
         // 세션 모집 리사이클러뷰
-        sessionRVAdapter = BandRecruitSessionListRVAdapter(band.bandTitle)
+        sessionRVAdapter = BandRecruitSessionListRVAdapter(band.bandTitle, band.bandIdx)
         binding.bandRecruitSessionRv.adapter = sessionRVAdapter
         binding.bandRecruitSessionRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         
-        if(band.vocal > 0) sessionRVAdapter.addSession(SessionList("보컬", band.vocal, band.vocalComment))
-        if(band.guitar > 0) sessionRVAdapter.addSession(SessionList("기타", band.guitar, band.guitarComment))
-        if(band.base > 0) sessionRVAdapter.addSession(SessionList("베이스", band.base, band.baseComment))
-        if(band.keyboard > 0) sessionRVAdapter.addSession(SessionList("키보드", band.keyboard, band.keyboardComment))
-        if(band.drum > 0) sessionRVAdapter.addSession(SessionList("드럼", band.drum, band.drumComment))
+        if(band.vocal > 0) sessionRVAdapter.addSession(SessionList(0, "보컬", band.vocal, band.vocalComment))
+        if(band.guitar > 0) sessionRVAdapter.addSession(SessionList(1, "기타", band.guitar, band.guitarComment))
+        if(band.base > 0) sessionRVAdapter.addSession(SessionList(2, "베이스", band.base, band.baseComment))
+        if(band.keyboard > 0) sessionRVAdapter.addSession(SessionList(3, "키보드", band.keyboard, band.keyboardComment))
+        if(band.drum > 0) sessionRVAdapter.addSession(SessionList(4, "드럼", band.drum, band.drumComment))
 
         sessionRVAdapter.setMyItemClickListener(object: BandRecruitSessionListRVAdapter.MyItemClickListener{
-            override fun showApplyPopup(code: String) {
-                val applyDialog = SessionApplyDialog(code)
+            override fun showApplyPopup(code: String, bandIdx: Int, session: Int) {
+                val applyDialog = SessionApplyDialog(code, getJwt()!!, session, bandIdx)
                 applyDialog.isCancelable = false
                 applyDialog.show(activity!!.supportFragmentManager, "apply")
             }

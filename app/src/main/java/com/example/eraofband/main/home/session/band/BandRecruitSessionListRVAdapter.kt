@@ -8,12 +8,12 @@ import com.example.eraofband.data.Band
 import com.example.eraofband.data.SessionList
 import com.example.eraofband.databinding.ItemSessionListBinding
 
-class BandRecruitSessionListRVAdapter(private val bandName: String) : RecyclerView.Adapter<BandRecruitSessionListRVAdapter.ViewHolder>() {
+class BandRecruitSessionListRVAdapter(private val bandName: String, private val bandIdx: Int) : RecyclerView.Adapter<BandRecruitSessionListRVAdapter.ViewHolder>() {
     private var sessionList = arrayListOf<SessionList>()
 
     interface MyItemClickListener {
         // 클릭 이벤트
-        fun showApplyPopup(code: String)
+        fun showApplyPopup(code: String, bandIdx: Int, session: Int)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -43,7 +43,7 @@ class BandRecruitSessionListRVAdapter(private val bandName: String) : RecyclerVi
         holder.bind(sessionList[position])
 
         // 클릭 이벤트
-        holder.binding.sessionListVolunteerTv.setOnClickListener { mItemClickListener.showApplyPopup("apply") }
+        holder.binding.sessionListVolunteerTv.setOnClickListener { mItemClickListener.showApplyPopup("apply", bandIdx, sessionList[position].sessionInt) }
 
     }
     override fun getItemCount(): Int = sessionList.size
