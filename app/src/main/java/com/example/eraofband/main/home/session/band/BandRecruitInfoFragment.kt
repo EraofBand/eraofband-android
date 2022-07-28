@@ -97,7 +97,7 @@ class BandRecruitInfoFragment: Fragment() {
         }
 
         // 채팅방 링크
-        if(checkUserIdx(band.sessionMembers)) binding.bandRecruitInfoChatTv.text = band.chatRoomLink  // 내가 밴드 멤버라면
+        if(checkUserIdx(band.userIdx, band.sessionMembers)) binding.bandRecruitInfoChatTv.text = band.chatRoomLink  // 내가 밴드 멤버라면
         else binding.bandRecruitInfoChatTv.text = "밴드 멤버에게만 공개됩니다"  // 밴드 멤버가 아니라면
 
     }
@@ -131,9 +131,11 @@ class BandRecruitInfoFragment: Fragment() {
         else "-${abs(date)}"  // 아직 안지난 경우
     }
 
-    private fun checkUserIdx(memberList: List<SessionMembers>): Boolean {
+    private fun checkUserIdx(userIdx: Int, memberList: List<SessionMembers>): Boolean {
         // 만약 내 userIdx가 멤버 리스트의 userIdx와 같으면 밴드 멤버에 속함
-        if(memberList.isEmpty()) return false  // 밴드 멤버가 없으면 무조건 false
+        if(getUserIdx() == userIdx) return true  // 내가 밴드를 만든 사람이면 무조건 true
+
+        if(memberList.isEmpty()) return false  // 밴드를 만든 사람이 아닌데 밴드 멤버가 없으면 무조건 false
 
         for(element in memberList) {
             if(getUserIdx() == element.userIdx) return true
