@@ -14,11 +14,12 @@
 
         <ImageButton
             android:id="@+id/home_lesson_edit_back_ib"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/ic_back"
             android:background="@color/transparent"
             android:scaleType="fitCenter"
+            android:padding="5dp"
             android:layout_marginStart="20dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -151,6 +152,8 @@
                 android:textSize="18sp"
                 android:maxLength="40"
                 android:paddingHorizontal="20dp"
+                android:linksClickable="true"
+                android:autoLink="web"
                 android:layout_marginTop="20dp"
                 app:layout_constraintTop_toBottomOf="@id/home_lesson_edit_info_tv"/>
 
@@ -246,11 +249,12 @@
 
                 <ImageButton
                     android:id="@+id/edit_cnt_minus_ib"
-                    android:layout_width="13dp"
-                    android:layout_height="13dp"
+                    android:layout_width="29dp"
+                    android:layout_height="29dp"
                     android:background="@color/transparent"
                     android:src="@drawable/ic_minus"
                     android:scaleType="fitCenter"
+                    android:padding="8dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/edit_cnt_tv"
@@ -271,11 +275,12 @@
 
                 <ImageButton
                     android:id="@+id/edit_cnt_plus_ib"
-                    android:layout_width="13dp"
-                    android:layout_height="13dp"
+                    android:layout_width="29dp"
+                    android:layout_height="29dp"
                     android:background="@color/transparent"
                     android:src="@drawable/ic_plus"
                     android:scaleType="fitCenter"
+                    android:padding="8dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@id/edit_cnt_tv"
                     app:layout_constraintEnd_toEndOf="parent"

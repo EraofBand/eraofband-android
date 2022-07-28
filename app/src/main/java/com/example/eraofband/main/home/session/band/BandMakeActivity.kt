@@ -46,7 +46,7 @@ class BandMakeActivity : AppCompatActivity(), MakeBandView, SendImgView {
 
     private lateinit var binding: ActivityBandMakeBinding
     private var band = Band("", "", "", "", "", 0, "", "", 0,
-    "", 0, "", 0, "", 0, 0, 0, "")
+    "", 0, "", 0, "", 0, 0,  "")
     private var imgUrl = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,9 +62,12 @@ class BandMakeActivity : AppCompatActivity(), MakeBandView, SendImgView {
             initImageViewBand()
         }
 
+        binding.homeBandMakeImgV.setOnClickListener {
+            initImageViewBand()
+        }
+
         binding.homeBandMakeNameEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding.homeBandMakeNameEt.hint = "dmdk"
             }
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -133,7 +136,6 @@ class BandMakeActivity : AppCompatActivity(), MakeBandView, SendImgView {
         band.baseComment = binding.homeBandMakeBaseEt.text.toString()
         band.keyboardComment = binding.homeBandMakeKeyboardEt.text.toString()
         band.drumComment = binding.homeBandMakeDrumEt.text.toString()
-        band.mySession = 0
 
         band.userIdx = getUserIdx()
 

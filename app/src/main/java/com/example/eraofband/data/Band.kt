@@ -15,7 +15,6 @@ data class Band(
     var guitarComment: String,
     var keyboard: Int,
     var keyboardComment: String,
-    var mySession: Int,
     var userIdx: Int,
     var vocal: Int,
     var vocalComment: String
