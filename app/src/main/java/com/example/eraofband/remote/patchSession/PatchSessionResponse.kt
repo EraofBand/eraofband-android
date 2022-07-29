@@ -1,6 +1,5 @@
 package com.example.eraofband.remote.patchSession
 
-import com.example.eraofband.remote.patchuser.PatchUserResult
 import com.google.gson.annotations.SerializedName
 
 data class PatchSessionResponse(

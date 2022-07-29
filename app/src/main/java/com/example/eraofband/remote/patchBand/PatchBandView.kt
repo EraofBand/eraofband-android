@@ -1,4 +1,6 @@
 package com.example.eraofband.remote.patchBand
 
-class PatchBandView {
+interface PatchBandView {
+    fun onPatchSuccess(code: Int, result: String)
+    fun onPatchFailure(code: Int, message: String)
 }

@@ -1,4 +1,8 @@
 package com.example.eraofband.remote.patchBand
 
-class PatchBandResponse {
-}
+data class PatchBandResponse(
+    var code: Int,
+    var isSuccess: Boolean,
+    var message: String,
+    var result: String
+)
