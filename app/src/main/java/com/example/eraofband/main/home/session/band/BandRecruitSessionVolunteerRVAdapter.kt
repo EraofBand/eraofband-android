@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.eraofband.R
 import com.example.eraofband.databinding.ItemSessionVolunteerBinding
 import com.example.eraofband.remote.getBand.Applicants
 
@@ -40,7 +39,7 @@ class BandRecruitSessionVolunteerRVAdapter(private val context: Context, private
         holder.bind(volunteerList[position])
 
         // 클릭 이벤트
-        holder.binding.sessionVolunteerCheckTv.setOnClickListener {
+        holder.binding.sessionVolunteerDecisionTv.setOnClickListener {
             mItemClickListener.onShowDecisionPopup("applicant", bandIdx, volunteerList[position].buSession)
         }
     }
@@ -54,7 +53,7 @@ class BandRecruitSessionVolunteerRVAdapter(private val context: Context, private
                 .into(binding.sessionVolunteerProfileIv)
 
             binding.sessionVolunteerSessionTv.text = setSession(volunteer.buSession)  // 세션
-            binding.sessionVolunteerNicknameTv.text = volunteer.nickName  // 닉네임 연동
+            binding.sessionVolunteerNameTv.text = volunteer.nickName  // 닉네임 연동
             binding.sessionVolunteerIntroTv.text = volunteer.introduction  // 소개 연동
             binding.sessionVolunteerTimeTv.text = volunteer.updatedAt  // 지원 시간 연동
         }
