@@ -1,10 +1,14 @@
 package com.example.eraofband.remote
 
-
 import com.example.eraofband.data.*
+import com.example.eraofband.remote.applyBand.ApplyBandResponse
+import com.example.eraofband.remote.bandLike.BandLikeDeleteResponse
+import com.example.eraofband.remote.bandLike.BandLikeResponse
 import com.example.eraofband.remote.checkUser.CheckUserResponse
 import com.example.eraofband.remote.deletePofol.DeletePofolResponse
 import com.example.eraofband.remote.getBand.GetBandResponse
+import com.example.eraofband.remote.getLessonInfo.GetLessonInfoResponse
+import com.example.eraofband.remote.getLessonList.GetLessonListResponse
 import com.example.eraofband.remote.patchSession.PatchSessionResponse
 import com.example.eraofband.remote.getMyPage.GetMyPageResponse
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResponse
@@ -13,8 +17,10 @@ import com.example.eraofband.remote.getPopularBand.GetPopularBandResponse
 import com.example.eraofband.remote.getotheruser.GetOtherUserResponse
 import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
 import com.example.eraofband.remote.makeBand.MakeBandResponse
+import com.example.eraofband.remote.makeLesson.MakeLessonResponse
 import com.example.eraofband.remote.makePofol.MakePofolResponse
 import com.example.eraofband.remote.patchBand.PatchBandResponse
+import com.example.eraofband.remote.patchLesson.PatchLessonResponse
 import com.example.eraofband.remote.patchPofol.PatchPofolResponse
 import com.example.eraofband.remote.patchuser.PatchUserResponse
 import com.example.eraofband.remote.portfolio.*
@@ -53,6 +59,18 @@ interface API {
     // Top3 밴드 조회
     @GET("/sessions/home/fame")
     fun getPopularBand() : Call<GetPopularBandResponse>
+
+    // 밴드 좋아요
+    @POST("/sessions/likes/{bandIdx}")
+    fun bandLike(@Header("X-ACCESS-TOKEN") jwt : String, @Path("bandIdx") bandIdx : Int) : Call<BandLikeResponse>
+
+    // 밴드 좋아요 취소
+    @DELETE("/sessions/unlikes/{bandIdx}")
+    fun bandLikeDelete(@Header("X-ACCESS-TOKEN") jwt : String, @Path("bandIdx") bandIdx : Int) : Call<BandLikeDeleteResponse>
+
+    // 밴드 지원하기
+    @POST("/sessions/{bandIdx}")
+    fun applyBand(@Header("X-ACCESS-TOKEN") jwt: String, @Path("bandIdx") bandIdx: Int, @Body session: Int) : Call<ApplyBandResponse>
 
     // 마이페이지 정보 조회
     @GET("/users/info/my-page/{userIdx}")
@@ -129,4 +147,20 @@ interface API {
     //밴드 수정
     @PATCH("/sessions/band-info/{bandIdx}")
     fun patchBand(@Header("X-ACCESS-TOKEN") jwt : String, @Header("bandIdx") bandIdx : Int, @Body band: Band) : Call<PatchBandResponse>
+
+    // 레슨 생성
+    @POST("/lessons")
+    fun makeLesson(@Header("X-ACCESS-TOKEN") jwt: String, @Body lesson: Lesson) : Call<MakeLessonResponse>
+
+    // 레슨 정보 반환
+    @GET("/lessons/info/{lessonIdx}")
+    fun getLessonInfo(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int) : Call<GetLessonInfoResponse>
+
+    //지역-세션 분류 레슨 리스트트 반환
+    @GET("/lessons/info/list/{lesson-region}/{lesson-session}")
+    fun getLessonList(@Path("lesson-region") lessonRegion: String, @Path("lesson-session") lessonSession: Int) : Call<GetLessonListResponse>
+
+    // 레슨 수정
+    @PATCH("/lessons/lesson-info/{lessonIdx}")
+    fun patchLesson(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int, @Body lesson: Lesson) : Call<PatchLessonResponse>
 }

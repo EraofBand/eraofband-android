@@ -1,7 +1,8 @@
-package com.example.eraofband.main.home.session.band
+package com.example.eraofband.main.home.session
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +18,7 @@ class HomeSessionPopularBandRVAdapter(private val context: Context) : RecyclerVi
     @SuppressLint("NotifyDataSetChanged")
     fun initPopularBand(popularBandList: List<GetPopularBandResult>) {
         this.popularBandList.addAll(popularBandList)
-        notifyDataSetChanged()
+        Log.d("POPULAR", popularBandList.toString())
     }
 
     interface MyItemClickListener {
@@ -37,7 +38,7 @@ class HomeSessionPopularBandRVAdapter(private val context: Context) : RecyclerVi
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(popularBandList[position])
-        holder.binding.popularBandOrderTv.text = "$position"  // 순서 연동
+        holder.binding.popularBandOrderTv.text = "${position + 1}"  // 순서 연동
 
         // 밴드 모집 페이지로 이동
         holder.binding.popularBandLayout.setOnClickListener { mItemClickListener.onShowBandInfo(popularBandList[position].bandIdx) }

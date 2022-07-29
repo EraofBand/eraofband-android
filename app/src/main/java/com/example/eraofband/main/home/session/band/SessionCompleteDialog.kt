@@ -29,7 +29,7 @@ class SessionCompleteDialog(private val code: String): DialogFragment() {
 
         if(code == "apply") {  // 지원하기
             binding.sessionCompleteTitleTv.text = "지원 완료"
-            binding.sessionCompleteContentTv.text = "OO님의 좋은 소식을 기다리겠습니다 :)"
+            binding.sessionCompleteContentTv.text = "좋은 소식을 기다리겠습니다 :)"
 
             binding.sessionCompleteAcceptTv.text = "완료"
 

@@ -5,18 +5,24 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityBandRecruitBinding
+import com.example.eraofband.remote.bandLike.BandLikeResult
+import com.example.eraofband.remote.bandLike.BandLikeService
+import com.example.eraofband.remote.bandLike.BandLikeView
 import com.example.eraofband.remote.getBand.GetBandResult
 import com.example.eraofband.remote.getBand.GetBandService
 import com.example.eraofband.remote.getBand.GetBandView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 
-class BandRecruitActivity: AppCompatActivity(), GetBandView {
+class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
 
     private lateinit var binding: ActivityBandRecruitBinding
 
     private val gson = Gson()
+
+    private var like = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +34,15 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView {
 
         binding.homeBandRecruitListIv.setOnClickListener {
             startActivity(Intent(this, BandEditActivity::class.java)) // 밴드 수정 이동
+        }
+
+        val likeService = BandLikeService()
+        likeService.setLikeView(this)
+
+        binding.homeBandRecruitLikeIv.setOnClickListener {
+            Log.d("LIKETEST", like.toString())
+            if(like) likeService.deleteLike(getJwt()!!, intent.getIntExtra("bandIdx", 0))  // 좋아요 취소 처리
+            else likeService.like(getJwt()!!, intent.getIntExtra("bandIdx", 0))  // 좋아요 처리
         }
     }
 
@@ -69,6 +84,16 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView {
         binding.homeBandRecruitBandIntroTv.text = result.bandIntroduction  // 한줄 소개 연동
         binding.homeBandRecruitCntTv.text = "${result.memberCount} / ${result.capacity}"  // 멤버 수
 
+        // 좋아요 여부 연동
+        if(result.likeOrNot == "Y") {
+            like = true
+            binding.homeBandRecruitLikeIv.setImageResource(R.drawable.ic_heart_on)
+        }
+        else {
+            like = false
+            binding.homeBandRecruitLikeIv.setImageResource(R.drawable.ic_heart_off)
+        }
+
         // viewPager로 데이터를 넘기기 위해 저장
         val bandSP = getSharedPreferences("band", MODE_PRIVATE)
         val bandEdit = bandSP.edit()
@@ -82,5 +107,27 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView {
 
     override fun onGetFailure(code: Int, message: String) {
         Log.d("GETBAND/FAIL", "$code $message")
+    }
+
+    override fun onLikeSuccess(result: BandLikeResult) {
+        Log.d("LIKE/SUC", "$result")
+        // 좋아요 성공하면 하트 채워주기
+        binding.homeBandRecruitLikeIv.setImageResource(R.drawable.ic_heart_on)
+        like = true
+    }
+
+    override fun onLikeFailure(code: Int, message: String) {
+        Log.d("LIKE/FAIL", "$code $message")
+    }
+
+    override fun onDeleteLikeSuccess(result: String) {
+        Log.d("DELETELIKE/SUC", result)
+        // 좋아요 취소 성공하면 하트 원래대로 돌려주기
+        binding.homeBandRecruitLikeIv.setImageResource(R.drawable.ic_heart_off)
+        like = false
+    }
+
+    override fun onDeleteLikeFailure(code: Int, message: String) {
+        Log.d("DELETELIKE/FAIL", "$code $message")
     }
 }

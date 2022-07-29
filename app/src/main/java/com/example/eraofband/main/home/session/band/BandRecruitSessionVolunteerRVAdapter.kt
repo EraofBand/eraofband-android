@@ -11,12 +11,12 @@ import com.example.eraofband.R
 import com.example.eraofband.databinding.ItemSessionVolunteerBinding
 import com.example.eraofband.remote.getBand.Applicants
 
-class BandRecruitSessionVolunteerRVAdapter(private val context: Context) : RecyclerView.Adapter<BandRecruitSessionVolunteerRVAdapter.ViewHolder>() {
+class BandRecruitSessionVolunteerRVAdapter(private val context: Context, private val bandIdx: Int) : RecyclerView.Adapter<BandRecruitSessionVolunteerRVAdapter.ViewHolder>() {
     private var volunteerList = arrayListOf<Applicants>()
 
     interface MyItemClickListener {
         // 클릭 이벤트
-        fun onShowDecisionPopup(code: String)
+        fun onShowDecisionPopup(code: String, bandIdx: Int, session: Int)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -40,7 +40,9 @@ class BandRecruitSessionVolunteerRVAdapter(private val context: Context) : Recyc
         holder.bind(volunteerList[position])
 
         // 클릭 이벤트
-        holder.binding.sessionVolunteerCheckTv.setOnClickListener { mItemClickListener.onShowDecisionPopup("applicant") }
+        holder.binding.sessionVolunteerCheckTv.setOnClickListener {
+            mItemClickListener.onShowDecisionPopup("applicant", bandIdx, volunteerList[position].buSession)
+        }
     }
     override fun getItemCount(): Int = volunteerList.size
 
