@@ -101,7 +101,6 @@ class BandEditActivity : AppCompatActivity() {
         })
 
         initSpinner()
-        initImageViewBand()
         initVocalCnt()
         initGuitarCnt()
         initBaseCnt()

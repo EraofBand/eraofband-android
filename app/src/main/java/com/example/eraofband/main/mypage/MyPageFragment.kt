@@ -29,6 +29,7 @@ class MyPageFragment : Fragment(), GetMyPageView {
     private val binding get() = _binding!! // 바인딩 누수 방지
     private var mySession : Int = -1
     private lateinit var nickName : String
+    private val getMyPageService = GetMyPageService()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,9 +75,8 @@ class MyPageFragment : Fragment(), GetMyPageView {
         moveFollowActivity()
     }
 
-    override fun onStart() {
-        super.onStart()
-        val getMyPageService = GetMyPageService()
+    override fun onResume() {
+        super.onResume()
         getMyPageService.setUserView(this)
         getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
     }
