@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ItemPortfolioBinding
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResult
@@ -43,7 +45,9 @@ class UserMyPagePortfolioRVAdapter : RecyclerView.Adapter<UserMyPagePortfolioRVA
     inner class ViewHolder(val binding: ItemPortfolioBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(portfolio: GetMyPofolResult) {
-            binding.itemPortfolioIv.setImageResource(R.drawable.portfolio_spare)
+            Glide.with(itemView).load(portfolio.videoUrl) // 썸네일
+                .apply(RequestOptions.centerCropTransform())
+                .into(binding.itemPortfolioIv)
         }
     }
 }

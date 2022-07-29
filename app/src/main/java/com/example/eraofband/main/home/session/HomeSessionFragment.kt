@@ -8,13 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.example.eraofband.data.Band
 import com.example.eraofband.databinding.FragmentHomeSessionBinding
 import com.example.eraofband.main.home.session.band.BandListActivity
 import com.example.eraofband.main.home.session.band.BandRecruitActivity
-import com.example.eraofband.main.home.session.band.HomeSessionPopularBandRVAdapter
 import com.example.eraofband.remote.getNewBand.GetNewBandResult
 import com.example.eraofband.remote.getNewBand.GetNewBandService
 import com.example.eraofband.remote.getNewBand.GetNewBandView

@@ -20,25 +20,29 @@ class LessonInfoActivity(): AppCompatActivity(), GetLessonInfoView {
 
     private lateinit var binding: ActivityLessonInfoBinding
     private lateinit var lessonStudentRVAdapter: LessonStudentRVAdapter
-
+    private var lessonIdx: Int? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityLessonInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val lessonIdx = intent.getIntExtra("lessonIdx", 0)
-
-        var getLessonInfo = GetLessonInfoService()
-        getLessonInfo.getLessonInfoView(this)
-        getLessonInfo.getLessonInfo(getJwt()!!, lessonIdx)
+        lessonIdx = intent.getIntExtra("lessonIdx", 0)
 
         binding.lessonInfoBackIv.setOnClickListener { finish() }  // 뒤로가기
         binding.lessonInfoListIv.setOnClickListener {  // 레슨 수정 클릭리스너
-            startActivity(Intent(this, LessonEditActivity::class.java))
+            var intent = Intent(this, LessonEditActivity()::class.java)
+            intent.putExtra("lessonIdx", lessonIdx)
+            startActivity(intent)
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        var getLessonInfo = GetLessonInfoService()
+        getLessonInfo.getLessonInfoView(this)
+        getLessonInfo.getLessonInfo(getJwt()!!, lessonIdx!!)
+    }
     private fun initRecyclerView(studentList : List<LessonMembers>) {
         // 수강생 목록 리사이클러뷰
         lessonStudentRVAdapter = LessonStudentRVAdapter()

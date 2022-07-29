@@ -2,6 +2,7 @@ package com.example.eraofband.main.home.lesson
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +11,10 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
-import com.example.eraofband.data.Band
 import com.example.eraofband.databinding.FragmentHomeLessonBinding
+import com.example.eraofband.remote.getLessonList.GetLessonListResult
+import com.example.eraofband.remote.getLessonList.GetLessonListService
+import com.example.eraofband.remote.getLessonList.GetLessonListView
 
 class HomeLessonFragment: Fragment(), GetLessonListView {
 

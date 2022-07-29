@@ -1,17 +1,26 @@
 package com.example.eraofband.remote
 
-
 import com.example.eraofband.data.*
+import com.example.eraofband.remote.applyBand.ApplyBandResponse
+import com.example.eraofband.remote.bandLike.BandLikeDeleteResponse
+import com.example.eraofband.remote.bandLike.BandLikeResponse
 import com.example.eraofband.remote.checkUser.CheckUserResponse
 import com.example.eraofband.remote.deletePofol.DeletePofolResponse
+import com.example.eraofband.remote.getBand.GetBandResponse
+import com.example.eraofband.remote.getLessonInfo.GetLessonInfoResponse
+import com.example.eraofband.remote.getLessonList.GetLessonListResponse
 import com.example.eraofband.remote.patchSession.PatchSessionResponse
 import com.example.eraofband.remote.getMyPage.GetMyPageResponse
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResponse
+import com.example.eraofband.remote.getNewBand.GetNewBandResponse
+import com.example.eraofband.remote.getPopularBand.GetPopularBandResponse
 import com.example.eraofband.remote.getotheruser.GetOtherUserResponse
 import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
+import com.example.eraofband.remote.makeBand.MakeBandResponse
+import com.example.eraofband.remote.makeLesson.MakeLessonResponse
 import com.example.eraofband.remote.makePofol.MakePofolResponse
+import com.example.eraofband.remote.patchLesson.PatchLessonResponse
 import com.example.eraofband.remote.patchPofol.PatchPofolResponse
-import com.example.eraofband.remote.patchPofol.PatchPofolView
 import com.example.eraofband.remote.patchuser.PatchUserResponse
 import com.example.eraofband.remote.portfolio.*
 import com.example.eraofband.remote.sendimg.SendImgResponse
