@@ -13,8 +13,11 @@ import com.example.eraofband.login.GlobalApplication
 import com.example.eraofband.remote.applyBand.ApplyBandResult
 import com.example.eraofband.remote.applyBand.ApplyBandService
 import com.example.eraofband.remote.applyBand.ApplyBandView
+import com.example.eraofband.remote.applyLesson.ApplyLessonResult
+import com.example.eraofband.remote.applyLesson.ApplyLessonView
+import com.example.eraoflesson.remote.applyLesson.ApplyLessonService
 
-class SessionApplyDialog(private val code: String, private val jwt: String, private val session: Int, private val bandIdx: Int): DialogFragment(), ApplyBandView {
+class SessionApplyDialog(private val code: String, private val jwt: String, private val session: Int, private val bandIdx: Int): DialogFragment(), ApplyBandView, ApplyLessonView {
 
     private lateinit var binding: DialogSessionApplyBinding
 
@@ -45,6 +48,21 @@ class SessionApplyDialog(private val code: String, private val jwt: String, priv
                 applyService.applyBand(jwt, bandIdx, session)
             }
 
+            binding.sessionApplyCancelTv.setOnClickListener { dismiss() }  // 취소하기를 누르면 다이얼로그 종료
+        }
+        else if(code == "lesson") {
+            binding.sessionApplyTitleTv.text = "세션 지원"
+            binding.sessionApplyContentTv.text = "레슨을 신청하시겠습니까?"
+
+            binding.sessionApplyCancelTv.text = "취소하기"
+            binding.sessionApplyAcceptTv.text = "신청하기"
+
+            val applyLesson = ApplyLessonService()
+            applyLesson.setApplyView(this)
+
+            binding.sessionApplyAcceptTv.setOnClickListener {  // 지원하기 누르면 API 연동 후 다음 다이얼로그로 넘어감
+                applyLesson.applyLesson(jwt, bandIdx)
+            }
             binding.sessionApplyCancelTv.setOnClickListener { dismiss() }  // 취소하기를 누르면 다이얼로그 종료
         }
         else {  // 세션 선발의 경우
@@ -96,5 +114,29 @@ class SessionApplyDialog(private val code: String, private val jwt: String, priv
 
     override fun onApplyFailure(code: Int, message: String) {
         Log.d("APPLYBAND/FAIL", "$code $message")
+    }
+
+    override fun onApplyLessonSuccess(result: ApplyLessonResult) {
+        Log.d("APPLY/SUCCESS", result.toString())
+
+        // 다음 dialog로 넘어감
+        val completeDialog = SessionCompleteDialog(code)
+        completeDialog.isCancelable = false
+
+
+        completeDialog.show(activity!!.supportFragmentManager, "complete")
+
+        dismiss()
+    }
+
+    override fun onApplyLessonFailure(code: Int, message: String) {
+        Log.d("APPLY/FAIL", "$code $message")
+
+        // 중복 신청 불가 다이얼로그로 넘아감
+        val completeDialog = SessionCompleteDialog("fail")
+        completeDialog.isCancelable = false
+        completeDialog.show(activity!!.supportFragmentManager, "fail")
+
+        dismiss()
     }
 }

@@ -5,7 +5,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.eraofband.main.home.session.HomeSessionFragment
 import com.example.eraofband.main.home.bandlike.HomeBandLikeFragment
 import com.example.eraofband.main.home.lesson.HomeLessonFragment
-import com.example.eraofband.main.home.lessonlike.HomeLessonLikeFragment
+import com.example.eraofband.main.home.lessonlike.HomeLessonFragmentLike
 
 class HomeVPAdapter (fragment : Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int = 4
@@ -15,7 +15,7 @@ class HomeVPAdapter (fragment : Fragment) : FragmentStateAdapter(fragment) {
             0 -> HomeSessionFragment()
             1 -> HomeLessonFragment()
             2 -> HomeBandLikeFragment()
-            else -> HomeLessonLikeFragment()
+            else -> HomeLessonFragmentLike()
         }
     }
 }

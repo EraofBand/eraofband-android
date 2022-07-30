@@ -3,12 +3,23 @@ package com.example.eraofband.main.home.lessonlike
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.eraofband.data.Band
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.ItemLessonBinding
+import com.example.eraofband.remote.getLikeLessonList.GetLessonLikeListResult
 
-
-class HomeLessonLikeRVAdapter(private var likeLessonList: ArrayList<Band>) :
+class HomeLessonLikeRVAdapter(list: List<GetLessonLikeListResult>) :
     RecyclerView.Adapter<HomeLessonLikeRVAdapter.ViewHolder>() {
+    private var lessonLikeList = list
+    private lateinit var mItemClickListener: MyItemClickListener
+
+    fun setMyItemClickListener(itemClickListener: MyItemClickListener) {
+        mItemClickListener = itemClickListener
+    }
+
+    interface MyItemClickListener {
+        fun onShowDetail(lessonIdx: Int)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: ItemLessonBinding = ItemLessonBinding.inflate(
@@ -18,18 +29,28 @@ class HomeLessonLikeRVAdapter(private var likeLessonList: ArrayList<Band>) :
     }
 
     override fun onBindViewHolder(holder: HomeLessonLikeRVAdapter.ViewHolder, position: Int) {
-        holder.bind(likeLessonList[position])
+        holder.bind(lessonLikeList[position])
+
+        holder.binding.lessonLayout.setOnClickListener {  // 레슨 상세정보
+           mItemClickListener.onShowDetail(lessonLikeList[position].lessonIdx)
+        }
     }
-    override fun getItemCount(): Int = likeLessonList.size
+    override fun getItemCount(): Int = lessonLikeList.size
 
     inner class ViewHolder(val binding: ItemLessonBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(band: Band) {
-            binding.lessonImgIv.setImageResource(0)
-            binding.lessonTitleTv.text = "찜 레슨의 타이틀"
-            binding.lessonIntroduceTv.text = "찜 레슨의 한 줄 소개"
-            binding.lessonRegionTv.text = "강남구"
-            binding.lessonMemberCntTv.text = "4/5"
+        fun bind(lessonList: GetLessonLikeListResult) {
+
+            Glide.with(itemView).load(lessonList.lessonImgUrl)
+                .apply(RequestOptions.centerCropTransform())
+                .into(binding.lessonImgIv) // 레슨 이미지
+
+            binding.lessonImgIv.clipToOutline = true  // 이미지 모서리 라운딩
+
+            binding.lessonRegionTv.text = lessonList.lessonRegion
+            binding.lessonTitleTv.text = lessonList.lessonTitle
+            binding.lessonIntroduceTv.text = lessonList.lessonIntroduction
+            binding.lessonMemberCntTv.text = "${lessonList.memberCount}/${lessonList.capacity}"
         }
     }
 }

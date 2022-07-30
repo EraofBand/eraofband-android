@@ -2,6 +2,7 @@ package com.example.eraofband.remote
 
 import com.example.eraofband.data.*
 import com.example.eraofband.remote.applyBand.ApplyBandResponse
+import com.example.eraofband.remote.applyLesson.ApplyLessonResponse
 import com.example.eraofband.remote.bandLike.BandLikeDeleteResponse
 import com.example.eraofband.remote.bandLike.BandLikeResponse
 import com.example.eraofband.remote.checkUser.CheckUserResponse
@@ -9,6 +10,7 @@ import com.example.eraofband.remote.deletePofol.DeletePofolResponse
 import com.example.eraofband.remote.getBand.GetBandResponse
 import com.example.eraofband.remote.getLessonInfo.GetLessonInfoResponse
 import com.example.eraofband.remote.getLessonList.GetLessonListResponse
+import com.example.eraofband.remote.getLikeLessonList.GetLessonLikeListResponse
 import com.example.eraofband.remote.patchSession.PatchSessionResponse
 import com.example.eraofband.remote.getMyPage.GetMyPageResponse
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResponse
@@ -16,6 +18,8 @@ import com.example.eraofband.remote.getNewBand.GetNewBandResponse
 import com.example.eraofband.remote.getPopularBand.GetPopularBandResponse
 import com.example.eraofband.remote.getotheruser.GetOtherUserResponse
 import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
+import com.example.eraofband.remote.lessonLike.LessonLikeDeleteResponse
+import com.example.eraofband.remote.lessonLike.LessonLikeResponse
 import com.example.eraofband.remote.makeBand.MakeBandResponse
 import com.example.eraofband.remote.makeLesson.MakeLessonResponse
 import com.example.eraofband.remote.makePofol.MakePofolResponse
@@ -158,4 +162,20 @@ interface API {
     // 레슨 수정
     @PATCH("/lessons/lesson-info/{lessonIdx}")
     fun patchLesson(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int, @Body lesson: Lesson) : Call<PatchLessonResponse>
+
+    // 레슨 지원
+    @POST("/lessons/{lessonIdx}")
+    fun applyLesson(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int) : Call<ApplyLessonResponse>
+
+    // 레슨 좋아요
+    @POST("/lessons/likes/{lessonIdx}")
+    fun lessonLike(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int) : Call<LessonLikeResponse>
+
+    // 레슨 좋아요 취소
+    @DELETE("/lessons/unlikes/{lessonIdx}")
+    fun lessonLikeDelete(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int) : Call<LessonLikeDeleteResponse>
+
+    // 찜한 레슨 정보 반환
+    @GET("/lessons/info/likes")
+    fun getLessonLikeList(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetLessonLikeListResponse>
 }
