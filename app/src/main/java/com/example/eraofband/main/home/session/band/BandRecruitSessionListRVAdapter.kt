@@ -13,7 +13,7 @@ class BandRecruitSessionListRVAdapter(private val bandName: String, private val 
 
     interface MyItemClickListener {
         // 클릭 이벤트
-        fun showApplyPopup(code: String, bandIdx: Int, session: Int)
+        fun showApplyPopup(bandIdx: Int, session: Int)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -34,6 +34,18 @@ class BandRecruitSessionListRVAdapter(private val bandName: String, private val 
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun modifySession(position: Int, session : SessionList) {
+        this.sessionList[position] = session
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun deleteSession(position: Int) {
+        this.sessionList.removeAt(position)
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: ItemSessionListBinding = ItemSessionListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
@@ -43,7 +55,7 @@ class BandRecruitSessionListRVAdapter(private val bandName: String, private val 
         holder.bind(sessionList[position])
 
         // 클릭 이벤트
-        holder.binding.sessionListVolunteerTv.setOnClickListener { mItemClickListener.showApplyPopup("apply", bandIdx, sessionList[position].sessionInt) }
+        holder.binding.sessionListVolunteerTv.setOnClickListener { mItemClickListener.showApplyPopup(bandIdx, sessionList[position].sessionInt) }
 
     }
     override fun getItemCount(): Int = sessionList.size

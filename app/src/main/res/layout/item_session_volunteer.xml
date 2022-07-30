@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:text="@string/introduce"
         android:textColor="@color/gray"
-        android:textSize="13sp"
+        android:textSize="14sp"
         android:fontFamily="@font/pretendard_regular"
         android:maxLines="1"
         android:ellipsize="end"

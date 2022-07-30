@@ -15,7 +15,7 @@ class BandRecruitSessionVolunteerRVAdapter(private val context: Context, private
 
     interface MyItemClickListener {
         // 클릭 이벤트
-        fun onShowDecisionPopup(code: String, bandIdx: Int, session: Int)
+        fun onShowDecisionPopup(bandIdx: Int, applicant: Applicants, position: Int)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -25,8 +25,14 @@ class BandRecruitSessionVolunteerRVAdapter(private val context: Context, private
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun initVolunteerList(volunteerList : List<Applicants>) {
+    fun initVolunteerList(volunteerList: List<Applicants>) {
         this.volunteerList.addAll(volunteerList)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun deleteVolunteer(position: Int) {
+        this.volunteerList.removeAt(position)
         notifyDataSetChanged()
     }
 
@@ -40,7 +46,7 @@ class BandRecruitSessionVolunteerRVAdapter(private val context: Context, private
 
         // 클릭 이벤트
         holder.binding.sessionVolunteerDecisionTv.setOnClickListener {
-            mItemClickListener.onShowDecisionPopup("applicant", bandIdx, volunteerList[position].buSession)
+            mItemClickListener.onShowDecisionPopup(bandIdx, volunteerList[position], position)
         }
     }
     override fun getItemCount(): Int = volunteerList.size

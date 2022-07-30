@@ -1,6 +1,6 @@
 package com.example.eraofband.main.home.session.band
 
-import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,13 +8,12 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.eraofband.R
-import com.example.eraofband.data.Band
+import com.example.eraofband.data.SessionInfo
 import com.example.eraofband.data.SessionList
 import com.example.eraofband.databinding.FragmentBandRecruitSessionBinding
-import com.example.eraofband.main.home.HomeFabDialog
 import com.example.eraofband.remote.getBand.Applicants
 import com.example.eraofband.remote.getBand.GetBandResult
+import com.example.eraofband.remote.getBand.SessionMembers
 import com.google.gson.Gson
 
 class BandRecruitSessionFragment: Fragment() {
@@ -24,6 +23,8 @@ class BandRecruitSessionFragment: Fragment() {
 
     private lateinit var volunteerRVAdapter: BandRecruitSessionVolunteerRVAdapter
     private lateinit var sessionRVAdapter: BandRecruitSessionListRVAdapter
+
+    private var sessionInfo = SessionInfo(0, "", 0, "", 0, "", 0, "", 0, "")
 
     private val gson = Gson()
 
@@ -42,7 +43,7 @@ class BandRecruitSessionFragment: Fragment() {
     override fun onResume() {
         super.onResume()
 
-        val bandSP = requireActivity().getSharedPreferences("band", Context.MODE_PRIVATE)
+        val bandSP = requireActivity().getSharedPreferences("band", MODE_PRIVATE)
         val bandJson = bandSP.getString("bandInfo", "")
 
         val bandInfo = gson.fromJson(bandJson, GetBandResult::class.java)
@@ -51,6 +52,10 @@ class BandRecruitSessionFragment: Fragment() {
     }
 
     private fun initInfo(band: GetBandResult) {
+        // 세션 정보 저장
+        sessionInfo = SessionInfo(band.vocal, band.vocalComment, band.guitar, band.guitarComment, band.base, band.baseComment,
+            band.keyboard, band.keyboardComment, band.drum, band.drumComment)
+
         if(getUserIdx() == band.userIdx) {  // 내가 밴드를 만든 사람인 경우
             binding.bandRecruitSessionVolunteer.visibility = View.VISIBLE
 
@@ -73,7 +78,7 @@ class BandRecruitSessionFragment: Fragment() {
     }
 
     private fun getUserIdx() : Int {
-        val userSP = requireActivity().getSharedPreferences("user", Context.MODE_PRIVATE)
+        val userSP = requireActivity().getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getInt("userIdx", 0)
     }
 
@@ -90,13 +95,59 @@ class BandRecruitSessionFragment: Fragment() {
         volunteerRVAdapter.initVolunteerList(applyItem)
 
         volunteerRVAdapter.setMyItemClickListener(object: BandRecruitSessionVolunteerRVAdapter.MyItemClickListener{
-            override fun onShowDecisionPopup(code: String, bandIdx: Int, session: Int) {
-                val applyDialog = SessionApplyDialog(code, getJwt()!!, bandIdx, session)
+            override fun onShowDecisionPopup(bandIdx: Int, applicant: Applicants, position: Int) {
+                val applyDialog = SessionDecisionDialog(bandIdx, applicant)
                 applyDialog.isCancelable = false
                 applyDialog.show(activity!!.supportFragmentManager, "applicant")
+
+                // 지원 수락, 거절 리스너
+                applyDialog.setDialogListener(object : SessionDecisionDialog.ApplyDecision{
+                    override fun applyAccept(session: Int) {  // 지원 수락
+                        // 수락 다이얼로그 띄우기
+                        val completeDialog = SessionCompleteDialog("accept")
+                        completeDialog.isCancelable = false
+                        completeDialog.show(activity!!.supportFragmentManager, "complete")
+
+                        applyDialog.dismiss()  // 창 제거
+
+                        // 확인 누르면 지원자 목록에서 삭제
+                        completeDialog.setDialogListener(object : SessionCompleteDialog.ApplyDecision{
+                            override fun applyAccept() {  // 수락만 사용
+                                volunteerRVAdapter.deleteVolunteer(position)
+                                reduceCnt(session)
+                            }
+
+                            override fun applyReject() {
+                                volunteerRVAdapter.deleteVolunteer(position)
+                            }
+                        })
+                    }
+
+                    override fun applyReject(session: Int) {  // 지원 거절
+                        // 거절 다이얼로그 띄우기
+                        val completeDialog = SessionCompleteDialog("reject")
+                        completeDialog.isCancelable = false
+                        completeDialog.show(activity!!.supportFragmentManager, "complete")
+
+                        applyDialog.dismiss()  // 창 제거
+
+                        // 확인 누르면 지원자 목록에서 삭제
+                        completeDialog.setDialogListener(object : SessionCompleteDialog.ApplyDecision{
+                            override fun applyAccept() {
+                                volunteerRVAdapter.deleteVolunteer(position)
+                            }
+
+                            override fun applyReject() {  // 거절만 사용
+                                volunteerRVAdapter.deleteVolunteer(position)
+                            }
+                        })
+                    }
+
+                })
             }
 
         })
+
     }
 
     private fun initSessionRV(band: GetBandResult) {
@@ -104,7 +155,7 @@ class BandRecruitSessionFragment: Fragment() {
         sessionRVAdapter = BandRecruitSessionListRVAdapter(band.bandTitle, band.bandIdx)
         binding.bandRecruitSessionRv.adapter = sessionRVAdapter
         binding.bandRecruitSessionRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        
+
         if(band.vocal > 0) sessionRVAdapter.addSession(SessionList(0, "보컬", band.vocal, band.vocalComment))
         if(band.guitar > 0) sessionRVAdapter.addSession(SessionList(1, "기타", band.guitar, band.guitarComment))
         if(band.base > 0) sessionRVAdapter.addSession(SessionList(2, "베이스", band.base, band.baseComment))
@@ -112,12 +163,72 @@ class BandRecruitSessionFragment: Fragment() {
         if(band.drum > 0) sessionRVAdapter.addSession(SessionList(4, "드럼", band.drum, band.drumComment))
 
         sessionRVAdapter.setMyItemClickListener(object: BandRecruitSessionListRVAdapter.MyItemClickListener{
-            override fun showApplyPopup(code: String, bandIdx: Int, session: Int) {
-                val applyDialog = SessionApplyDialog(code, getJwt()!!, session, bandIdx)
+            override fun showApplyPopup(bandIdx: Int, session: Int) {
+                val applyDialog = SessionApplyDialog(getJwt()!!, session, bandIdx, -1)
                 applyDialog.isCancelable = false
                 applyDialog.show(activity!!.supportFragmentManager, "apply")
             }
         })
+    }
 
+    private fun reduceCnt(session: Int) {
+        val sessionArray = arrayListOf(sessionInfo.vocal, sessionInfo.guitar, sessionInfo.base, sessionInfo.keyboard, sessionInfo.drum)
+        var position = 0
+
+        for(i in 0 until sessionArray.size) {  // 지원자를 모집한 세션의 위치를 찾음
+           if(i == session) break  // 모집한 세션을 찾으면 종료
+           if(sessionArray[i] != 0) position++  // 모집 인원이 있으면 adapter도 있을 거라고 생각
+        }
+
+        when(session) {
+            0 -> {
+                sessionInfo.vocal -= 1
+                if(sessionInfo.vocal == 0) {  // 모집이 끝나면 제거
+                    sessionRVAdapter.deleteSession(position)
+                    return
+                }
+                // 정보 변경
+                sessionRVAdapter.modifySession(position, SessionList(session, "보컬", sessionInfo.vocal, sessionInfo.vocalComment))
+            }
+            1 -> {
+                sessionInfo.guitar -= 1
+                if(sessionInfo.guitar == 0) {  // 모집이 끝나면 제거
+                    sessionRVAdapter.deleteSession(position)
+                    return
+                }
+
+                sessionRVAdapter.modifySession(position, SessionList(session, "기타", sessionInfo.guitar, sessionInfo.guitarComment))
+            }
+            2 -> {
+                sessionInfo.base -= 1
+                if(sessionInfo.base == 0) {  // 모집이 끝나면 제거
+                    sessionRVAdapter.deleteSession(position)
+                    return
+                }
+
+                sessionRVAdapter.modifySession(position, SessionList(session, "베이스", sessionInfo.base, sessionInfo.baseComment))
+            }
+            3 -> {
+                sessionInfo.keyboard -= 1
+                if(sessionInfo.keyboard == 0) {  // 모집이 끝나면 제거
+                    sessionRVAdapter.deleteSession(position)
+                    return
+                }
+
+                sessionRVAdapter.modifySession(position, SessionList(session, "키보드", sessionInfo.keyboard, sessionInfo.keyboardComment))
+            }
+            else -> {
+                sessionInfo.drum -= 1
+                if(sessionInfo.drum == 0) {  // 모집이 끝나면 제거
+                    sessionRVAdapter.deleteSession(position)
+                    return
+                }
+
+                sessionRVAdapter.modifySession(position, SessionList(session, "드럼", sessionInfo.drum, sessionInfo.drumComment))
+            }
+        }
+
+        // 지원가가 더 없으면 지원자가 없습니다 문구를 띄워줌
+        if(volunteerRVAdapter.itemCount == 0) binding.bandRecruitSessionNoVolunteerTv.visibility = View.VISIBLE
     }
 }
