@@ -43,10 +43,8 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         }
 
         val intent = intent
-        otherUserIdx = intent.extras?.getInt("comment")!!
+        otherUserIdx = intent.extras?.getInt("userIdx")!!
         Log.d("USER INDEX", otherUserIdx.toString())
-
-
 
         val userMyPageAdapter = UserMyPageVPAdapter(this)
         binding.userMypageVp.adapter = userMyPageAdapter
@@ -66,7 +64,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             binding.userMypageFollowTv.visibility = View.INVISIBLE
             binding.userMypageUnfollowTv.visibility = View.VISIBLE
             binding.userMypageFollowerCntTv.text = (followerCnt+ 1).toString()
-            followerCnt = followerCnt + 1
+            followerCnt += 1
             val userFollowService = UserFollowService() // 팔로우
             userFollowService.setUserFollowView(this)
             userFollowService.userFollow(getJwt()!!, otherUserIdx!!)
@@ -76,7 +74,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             binding.userMypageFollowTv.visibility = View.VISIBLE
             binding.userMypageUnfollowTv.visibility = View.INVISIBLE
             binding.userMypageFollowerCntTv.text = (followerCnt - 1).toString()
-            followerCnt = followerCnt - 1
+            followerCnt -= 1
             val userUnfollowService = UserUnfollowService() // 언팔로우
             userUnfollowService.setUserUnfollowView(this)
             userUnfollowService.userUnfollow(getJwt()!!, otherUserIdx!!)

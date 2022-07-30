@@ -1,6 +1,7 @@
 package com.example.eraofband.main.home.session.band
 
 import android.content.Context.MODE_PRIVATE
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.data.SessionInfo
 import com.example.eraofband.data.SessionList
 import com.example.eraofband.databinding.FragmentBandRecruitSessionBinding
+import com.example.eraofband.main.mypage.MyPageActivity
+import com.example.eraofband.main.usermypage.UserMyPageActivity
 import com.example.eraofband.remote.getBand.Applicants
 import com.example.eraofband.remote.getBand.GetBandResult
-import com.example.eraofband.remote.getBand.SessionMembers
 import com.google.gson.Gson
 
 class BandRecruitSessionFragment: Fragment() {
@@ -144,6 +146,17 @@ class BandRecruitSessionFragment: Fragment() {
                     }
 
                 })
+            }
+
+            override fun onShowUserPage(userIdx: Int) {
+                if(userIdx == getUserIdx()) {
+                    startActivity(Intent(activity, MyPageActivity::class.java))
+                }  // 만약 누른 유저가 본인일 경우
+                else {
+                    val intent = Intent(activity, UserMyPageActivity::class.java)
+                    intent.putExtra("userIdx", userIdx)
+                    startActivity(intent)
+                }  // 다른 유저일 경우
             }
 
         })

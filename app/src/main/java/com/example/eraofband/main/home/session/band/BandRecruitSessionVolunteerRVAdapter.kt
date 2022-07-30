@@ -16,6 +16,7 @@ class BandRecruitSessionVolunteerRVAdapter(private val context: Context, private
     interface MyItemClickListener {
         // 클릭 이벤트
         fun onShowDecisionPopup(bandIdx: Int, applicant: Applicants, position: Int)
+        fun onShowUserPage(userIdx: Int)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -45,9 +46,12 @@ class BandRecruitSessionVolunteerRVAdapter(private val context: Context, private
         holder.bind(volunteerList[position])
 
         // 클릭 이벤트
-        holder.binding.sessionVolunteerDecisionTv.setOnClickListener {
+        holder.binding.sessionVolunteerDecisionTv.setOnClickListener {  // 지원 거절, 수락
             mItemClickListener.onShowDecisionPopup(bandIdx, volunteerList[position], position)
         }
+
+        // 정보 페이지로 이동
+        holder.binding.sessionVolunteerLayout.setOnClickListener { mItemClickListener.onShowUserPage(volunteerList[position].userIdx) }
     }
     override fun getItemCount(): Int = volunteerList.size
 

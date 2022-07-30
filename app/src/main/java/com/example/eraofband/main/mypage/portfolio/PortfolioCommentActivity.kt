@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
 import com.example.eraofband.data.Comment
 import com.example.eraofband.databinding.ActivityPortfolioCommentBinding
+import com.example.eraofband.main.mypage.MyPageActivity
 import com.example.eraofband.main.usermypage.UserMyPageActivity
 import com.example.eraofband.remote.portfolio.PofolCommentResult
 import com.example.eraofband.remote.portfolio.PofolCommentService
@@ -65,10 +66,15 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
                 showPopup(commentIdx, position, userIdx, view)
             }
 
-            override fun onItemClick(item: PofolCommentResult) {
-                val intent = Intent(this@PortfolioCommentActivity, UserMyPageActivity::class.java)
-                intent.putExtra("comment", item.userIdx)
-                startActivity(intent)
+            override fun onItemClick(comment: PofolCommentResult) {
+                if(comment.userIdx == getUserIdx()) {
+                    startActivity(Intent(this@PortfolioCommentActivity, MyPageActivity::class.java))
+                }  // 만약 누른 유저가 본인일 경우
+                else {
+                    val intent = Intent(this@PortfolioCommentActivity, UserMyPageActivity::class.java)
+                    intent.putExtra("userIdx", comment.userIdx)
+                    startActivity(intent)
+                }  // 다른 유저일 경우
             }
         })
     }
