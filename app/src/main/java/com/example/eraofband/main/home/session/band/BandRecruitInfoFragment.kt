@@ -49,6 +49,18 @@ class BandRecruitInfoFragment: Fragment() {
             }  // 다른 유저일 경우
         }
 
+        // 리더 정보 보기
+        binding.bandRecruitInfoLeaderNicknameTv.setOnClickListener {
+            if(leaderIdx == getUserIdx()) {
+                startActivity(Intent(activity, MyPageActivity::class.java))
+            }  // 만약 누른 유저가 본인일 경우
+            else {
+                val intent = Intent(activity, UserMyPageActivity::class.java)
+                intent.putExtra("userIdx", leaderIdx)
+                startActivity(intent)
+            }  // 다른 유저일 경우
+        }
+
         return binding.root
     }
 
