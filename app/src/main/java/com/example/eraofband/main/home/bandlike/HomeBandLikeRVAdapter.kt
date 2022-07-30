@@ -1,35 +1,55 @@
 package com.example.eraofband.main.home.bandlike
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.eraofband.data.Band
+import com.bumptech.glide.Glide
 import com.example.eraofband.databinding.ItemBandListBinding
+import com.example.eraofband.remote.getLikedBand.GetLikedBandResult
 
 
-class HomeBandLikeRVAdapter(private var likeBandList: ArrayList<Band>) :
-    RecyclerView.Adapter<HomeBandLikeRVAdapter.ViewHolder>() {
+class HomeBandLikeRVAdapter(private val context: Context): RecyclerView.Adapter<HomeBandLikeRVAdapter.ViewHolder>() {
+    private var bandList = arrayListOf<GetLikedBandResult>()
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun initLikedBand(band: List<GetLikedBandResult>) {
+        this.bandList.addAll(band)
+        notifyDataSetChanged()
+    }
+
+    interface MyItemClickListener {
+        // 클릭 이벤트
+    }
+
+    private lateinit var mItemClickListener: MyItemClickListener
+    fun setMyItemClickListener(itemClickListener: MyItemClickListener) {
+        mItemClickListener = itemClickListener
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding: ItemBandListBinding = ItemBandListBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false
-        )
+        val binding: ItemBandListBinding = ItemBandListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: HomeBandLikeRVAdapter.ViewHolder, position: Int) {
-        holder.bind(likeBandList[position])
+        holder.bind(bandList[position])
+
+        // 클릭 이벤트
     }
-    override fun getItemCount(): Int = likeBandList.size
+    override fun getItemCount(): Int = bandList.size
 
     inner class ViewHolder(val binding: ItemBandListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(band: Band) {
-            binding.bandListImgIv.setImageResource(0)
-            binding.bandListTitleTv.text = "찜 밴드의 타이틀"
-            binding.bandListIntroduceTv.text = "찜 밴드의 한 줄 소개"
-            binding.bandListRegionTv.text = "강남구"
-            binding.bandListMemberCntTv.text = "4/5"
+        fun bind(band: GetLikedBandResult) {
+            Glide.with(context).load(band.bandImgUrl).into(binding.bandListImgIv)  // 밴드 이미지
+            binding.bandListImgIv.clipToOutline = true  // 모서리 깎기
+
+            binding.bandListTitleTv.text = band.bandTitle  // 밴드 타이틀
+            binding.bandListIntroduceTv.text = band.bandIntroduction  // 밴드 소개
+            binding.bandListRegionTv.text = band.bandRegion
+            binding.bandListMemberCntTv.text = "${band.memberCount} / ${band.capacity}"  // 밴드 멤버 수
         }
     }
 }

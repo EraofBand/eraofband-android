@@ -10,6 +10,7 @@ import com.example.eraofband.remote.bandLike.BandLikeResponse
 import com.example.eraofband.remote.checkUser.CheckUserResponse
 import com.example.eraofband.remote.deletePofol.DeletePofolResponse
 import com.example.eraofband.remote.getBand.GetBandResponse
+import com.example.eraofband.remote.getLikedBand.GetLikedBandResponse
 import com.example.eraofband.remote.patchSession.PatchSessionResponse
 import com.example.eraofband.remote.getMyPage.GetMyPageResponse
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResponse
@@ -77,6 +78,10 @@ interface API {
     // 세션 지원 거절하기
     @PATCH("/sessions/out/{bandIdx}/{userIdx}")
     fun rejectApply(@Path("bandIdx") bandIdx: Int, @Path("userIdx") userIdx: Int) : Call<RejectApplyResponse>
+
+    // 찜한 밴드 불러오기
+    @GET("/sessions/info/likes")
+    fun getLikedBand(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetLikedBandResponse>
 
     // 마이페이지 정보 조회
     @GET("/users/info/my-page/{userIdx}")
