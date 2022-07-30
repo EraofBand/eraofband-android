@@ -4,12 +4,15 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.data.Band
 import com.example.eraofband.databinding.ItemStudentBinding
+import com.example.eraofband.remote.getLessonInfo.LessonMembers
 
 class LessonStudentRVAdapter : RecyclerView.Adapter<LessonStudentRVAdapter.ViewHolder>() {
-    private var studentList = arrayListOf<Band>()
+    private var studentList = arrayListOf<LessonMembers>()
 
     interface MyItemClickListener {
         // 클릭 이벤트
@@ -22,7 +25,7 @@ class LessonStudentRVAdapter : RecyclerView.Adapter<LessonStudentRVAdapter.ViewH
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun initStudentList(studentList : List<Band>) {
+    fun initStudentList(studentList : List<LessonMembers>) {
         this.studentList.addAll(studentList)
         notifyDataSetChanged()
     }
@@ -40,11 +43,23 @@ class LessonStudentRVAdapter : RecyclerView.Adapter<LessonStudentRVAdapter.ViewH
     override fun getItemCount(): Int = studentList.size
 
     inner class ViewHolder(val binding: ItemStudentBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(student: Band) {
-            binding.studentProfileIv.setImageResource(R.drawable.ic_captain)
+        fun bind(student: LessonMembers) {
 
-            binding.studentNicknameTv.text = "닉네임입니다"
-            binding.studentIntroTv.text = "소개입니다"
+            Glide.with(itemView)  // 수강생 프사
+                .load(student.profileImgUrl)
+                .apply(RequestOptions.centerCropTransform())
+                .apply(RequestOptions.circleCropTransform())
+                .into(binding.studentProfileIv)
+
+            binding.studentNicknameTv.text = student.nickName  // 수강생 닉네임
+            binding.studentIntroTv.text = student.introduction  // 수강생 한 줄 소개
+            binding.studentSessionTv.text = when(student.mySession) {  // 레슨 종목
+                0 -> "보컬"
+                1 -> "기타"
+                2 -> "베이스"
+                3 -> "키보드"
+                else -> "드럼"
+            }
         }
     }
 }

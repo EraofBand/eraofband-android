@@ -3,6 +3,8 @@ package com.example.eraofband.main.mypage
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import com.example.eraofband.data.Session
 import com.example.eraofband.databinding.ActivityMyPageSessionBinding
@@ -41,7 +43,10 @@ class MyPageSessionActivity : AppCompatActivity(), PatchSessionView{
             val patchSessionService = PatchSessionService()
             patchSessionService.setPatchSessionView(this)
             patchSessionService.patchSession(getJwt()!!, session)
-            finish()
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                finish()
+            }, 100)
         }
 
         binding.mypageSessionVocalCb.setOnClickListener {

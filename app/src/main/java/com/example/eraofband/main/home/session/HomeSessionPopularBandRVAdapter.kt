@@ -1,4 +1,4 @@
-package com.example.eraofband.main.home.session.band
+package com.example.eraofband.main.home.session
 
 import android.annotation.SuppressLint
 import android.content.Context
