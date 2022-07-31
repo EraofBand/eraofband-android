@@ -1,7 +1,8 @@
-package com.example.eraofband.main.home
+package com.example.eraofband.ui.main.home
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+
 import com.example.eraofband.ui.main.home.session.HomeSessionFragment
 import com.example.eraofband.ui.main.home.bandlike.HomeBandLikeFragment
 import com.example.eraofband.ui.main.home.lesson.HomeLessonFragment
@@ -15,7 +16,7 @@ class HomeVPAdapter (fragment : Fragment) : FragmentStateAdapter(fragment) {
             0 -> HomeSessionFragment()
             1 -> HomeLessonFragment()
             2 -> HomeBandLikeFragment()
-            else -> HomeLessonFragmentLike()
+            else -> HomeLessonLikeFragment()
         }
     }
 }

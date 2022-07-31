@@ -494,7 +494,7 @@
                     android:autoLink="web"
                     android:fontFamily="@font/pretendard_medium"
                     android:linksClickable="true"
-                    android:text="https://www.naver.com"
+                    android:text="수강생에게만 공개됩니다."
                     android:textColor="@color/gray"
                     android:textSize="14sp"
                     app:layout_constraintEnd_toEndOf="parent"

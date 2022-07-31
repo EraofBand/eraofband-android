@@ -1,4 +1,4 @@
-package com.example.eraofband.main.home.lessonlike
+package com.example.eraofband.ui.main.home.lessonlike
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,9 +14,9 @@ import com.example.eraofband.ui.main.home.lesson.LessonInfoActivity
 import com.example.eraofband.remote.getLessonLikeList.GetLessonLikeListService
 import com.example.eraofband.remote.getLikeLessonList.GetLessonLikeListResult
 import com.example.eraofband.remote.getLikeLessonList.GetLessonLikeListView
-import com.example.eraofband.ui.main.home.lessonlike.HomeLessonLikeRVAdapter
 
-class HomeLessonFragmentLike : Fragment(), GetLessonLikeListView {
+
+class HomeLessonLikeFragment : Fragment(), GetLessonLikeListView {
     private var _binding: FragmentHomeLessonLikeBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
 

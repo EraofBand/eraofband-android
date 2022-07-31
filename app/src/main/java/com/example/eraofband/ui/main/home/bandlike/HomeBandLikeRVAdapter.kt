@@ -21,7 +21,6 @@ class HomeBandLikeRVAdapter(private val context: Context): RecyclerView.Adapter<
     }
 
     interface MyItemClickListener {
-        // 클릭 이벤트
         fun onShowBandInfo(bandIdx: Int)
     }
 
