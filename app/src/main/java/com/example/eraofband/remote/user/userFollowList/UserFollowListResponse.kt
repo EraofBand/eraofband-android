@@ -13,13 +13,17 @@ data class UserFollowListResult(
 )
 
 data class FollowerInfo(
+    var follow: Int,
     var nickName: String,
     var profileImgUrl: String,
+    var token: String,
     var userIdx: Int
 )
 
 data class FollowingInfo(
+    var follow: Int,
     var nickName: String,
     var profileImgUrl: String,
+    var token: String,
     var userIdx: Int
 )

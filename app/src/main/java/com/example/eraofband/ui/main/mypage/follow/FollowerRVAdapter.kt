@@ -44,6 +44,18 @@ class FollowerRVAdapter() : RecyclerView.Adapter<FollowerRVAdapter.ViewHolder>()
         holder.binding.itemFollowProfileIv.setOnClickListener {
             mItemClickListener.onItemClick(followList[position])
         }
+
+        holder.binding.itemFollowFollowingButtonIv.setOnClickListener {  // 회색 버튼 눌러서 팔로우 취소
+            holder.binding.itemFollowButtonIv.visibility = View.VISIBLE
+            holder.binding.itemFollowFollowingButtonIv.visibility = View.INVISIBLE
+            userUnfollowService.userUnfollow(mItemClickListener.getJwt()!!, followList[position].userIdx)
+        }
+
+        holder.binding.itemFollowButtonIv.setOnClickListener {  // 파란 색버튼 다시 눌러서 팔로우
+            holder.binding.itemFollowButtonIv.visibility = View.INVISIBLE
+            holder.binding.itemFollowFollowingButtonIv.visibility = View.VISIBLE
+            userFollowService.userFollow(mItemClickListener.getJwt()!!, followList[position].userIdx)
+        }
     }
     override fun getItemCount(): Int = followList.size
 
@@ -55,16 +67,12 @@ class FollowerRVAdapter() : RecyclerView.Adapter<FollowerRVAdapter.ViewHolder>()
 
             binding.itemFollowNicknameTv.text = list.nickName
 
-            binding.itemFollowFollowingButtonIv.setOnClickListener {  // 회색 버튼 눌러서 팔로우 취소
+             if (list.follow == 0) {
                 binding.itemFollowButtonIv.visibility = View.VISIBLE
                 binding.itemFollowFollowingButtonIv.visibility = View.INVISIBLE
-                userUnfollowService.userUnfollow(mItemClickListener.getJwt()!!,list.userIdx)
-            }
-
-            binding.itemFollowButtonIv.setOnClickListener {  // 파란 색버튼 다시 눌러서 팔로우
-                binding.itemFollowButtonIv.visibility = View.INVISIBLE
-                binding.itemFollowFollowingButtonIv.visibility = View.VISIBLE
-                userFollowService.userFollow(mItemClickListener.getJwt()!!,list.userIdx)
+            } else {
+                 binding.itemFollowButtonIv.visibility = View.INVISIBLE
+                 binding.itemFollowFollowingButtonIv.visibility = View.VISIBLE
             }
         }
     }
@@ -93,6 +101,6 @@ class FollowerRVAdapter() : RecyclerView.Adapter<FollowerRVAdapter.ViewHolder>()
     }
 
     override fun onUserUnfollowFailure(code: Int, message: String) {
-        Log.d("USER UNLLOW / FAIL", "$code $message")
+        Log.d("USER UNFOLLOW / FAIL", "$code $message")
     }
 }

@@ -1,6 +1,7 @@
 package com.example.eraofband.ui.main.home.lesson
 
 import android.content.Intent
+import android.graphics.Region
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -34,8 +35,8 @@ class HomeLessonFragment: Fragment(), GetLessonListView {
         return binding.root
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         getLessonList.getLessonListView(this)
         getLessonList.getLessonList("전체", 5)
     }
@@ -52,18 +53,35 @@ class HomeLessonFragment: Fragment(), GetLessonListView {
         binding.homeLessonCitySp.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 when(position) {
-//                    0 -> getLessonList.getLessonList("전체", 5) // 모든 지역이 뜨도록
-//                    1 -> getLessonList.getLessonList("서울", 5) // 서울 지역만 뜨도록
-//                    else -> getLessonList.getLessonList("경기도", 5) // 경기도 지역만 뜨도록
+                    0 -> {
+                        regionSessionSelect("전체")
+                    }
+                    1 -> {
+                        regionSessionSelect("서울")
+                    }
+                   else -> {
+                       regionSessionSelect("경기도")
+                   }
                 }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {  // 아무것도 클릭되어있지 않을 때는 기본으로 전체를 띄워줌
                 binding.homeLessonCitySp.setSelection(0)
-//                getLessonList.getLessonList("전체", 5) // 모든 지역이 뜨도록
+                getLessonList.getLessonList("전체", 5) // 모든 지역이 뜨도록
             }
 
         })
+    }
+
+    private fun regionSessionSelect(region: String) {
+        binding.homeLessonTotalCp.isChecked = true
+        getLessonList.getLessonList(region, 5) // 자동 전체 세션 초기화
+        binding.homeLessonTotalCp.setOnClickListener { getLessonList.getLessonList(region, 5)}
+        binding.homeLessonVocalCp.setOnClickListener { getLessonList.getLessonList(region, 0)}
+        binding.homeLessonGuitarCp.setOnClickListener { getLessonList.getLessonList(region, 1)}
+        binding.homeLessonBaseCp.setOnClickListener { getLessonList.getLessonList(region, 2)}
+        binding.homeLessonKeyboardCp.setOnClickListener { getLessonList.getLessonList(region, 3)}
+        binding.homeLessonDrumCp.setOnClickListener { getLessonList.getLessonList(region, 4)}
     }
 
     private fun initRecyclerView(lessonList: List<GetLessonListResult>) {

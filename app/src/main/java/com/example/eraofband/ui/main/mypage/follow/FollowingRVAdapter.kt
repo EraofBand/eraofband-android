@@ -38,12 +38,23 @@ class FollowingRVAdapter() : RecyclerView.Adapter<FollowingRVAdapter.ViewHolder>
         userFollowService.setUserFollowView(this)
         userUnfollowService.setUserUnfollowView(this)
 
-
         holder.binding.itemFollowNicknameTv.setOnClickListener{  // 팔로우리스트에 있는 유저 클릭 시 이동
             mItemClickListener.onItemClick(followList[position])
         }
         holder.binding.itemFollowProfileIv.setOnClickListener {
             mItemClickListener.onItemClick(followList[position])
+        }
+
+        holder.binding.itemFollowFollowingButtonIv.setOnClickListener {  // 회색 버튼 눌러서 팔로우 취소
+            holder.binding.itemFollowButtonIv.visibility = View.VISIBLE
+            holder.binding.itemFollowFollowingButtonIv.visibility = View.INVISIBLE
+            userUnfollowService.userUnfollow(mItemClickListener.getJwt()!!, followList[position].userIdx)
+        }
+
+        holder.binding.itemFollowButtonIv.setOnClickListener {  // 파란 색버튼 다시 눌러서 팔로우
+            holder.binding.itemFollowButtonIv.visibility = View.INVISIBLE
+            holder.binding.itemFollowFollowingButtonIv.visibility = View.VISIBLE
+            userFollowService.userFollow(mItemClickListener.getJwt()!!, followList[position].userIdx)
         }
     }
 
@@ -58,17 +69,12 @@ class FollowingRVAdapter() : RecyclerView.Adapter<FollowingRVAdapter.ViewHolder>
 
             binding.itemFollowNicknameTv.text = list.nickName
 
-            binding.itemFollowFollowingButtonIv.setOnClickListener {  // 회색 버튼 눌러서 팔로우 취소
+            if (list.follow == 0) {
                 binding.itemFollowButtonIv.visibility = View.VISIBLE
                 binding.itemFollowFollowingButtonIv.visibility = View.INVISIBLE
-                userUnfollowService.userUnfollow(mItemClickListener.getJwt()!!,list.userIdx)
-            }
-
-            binding.itemFollowButtonIv.setOnClickListener {  // 파란 색버튼 다시 눌러서 팔로우
+            } else {
                 binding.itemFollowButtonIv.visibility = View.INVISIBLE
                 binding.itemFollowFollowingButtonIv.visibility = View.VISIBLE
-                userFollowService.userFollow(mItemClickListener.getJwt()!!,list.userIdx)
-                userUnfollowService.userUnfollow(mItemClickListener.getJwt()!!,list.userIdx)
             }
         }
     }
