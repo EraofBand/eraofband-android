@@ -2,7 +2,6 @@ package com.example.eraofband.remote
 
 import com.example.eraofband.data.*
 import com.example.eraofband.remote.applyBand.ApplyBandResponse
-import com.example.eraofband.remote.applyLesson.ApplyLessonResponse
 import com.example.eraofband.remote.bandLike.BandLikeDeleteResponse
 import com.example.eraofband.remote.bandLike.BandLikeResponse
 import com.example.eraofband.remote.checkUser.CheckUserResponse
@@ -10,7 +9,6 @@ import com.example.eraofband.remote.deletePofol.DeletePofolResponse
 import com.example.eraofband.remote.getBand.GetBandResponse
 import com.example.eraofband.remote.getLessonInfo.GetLessonInfoResponse
 import com.example.eraofband.remote.getLessonList.GetLessonListResponse
-import com.example.eraofband.remote.getLikeLessonList.GetLessonLikeListResponse
 import com.example.eraofband.remote.patchSession.PatchSessionResponse
 import com.example.eraofband.remote.getMyPage.GetMyPageResponse
 import com.example.eraofband.remote.getMyPofol.GetMyPofolResponse
@@ -18,8 +16,6 @@ import com.example.eraofband.remote.getNewBand.GetNewBandResponse
 import com.example.eraofband.remote.getPopularBand.GetPopularBandResponse
 import com.example.eraofband.remote.getotheruser.GetOtherUserResponse
 import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
-import com.example.eraofband.remote.lessonLike.LessonLikeDeleteResponse
-import com.example.eraofband.remote.lessonLike.LessonLikeResponse
 import com.example.eraofband.remote.makeBand.MakeBandResponse
 import com.example.eraofband.remote.makeLesson.MakeLessonResponse
 import com.example.eraofband.remote.makePofol.MakePofolResponse
@@ -75,9 +71,21 @@ interface API {
     @DELETE("/sessions/unlikes/{bandIdx}")
     fun bandLikeDelete(@Header("X-ACCESS-TOKEN") jwt : String, @Path("bandIdx") bandIdx : Int) : Call<BandLikeDeleteResponse>
 
-    // 밴드 지원하기
+    // 세션 지원하기
     @POST("/sessions/{bandIdx}")
     fun applyBand(@Header("X-ACCESS-TOKEN") jwt: String, @Path("bandIdx") bandIdx: Int, @Body session: Int) : Call<ApplyBandResponse>
+
+    // 세션 지원 수락하기
+    @PATCH("/sessions/in/{bandIdx}/{userIdx}")
+    fun acceptApply(@Path("bandIdx") bandIdx: Int, @Path("userIdx") userIdx: Int) : Call<AcceptApplyResponse>
+
+    // 세션 지원 거절하기
+    @PATCH("/sessions/out/{bandIdx}/{userIdx}")
+    fun rejectApply(@Path("bandIdx") bandIdx: Int, @Path("userIdx") userIdx: Int) : Call<RejectApplyResponse>
+
+    // 찜한 밴드 불러오기
+    @GET("/sessions/info/likes")
+    fun getLikedBand(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetLikedBandResponse>
 
     // 마이페이지 정보 조회
     @GET("/users/info/my-page/{userIdx}")
