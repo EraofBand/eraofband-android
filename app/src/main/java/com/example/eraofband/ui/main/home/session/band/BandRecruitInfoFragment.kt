@@ -112,7 +112,7 @@ class BandRecruitInfoFragment: Fragment() {
             // 공연 정보가 하나라도 있는 경우
             binding.bandRecruitInfoShowCl.visibility = View.VISIBLE
 
-            binding.bandRecruitInfoShowLeftTv.text = "D${checkLeftDay(band.performDate!!)}"
+            binding.bandRecruitInfoShowLeftTv.text = checkLeftDay(band.performDate!!)
 
             binding.bandRecruitInfoShowTitleTv.text = band.performTitle
 
@@ -173,8 +173,8 @@ class BandRecruitInfoFragment: Fragment() {
         val date = ((endDate - today) / (24 * 60 * 60 * 1000)).toInt()
 
         return if(date == 0) "D-Day"  // 당일인 경우
-        else if(date < 0) "+${abs(date)}"  // 이미 지난 경우
-        else "-${abs(date)}"  // 아직 안지난 경우
+        else if(date < 0) "D+${abs(date)}"  // 이미 지난 경우
+        else "D-${abs(date)}"  // 아직 안지난 경우
     }
 
     private fun checkUserIdx(userIdx: Int, memberList: List<SessionMembers>): Boolean {

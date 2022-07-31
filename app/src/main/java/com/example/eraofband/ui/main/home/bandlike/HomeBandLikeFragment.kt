@@ -1,5 +1,6 @@
 package com.example.eraofband.ui.main.home.bandlike
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import com.example.eraofband.databinding.FragmentHomeBandLikeBinding
 import com.example.eraofband.remote.band.getLikedBand.GetLikedBandResult
 import com.example.eraofband.remote.band.getLikedBand.GetLikedBandService
 import com.example.eraofband.remote.band.getLikedBand.GetLikedBandView
+import com.example.eraofband.ui.main.home.session.band.BandRecruitActivity
 
 
 class HomeBandLikeFragment : Fragment(), GetLikedBandView {
@@ -48,6 +50,15 @@ class HomeBandLikeFragment : Fragment(), GetLikedBandView {
         binding.homeBandLikeRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         bandLikeRVAdapter.initLikedBand(item)
+
+        bandLikeRVAdapter.setMyItemClickListener(object : HomeBandLikeRVAdapter.MyItemClickListener{
+            override fun onShowBandInfo(bandIdx: Int) {
+                val intent = Intent(activity, BandRecruitActivity::class.java)
+                intent.putExtra("bandIdx", bandIdx)
+                startActivity(intent)
+            }
+
+        })
     }
 
     override fun onDestroyView() {
