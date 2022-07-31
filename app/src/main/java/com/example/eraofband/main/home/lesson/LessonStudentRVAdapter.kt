@@ -16,6 +16,7 @@ class LessonStudentRVAdapter : RecyclerView.Adapter<LessonStudentRVAdapter.ViewH
 
     interface MyItemClickListener {
         // 클릭 이벤트
+        fun userInfo(userIdx: Int)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -38,7 +39,12 @@ class LessonStudentRVAdapter : RecyclerView.Adapter<LessonStudentRVAdapter.ViewH
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(studentList[position])
 
-        // 클릭 이벤트
+        holder.binding.studentProfileIv.setOnClickListener { // 수강생 프사 클릭 시
+            mItemClickListener.userInfo(studentList[position].userIdx)
+        }
+        holder.binding.studentInfoLy.setOnClickListener { // 수강생 닉네임 클릭 시
+            mItemClickListener.userInfo(studentList[position].userIdx)
+        }
     }
     override fun getItemCount(): Int = studentList.size
 

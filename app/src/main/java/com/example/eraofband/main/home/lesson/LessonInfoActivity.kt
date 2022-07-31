@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.ActivityLessonInfoBinding
 import com.example.eraofband.main.home.session.band.SessionApplyDialog
+import com.example.eraofband.main.usermypage.UserMyPageActivity
 import com.example.eraofband.remote.getLessonInfo.GetLessonInfoResult
 import com.example.eraofband.remote.getLessonInfo.GetLessonInfoService
 import com.example.eraofband.remote.getLessonInfo.GetLessonInfoView
@@ -24,6 +25,7 @@ class LessonInfoActivity() : AppCompatActivity(), GetLessonInfoView, LessonLikeV
     private lateinit var binding: ActivityLessonInfoBinding
     private lateinit var lessonStudentRVAdapter: LessonStudentRVAdapter
     private var lessonIdx: Int? = null
+    private var teacherIdx: Int? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -56,6 +58,16 @@ class LessonInfoActivity() : AppCompatActivity(), GetLessonInfoView, LessonLikeV
             applyDialog.isCancelable = false
             applyDialog.show(supportFragmentManager, "applicant")
         }
+
+        val intent = Intent(this, UserMyPageActivity::class.java)  // 강사 클릭 시 강사 정보 페이지
+        binding.lessonInfoTeacherProfileIv.setOnClickListener {
+            intent.putExtra("comment", teacherIdx)
+            startActivity(intent)
+        }
+        binding.lessonInfoTeacherLy.setOnClickListener {
+            intent.putExtra("comment", teacherIdx)
+            startActivity(intent)
+        }
     }
 
     override fun onResume() {
@@ -74,6 +86,13 @@ class LessonInfoActivity() : AppCompatActivity(), GetLessonInfoView, LessonLikeV
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         lessonStudentRVAdapter.initStudentList(studentList)
 
+        lessonStudentRVAdapter.setMyItemClickListener(object : LessonStudentRVAdapter.MyItemClickListener{
+            override fun userInfo(userIdx: Int) {
+                val intent = Intent(baseContext, UserMyPageActivity::class.java)
+                intent.putExtra("comment", userIdx)
+                startActivity(intent)
+            }
+        })
     }
 
     private fun getJwt(): String? {
@@ -137,6 +156,7 @@ class LessonInfoActivity() : AppCompatActivity(), GetLessonInfoView, LessonLikeV
 
             initRecyclerView(result.lessonMembers) // 수강생 목록
         }
+        teacherIdx = result.userIdx // 강사인데스 초기화
     }
 
     override fun onGetLessonInfoFailure(code: Int, message: String) {

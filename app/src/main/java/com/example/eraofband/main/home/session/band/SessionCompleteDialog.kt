@@ -37,14 +37,14 @@ class SessionCompleteDialog(private val code: String): DialogFragment() {
         }
         else if(code == "lesson") { // 레슨 신청 완료 다이얼로그
             binding.sessionCompleteTitleTv.text = "신청 완료"
-            binding.sessionCompleteContentTv.text = "이제부터 열심히 배워봅시다!"
+            binding.sessionCompleteContentTv.text = "강사님과 함께 열심히 배워보아요!"
 
             binding.sessionCompleteAcceptTv.text = "완료"
 
             binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
         }
         else if(code == "fail") { // 레슨 중복 지원 불가 다이얼로그
-            binding.sessionCompleteTitleTv.text = "중복 지원 불가"
+            binding.sessionCompleteTitleTv.text = "중복 신청 불가"
             binding.sessionCompleteContentTv.text = "이미 레슨을 수강하고 있습니다!"
 
             binding.sessionCompleteAcceptTv.text = "완료"
