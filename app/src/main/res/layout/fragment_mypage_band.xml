@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main.mypage.MyPageBandFragment"
+    tools:context=".ui.main.mypage.MyPageBandFragment"
     android:background="@color/bottom_nav">
 
     <TextView

@@ -1,6 +1,6 @@
 package com.example.eraofband.remote
 
-import com.example.eraofband.login.GlobalApplication
+import com.example.eraofband.ui.login.GlobalApplication
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
