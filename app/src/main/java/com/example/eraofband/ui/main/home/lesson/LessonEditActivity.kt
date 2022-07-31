@@ -49,6 +49,7 @@ class LessonEditActivity() : AppCompatActivity(), GetLessonInfoView, PatchLesson
 
     private lateinit var binding: ActivityLessonEditBinding
     private var cnt = 0
+    private var maxCnt = 0 // 현재 수강생 인원
     private var profileUrl = ""
     private var session = 0
     private var currentArea = 0
@@ -195,7 +196,7 @@ class LessonEditActivity() : AppCompatActivity(), GetLessonInfoView, PatchLesson
             binding.editCntTv.text = cnt.toString()
         }
         binding.editCntMinusIb.setOnClickListener {
-            if(cnt != 0){
+            if(cnt != 0 && cnt > maxCnt){
                 cnt -= 1
                 binding.editCntTv.text = cnt.toString()
             } else{
@@ -385,13 +386,12 @@ class LessonEditActivity() : AppCompatActivity(), GetLessonInfoView, PatchLesson
             areaList = resources.getStringArray(R.array.gyeonggido)
         }
 
-
         // 지역 스피너 어뎁터 연결
         val areaAdapter = ArrayAdapter(applicationContext, R.layout.item_spinner, areaList)
         binding.homeLessonEditAreaSp.adapter = areaAdapter
 
         // 해당 지역의 스피너 위치를 찾음
-        for(i in 0..areaList.size) {
+        for(i in 0 .. areaList.size) {
             if(area == areaList[i]) {
                 binding.homeLessonEditAreaSp.setSelection(i)
                 currentArea = i  // 현재 지역 지정
@@ -440,7 +440,7 @@ class LessonEditActivity() : AppCompatActivity(), GetLessonInfoView, PatchLesson
         binding.homeLessonEditInfoEt.setText(result.lessonIntroduction) // 한 줄 소개
         binding.editCntTv.text = result.capacity.toString() // 인원 수
         cnt = result.capacity
-
+        maxCnt = result.memberCount
         binding.homeLessonEditTypeSp.setSelection(result.lessonSession)
         initRegion(result.lessonRegion) // 레슨 지역
 

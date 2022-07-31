@@ -65,10 +65,13 @@ class LessonMakeActivity : AppCompatActivity(), MakeLessonView, SendImgView {
 
         binding.homeLessonMakeRegisterBtn.setOnClickListener {
             updateUser()
-
-            val makeLessonService = MakeLessonService()
-            makeLessonService.setMakeLessonView(this)
-            makeLessonService.makeLesson(getJwt()!!, lesson)
+            if (cnt == 0) {
+                Toast.makeText(this, "모집 인원이 최소 한 명은 있어야 합니다.", Toast.LENGTH_SHORT).show()
+            } else {
+                val makeLessonService = MakeLessonService()
+                makeLessonService.setMakeLessonView(this)
+                makeLessonService.makeLesson(getJwt()!!, lesson)
+            }
         }
         binding.homeLessonMakeImgV.setOnClickListener {
             initImageViewLesson()

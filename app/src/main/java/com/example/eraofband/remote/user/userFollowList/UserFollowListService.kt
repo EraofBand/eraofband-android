@@ -14,11 +14,11 @@ class UserFollowListService {
         this.userFollowListView = userFollowListView
     }
 
-    fun userFollowList(userIdx: Int) {
+    fun userFollowList(jwt: String, userIdx: Int) {
 
         val userFollowListService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
-        userFollowListService?.userFollowList(userIdx)?.enqueue(object : Callback<UserFollowListResponse> {
+        userFollowListService?.userFollowList(jwt, userIdx)?.enqueue(object : Callback<UserFollowListResponse> {
 
             override fun onResponse(
                 call: Call<UserFollowListResponse>,

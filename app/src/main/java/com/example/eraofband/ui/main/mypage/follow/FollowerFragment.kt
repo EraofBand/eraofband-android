@@ -29,11 +29,11 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
+        super.onResume()
         val userFollowList = UserFollowListService() // GET 해당 유저 팔로우리스트
         userFollowList.setUserFollowListView(this)
-        userFollowList.userFollowList(userIdx)
+        userFollowList.userFollowList(getJwt()!!, userIdx)
     }
 
     private fun connectAdapter(item : List<FollowerInfo>) {
@@ -46,7 +46,7 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
 
             override fun onItemClick(item: FollowerInfo) {
                 val intent = Intent(context, UserMyPageActivity::class.java)
-                intent.putExtra("comment", item.userIdx)
+                intent.putExtra("userIdx", item.userIdx)
                 startActivity(intent)
             }
 
@@ -57,6 +57,11 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
             }
         })
         mAdapter.initFollowList(item) // 팔로우리스트 초기화
+    }
+
+    private fun getJwt(): String? {
+        val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        return userSP.getString("jwt", "")
     }
 
     override fun onUserFollowListSuccess(code: Int, result: UserFollowListResult) {

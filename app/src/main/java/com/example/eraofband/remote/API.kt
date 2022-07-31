@@ -164,7 +164,7 @@ interface API {
 
     // 유저 팔로우 리스트 불러오기
     @GET("/users/info/follow/{userIdx}")
-    fun userFollowList(@Path("userIdx") userIdx: Int) : Call<UserFollowListResponse>
+    fun userFollowList(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<UserFollowListResponse>
 
     // 레슨 생성
     @POST("/lessons")
