@@ -4,12 +4,13 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.eraofband.R
-import com.example.eraofband.data.Band
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.ItemLessonBinding
+import com.example.eraofband.remote.lesson.getLessonList.GetLessonListResult
 
 class LessonListRVAdapter : RecyclerView.Adapter<LessonListRVAdapter.ViewHolder>() {
-    private var lessonList = arrayListOf<Band>()
+    private var lessonList = arrayListOf<GetLessonListResult>()
 
     interface MyItemClickListener {
         // 클릭 이벤트
@@ -23,7 +24,7 @@ class LessonListRVAdapter : RecyclerView.Adapter<LessonListRVAdapter.ViewHolder>
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun initLessonList(lessonList : List<Band>) {
+    fun initLessonList(lessonList : List<GetLessonListResult>) {
         this.lessonList.addAll(lessonList)
         notifyDataSetChanged()
     }
@@ -37,17 +38,22 @@ class LessonListRVAdapter : RecyclerView.Adapter<LessonListRVAdapter.ViewHolder>
         holder.bind(lessonList[position])
 
         // 클릭 이벤트
-        holder.binding.lessonLayout.setOnClickListener { mItemClickListener.onShowDetail(position) }  // 나중에는 레슨 아이디를 넣어서 정보 연동
+        holder.binding.lessonLayout.setOnClickListener { mItemClickListener.onShowDetail(lessonList[position].lessonIdx) }  // 나중에는 레슨 인덱스를 넣어서 정보 연동
     }
     override fun getItemCount(): Int = lessonList.size
 
     inner class ViewHolder(val binding: ItemLessonBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(lessonList: Band) {
-            binding.lessonImgIv.setImageResource(R.drawable.band_profile)
+        fun bind(lessonList: GetLessonListResult) {
+            Glide.with(itemView).load(lessonList.lessonImgUrl)
+                .apply(RequestOptions.centerCropTransform())
+                .into(binding.lessonImgIv) // 레슨 이미지
             binding.lessonImgIv.clipToOutline = true  // 모서리 깎기
 
-            binding.lessonTitleTv.text = "제목입니다"
-            binding.lessonIntroduceTv.text = "소개입니다"
+            binding.lessonRegionTv.text = lessonList.lessonRegion
+            binding.lessonTitleTv.text = lessonList.lessonTitle
+            binding.lessonIntroduceTv.text = lessonList.lessonIntroduction
+            binding.lessonMemberCntTv.text = "${lessonList.memberCount}/${lessonList.capacity}"
+
         }
     }
 }

@@ -37,8 +37,8 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView, DeletePofolVi
 
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
 
         val getMypofol = GetMyPofolService()
         getMypofol.setPofolView(this)

@@ -9,6 +9,8 @@ import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
@@ -110,7 +112,10 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
             Log.d("USER PATCH", editUser.toString())
 
             patchUserService.patchUser(getJwt()!!, editUser)
-            finish()
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                finish()
+            }, 100)
         }
     }
 

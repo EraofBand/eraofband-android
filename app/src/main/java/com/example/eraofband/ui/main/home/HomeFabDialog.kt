@@ -30,7 +30,7 @@ class HomeFabDialog: DialogFragment() {
         val params: WindowManager.LayoutParams? = dialog?.window?.attributes
 
         params?.x = GlobalApplication.width / 2 - 75.toPx()
-        params?.y = GlobalApplication.height / 2 - 230.toPx()
+        params?.y = GlobalApplication.height / 2 - 225.toPx()
 
         dialog?.window?.attributes = params
 

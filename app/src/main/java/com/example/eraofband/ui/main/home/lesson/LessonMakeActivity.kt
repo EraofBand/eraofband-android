@@ -3,11 +3,16 @@ package com.example.eraofband.ui.main.home.lesson
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
+import android.database.Cursor
+import android.graphics.Point
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -19,30 +24,57 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.eraofband.R
+import android.util.Log
+import android.view.Gravity
+import android.widget.TextView
+import com.example.eraofband.data.Lesson
 import com.example.eraofband.databinding.ActivityLessonMakeBinding
+import com.example.eraofband.remote.lesson.makeLesson.MakeLessonResult
+import com.example.eraofband.remote.lesson.makeLesson.MakeLessonService
+import com.example.eraofband.remote.lesson.makeLesson.MakeLessonView
+import com.example.eraofband.remote.sendimg.SendImgResponse
+import com.example.eraofband.remote.sendimg.SendImgService
+import com.example.eraofband.remote.sendimg.SendImgView
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 
-class LessonMakeActivity : AppCompatActivity() {
+
+class LessonMakeActivity : AppCompatActivity(), MakeLessonView, SendImgView {
 
     private lateinit var binding: ActivityLessonMakeBinding
+    private var cnt = 0
+    private var profileUrl = ""
+    private var session = 0
+    private var lesson: Lesson = Lesson(
+        1, "", "", "", "",
+        "", 0, "", 0
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityLessonMakeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.homeLessonMakeBackIb.setOnClickListener { finish() }
 
-        binding.homeLessonMakeAddImgTv.setOnClickListener {
+        binding.homeLessonMakeImgV.setOnClickListener {  // 이미지 등록 클릭 리스너
             initImageViewLesson()
         }
-        binding.homeLessonMakeImgIv.setOnClickListener {
-            initImageViewLesson()
+
+        binding.homeLessonMakeRegisterBtn.setOnClickListener {
+            updateUser()
+
+            val makeLessonService = MakeLessonService()
+            makeLessonService.setMakeLessonView(this)
+            makeLessonService.makeLesson(getJwt()!!, lesson)
         }
         binding.homeLessonMakeImgV.setOnClickListener {
             initImageViewLesson()
         }
 
+        // 레슨 타이틀 텍스트워쳐
         binding.homeLessonMakeNameEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -55,6 +87,7 @@ class LessonMakeActivity : AppCompatActivity() {
             }
         })
 
+        // 레슨 한 줄 소개 텍스트워쳐
         binding.homeLessonMakeInfoEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -67,48 +100,46 @@ class LessonMakeActivity : AppCompatActivity() {
             }
         })
 
+        // 레슨 소개 텍스트워쳐
         binding.homeLessonMakeDetailEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding.homeLessonMakeDetailCntTv.text = binding.homeLessonMakeDetailEt.text.length.toString() + " / 100"
+                binding.homeLessonMakeDetailCntTv.text = binding.homeLessonMakeDetailEt.text.length.toString() + " / 500"
             }
             override fun afterTextChanged(p0: Editable?) {
                 binding.homeLessonMakeDetailEt.hint = ""
             }
         })
-
-
         initLessonSpinner()
         initSpinner()
-        initImageViewLesson()
         initCnt()
     }
 
     private fun initLessonSpinner() {
-        val lesson = resources.getStringArray(R.array.lesson)  // 도시 목록
+        // 레슨 종목 스피너
+        val lesson = resources.getStringArray(R.array.lesson)
 
         val lessonAdapter = ArrayAdapter(this, R.layout.item_spinner, lesson)
         binding.homeLessonMakeTypeSp.adapter = lessonAdapter
         binding.homeLessonMakeTypeSp.setSelection(0)
-    }
 
-    private fun initCnt() {
-        var cnt = 0
-        binding.makeCntTv.text = cnt.toString()
-        binding.makeCntPlusIb.setOnClickListener {
-            cnt += 1
-            binding.makeCntTv.text = cnt.toString()
-        }
-        binding.makeCntMinusIb.setOnClickListener {
-            if(cnt != 0){
-                cnt -= 1
-                binding.makeCntTv.text = cnt.toString()
-            } else{
-                binding.makeCntTv.text = cnt.toString()
+        binding.homeLessonMakeTypeSp.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                when(position) {
+                    0 -> session = 0
+                    1 -> session = 1
+                    2 -> session = 2
+                    3 -> session = 3
+                    4 -> session = 4
+                }
             }
-        }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                session = 0
+            }
+        })
     }
 
     private fun initSpinner() {
@@ -145,6 +176,23 @@ class LessonMakeActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    private fun initCnt() {
+        // 모집 인원 수
+        binding.makeCntTv.text = cnt.toString()
+        binding.makeCntPlusIb.setOnClickListener {
+            cnt += 1
+            binding.makeCntTv.text = cnt.toString()
+        }
+        binding.makeCntMinusIb.setOnClickListener {
+            if(cnt != 0){
+                cnt -= 1
+                binding.makeCntTv.text = cnt.toString()
+            } else{
+                binding.makeCntTv.text = cnt.toString()
+            }
+        }
     }
 
     private fun initImageViewLesson() {
@@ -219,6 +267,15 @@ class LessonMakeActivity : AppCompatActivity() {
                         .transform(CenterCrop(), RoundedCorners(15))
                         .into(binding.homeLessonMakeImgV)
 
+                    val imgPath = absolutelyPath(selectedImageUri, this)
+                    val file = File(imgPath)
+                    val requestBody = RequestBody.create(MediaType.parse("image/*"), file)
+                    val body = MultipartBody.Part.createFormData("file", file.name, requestBody)
+
+                    val sendImgService = SendImgService()
+                    sendImgService.setImageView(this)
+                    sendImgService.sendImg(body)
+
                     binding.homeLessonMakeAddImgTv.visibility = View.INVISIBLE
                     binding.homeLessonMakeAddInfoImgTv.visibility = View.INVISIBLE
                     binding.homeLessonMakeImgIv.visibility = View.INVISIBLE
@@ -243,5 +300,77 @@ class LessonMakeActivity : AppCompatActivity() {
             .setNegativeButton("취소하기") { _, _ -> }
             .create()
             .show()
+    }
+
+    private fun updateUser() {
+        lesson.lessonSession = session
+        lesson.lessonTitle = binding.homeLessonMakeNameEt.text.toString()
+        lesson.lessonIntroduction = binding.homeLessonMakeInfoEt.text.toString()
+        lesson.lessonRegion = binding.homeLessonMakeCitySp.selectedItem.toString() + " " + binding.homeLessonMakeAreaSp.selectedItem.toString()
+        lesson.capacity = cnt
+        lesson.lessonImgUrl = profileUrl
+        lesson.lessonContent = binding.homeLessonMakeDetailEt.text.toString()
+        lesson.chatRoomLink = binding.homeLessonMakeChatEt.text.toString()
+        lesson.userIdx = getUserIdx()
+    }
+
+    private fun absolutelyPath(path: Uri?, context : Context): String {
+        val proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
+        val c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
+        val index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        c?.moveToFirst()
+
+        val result = c?.getString(index!!)
+
+        return result!!
+    }
+
+    private fun setToast(errorMsg: String) {
+        val view : View = layoutInflater.inflate(R.layout.toast_signup, findViewById(R.id.toast_signup))
+        val toast = Toast(this)
+
+        val text = view.findViewById<TextView>(R.id.toast_signup_text_tv)
+        text.text = errorMsg
+
+        val display = windowManager.defaultDisplay
+        val size = Point()
+        display.getSize(size)  // 상단바 등을 제외한 스크린 전체 크기 구하기
+        val height = size.y / 2  // 토스트 메세지가 중간에 고정되어있기 때문에 높이 / 2
+
+        // 중간부터 marginBottom, 버튼 높이 / 2 만큼 빼줌
+        toast.view = view
+        toast.setGravity(Gravity.FILL_HORIZONTAL, 0, height - 60.toPx() - binding.homeLessonMakeRegisterBtn.height / 2)
+        toast.show()
+    }
+
+    private fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
+
+    private fun getUserIdx() : Int {
+        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        return userSP.getInt("userIdx", 0)
+    }
+
+    private fun getJwt(): String? {
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        return userSP.getString("jwt", "")
+    }
+
+    override fun onMakeLessonSuccess(code: Int, result: MakeLessonResult) {
+        Log.d("MAKE/SUCCESS", result.toString())
+        finish()
+    }
+
+    override fun onMakeLessonFailure(code: Int, message: String) {
+        Log.d("MAKE/FAIL", "$code $message")
+        setToast(message)
+    }
+
+    override fun onSendSuccess(response: SendImgResponse) {
+        Log.d("SENDIMG/SUCCESS", response.result)
+        profileUrl = response.result
+    }
+
+    override fun onSendFailure(code: Int, message: String) {
+        Log.d("SENDIMG/FAIL", "$code $message")
     }
 }
