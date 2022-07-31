@@ -39,7 +39,7 @@ class UserMyPagePortfolioFragment : Fragment(), GetMyPofolView {
         getMypofol.getPortfolio(getUserIdx())
     }
 
-    private fun getUserIdx(): Int { //임시방편입니다요...
+    private fun getUserIdx(): Int {  //임시방편입니다요...
         val userIdx = (activity as UserMyPageActivity).otherUserIdx
         return userIdx!!.toInt()
     }

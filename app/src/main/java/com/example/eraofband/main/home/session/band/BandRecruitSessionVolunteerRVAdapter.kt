@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.eraofband.R
 import com.example.eraofband.databinding.ItemSessionVolunteerBinding
 import com.example.eraofband.remote.getBand.Applicants
 
@@ -16,7 +15,8 @@ class BandRecruitSessionVolunteerRVAdapter(private val context: Context, private
 
     interface MyItemClickListener {
         // 클릭 이벤트
-        fun onShowDecisionPopup(code: String, bandIdx: Int, session: Int)
+        fun onShowDecisionPopup(bandIdx: Int, applicant: Applicants, position: Int)
+        fun onShowUserPage(userIdx: Int)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -26,8 +26,14 @@ class BandRecruitSessionVolunteerRVAdapter(private val context: Context, private
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun initVolunteerList(volunteerList : List<Applicants>) {
+    fun initVolunteerList(volunteerList: List<Applicants>) {
         this.volunteerList.addAll(volunteerList)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun deleteVolunteer(position: Int) {
+        this.volunteerList.removeAt(position)
         notifyDataSetChanged()
     }
 
@@ -40,9 +46,12 @@ class BandRecruitSessionVolunteerRVAdapter(private val context: Context, private
         holder.bind(volunteerList[position])
 
         // 클릭 이벤트
-        holder.binding.sessionVolunteerCheckTv.setOnClickListener {
-            mItemClickListener.onShowDecisionPopup("applicant", bandIdx, volunteerList[position].buSession)
+        holder.binding.sessionVolunteerDecisionTv.setOnClickListener {  // 지원 거절, 수락
+            mItemClickListener.onShowDecisionPopup(bandIdx, volunteerList[position], position)
         }
+
+        // 정보 페이지로 이동
+        holder.binding.sessionVolunteerLayout.setOnClickListener { mItemClickListener.onShowUserPage(volunteerList[position].userIdx) }
     }
     override fun getItemCount(): Int = volunteerList.size
 
@@ -54,7 +63,7 @@ class BandRecruitSessionVolunteerRVAdapter(private val context: Context, private
                 .into(binding.sessionVolunteerProfileIv)
 
             binding.sessionVolunteerSessionTv.text = setSession(volunteer.buSession)  // 세션
-            binding.sessionVolunteerNicknameTv.text = volunteer.nickName  // 닉네임 연동
+            binding.sessionVolunteerNameTv.text = volunteer.nickName  // 닉네임 연동
             binding.sessionVolunteerIntroTv.text = volunteer.introduction  // 소개 연동
             binding.sessionVolunteerTimeTv.text = volunteer.updatedAt  // 지원 시간 연동
         }

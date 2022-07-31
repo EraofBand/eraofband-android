@@ -1,6 +1,7 @@
 package com.example.eraofband.main.home.session.band
 
 import android.content.Context.MODE_PRIVATE
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.databinding.FragmentBandRecruitInfoBinding
+import com.example.eraofband.main.mypage.MyPageActivity
+import com.example.eraofband.main.usermypage.UserMyPageActivity
 import com.example.eraofband.remote.getBand.GetBandResult
 import com.example.eraofband.remote.getBand.SessionMembers
 import com.google.gson.Gson
@@ -24,6 +27,7 @@ class BandRecruitInfoFragment: Fragment() {
     private lateinit var bandMemberRVAdapter: BandMemberRVAdapter
 
     private val gson = Gson()
+    private var leaderIdx = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,8 +37,31 @@ class BandRecruitInfoFragment: Fragment() {
 
         _binding = FragmentBandRecruitInfoBinding.inflate(inflater, container, false)
 
-        return binding.root
+        // 리더 정보 보기
+        binding.bandRecruitInfoLeaderProfileIv.setOnClickListener {
+            if(leaderIdx == getUserIdx()) {
+                startActivity(Intent(activity, MyPageActivity::class.java))
+            }  // 만약 누른 유저가 본인일 경우
+            else {
+                val intent = Intent(activity, UserMyPageActivity::class.java)
+                intent.putExtra("userIdx", leaderIdx)
+                startActivity(intent)
+            }  // 다른 유저일 경우
+        }
 
+        // 리더 정보 보기
+        binding.bandRecruitInfoLeaderNicknameTv.setOnClickListener {
+            if(leaderIdx == getUserIdx()) {
+                startActivity(Intent(activity, MyPageActivity::class.java))
+            }  // 만약 누른 유저가 본인일 경우
+            else {
+                val intent = Intent(activity, UserMyPageActivity::class.java)
+                intent.putExtra("userIdx", leaderIdx)
+                startActivity(intent)
+            }  // 다른 유저일 경우
+        }
+
+        return binding.root
     }
 
     override fun onResume() {
@@ -61,6 +88,7 @@ class BandRecruitInfoFragment: Fragment() {
 
         binding.bandRecruitInfoLeaderNicknameTv.text = band.nickName  // 리더 닉네임
         binding.bandRecruitInfoLeaderIntroTv.text = band.userIntroduction  // 리더 소개
+        leaderIdx = band.userIdx
 
         binding.bandRecruitInfoBandIntroTv.text = band.bandContent  // 밴드 소개
 
@@ -97,7 +125,7 @@ class BandRecruitInfoFragment: Fragment() {
         }
 
         // 채팅방 링크
-        if(checkUserIdx(band.sessionMembers)) binding.bandRecruitInfoChatTv.text = band.chatRoomLink  // 내가 밴드 멤버라면
+        if(checkUserIdx(band.userIdx, band.sessionMembers)) binding.bandRecruitInfoChatTv.text = band.chatRoomLink  // 내가 밴드 멤버라면
         else binding.bandRecruitInfoChatTv.text = "밴드 멤버에게만 공개됩니다"  // 밴드 멤버가 아니라면
 
     }
@@ -109,6 +137,19 @@ class BandRecruitInfoFragment: Fragment() {
         binding.bandRecruitInfoMemberRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         bandMemberRVAdapter.initMemberList(item)
+
+        bandMemberRVAdapter.setMyItemClickListener(object : BandMemberRVAdapter.MyItemClickListener {
+            override fun onShowUserPage(userIdx: Int) {
+                if(userIdx == getUserIdx()) {
+                    startActivity(Intent(activity, MyPageActivity::class.java))
+                }  // 만약 누른 유저가 본인일 경우
+                else {
+                    val intent = Intent(activity, UserMyPageActivity::class.java)
+                    intent.putExtra("userIdx", userIdx)
+                    startActivity(intent)
+                }  // 다른 유저일 경우
+            }
+        })
 
     }
 
@@ -131,9 +172,11 @@ class BandRecruitInfoFragment: Fragment() {
         else "-${abs(date)}"  // 아직 안지난 경우
     }
 
-    private fun checkUserIdx(memberList: List<SessionMembers>): Boolean {
+    private fun checkUserIdx(userIdx: Int, memberList: List<SessionMembers>): Boolean {
         // 만약 내 userIdx가 멤버 리스트의 userIdx와 같으면 밴드 멤버에 속함
-        if(memberList.isEmpty()) return false  // 밴드 멤버가 없으면 무조건 false
+        if(getUserIdx() == userIdx) return true  // 내가 밴드를 만든 사람이면 무조건 true
+
+        if(memberList.isEmpty()) return false  // 밴드를 만든 사람이 아닌데 밴드 멤버가 없으면 무조건 false
 
         for(element in memberList) {
             if(getUserIdx() == element.userIdx) return true

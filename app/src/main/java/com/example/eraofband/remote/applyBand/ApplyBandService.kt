@@ -32,7 +32,7 @@ class ApplyBandService {
 
             override fun onFailure(call: Call<ApplyBandResponse>, t: Throwable) {
                 // 네트워크 연결이 실패했을 때 실행
-                Log.d("LIKEAPPLY / FAILURE", t.message.toString())
+                Log.d("APPLY / FAILURE", t.message.toString())
             }
 
         })  // api 호출, eunqueue에서 응답 처리

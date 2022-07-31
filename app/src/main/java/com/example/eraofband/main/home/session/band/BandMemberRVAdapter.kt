@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.eraofband.R
-import com.example.eraofband.data.Band
 import com.example.eraofband.databinding.ItemBandMemberBinding
 import com.example.eraofband.remote.getBand.SessionMembers
 
@@ -17,6 +15,7 @@ class BandMemberRVAdapter(private val context: Context) : RecyclerView.Adapter<B
 
     interface MyItemClickListener {
         // 클릭 이벤트
+        fun onShowUserPage(userIdx: Int)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -31,12 +30,6 @@ class BandMemberRVAdapter(private val context: Context) : RecyclerView.Adapter<B
         notifyDataSetChanged()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun addMember(memberList : SessionMembers) {
-        this.memberList.add(memberList)
-        notifyDataSetChanged()
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: ItemBandMemberBinding = ItemBandMemberBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
@@ -46,6 +39,7 @@ class BandMemberRVAdapter(private val context: Context) : RecyclerView.Adapter<B
         holder.bind(memberList[position])
 
         // 클릭 이벤트
+        holder.binding.bandMemberLayout.setOnClickListener { mItemClickListener.onShowUserPage(memberList[position].userIdx) }
     }
     override fun getItemCount(): Int = memberList.size
 

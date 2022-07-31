@@ -41,7 +41,7 @@ class PortfolioCommentRVAdapter(private val context: Context) : RecyclerView.Ada
 
     interface MyItemClickListener {
         fun onItemClick(comment: PofolCommentResult)
-        fun onShowPopUp(commentIdx: Int,position: Int, userIdx: Int, view: View)
+        fun onShowPopUp(commentIdx: Int, position: Int, userIdx: Int, view: View)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener

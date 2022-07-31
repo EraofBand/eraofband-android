@@ -1,5 +1,6 @@
 package com.example.eraofband.main.home.session.band
 
+import android.content.Context.MODE_PRIVATE
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -27,6 +28,8 @@ class SessionCompleteDialog(private val code: String): DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
+        // 다이얼로그를 닫았을 때 해당 아이템이 사라지게 만들기 위해서
+
         if(code == "apply") {  // 지원하기
             binding.sessionCompleteTitleTv.text = "지원 완료"
             binding.sessionCompleteContentTv.text = "좋은 소식을 기다리겠습니다 :)"
@@ -41,7 +44,11 @@ class SessionCompleteDialog(private val code: String): DialogFragment() {
 
             binding.sessionCompleteAcceptTv.text = "완료"
 
-            binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
+            binding.sessionCompleteAcceptTv.setOnClickListener {
+                applyListener.applyAccept()
+                dismiss()
+            }
+
         }
         else {  // 지원 거절
             binding.sessionCompleteTitleTv.text = "거절 완료"
@@ -49,10 +56,12 @@ class SessionCompleteDialog(private val code: String): DialogFragment() {
 
             binding.sessionCompleteAcceptTv.text = "완료"
 
-            binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
+            binding.sessionCompleteAcceptTv.setOnClickListener {
+                applyListener.applyReject()
+                dismiss()
+            }
+
         }
-
-
 
         return binding.root
     }
@@ -64,4 +73,15 @@ class SessionCompleteDialog(private val code: String): DialogFragment() {
     }
 
     private fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
+
+    interface ApplyDecision {
+        fun applyAccept()
+        fun applyReject()
+    }
+
+    private lateinit var applyListener: ApplyDecision
+    fun setDialogListener(apply: ApplyDecision) {
+        applyListener = apply
+    }
+
 }

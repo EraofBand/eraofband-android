@@ -80,6 +80,9 @@
             android:name=".main.home.lesson.LessonInfoActivity"
             android:exported="false" />
         <activity
+            android:name=".main.mypage.MyPageActivity"
+            android:exported="false" />
+        <activity
             android:name=".main.mypage.ProfileEditActivity"
             android:exported="false" />
         <activity

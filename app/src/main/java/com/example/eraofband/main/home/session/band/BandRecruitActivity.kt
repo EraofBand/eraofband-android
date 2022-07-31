@@ -36,6 +36,14 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
             startActivity(Intent(this, BandEditActivity::class.java)) // 밴드 수정 이동
         }
 
+        binding.homeBandRecruitRl.setOnRefreshListener {
+            val bandService = GetBandService()
+            bandService.setBandView(this)
+            bandService.getBand(getJwt()!!, intent.getIntExtra("bandIdx", 0))
+
+            binding.homeBandRecruitRl.isRefreshing = false
+        }
+
         val likeService = BandLikeService()
         likeService.setLikeView(this)
 

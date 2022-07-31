@@ -15,9 +15,9 @@ class GetBandService {
     }
 
     fun getBand(jwt: String, bandIdx: Int) {  // 밴드 정보 조회
-        val getNewBandService =  NetworkModule().getRetrofit()?.create(API::class.java)
+        val getBandService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
-        getNewBandService?.getBand(jwt, bandIdx)?.enqueue(object : Callback<GetBandResponse> {
+        getBandService?.getBand(jwt, bandIdx)?.enqueue(object : Callback<GetBandResponse> {
             override fun onResponse(call: Call<GetBandResponse>, response: Response<GetBandResponse>) {
                 // 응답이 왔을 때 처리
                 Log.d("GETBAND / SUCCESS", response.toString())
