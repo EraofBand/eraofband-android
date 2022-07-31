@@ -1,4 +1,4 @@
-package com.example.eraofband.remote.lessonLike
+package com.example.eraofband.remote.lesson.lessonLike
 
 interface LessonLikeView {
     // 좋아요

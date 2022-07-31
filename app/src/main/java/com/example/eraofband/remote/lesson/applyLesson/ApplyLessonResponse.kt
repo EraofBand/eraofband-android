@@ -1,4 +1,4 @@
-package com.example.eraofband.remote.applyLesson
+package com.example.eraofband.remote.lesson.applyLesson
 
 data class ApplyLessonResponse(
     var code: Int,

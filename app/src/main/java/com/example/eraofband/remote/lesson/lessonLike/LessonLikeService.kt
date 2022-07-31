@@ -1,4 +1,4 @@
-package com.example.eraofband.remote.lessonLike
+package com.example.eraofband.remote.lesson.lessonLike
 
 import android.util.Log
 import com.example.eraofband.remote.API

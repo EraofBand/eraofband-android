@@ -1,7 +1,7 @@
 package com.example.eraofband.remote
 
 import com.example.eraofband.data.*
-import com.example.eraofband.remote.applyLesson.ApplyLessonResponse
+import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonResponse
 import com.example.eraofband.remote.band.applyBand.ApplyBandResponse
 import com.example.eraofband.remote.band.applyDecision.AcceptApplyResponse
 import com.example.eraofband.remote.band.applyDecision.RejectApplyResponse
@@ -12,13 +12,13 @@ import com.example.eraofband.remote.band.getLikedBand.GetLikedBandResponse
 import com.example.eraofband.remote.band.getNewBand.GetNewBandResponse
 import com.example.eraofband.remote.band.getPopularBand.GetPopularBandResponse
 import com.example.eraofband.remote.band.makeBand.MakeBandResponse
-import com.example.eraofband.remote.getLikeLessonList.GetLessonLikeListResponse
+import com.example.eraofband.remote.lesson.getLikeLessonList.GetLessonLikeListResponse
 import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoResponse
 import com.example.eraofband.remote.lesson.getLessonList.GetLessonListResponse
 import com.example.eraofband.remote.lesson.makeLesson.MakeLessonResponse
 import com.example.eraofband.remote.lesson.patchLesson.PatchLessonResponse
-import com.example.eraofband.remote.lessonLike.LessonLikeDeleteResponse
-import com.example.eraofband.remote.lessonLike.LessonLikeResponse
+import com.example.eraofband.remote.lesson.lessonLike.LessonLikeDeleteResponse
+import com.example.eraofband.remote.lesson.lessonLike.LessonLikeResponse
 import com.example.eraofband.remote.portfolio.deletePofol.DeletePofolResponse
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResponse
 import com.example.eraofband.remote.portfolio.makePofol.MakePofolResponse

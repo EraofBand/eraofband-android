@@ -14,10 +14,9 @@ import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoResult
 import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoService
 import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoView
 import com.example.eraofband.remote.lesson.getLessonInfo.LessonMembers
-import com.example.eraofband.remote.lesson.getLessonList.GetLessonListResult
-import com.example.eraofband.remote.lessonLike.LessonLikeResult
-import com.example.eraofband.remote.lessonLike.LessonLikeService
-import com.example.eraofband.remote.lessonLike.LessonLikeView
+import com.example.eraofband.remote.lesson.lessonLike.LessonLikeResult
+import com.example.eraofband.remote.lesson.lessonLike.LessonLikeService
+import com.example.eraofband.remote.lesson.lessonLike.LessonLikeView
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 
 

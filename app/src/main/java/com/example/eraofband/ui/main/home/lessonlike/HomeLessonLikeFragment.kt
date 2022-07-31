@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.databinding.FragmentHomeLessonLikeBinding
 import com.example.eraofband.ui.main.home.lesson.LessonInfoActivity
 import com.example.eraofband.remote.getLessonLikeList.GetLessonLikeListService
-import com.example.eraofband.remote.getLikeLessonList.GetLessonLikeListResult
-import com.example.eraofband.remote.getLikeLessonList.GetLessonLikeListView
+import com.example.eraofband.remote.lesson.getLikeLessonList.GetLessonLikeListResult
+import com.example.eraofband.remote.lesson.getLikeLessonList.GetLessonLikeListView
 
 
 class HomeLessonLikeFragment : Fragment(), GetLessonLikeListView {
