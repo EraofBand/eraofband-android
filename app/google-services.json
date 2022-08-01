@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "597406857066",
+    "project_id": "eraofband-5bbf4",
+    "storage_bucket": "eraofband-5bbf4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:597406857066:android:3474bec4e73d42f7ea5713",
+        "android_client_info": {
+          "package_name": "com.example.eraofband"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "597406857066-tok5sro10u4had63ro53th8scvsjc5ph.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoXCOTX5OKXVB-30WsIpyKITMx4N8jTEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "597406857066-tok5sro10u4had63ro53th8scvsjc5ph.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

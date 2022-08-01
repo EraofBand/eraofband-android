@@ -18,6 +18,8 @@ import com.example.eraofband.ui.main.MainActivity
 import com.example.eraofband.remote.user.kakaologin.KakaoLoginService
 import com.example.eraofband.remote.user.kakaologin.KakaoLoginView
 import com.example.eraofband.remote.user.kakaologin.LoginResult
+import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.messaging.FirebaseMessagingService
 
 class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
@@ -32,6 +34,8 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
         var intent = intent
         user = intent.extras?.getSerializable("user") as User
+
+        user.token = FirebaseMessaging.getInstance().token.toString() // FCM 토큰
 
         binding.signupTermNextBtn.setOnClickListener {
 
