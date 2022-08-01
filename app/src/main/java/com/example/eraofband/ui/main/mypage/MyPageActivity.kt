@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.eraofband.databinding.ActivityMypageBinding
 import com.example.eraofband.databinding.FragmentMypageBinding
 import com.example.eraofband.ui.main.mypage.follow.FollowActivity
 import com.example.eraofband.ui.main.mypage.portfolio.PortfolioMakeActivity
@@ -21,43 +22,26 @@ import java.util.*
 
 class MyPageActivity : AppCompatActivity(), GetMyPageView {
 
-    private lateinit var binding: FragmentMypageBinding
+    private lateinit var binding: ActivityMypageBinding
     private var mySession : Int = -1
     private lateinit var nickName : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = FragmentMypageBinding.inflate(layoutInflater)
+        binding = ActivityMypageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.mypageProfileEditIv.setOnClickListener {
-            startActivity(Intent(this, ProfileEditActivity::class.java))
+        binding.mypageBackIb.setOnClickListener {
+            finish()
         }
 
-        binding.mypageSettingIv.setOnClickListener {
-            startActivity(Intent(this, MyPageSettingActivity::class.java))
-        }
         binding.mypageSessionChangeTv.setOnClickListener {
             var intent = Intent(this, MyPageSessionActivity::class.java)
             intent.putExtra("session", mySession)
             startActivity(intent)
         }
 
-        binding.mypageVp.registerOnPageChangeCallback( object :  // 뷰페이저 리스너 : 포트폴리오 페이지에서만 FAB를 표시해줌
-            ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                when(position){
-                    0 -> binding.mypageFab.visibility = View.VISIBLE
-                    1 -> binding.mypageFab.visibility = View.INVISIBLE
-                    2 -> binding.mypageFab.visibility = View.INVISIBLE
-                }
-            }
-        })
-
-        binding.mypageFab.setOnClickListener{
-            startActivity(Intent(this, PortfolioMakeActivity::class.java))
-        }
         connectVP()
         moveFollowActivity()
     }
@@ -117,6 +101,7 @@ class MyPageActivity : AppCompatActivity(), GetMyPageView {
         Log.d("MYPAGE", result.toString())
         // 닉네임 연동
         nickName = result.getUser.nickName
+        binding.mypageTitleNicknameTv.text = nickName
         binding.mypageNicknameTv.text = nickName
 
         // 글라이드를 이용한 프로필사진 연동

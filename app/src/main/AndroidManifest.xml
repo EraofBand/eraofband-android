@@ -19,6 +19,7 @@
         android:theme="@style/Theme.EraofBand"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
         <!-- 카카오 로그인 AuthCodeHandler -->
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
@@ -34,6 +35,16 @@
                     android:scheme="@string/kakao_native_key" />
             </intent-filter>
         </activity>
+
+        <!-- FCM -->
+        <service
+            android:name="com.example.eraofband.ui.login.MyFirebaseInstanceIDService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
         <activity
             android:name="com.example.eraofband.ui.splash.SplashActivity"
             android:exported="true">
@@ -43,6 +54,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.example.eraofband.ui.onboarding.OnboardingActivity"
             android:exported="true" />

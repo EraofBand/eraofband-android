@@ -18,6 +18,7 @@ import com.example.eraofband.remote.lesson.getLessonList.GetLessonListResult
 import com.example.eraofband.remote.lessonLike.LessonLikeResult
 import com.example.eraofband.remote.lessonLike.LessonLikeService
 import com.example.eraofband.remote.lessonLike.LessonLikeView
+import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 
 
@@ -67,12 +68,20 @@ class LessonInfoActivity() : AppCompatActivity(), GetLessonInfoView, LessonLikeV
 
         val intent = Intent(this, UserMyPageActivity::class.java)  // 강사 클릭 시 강사 정보 페이지
         binding.lessonInfoTeacherProfileIv.setOnClickListener {
-            intent.putExtra("userIdx", teacherIdx)
-            startActivity(intent)
+            if (teacherIdx == getUserIdx()) {
+                startActivity(Intent(baseContext, MyPageActivity::class.java))
+            } else {
+                intent.putExtra("userIdx", teacherIdx)
+                startActivity(intent)
+            }
         }
         binding.lessonInfoTeacherLy.setOnClickListener {
-            intent.putExtra("userIdx", teacherIdx)
-            startActivity(intent)
+            if (teacherIdx == getUserIdx()) {
+                startActivity(Intent(baseContext, MyPageActivity::class.java))
+            } else {
+                intent.putExtra("userIdx", teacherIdx)
+                startActivity(intent)
+            }
         }
     }
 
@@ -102,8 +111,10 @@ class LessonInfoActivity() : AppCompatActivity(), GetLessonInfoView, LessonLikeV
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         lessonStudentRVAdapter.initStudentList(studentList)
 
-        lessonStudentRVAdapter.setMyItemClickListener(object : LessonStudentRVAdapter.MyItemClickListener{
+        lessonStudentRVAdapter.setMyItemClickListener(object :
+            LessonStudentRVAdapter.MyItemClickListener {
             override fun userInfo(userIdx: Int) {
+
                 val intent = Intent(baseContext, UserMyPageActivity::class.java)
                 intent.putExtra("userIdx", userIdx)
                 startActivity(intent)
