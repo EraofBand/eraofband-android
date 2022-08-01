@@ -69,6 +69,17 @@ class SessionApplyDialog(private val jwt: String, private val session: Int, priv
         dismiss()
     }
 
+    override fun onDuplicateApply(code: Int, message: String) {
+        Log.d("APPLYBAND/FAIL", "$code $message")
+
+        // 다음 dialog로 넘어감
+        val completeDialog = SessionCompleteDialog("duplicate")
+        completeDialog.isCancelable = false
+        completeDialog.show(activity!!.supportFragmentManager, "complete")
+
+        dismiss()
+    }
+
     override fun onApplyFailure(code: Int, message: String) {
         Log.d("APPLYBAND/FAIL", "$code $message")
     }
