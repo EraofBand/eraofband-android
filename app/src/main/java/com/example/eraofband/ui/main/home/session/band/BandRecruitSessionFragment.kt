@@ -99,7 +99,6 @@ class BandRecruitSessionFragment: Fragment() {
         volunteerRVAdapter.setMyItemClickListener(object: BandRecruitSessionVolunteerRVAdapter.MyItemClickListener{
             override fun onShowDecisionPopup(bandIdx: Int, applicant: Applicants, position: Int) {
                 val applyDialog = SessionDecisionDialog(bandIdx, applicant)
-                applyDialog.isCancelable = false
                 applyDialog.show(activity!!.supportFragmentManager, "applicant")
 
                 // 지원 수락, 거절 리스너
@@ -178,7 +177,6 @@ class BandRecruitSessionFragment: Fragment() {
         sessionRVAdapter.setMyItemClickListener(object: BandRecruitSessionListRVAdapter.MyItemClickListener{
             override fun showApplyPopup(bandIdx: Int, session: Int) {
                 val applyDialog = SessionApplyDialog(getJwt()!!, session, bandIdx, -1)
-                applyDialog.isCancelable = false
                 applyDialog.show(activity!!.supportFragmentManager, "apply")
             }
         })

@@ -45,6 +45,14 @@ class SessionCompleteDialog(private val code: String): DialogFragment() {
 
             binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
         }
+        else if(code == "duplicate") { // 밴드 중복 지원 불가 다이얼로그
+            binding.sessionCompleteTitleTv.text = "중복 신청 불가"
+            binding.sessionCompleteContentTv.text = "이미 밴드에 지원했습니다!"
+
+            binding.sessionCompleteAcceptTv.text = "완료"
+
+            binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
+        }
         else if(code == "fail") { // 레슨 중복 지원 불가 다이얼로그
             binding.sessionCompleteTitleTv.text = "중복 신청 불가"
             binding.sessionCompleteContentTv.text = "이미 레슨을 수강하고 있습니다!"

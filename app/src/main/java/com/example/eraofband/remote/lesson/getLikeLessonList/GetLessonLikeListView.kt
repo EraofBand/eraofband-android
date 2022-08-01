@@ -1,4 +1,4 @@
-package com.example.eraofband.remote.getLikeLessonList
+package com.example.eraofband.remote.lesson.getLikeLessonList
 
 interface GetLessonLikeListView {
     fun onGetLessonLikeListSuccess(code: Int, result: List<GetLessonLikeListResult>)

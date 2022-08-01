@@ -1,4 +1,4 @@
-package com.example.eraofband.ui.main.usermypage
+package com.example.eraofband.ui.main.usermypage.portfolio
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +12,8 @@ import com.example.eraofband.databinding.FragmentUserMypagePortfolioBinding
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResult
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolService
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolView
+import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
+import com.example.eraofband.ui.main.usermypage.UserPortfolioListActivity
 
 class UserMyPagePortfolioFragment : Fragment(), GetMyPofolView {
 

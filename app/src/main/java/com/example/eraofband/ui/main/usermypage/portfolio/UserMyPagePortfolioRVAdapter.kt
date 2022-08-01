@@ -1,4 +1,4 @@
-package com.example.eraofband.ui.main.usermypage
+package com.example.eraofband.ui.main.usermypage.portfolio
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.eraofband.R
 import com.example.eraofband.databinding.ItemPortfolioBinding
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResult
 
@@ -23,12 +22,12 @@ class UserMyPagePortfolioRVAdapter : RecyclerView.Adapter<UserMyPagePortfolioRVA
         fun onLookDetail(position : Int)
     }
 
-    private lateinit var mItemClickListener: UserMyPagePortfolioRVAdapter.MyItemClickListener
-    fun setMyItemClickListener(itemClickListener: UserMyPagePortfolioRVAdapter.MyItemClickListener) {
+    private lateinit var mItemClickListener: MyItemClickListener
+    fun setMyItemClickListener(itemClickListener: MyItemClickListener) {
         mItemClickListener = itemClickListener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserMyPagePortfolioRVAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: ItemPortfolioBinding = ItemPortfolioBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
