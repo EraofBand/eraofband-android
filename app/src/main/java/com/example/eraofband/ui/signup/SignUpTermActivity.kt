@@ -10,6 +10,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.Log
 import android.widget.CompoundButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.data.User
@@ -18,6 +19,7 @@ import com.example.eraofband.ui.main.MainActivity
 import com.example.eraofband.remote.user.kakaologin.KakaoLoginService
 import com.example.eraofband.remote.user.kakaologin.KakaoLoginView
 import com.example.eraofband.remote.user.kakaologin.LoginResult
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 
@@ -34,8 +36,6 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
         var intent = intent
         user = intent.extras?.getSerializable("user") as User
-
-        user.token = FirebaseMessaging.getInstance().token.toString() // FCM 토큰
 
         binding.signupTermNextBtn.setOnClickListener {
 
@@ -61,7 +61,7 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
         binding.signupTermNextBtn.isClickable = false
 
         checkBoxListener()
-
+        getFCMToken()
     }
 
     private fun checkBoxListener() {  // 체크박스 리스너
@@ -168,6 +168,19 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
         spannableString.setSpan(StyleSpan(Typeface.BOLD), start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.signupTermTitleTv.text = spannableString
 
+    }
+
+    private fun getFCMToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("FCM", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            user.token = token
+        })
     }
 
     override fun onLoginSuccess(code: Int, result: LoginResult) {
