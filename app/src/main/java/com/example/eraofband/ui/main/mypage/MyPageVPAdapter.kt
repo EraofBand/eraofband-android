@@ -2,6 +2,8 @@ package com.example.eraofband.ui.main.mypage
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.eraofband.ui.main.mypage.band.MyPageBandFragment
+import com.example.eraofband.ui.main.mypage.lesson.MyPageLessonFragment
 import com.example.eraofband.ui.main.mypage.portfolio.MyPagePortfolioFragment
 
 class MyPageVPAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {

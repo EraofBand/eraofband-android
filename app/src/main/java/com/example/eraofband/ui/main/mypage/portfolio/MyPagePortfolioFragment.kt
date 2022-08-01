@@ -28,8 +28,8 @@ class MyPagePortfolioFragment : Fragment(), GetMyPageView {
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
 
         val getMyPagePofol = GetMyPageService()
         getMyPagePofol.setUserView(this)
