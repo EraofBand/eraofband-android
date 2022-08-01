@@ -21,6 +21,7 @@ import com.example.eraofband.remote.portfolio.deletePofol.DeletePofolView
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResult
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolService
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolView
+import com.example.eraofband.ui.main.mypage.MyPageActivity
 
 class PortfolioListActivity : AppCompatActivity(), GetMyPofolView, DeletePofolView {
 
@@ -89,8 +90,8 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView, DeletePofolVi
 
             override fun onShowInfoPage(userIdx: Int) {
                 // 내가 올린 포트폴리오기 때문에 무조건 내 정보를 띄움
-                val intent = Intent(this@PortfolioListActivity, UserMyPageActivity::class.java)
-                intent.putExtra("comment", userIdx)
+                val intent = Intent(this@PortfolioListActivity, MyPageActivity::class.java)
+                intent.putExtra("userIdx", userIdx)
                 startActivity(intent)
             }
         })
@@ -99,6 +100,7 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView, DeletePofolVi
     override fun onGetSuccess(result: List<GetMyPofolResult>) {
         Log.d("MYPORTFOLIO/FAIL", result.toString())
         initRecyclerView(result)
+        result[0].userIdx
     }
 
     override fun onGetFailure(code: Int, message: String) {
