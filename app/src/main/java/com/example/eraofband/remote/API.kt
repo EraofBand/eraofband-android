@@ -151,7 +151,7 @@ interface API {
 
     //밴드 수정
     @PATCH("/sessions/band-info/{bandIdx}")
-    fun patchBand(@Header("X-ACCESS-TOKEN") jwt : String, @Header("bandIdx") bandIdx : Int, @Body band: Band) : Call<PatchBandResponse>
+    fun patchBand(@Header("X-ACCESS-TOKEN") jwt : String, @Path("bandIdx") bandIdx : Int, @Body band: Band) : Call<PatchBandResponse>
 
     //지역-세션 분류 밴드 정보 반환
     @GET("/sessions/info/list/{band-region}/{band-session}")

@@ -2,7 +2,6 @@ package com.example.eraofband.main.home.session.band
 
 import android.annotation.SuppressLint
 import android.app.*
-import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -38,13 +37,9 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
-import java.util.*
-import android.app.TimePickerDialog
 import android.content.res.Resources
 import android.graphics.Point
-import android.os.Message
 import android.view.Gravity
-import com.example.eraofband.signup.DialogDatePicker
 
 
 class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendImgView{
@@ -79,6 +74,10 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         binding.homeBandEditImgV.setOnClickListener {
             initImageViewBand()
         }
+
+        val bandService = GetBandService()
+        bandService.setBandView(this)
+        bandService.getBand(getJwt()!!, bandIdx)
 
         binding.homeBandEditNameEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -209,14 +208,6 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         band.performTime = binding.homeBandShowTimeEt.text.toString()
 
         return band
-    }
-
-    override fun onResume(){
-        super.onResume()
-
-        val bandService = GetBandService()
-        bandService.setBandView(this)
-        bandService.getBand(getJwt()!!, intent.getIntExtra("bandIdx", 0))
     }
 
     private fun getJwt() : String? {
@@ -565,6 +556,12 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         binding.homeBandEditDetailEt.setText(result.bandContent)
         binding.homeBandEditChatEt.setText(result.chatRoomLink)
 
+        binding.editVocalCntTv.setText(result.vocal.toString())
+        binding.editGuitarCntTv.setText(result.guitar.toString())
+        binding.editBaseCntTv.setText(result.base.toString())
+        binding.editKeyboardCntTv.setText(result.keyboard.toString())
+        binding.editDrumCntTv.setText(result.drum.toString())
+
         vocalCnt = result.vocal
         guitarCnt = result.guitar
         baseCnt = result.base
@@ -601,7 +598,7 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
     }
 
     override fun onPatchSuccess(code: Int, result: String) {
-        Log.d("PATCH / SUCCESS", result)
+        Log.d("PATCH BAND / SUCCESS", result)
     }
 
     override fun onPatchFailure(code: Int, message: String) {

@@ -31,6 +31,8 @@ class HomeFragment : Fragment() {
 
         sizeCheck()
 
+
+
         return binding.root
     }
 

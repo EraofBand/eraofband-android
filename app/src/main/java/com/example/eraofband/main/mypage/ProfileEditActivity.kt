@@ -135,6 +135,7 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
 
     private fun getJwt() : String? {
         val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        Log.d("jwt value", userSP.getString("jwt", "").toString())
         return userSP.getString("jwt", "")
     }
 
