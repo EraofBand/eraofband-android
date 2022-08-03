@@ -969,6 +969,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:background="@drawable/gray_round_bg"
+                android:inputType="number"
                 android:hint="공연의 입장료를 입력해주세요."
                 android:textColorHint="@color/content"
                 android:textColor="@color/white"

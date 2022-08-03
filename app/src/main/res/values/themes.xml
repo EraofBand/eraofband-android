@@ -47,4 +47,15 @@
         <item name="android:itemBackground">@android:color/black</item>
     </style>
 
+    <style name="AppTheme2" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/bottom_nav</item>
+        <item name="colorAccent">@color/blue</item>
+        ...
+        <item name="android:timePickerStyle">@style/MyTimePickerTheme</item>
+    </style>
+
+
+
 </resources>

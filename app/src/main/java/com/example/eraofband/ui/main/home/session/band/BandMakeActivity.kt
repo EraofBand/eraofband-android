@@ -6,16 +6,21 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.database.Cursor
+import android.graphics.Color
+import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -40,7 +45,8 @@ class BandMakeActivity : AppCompatActivity(), MakeBandView, SendImgView {
 
     private lateinit var binding: ActivityBandMakeBinding
     private var band = Band("", "", "", "", "", 0, "", "", 0,
-    "", 0, "", 0, "", 0, 0,  "")
+    "", 0, "", 0, "", "", 0, "","", "",
+        0, 0, "")
     private var imgUrl = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -388,6 +394,26 @@ class BandMakeActivity : AppCompatActivity(), MakeBandView, SendImgView {
         return result!!
     }
 
+    private fun setToast(msg : String) {
+        val view : View = layoutInflater.inflate(R.layout.toast_signup, findViewById(R.id.toast_signup))
+        val toast = Toast(this)
+
+        val text = view.findViewById<TextView>(R.id.toast_signup_text_tv)
+        text.text = msg
+
+        val display = windowManager.defaultDisplay // in case of Activity
+        val size = Point()
+        display.getSize(size)  // 상단바 등을 제외한 스크린 전체 크기 구하기
+        val height = size.y / 2  // 토스트 메세지가 중간에 고정되어있기 때문에 높이 / 2
+
+        // 중간부터 marginBottom, 버튼 높이 / 2 만큼 빼줌
+        toast.view = view
+        toast.setGravity(Gravity.FILL_HORIZONTAL, 0, height - 60.toPx() - binding.homeBandMakeRegisterBtn.height / 2)
+        toast.show()
+    }
+
+    private fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
+
     private fun getJwt(): String? {
         val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getString("jwt", "")
@@ -405,6 +431,7 @@ class BandMakeActivity : AppCompatActivity(), MakeBandView, SendImgView {
 
     override fun onMakeFailure(code: Int, message: String) {
         Log.d("MAKE BAND / FAIL","$code $message")
+        setToast(message)
     }
 
     override fun onSendSuccess(response: SendImgResponse) {

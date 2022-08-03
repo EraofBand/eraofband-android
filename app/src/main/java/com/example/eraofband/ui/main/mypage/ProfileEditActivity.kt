@@ -29,7 +29,6 @@ import com.example.eraofband.databinding.ActivityProfileEditBinding
 import com.example.eraofband.remote.user.getMyPage.GetMyPageResult
 import com.example.eraofband.remote.user.getMyPage.GetMyPageService
 import com.example.eraofband.remote.user.getMyPage.GetMyPageView
-import com.example.eraofband.remote.user.patchUser.PatchUserResult
 import com.example.eraofband.remote.user.patchUser.PatchUserService
 import com.example.eraofband.remote.user.patchUser.PatchUserView
 import com.example.eraofband.remote.sendimg.SendImgResponse
@@ -136,6 +135,7 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
 
     private fun getJwt() : String? {
         val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        Log.d("jwt value", userSP.getString("jwt", "").toString())
         return userSP.getString("jwt", "")
     }
 
@@ -375,8 +375,8 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
         return result!!
     }
 
-    override fun onPatchSuccess(code: Int, result: PatchUserResult) {
-        Log.d("PATCH / SUCCESS", result.toString())
+    override fun onPatchSuccess(code: Int, result: String) {
+        Log.d("PATCH / SUCCESS",  result)
     }
 
     override fun onPatchFailure(code: Int, message: String) {

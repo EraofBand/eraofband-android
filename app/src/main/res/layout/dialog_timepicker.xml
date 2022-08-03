@@ -5,12 +5,11 @@
     android:background="@color/datepicekr_bg"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <DatePicker
-        android:id="@+id/dialog_datepicker_dark"
+    <TimePicker
+        android:id="@+id/dialog_timepicker"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:calendarViewShown="false"
-        android:datePickerMode="spinner"
+        android:timePickerMode="spinner"
         android:theme="@style/AppTheme.Picker"
         android:calendarTextColor="@color/white"
         app:layout_constraintTop_toTopOf="parent"
@@ -18,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
-        android:id="@+id/dialog_dark_next_tv"
+        android:id="@+id/dialog_time_next_tv"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:background="@drawable/blue_round_bg"
@@ -31,7 +30,7 @@
         android:layout_marginBottom="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dialog_datepicker_dark"
+        app:layout_constraintTop_toBottomOf="@id/dialog_timepicker"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
