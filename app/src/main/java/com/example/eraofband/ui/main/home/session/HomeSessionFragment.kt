@@ -42,6 +42,26 @@ class HomeSessionFragment : Fragment(), GetNewBandView, GetPopularBandView {
         // 생성된 밴드 리스트 확인 용
         binding.homeCl1.setOnClickListener{ startActivity(Intent(context, BandListActivity::class.java)) }
 
+        binding.homeSessionVocalIv.setOnClickListener {
+            moveSession(0)
+        }
+
+        binding.homeSessionGuitarIv.setOnClickListener {
+            moveSession(1)
+        }
+
+        binding.homeSessionBaseIv.setOnClickListener {
+            moveSession(2)
+        }
+
+        binding.homeSessionKeyboardIv.setOnClickListener {
+            moveSession(3)
+        }
+
+        binding.homeSessionDrumIv.setOnClickListener {
+            moveSession(4)
+        }
+
     }
 
     override fun onResume() {
@@ -56,6 +76,12 @@ class HomeSessionFragment : Fragment(), GetNewBandView, GetPopularBandView {
         val getPopularService = GetPopularBandService()
         getPopularService.setBandView(this)
         getPopularService.getPopularBand()
+    }
+
+    private fun moveSession(session : Int){
+        val intent = Intent(context, BandListActivity::class.java)
+        intent.putExtra("sessionBtn", session)
+        startActivity(intent)
     }
 
     private fun initNewBandRV(item: List<GetNewBandResult>) {

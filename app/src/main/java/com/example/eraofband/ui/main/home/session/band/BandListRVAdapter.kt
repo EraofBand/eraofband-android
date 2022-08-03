@@ -4,12 +4,13 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.eraofband.R
-import com.example.eraofband.data.Band
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.ItemBandListBinding
+import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResult
 
 class BandListRVAdapter : RecyclerView.Adapter<BandListRVAdapter.ViewHolder>() {
-    private var bandList = arrayListOf<Band>()
+    private var bandList = arrayListOf<GetRegionBandResult>()
 
     interface MyItemClickListener {
         // 클릭 이벤트
@@ -23,7 +24,7 @@ class BandListRVAdapter : RecyclerView.Adapter<BandListRVAdapter.ViewHolder>() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun initBandList(bandList : List<Band>) {
+    fun initBandList(bandList: List<GetRegionBandResult>) {
         this.bandList.addAll(bandList)
         notifyDataSetChanged()
     }
@@ -42,12 +43,16 @@ class BandListRVAdapter : RecyclerView.Adapter<BandListRVAdapter.ViewHolder>() {
     override fun getItemCount(): Int = bandList.size
 
     inner class ViewHolder(val binding: ItemBandListBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(band: Band) {
-            binding.bandListImgIv.setImageResource(R.drawable.band_profile)
+        fun bind(band: GetRegionBandResult) {
+            Glide.with(itemView).load(band.bandImgUrl)
+                .apply(RequestOptions.centerCropTransform())
+                .into(binding.bandListImgIv)
             binding.bandListImgIv.clipToOutline = true  // 모서리 깎기
 
-            binding.bandListTitleTv.text = "제목입니다"
-            binding.bandListIntroduceTv.text = "소개입니다"
+            binding.bandListTitleTv.text = band.bandTitle
+            binding.bandListIntroduceTv.text = band.bandIntroduction
+            binding.bandListRegionTv.text = band.bandRegion
+            binding.bandListMemberCntTv.text = "${band.memberCount}/${band.capacity}"
         }
     }
 }
