@@ -51,6 +51,7 @@ class MyPageBandRVAdapter(private val context: Context) : RecyclerView.Adapter<M
             binding.bandListRegionTv.text = band.bandRegion
             binding.bandListTitleTv.text = band.bandTitle
             binding.bandListIntroduceTv.text = band.bandIntroduction
+            binding.bandListMemberCntTv.text = "${band.memberCount} / ${band.capacity}"
         }
     }
 }
