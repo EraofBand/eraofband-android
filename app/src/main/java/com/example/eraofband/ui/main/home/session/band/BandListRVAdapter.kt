@@ -38,7 +38,7 @@ class BandListRVAdapter : RecyclerView.Adapter<BandListRVAdapter.ViewHolder>() {
         holder.bind(bandList[position])
 
         // 클릭 이벤트
-        holder.binding.bandListLayout.setOnClickListener { mItemClickListener.onShowDetail(position) }  // 나중에는 밴드 아이디를 넣어서 정보 연동
+        holder.binding.bandListLayout.setOnClickListener { mItemClickListener.onShowDetail(bandList[position].bandIdx) }  // 나중에는 밴드 아이디를 넣어서 정보 연동
     }
     override fun getItemCount(): Int = bandList.size
 
@@ -52,7 +52,7 @@ class BandListRVAdapter : RecyclerView.Adapter<BandListRVAdapter.ViewHolder>() {
             binding.bandListTitleTv.text = band.bandTitle
             binding.bandListIntroduceTv.text = band.bandIntroduction
             binding.bandListRegionTv.text = band.bandRegion
-            binding.bandListMemberCntTv.text = "${band.memberCount}/${band.capacity}"
+            binding.bandListMemberCntTv.text = "${band.memberCount} / ${band.capacity}"
         }
     }
 }
