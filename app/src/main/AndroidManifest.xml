@@ -34,6 +34,7 @@
                     android:scheme="@string/kakao_native_key" />
             </intent-filter>
         </activity> <!-- FCM -->
+
         <service
             android:name="com.example.eraofband.ui.login.MyFirebaseInstanceIDService"
             android:exported="true">
