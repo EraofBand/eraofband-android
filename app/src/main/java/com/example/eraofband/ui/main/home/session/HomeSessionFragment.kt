@@ -40,7 +40,10 @@ class HomeSessionFragment : Fragment(), GetNewBandView, GetPopularBandView {
         super.onViewCreated(view, savedInstanceState)
 
         // 생성된 밴드 리스트 확인 용
-        binding.homeCl1.setOnClickListener{ startActivity(Intent(context, BandListActivity::class.java)) }
+        binding.homeCl1.setOnClickListener{
+            val intent = Intent(context, BandListActivity::class.java)
+            intent.putExtra("sessionBtn", 5)
+            startActivity(intent) }
 
         binding.homeSessionVocalIv.setOnClickListener {
             moveSession(0)
