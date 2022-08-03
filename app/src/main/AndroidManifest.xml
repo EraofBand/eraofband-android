@@ -19,7 +19,6 @@
         android:theme="@style/Theme.EraofBand"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
         <!-- 카카오 로그인 AuthCodeHandler -->
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
@@ -34,14 +33,13 @@
                     android:host="oauth"
                     android:scheme="@string/kakao_native_key" />
             </intent-filter>
-        </activity>
+        </activity> <!-- FCM -->
 
-        <!-- FCM -->
         <service
             android:name="com.example.eraofband.ui.login.MyFirebaseInstanceIDService"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
@@ -54,7 +52,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.example.eraofband.ui.onboarding.OnboardingActivity"
             android:exported="true" />
@@ -130,15 +127,17 @@
             android:exported="false" />
         <activity
             android:name="com.example.eraofband.ui.main.home.session.band.BandMakeActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name="com.example.eraofband.ui.main.home.session.band.BandEditActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name="com.example.eraofband.ui.main.home.lesson.LessonMakeActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name="com.example.eraofband.ui.main.home.lesson.LessonEditActivity"
+            android:exported="false" />
+        <activity android:name=".ui.main.home.notice.NoticeActivity"
             android:exported="false"/>
     </application>
 
