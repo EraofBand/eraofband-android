@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/lesson_edit_gr">
+        <item
+            android:id="@+id/lesson_edit"
+            android:title="@string/lesson_edit" />
+    </group>
+    <group android:id="@+id/lesson_delete_gr">
+        <item
+            android:id="@+id/lesson_delete"
+            android:title="@string/lesson_delete" />
+    </group>
+    <group android:id="@+id/lesson_leave_gr">
+        <item
+            android:id="@+id/lesson_leave"
+            android:title="@string/lesson_leave" />
+    </group>
+    <group android:id="@+id/lesson_report_gr">
+        <item
+            android:id="@+id/lesson_report"
+            android:title="@string/lesson_report" />
+    </group>
+</menu>

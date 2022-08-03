@@ -11,7 +11,7 @@ import retrofit2.Response
 class PatchBandService {
     private lateinit var patchView : PatchBandView
 
-    fun setPatchView(makeView: PatchBandView) {
+    fun setPatchView(patchView: PatchBandView) {
         this.patchView = patchView
     }
 

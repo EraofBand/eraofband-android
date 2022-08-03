@@ -29,7 +29,6 @@ import com.example.eraofband.databinding.ActivityProfileEditBinding
 import com.example.eraofband.remote.getMyPage.GetMyPageResult
 import com.example.eraofband.remote.getMyPage.GetMyPageService
 import com.example.eraofband.remote.getMyPage.GetMyPageView
-import com.example.eraofband.remote.patchuser.PatchUserResult
 import com.example.eraofband.remote.patchuser.PatchUserService
 import com.example.eraofband.remote.patchuser.PatchUserView
 import com.example.eraofband.remote.sendimg.SendImgResponse
@@ -375,8 +374,8 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
         return result!!
     }
 
-    override fun onPatchSuccess(code: Int, result: PatchUserResult) {
-        Log.d("PATCH / SUCCESS", result.toString())
+    override fun onPatchSuccess(code: Int, result: String) {
+        TODO("Not yet implemented")
     }
 
     override fun onPatchFailure(code: Int, message: String) {

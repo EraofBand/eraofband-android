@@ -52,7 +52,11 @@ class LessonEditActivity() : AppCompatActivity(), GetLessonInfoView, PatchLesson
     private var cnt = 0
     private var profileUrl = ""
     private var session = 0
+
+    //스피너 관련 변수
     private var currentArea = 0
+    private var initial = true
+
     private var lessonIdx: Int? = null
     private var lesson: Lesson = Lesson(
         1, "", "", "", "",
@@ -123,7 +127,6 @@ class LessonEditActivity() : AppCompatActivity(), GetLessonInfoView, PatchLesson
             }
         })
         initLessonSpinner()
-        initSpinner()
         initCnt()
     }
 
@@ -152,39 +155,44 @@ class LessonEditActivity() : AppCompatActivity(), GetLessonInfoView, PatchLesson
         })
     }
 
-    private fun initSpinner() {
-        // 도시 스피너 어뎁터 연결
-        val city = resources.getStringArray(R.array.city)  // 도시 목록
-
-        val cityAdapter = ArrayAdapter(this, R.layout.item_spinner, city)
-        binding.homeLessonEditCitySp.adapter = cityAdapter
-        binding.homeLessonEditCitySp.setSelection(0)
-
+    private fun spinnerClickListener() {
         // 도시 스피너 클릭 이벤트
         binding.homeLessonEditCitySp.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if(position == 0) {  // 서울이면 서울시 지역 연결
-                    val area = resources.getStringArray(R.array.seoul)
-
-                    val areaAdapter = ArrayAdapter(applicationContext, R.layout.item_spinner, area)
+                    val areaAdapter = ArrayAdapter(applicationContext, R.layout.item_spinner, resources.getStringArray(R.array.seoul))
                     binding.homeLessonEditAreaSp.adapter = areaAdapter
+
+                    if(initial) {
+                        binding.homeLessonEditAreaSp.setSelection(currentArea)
+                        initial = false
+                    }
+                    else {
+                        binding.homeLessonEditAreaSp.setSelection(0)
+                    }
                 }
                 else {  // 경기도면 경기도 지역 연결
-                    val area = resources.getStringArray(R.array.gyeonggido)
-
-                    val areaAdapter = ArrayAdapter(applicationContext, R.layout.item_spinner, area)
+                    val areaAdapter = ArrayAdapter(applicationContext, R.layout.item_spinner, resources.getStringArray(R.array.gyeonggido))
                     binding.homeLessonEditAreaSp.adapter = areaAdapter
+
+                    if(initial) {
+                        binding.homeLessonEditAreaSp.setSelection(currentArea)
+                        initial = false
+                    }
+                    else {
+                        binding.homeLessonEditAreaSp.setSelection(0)
+                    }
                 }
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {  // 아무것도 클릭되어있지 않을 때는 기본으로 서울 지역을 띄워줌
-                val area = resources.getStringArray(R.array.seoul)
+                val areaList = resources.getStringArray(R.array.seoul)
 
-                val areaAdapter = ArrayAdapter(applicationContext, R.layout.item_spinner, area)
+                val areaAdapter = ArrayAdapter(applicationContext, R.layout.item_spinner, areaList)
                 binding.homeLessonEditAreaSp.adapter = areaAdapter
+
                 binding.homeLessonEditAreaSp.setSelection(0)
             }
-
         })
     }
 
@@ -444,6 +452,7 @@ class LessonEditActivity() : AppCompatActivity(), GetLessonInfoView, PatchLesson
 
         binding.homeLessonEditTypeSp.setSelection(result.lessonSession)
         initRegion(result.lessonRegion) // 레슨 지역
+        spinnerClickListener()
 
         binding.homeLessonEditDetailEt.setText(result.lessonContent) // 레슨 소개
         binding.homeLessonEditChatEt.setText(result.chatRoomLink) // 채팅 링크

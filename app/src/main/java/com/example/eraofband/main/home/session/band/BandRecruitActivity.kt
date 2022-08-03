@@ -3,20 +3,31 @@ package com.example.eraofband.main.home.session.band
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
+import android.view.View
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ContextThemeWrapper
 import com.bumptech.glide.Glide
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityBandRecruitBinding
 import com.example.eraofband.remote.bandLike.BandLikeResult
 import com.example.eraofband.remote.bandLike.BandLikeService
 import com.example.eraofband.remote.bandLike.BandLikeView
+import com.example.eraofband.remote.deleteBand.DeleteBandResponse
+import com.example.eraofband.remote.deleteBand.DeleteBandService
+import com.example.eraofband.remote.deleteBand.DeleteBandView
+import com.example.eraofband.remote.deleteUserBand.DeleteUserBandResponse
+import com.example.eraofband.remote.deleteUserBand.DeleteUserBandService
+import com.example.eraofband.remote.deleteUserBand.DeleteUserBandView
 import com.example.eraofband.remote.getBand.GetBandResult
 import com.example.eraofband.remote.getBand.GetBandService
 import com.example.eraofband.remote.getBand.GetBandView
+import com.example.eraofband.remote.getBand.SessionMembers
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 
-class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
+class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView, DeleteBandView, DeleteUserBandView {
 
     private lateinit var binding: ActivityBandRecruitBinding
 
@@ -24,16 +35,23 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
 
     private var like = false
 
+    private var bandIdx = 0
+    private var leaderIdx = 0
+
+    private var bandMember = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityBandRecruitBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        bandIdx = intent.getIntExtra("bandIdx", 0)
+
         binding.homeBandRecruitBackIv.setOnClickListener { finish() }  // 뒤로가기
 
         binding.homeBandRecruitListIv.setOnClickListener {
-            startActivity(Intent(this, BandEditActivity::class.java)) // 밴드 수정 이동
+            showPopup(binding.homeBandRecruitListIv)
         }
 
         val likeService = BandLikeService()
@@ -41,7 +59,10 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
 
         binding.homeBandRecruitLikeIv.setOnClickListener {
             Log.d("LIKETEST", like.toString())
-            if(like) likeService.deleteLike(getJwt()!!, intent.getIntExtra("bandIdx", 0))  // 좋아요 취소 처리
+            if (like) likeService.deleteLike(
+                getJwt()!!,
+                intent.getIntExtra("bandIdx", 0)
+            )  // 좋아요 취소 처리
             else likeService.like(getJwt()!!, intent.getIntExtra("bandIdx", 0))  // 좋아요 처리
         }
     }
@@ -67,7 +88,7 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
         }.attach()
     }
 
-    private fun getJwt() : String? {
+    private fun getJwt(): String? {
         val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getString("jwt", "")
     }
@@ -77,19 +98,22 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
         // 밴드 정보 연동
         binding.homeBandRecruitBandTitleTv.text = result.bandTitle  // 밴드 이름 연동
 
-        Glide.with(this).load(result.bandImgUrl).into(binding.homeBandRecruitBandImgIv)  // 밴드 이미지 연동
+        Glide.with(this).load(result.bandImgUrl)
+            .into(binding.homeBandRecruitBandImgIv)  // 밴드 이미지 연동
         binding.homeBandRecruitBandImgIv.clipToOutline = true  // 모서리 깎기
 
         binding.homeBandRecruitBandNameTv.text = result.bandTitle  // 밴드 이름 연동
         binding.homeBandRecruitBandIntroTv.text = result.bandIntroduction  // 한줄 소개 연동
         binding.homeBandRecruitCntTv.text = "${result.memberCount} / ${result.capacity}"  // 멤버 수
 
+        leaderIdx = result.userIdx
+        bandMember = checkUserIdx(result.sessionMembers)
+
         // 좋아요 여부 연동
-        if(result.likeOrNot == "Y") {
+        if (result.likeOrNot == "Y") {
             like = true
             binding.homeBandRecruitLikeIv.setImageResource(R.drawable.ic_heart_on)
-        }
-        else {
+        } else {
             like = false
             binding.homeBandRecruitLikeIv.setImageResource(R.drawable.ic_heart_off)
         }
@@ -129,5 +153,78 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
 
     override fun onDeleteLikeFailure(code: Int, message: String) {
         Log.d("DELETELIKE/FAIL", "$code $message")
+    }
+
+    private fun getUserIdx(): Int {
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        return userSP.getInt("userIdx", 0)
+    }
+
+    private fun showPopup(view: View) {
+        val themeWrapper = ContextThemeWrapper(applicationContext, R.style.MyPopupMenu)
+        val popupMenu = PopupMenu(themeWrapper, view, Gravity.END, 0, R.style.MyPopupMenu)
+        popupMenu.menuInflater.inflate(R.menu.band_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            if (item!!.itemId == R.id.band_edit) {
+                val intent = Intent(this, BandEditActivity::class.java)
+                intent.putExtra("bandIdx", bandIdx)
+
+                startActivity(intent)
+            } else if (item!!.itemId == R.id.band_delete) {
+                // 밴드 삭제
+                val deleteBandService = DeleteBandService()
+                deleteBandService.setDeleteView(this)
+                deleteBandService.deleteBand(getJwt()!!, bandIdx, getUserIdx())
+            } else {
+                //밴드 탈퇴
+                val deleteUserBandService = DeleteUserBandService()
+                deleteUserBandService.setDeleteView(this)
+                deleteUserBandService.deleteUserBand(getJwt()!!, bandIdx)
+            }
+            false
+        }
+
+        if(getUserIdx() == leaderIdx){
+            popupMenu.menu.setGroupVisible(R.id.band_report_gr, false)
+            popupMenu.menu.setGroupVisible(R.id.band_leave_gr, false)
+        } else if(bandMember) {
+            popupMenu.menu.setGroupVisible(R.id.band_report_gr, false)
+            popupMenu.menu.setGroupVisible(R.id.band_edit_gr, false)
+            popupMenu.menu.setGroupVisible(R.id.band_delete_gr, false)
+        } else{
+            popupMenu.menu.setGroupVisible(R.id.band_leave_gr, false)
+            popupMenu.menu.setGroupVisible(R.id.band_edit_gr, false)
+            popupMenu.menu.setGroupVisible(R.id.band_delete_gr, false)
+        }
+
+        popupMenu.show() // 팝업 보여주기
+    }
+
+    private fun checkUserIdx(memberList: List<SessionMembers>): Boolean {
+        // 만약 내 userIdx가 멤버 리스트의 userIdx와 같으면 밴드 멤버에 속함
+        if(memberList.isEmpty()) return false  // 밴드 멤버가 없으면 무조건 false
+
+        for(element in memberList) {
+            if(getUserIdx() == element.userIdx) return true
+        }
+
+        return false
+    }
+
+    override fun onDeleteSuccess(code: Int, result: String) {
+        Log.d("DELETE BAND / SUCCESS", result)
+    }
+
+    override fun onDeleteFailure(response: DeleteBandResponse) {
+        Log.d("DELETE BAND / FAIL", response.toString())
+    }
+
+    override fun onDeleteUserSuccess(code: Int, result: String) {
+        Log.d("DELETE BAND / SUCCESS", result)
+    }
+
+    override fun onDeleteUserFailure(response: DeleteUserBandResponse) {
+        Log.d("DELETE BAND / FAIL", response.toString())
     }
 }
