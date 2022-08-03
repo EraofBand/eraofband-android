@@ -19,6 +19,7 @@ import com.example.eraofband.remote.lesson.makeLesson.MakeLessonResponse
 import com.example.eraofband.remote.lesson.patchLesson.PatchLessonResponse
 import com.example.eraofband.remote.lessonLike.LessonLikeDeleteResponse
 import com.example.eraofband.remote.lessonLike.LessonLikeResponse
+import com.example.eraofband.remote.notice.GetNoticeResponse
 import com.example.eraofband.remote.portfolio.deletePofol.DeletePofolResponse
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResponse
 import com.example.eraofband.remote.portfolio.makePofol.MakePofolResponse
@@ -197,4 +198,8 @@ interface API {
     // 찜한 레슨 정보 반환
     @GET("/lessons/info/likes")
     fun getLessonLikeList(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetLessonLikeListResponse>
+
+    // 알림 리스트 조회
+    @GET("/notice/notice/{userIdx}")
+    fun getNotice(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<GetNoticeResponse>
 }

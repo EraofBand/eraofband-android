@@ -1,6 +1,8 @@
 package com.example.eraofband.ui.main.mypage.follow
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +18,7 @@ import com.example.eraofband.remote.user.userFollowList.FollowerInfo
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowResponse
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowService
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowView
+import com.example.eraofband.ui.main.mypage.MyPageActivity
 
 class FollowerRVAdapter() : RecyclerView.Adapter<FollowerRVAdapter.ViewHolder>(), UserFollowView, UserUnfollowView {
     private var followList = arrayListOf<FollowerInfo>()
@@ -38,13 +41,24 @@ class FollowerRVAdapter() : RecyclerView.Adapter<FollowerRVAdapter.ViewHolder>()
         userFollowService.setUserFollowView(this)
         userUnfollowService.setUserUnfollowView(this)
 
-        holder.binding.itemFollowNicknameTv.setOnClickListener{  // 팔로우리스트에 있는 유저 클릭 시 이동
-            mItemClickListener.onItemClick(followList[position])
+        holder.binding.itemFollowNicknameTv.setOnClickListener{  // 팔로우리스트에 있는 유저 클릭 시 페이지 이동
+            if (followList[position].userIdx == mItemClickListener.getUserIdx()) {
+                mItemClickListener.clickMySelf()
+            } else {
+                mItemClickListener.onItemClick(followList[position])
+            }
         }
         holder.binding.itemFollowProfileIv.setOnClickListener {
-            mItemClickListener.onItemClick(followList[position])
+            if (followList[position].userIdx == mItemClickListener.getUserIdx()) {
+                mItemClickListener.clickMySelf()
+            } else {
+                mItemClickListener.onItemClick(followList[position])
+            }
         }
-
+        if (followList[position].userIdx == mItemClickListener.getUserIdx()) { // 팔로우 리스트에 나 자신은 버튼 숨기기
+            holder.binding.itemFollowButtonIv.visibility = View.INVISIBLE
+            holder.binding.itemFollowFollowingButtonIv.visibility = View.INVISIBLE
+        }
         holder.binding.itemFollowFollowingButtonIv.setOnClickListener {  // 회색 버튼 눌러서 팔로우 취소
             holder.binding.itemFollowButtonIv.visibility = View.VISIBLE
             holder.binding.itemFollowFollowingButtonIv.visibility = View.INVISIBLE
@@ -78,7 +92,9 @@ class FollowerRVAdapter() : RecyclerView.Adapter<FollowerRVAdapter.ViewHolder>()
     }
     interface MyItemClickListener {
         fun onItemClick(item: FollowerInfo)
+        fun clickMySelf()
         fun getJwt() : String?
+        fun getUserIdx() : Int
     }
 
     private lateinit var mItemClickListener: MyItemClickListener

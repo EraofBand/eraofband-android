@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.databinding.FragmentFollowingBinding
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.example.eraofband.remote.user.userFollowList.*
+import com.example.eraofband.ui.main.mypage.MyPageActivity
 
 class FollowingFragment(var userIdx: Int) : Fragment(), UserFollowListView {
 
@@ -47,10 +48,20 @@ class FollowingFragment(var userIdx: Int) : Fragment(), UserFollowListView {
                 startActivity(intent)
             }
 
+            override fun clickMySelf() {
+                startActivity(Intent(context, MyPageActivity::class.java))
+            }
+
             override fun getJwt(): String? {
                 val userSP =
                     requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
                 return userSP.getString("jwt", "")
+            }
+
+            override fun getUserIdx(): Int {
+                val userSP =
+                    requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+                return userSP.getInt("userIdx", 0)
             }
         })
         mAdapter.initFollowList(item)

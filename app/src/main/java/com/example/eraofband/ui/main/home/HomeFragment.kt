@@ -1,5 +1,6 @@
 package com.example.eraofband.ui.main.home
 
+import android.content.Intent
 import android.graphics.Point
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.eraofband.databinding.FragmentHomeBinding
 import com.example.eraofband.ui.login.GlobalApplication
+import com.example.eraofband.ui.main.home.notice.NoticeActivity
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : Fragment() {
@@ -37,6 +39,9 @@ class HomeFragment : Fragment() {
             fabDialog.show(fragmentManager!!, "homeFAB")
         }
 
+        binding.homeNoticeIb.setOnClickListener {
+            startActivity(Intent(context, NoticeActivity::class.java))
+        }
         connectVP()
     }
 

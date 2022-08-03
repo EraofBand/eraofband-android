@@ -15,6 +15,7 @@ import com.example.eraofband.remote.user.userFollowList.FollowerInfo
 import com.example.eraofband.remote.user.userFollowList.UserFollowListResult
 import com.example.eraofband.remote.user.userFollowList.UserFollowListService
 import com.example.eraofband.remote.user.userFollowList.UserFollowListView
+import com.example.eraofband.ui.main.mypage.MyPageActivity
 
 class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
     private var _binding: FragmentFollowerBinding? = null
@@ -50,10 +51,20 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
                 startActivity(intent)
             }
 
+            override fun clickMySelf() {
+                startActivity(Intent(context, MyPageActivity::class.java))
+            }
+
             override fun getJwt(): String? {
                 val userSP =
                     requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
                 return userSP.getString("jwt", "")
+            }
+
+            override fun getUserIdx(): Int {
+                val userSP =
+                    requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+                return userSP.getInt("userIdx", 0)
             }
         })
         mAdapter.initFollowList(item) // 팔로우리스트 초기화
