@@ -50,6 +50,7 @@ class MyPageLessonRVAdapter(private val context: Context) : RecyclerView.Adapter
             binding.bandListRegionTv.text = lesson.lessonRegion
             binding.bandListTitleTv.text = lesson.lessonTitle
             binding.bandListIntroduceTv.text = lesson.lessonIntroduction
+            binding.bandListMemberCntTv.text = "${lesson.memberCount} / ${lesson.capacity}"
         }
     }
 }
