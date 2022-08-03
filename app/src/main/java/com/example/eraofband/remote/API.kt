@@ -19,8 +19,6 @@ import com.example.eraofband.remote.lesson.makeLesson.MakeLessonResponse
 import com.example.eraofband.remote.lesson.patchLesson.PatchLessonResponse
 import com.example.eraofband.remote.lesson.lessonLike.LessonLikeDeleteResponse
 import com.example.eraofband.remote.lesson.lessonLike.LessonLikeResponse
-import com.example.eraofband.remote.lessonLike.LessonLikeDeleteResponse
-import com.example.eraofband.remote.lessonLike.LessonLikeResponse
 import com.example.eraofband.remote.notice.GetNoticeResponse
 import com.example.eraofband.remote.portfolio.deletePofol.DeletePofolResponse
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResponse
