@@ -17,6 +17,7 @@ import com.example.eraofband.ui.main.mypage.portfolio.PortfolioCommentActivity
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResult
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolService
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolView
+import com.example.eraofband.ui.main.mypage.MyPageActivity
 import android.view.View as View1
 
 class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
@@ -85,6 +86,10 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
             }
 
             override fun onShowInfoPage(userIdx: Int) {
+                // 다른 사람들이 올린 포트폴리오기 때문에 무조건 다른 사람 정보를 띄움
+                val intent = Intent(this@UserPortfolioListActivity, UserMyPageActivity::class.java)
+                intent.putExtra("userIdx", userIdx)
+                startActivity(intent)
             }
         })
     }

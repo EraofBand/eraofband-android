@@ -57,7 +57,7 @@ class MyPageActivity : AppCompatActivity(), GetMyPageView {
 
     private fun moveFollowActivity() {
         binding.mypageFollowing.setOnClickListener {
-            var intent = Intent(this, FollowActivity::class.java)
+            val intent = Intent(this, FollowActivity::class.java)
             intent.putExtra("current", 0)
             intent.putExtra("nickName", nickName)
             intent.putExtra("userIdx", getUserIdx())
@@ -65,7 +65,7 @@ class MyPageActivity : AppCompatActivity(), GetMyPageView {
         }
 
         binding.mypageFollower.setOnClickListener {
-            var intent = Intent(this, FollowActivity::class.java)
+            val intent = Intent(this, FollowActivity::class.java)
             intent.putExtra("current", 1)
             intent.putExtra("nickName", nickName)
             intent.putExtra("userIdx", getUserIdx())

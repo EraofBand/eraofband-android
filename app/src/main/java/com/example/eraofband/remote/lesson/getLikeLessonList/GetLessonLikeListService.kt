@@ -3,8 +3,8 @@ package com.example.eraofband.remote.getLessonLikeList
 import android.util.Log
 import com.example.eraofband.remote.API
 import com.example.eraofband.remote.NetworkModule
-import com.example.eraofband.remote.getLikeLessonList.GetLessonLikeListResponse
-import com.example.eraofband.remote.getLikeLessonList.GetLessonLikeListView
+import com.example.eraofband.remote.lesson.getLikeLessonList.GetLessonLikeListResponse
+import com.example.eraofband.remote.lesson.getLikeLessonList.GetLessonLikeListView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

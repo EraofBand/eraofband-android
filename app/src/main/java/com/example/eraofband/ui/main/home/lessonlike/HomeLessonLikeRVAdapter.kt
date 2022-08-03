@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.ItemLessonBinding
-import com.example.eraofband.remote.getLikeLessonList.GetLessonLikeListResult
+import com.example.eraofband.remote.lesson.getLikeLessonList.GetLessonLikeListResult
 
 class HomeLessonLikeRVAdapter(list: List<GetLessonLikeListResult>) :
     RecyclerView.Adapter<HomeLessonLikeRVAdapter.ViewHolder>() {

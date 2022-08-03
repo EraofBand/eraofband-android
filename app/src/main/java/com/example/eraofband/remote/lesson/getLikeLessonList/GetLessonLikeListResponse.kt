@@ -1,4 +1,4 @@
-package com.example.eraofband.remote.getLikeLessonList
+package com.example.eraofband.remote.lesson.getLikeLessonList
 
 data class GetLessonLikeListResponse(
     var code: Int,
