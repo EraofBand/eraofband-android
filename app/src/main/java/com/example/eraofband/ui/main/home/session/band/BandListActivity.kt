@@ -101,8 +101,11 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
         } else if (sessionValue == 3){
             binding.homeBandListKeyboardCp.isChecked = true
             getRegionBandService.getRegionBand("전체", sessionValue)
-        } else{
+        } else if (sessionValue == 4){
             binding.homeBandListDrumCp.isChecked = true
+            getRegionBandService.getRegionBand("전체", sessionValue)
+        } else{
+            binding.homeBandListTotalCp.isChecked = true
             getRegionBandService.getRegionBand("전체", sessionValue)
         }
     }
@@ -112,6 +115,7 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
         binding.homeBandListListRv.adapter = bandListRVAdapter
         binding.homeBandListListRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
+        bandListRVAdapter.cleanBandList(regionBand)
         bandListRVAdapter.initBandList(regionBand)
 
         bandListRVAdapter.setMyItemClickListener(object : BandListRVAdapter.MyItemClickListener{
