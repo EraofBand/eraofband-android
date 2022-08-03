@@ -125,18 +125,6 @@
             app:chipBackgroundColor="@color/session_chip_color" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/home_band_list_drum_cp"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:layout_width="57dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/pretendard_medium"
-            android:text="@string/drum"
-            android:textColor="@color/white"
-            android:textAlignment="center"
-            android:textSize="13sp"
-            app:chipBackgroundColor="@color/session_chip_color" />
-
-        <com.google.android.material.chip.Chip
             android:id="@+id/home_band_list_keyboard_cp"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="57dp"
@@ -148,6 +136,17 @@
             android:textSize="13sp"
             app:chipBackgroundColor="@color/session_chip_color" />
 
+        <com.google.android.material.chip.Chip
+            android:id="@+id/home_band_list_drum_cp"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="57dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="@string/drum"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="13sp"
+            app:chipBackgroundColor="@color/session_chip_color" />
     </com.google.android.material.chip.ChipGroup>
 
     <androidx.recyclerview.widget.RecyclerView

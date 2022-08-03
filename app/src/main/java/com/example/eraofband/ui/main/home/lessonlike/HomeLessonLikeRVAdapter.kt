@@ -50,7 +50,7 @@ class HomeLessonLikeRVAdapter(list: List<GetLessonLikeListResult>) :
             binding.lessonRegionTv.text = lessonList.lessonRegion
             binding.lessonTitleTv.text = lessonList.lessonTitle
             binding.lessonIntroduceTv.text = lessonList.lessonIntroduction
-            binding.lessonMemberCntTv.text = "${lessonList.memberCount}/${lessonList.capacity}"
+            binding.lessonMemberCntTv.text = "${lessonList.memberCount} / ${lessonList.capacity}"
         }
     }
 }
