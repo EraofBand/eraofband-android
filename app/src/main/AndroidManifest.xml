@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".login.GlobalApplication"
+        android:name="com.example.eraofband.ui.login.GlobalApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -33,9 +33,18 @@
                     android:host="oauth"
                     android:scheme="@string/kakao_native_key" />
             </intent-filter>
-        </activity>
+        </activity> <!-- FCM -->
+
+        <service
+            android:name="com.example.eraofband.ui.login.MyFirebaseInstanceIDService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
-            android:name=".splash.SplashActivity"
+            android:name="com.example.eraofband.ui.splash.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,86 +53,91 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".onboarding.OnboardingActivity"
+            android:name="com.example.eraofband.ui.onboarding.OnboardingActivity"
             android:exported="true" />
         <activity
-            android:name=".signup.SignUpNicknameActivity"
+            android:name="com.example.eraofband.ui.signup.SignUpNicknameActivity"
             android:exported="false" />
         <activity
-            android:name=".signup.SignUpGenderActivity"
+            android:name="com.example.eraofband.ui.signup.SignUpGenderActivity"
             android:exported="false" />
         <activity
-            android:name=".signup.SignUpProfileActivity"
+            android:name="com.example.eraofband.ui.signup.SignUpProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".signup.SignUpLocationActivity"
+            android:name="com.example.eraofband.ui.signup.SignUpLocationActivity"
             android:exported="false" />
         <activity
-            android:name=".signup.SignUpSessionActivity"
+            android:name="com.example.eraofband.ui.signup.SignUpSessionActivity"
             android:exported="false" />
         <activity
-            android:name=".signup.SignUpTermActivity"
+            android:name="com.example.eraofband.ui.signup.SignUpTermActivity"
             android:exported="false" />
         <activity
-            android:name=".login.LoginActivity"
+            android:name="com.example.eraofband.ui.login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".main.MainActivity"
+            android:name="com.example.eraofband.ui.main.MainActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.eraofband.main.home.session.band.BandListActivity"
+            android:name="com.example.eraofband.ui.main.home.session.band.BandListActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.eraofband.main.home.session.band.BandRecruitActivity"
+            android:name="com.example.eraofband.ui.main.home.session.band.BandRecruitActivity"
             android:exported="false" />
         <activity
-            android:name=".main.home.lesson.LessonInfoActivity"
+            android:name="com.example.eraofband.ui.main.home.lesson.LessonInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".main.mypage.ProfileEditActivity"
+            android:name="com.example.eraofband.ui.main.mypage.MyPageActivity"
             android:exported="false" />
         <activity
-            android:name=".main.mypage.MyPageSettingActivity"
+            android:name="com.example.eraofband.ui.main.mypage.ProfileEditActivity"
             android:exported="false" />
         <activity
-            android:name=".main.mypage.MyPageSessionActivity"
+            android:name="com.example.eraofband.ui.main.mypage.MyPageSettingActivity"
             android:exported="false" />
         <activity
-            android:name=".main.mypage.portfolio.PortfolioMakeActivity"
+            android:name="com.example.eraofband.ui.main.mypage.MyPageSessionActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.example.eraofband.ui.main.mypage.portfolio.PortfolioMakeActivity"
             android:exported="true" />
         <activity
-            android:name=".main.mypage.portfolio.PortfolioListActivity"
+            android:name="com.example.eraofband.ui.main.mypage.portfolio.PortfolioListActivity"
             android:exported="true" />
         <activity
-            android:name=".main.mypage.portfolio.PortfolioCommentActivity"
+            android:name="com.example.eraofband.ui.main.mypage.portfolio.PortfolioCommentActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustUnspecified|adjustPan" />
         <activity
-            android:name=".main.mypage.portfolio.PofolEditActivity"
+            android:name="com.example.eraofband.ui.main.mypage.portfolio.PofolEditActivity"
             android:exported="false" />
         <activity
-            android:name=".main.mypage.follow.FollowActivity"
+            android:name="com.example.eraofband.ui.main.mypage.follow.FollowActivity"
             android:exported="false" />
         <activity
-            android:name=".main.chat.ChatContentActivity"
+            android:name="com.example.eraofband.ui.main.chat.ChatContentActivity"
             android:exported="false" />
         <activity
-            android:name=".main.usermypage.UserMyPageActivity"
+            android:name="com.example.eraofband.ui.main.usermypage.UserMyPageActivity"
             android:exported="false" />
         <activity
-            android:name=".main.usermypage.UserPortfolioListActivity"
+            android:name="com.example.eraofband.ui.main.usermypage.UserPortfolioListActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.eraofband.main.home.session.band.BandMakeActivity"
-            android:exported="false"/>
+            android:name="com.example.eraofband.ui.main.home.session.band.BandMakeActivity"
+            android:exported="false" />
         <activity
-            android:name="com.example.eraofband.main.home.session.band.BandEditActivity"
-            android:exported="false"/>
+            android:name="com.example.eraofband.ui.main.home.session.band.BandEditActivity"
+            android:exported="false" />
         <activity
-            android:name=".main.home.lesson.LessonMakeActivity"
-            android:exported="false"/>
+            android:name="com.example.eraofband.ui.main.home.lesson.LessonMakeActivity"
+            android:exported="false" />
         <activity
-            android:name=".main.home.lesson.LessonEditActivity"
+            android:name="com.example.eraofband.ui.main.home.lesson.LessonEditActivity"
+            android:exported="false" />
+        <activity android:name=".ui.main.home.notice.NoticeActivity"
             android:exported="false"/>
     </application>
 

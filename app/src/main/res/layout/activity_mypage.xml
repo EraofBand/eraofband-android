@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bottom_nav">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mypage_actionbar_cl"
+        android:layout_width="match_parent"
+        android:layout_height="92dp"
+        android:background="#111111"
+        android:backgroundTint="@color/background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/mypage_back_ib"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/mypage_title_nickname_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="닉네임"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_marginTop="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.amar.library.ui.StickyScrollView
+        android:id="@+id/mypage_ssv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:overScrollMode="never"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mypage_actionbar_cl"
+        app:stickyHeader="@id/mypage_tb">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#111111">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mypage_info_cl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@drawable/medium_gray_round_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/mypage_profileimg_iv"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="30dp"
+                    android:elevation="10dp"
+                    android:src="@drawable/ic_basic_profile"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/mypage_nickname_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="닉네임"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toEndOf="@+id/mypage_profileimg_iv"
+                    app:layout_constraintTop_toTopOf="@+id/mypage_profileimg_iv" />
+
+                <TextView
+                    android:id="@+id/mypage_detail_info_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="성남시 | 25세 | 남성"
+                    android:textColor="@color/blue"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="@+id/mypage_nickname_tv"
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_nickname_tv" />
+                
+                <TextView
+                    android:id="@+id/mypage_introduction_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:minHeight="45dp"
+                    android:text=""
+                    android:textColor="#E2E2E2"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/pretendard_light"
+                    android:maxLines="3"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintTop_toBottomOf="@id/mypage_detail_info_tv"
+                    app:layout_constraintStart_toStartOf="@id/mypage_detail_info_tv"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/mypage_look_more_tv"
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_regular"
+                    android:text="@string/look_more"
+                    android:textColor="@color/blue"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    android:layout_marginTop="4dp"
+                    app:layout_constraintTop_toBottomOf="@+id/mypage_introduction_tv"
+                    app:layout_constraintStart_toStartOf="@+id/mypage_introduction_tv" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="20dp"
+                    android:layout_marginTop="30dp"
+                    app:layout_constraintTop_toBottomOf="@id/mypage_introduction_tv"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/mypage_following"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/mypage_line_1"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <TextView
+                            android:id="@+id/mypage_following_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/following"
+                            android:textColor="@color/bottom_nav_icon"
+                            android:textSize="13sp"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/pretendard_regular"/>
+
+                        <TextView
+                            android:id="@+id/mypage_following_cnt_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="@color/blue"
+                            android:textSize="20sp"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/pretendard_medium"
+                            android:layout_marginTop="1dp"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <View
+                        android:id="@+id/mypage_line_1"
+                        android:layout_width="1.5dp"
+                        android:layout_height="50dp"
+                        android:background="#383838"
+                        app:layout_constraintStart_toEndOf="@id/mypage_following"
+                        app:layout_constraintEnd_toStartOf="@id/mypage_follower"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/mypage_follower"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/mypage_line_1"
+                        app:layout_constraintEnd_toStartOf="@id/mypage_line_2"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <TextView
+                            android:id="@+id/mypage_follower_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/follower"
+                            android:textColor="@color/bottom_nav_icon"
+                            android:textSize="13sp"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/pretendard_regular"/>
+
+                        <TextView
+                            android:id="@+id/mypage_follower_cnt_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="@color/blue"
+                            android:textSize="20sp"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/pretendard_medium"
+                            android:layout_marginTop="1dp"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <View
+                        android:id="@+id/mypage_line_2"
+                        android:layout_width="1.5dp"
+                        android:layout_height="50dp"
+                        android:background="#383838"
+                        app:layout_constraintStart_toEndOf="@id/mypage_follower"
+                        app:layout_constraintEnd_toStartOf="@id/mypage_portfolio"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/mypage_portfolio"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/mypage_line_2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <TextView
+                            android:id="@+id/mypage_portfolio_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/portfolio"
+                            android:textColor="@color/bottom_nav_icon"
+                            android:textSize="13sp"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/pretendard_regular"/>
+
+                        <TextView
+                            android:id="@+id/mypage_portfolio_cnt_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="@color/blue"
+                            android:textSize="20sp"
+                            android:textAlignment="center"
+                            android:fontFamily="@font/pretendard_medium"
+                            android:layout_marginTop="1dp"/>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/mypage_session_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="세션"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mypage_info_cl" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mypage_session_cl"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/blue_round_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mypage_session_title_tv">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/mypage_session_iv"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="20dp"
+                    android:src="@drawable/ic_guitar_temp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/mypage_session_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@string/guitar"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/mypage_session_iv"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/mypage_session_change_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="변경하기"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/mypage_tb_cl"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_marginTop="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mypage_session_cl"
+                android:background="@drawable/mypage_tab_bg"/>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/mypage_tb"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mypage_tb_cl"
+                app:tabBackground="@drawable/tab_underline"
+                app:tabRippleColor="@android:color/transparent"
+                app:tabSelectedTextColor="@color/blue"
+                app:tabTextAppearance="@style/tab_text"
+                app:tabTextColor="@color/white">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.tabs.TabLayout>
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/mypage_vp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/mypage_tb" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.amar.library.ui.StickyScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

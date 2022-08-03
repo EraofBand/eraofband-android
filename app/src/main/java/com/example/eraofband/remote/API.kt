@@ -1,39 +1,51 @@
 package com.example.eraofband.remote
 
 import com.example.eraofband.data.*
-import com.example.eraofband.remote.applyBand.ApplyBandResponse
-import com.example.eraofband.remote.bandLike.BandLikeDeleteResponse
-import com.example.eraofband.remote.bandLike.BandLikeResponse
-import com.example.eraofband.remote.checkUser.CheckUserResponse
-import com.example.eraofband.remote.deleteBand.DeleteBandResponse
-import com.example.eraofband.remote.deleteLesson.DeleteLessonResponse
-import com.example.eraofband.remote.deletePofol.DeletePofolResponse
-import com.example.eraofband.remote.deleteUserBand.DeleteUserBandResponse
-import com.example.eraofband.remote.deleteUserLesson.DeleteUserLessonResponse
-import com.example.eraofband.remote.getBand.GetBandResponse
-import com.example.eraofband.remote.getLessonInfo.GetLessonInfoResponse
-import com.example.eraofband.remote.getLessonList.GetLessonListResponse
-import com.example.eraofband.remote.patchSession.PatchSessionResponse
-import com.example.eraofband.remote.getMyPage.GetMyPageResponse
-import com.example.eraofband.remote.getMyPofol.GetMyPofolResponse
-import com.example.eraofband.remote.getNewBand.GetNewBandResponse
-import com.example.eraofband.remote.getPopularBand.GetPopularBandResponse
-import com.example.eraofband.remote.getRegionBand.GetRegionBandResponse
-import com.example.eraofband.remote.getotheruser.GetOtherUserResponse
-import com.example.eraofband.remote.kakaologin.KakaoLoginResponse
-import com.example.eraofband.remote.makeBand.MakeBandResponse
-import com.example.eraofband.remote.makeLesson.MakeLessonResponse
-import com.example.eraofband.remote.makePofol.MakePofolResponse
-import com.example.eraofband.remote.patchBand.PatchBandResponse
-import com.example.eraofband.remote.patchLesson.PatchLessonResponse
-import com.example.eraofband.remote.patchPofol.PatchPofolResponse
-import com.example.eraofband.remote.patchuser.PatchUserResponse
-import com.example.eraofband.remote.portfolio.*
+import com.example.eraofband.remote.band.deleteBand.DeleteBandResponse
+import com.example.eraofband.remote.lesson.deleteLesson.DeleteLessonResponse
+import com.example.eraofband.remote.band.deleteUserBand.DeleteUserBandResponse
+import com.example.eraofband.remote.lesson.deleteUserLesson.DeleteUserLessonResponse
+import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResponse
+import com.example.eraofband.remote.band.patchBand.PatchBandResponse
+import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonResponse
+import com.example.eraofband.remote.band.applyBand.ApplyBandResponse
+import com.example.eraofband.remote.band.applyDecision.AcceptApplyResponse
+import com.example.eraofband.remote.band.applyDecision.RejectApplyResponse
+import com.example.eraofband.remote.band.bandLike.BandLikeDeleteResponse
+import com.example.eraofband.remote.band.bandLike.BandLikeResponse
+import com.example.eraofband.remote.band.getBand.GetBandResponse
+import com.example.eraofband.remote.band.getLikedBand.GetLikedBandResponse
+import com.example.eraofband.remote.band.getNewBand.GetNewBandResponse
+import com.example.eraofband.remote.band.getPopularBand.GetPopularBandResponse
+import com.example.eraofband.remote.band.makeBand.MakeBandResponse
+import com.example.eraofband.remote.lesson.getLikeLessonList.GetLessonLikeListResponse
+import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoResponse
+import com.example.eraofband.remote.lesson.getLessonList.GetLessonListResponse
+import com.example.eraofband.remote.lesson.makeLesson.MakeLessonResponse
+import com.example.eraofband.remote.lesson.patchLesson.PatchLessonResponse
+import com.example.eraofband.remote.lesson.lessonLike.LessonLikeDeleteResponse
+import com.example.eraofband.remote.lesson.lessonLike.LessonLikeResponse
+import com.example.eraofband.remote.notice.GetNoticeResponse
+import com.example.eraofband.remote.portfolio.deletePofol.DeletePofolResponse
+import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResponse
+import com.example.eraofband.remote.portfolio.makePofol.MakePofolResponse
+import com.example.eraofband.remote.portfolio.patchPofol.PatchPofolResponse
+import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentDeleteResponse
+import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentResponse
+import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentWriteResponse
+import com.example.eraofband.remote.portfolio.pofolLike.PofolDeleteLikeResponse
+import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeResponse
 import com.example.eraofband.remote.sendimg.SendImgResponse
-import com.example.eraofband.remote.signout.ResignResponse
-import com.example.eraofband.remote.userfollow.UserFollowResponse
-import com.example.eraofband.remote.userfollowlist.UserFollowListResponse
-import com.example.eraofband.remote.userunfollow.UserUnfollowResponse
+import com.example.eraofband.remote.user.checkUser.CheckUserResponse
+import com.example.eraofband.remote.user.getMyPage.GetMyPageResponse
+import com.example.eraofband.remote.user.getOtherUser.GetOtherUserResponse
+import com.example.eraofband.remote.user.kakaologin.KakaoLoginResponse
+import com.example.eraofband.remote.user.patchSession.PatchSessionResponse
+import com.example.eraofband.remote.user.patchUser.PatchUserResponse
+import com.example.eraofband.remote.user.signout.ResignResponse
+import com.example.eraofband.remote.user.userFollow.UserFollowResponse
+import com.example.eraofband.remote.user.userFollowList.UserFollowListResponse
+import com.example.eraofband.remote.user.userUnfollow.UserUnfollowResponse
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -73,9 +85,21 @@ interface API {
     @DELETE("/sessions/unlikes/{bandIdx}")
     fun bandLikeDelete(@Header("X-ACCESS-TOKEN") jwt : String, @Path("bandIdx") bandIdx : Int) : Call<BandLikeDeleteResponse>
 
-    // 밴드 지원하기
+    // 세션 지원하기
     @POST("/sessions/{bandIdx}")
     fun applyBand(@Header("X-ACCESS-TOKEN") jwt: String, @Path("bandIdx") bandIdx: Int, @Body session: Int) : Call<ApplyBandResponse>
+
+    // 세션 지원 수락하기
+    @PATCH("/sessions/in/{bandIdx}/{userIdx}")
+    fun acceptApply(@Path("bandIdx") bandIdx: Int, @Path("userIdx") userIdx: Int) : Call<AcceptApplyResponse>
+
+    // 세션 지원 거절하기
+    @PATCH("/sessions/out/{bandIdx}/{userIdx}")
+    fun rejectApply(@Path("bandIdx") bandIdx: Int, @Path("userIdx") userIdx: Int) : Call<RejectApplyResponse>
+
+    // 찜한 밴드 불러오기
+    @GET("/sessions/info/likes")
+    fun getLikedBand(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetLikedBandResponse>
 
     // 마이페이지 정보 조회
     @GET("/users/info/my-page/{userIdx}")
@@ -143,7 +167,7 @@ interface API {
 
     // 유저 팔로우 리스트 불러오기
     @GET("/users/info/follow/{userIdx}")
-    fun userFollowList(@Path("userIdx") userIdx: Int) : Call<UserFollowListResponse>
+    fun userFollowList(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<UserFollowListResponse>
 
     //밴드 생성 등록
     @POST("/sessions")
@@ -188,4 +212,24 @@ interface API {
     //레슨 탈퇴
     @DELETE("/lessons/out/{lessonIdx}")
     fun deleteUserLesson(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int) : Call<DeleteUserLessonResponse>
+
+    // 레슨 지원
+    @POST("/lessons/{lessonIdx}")
+    fun applyLesson(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int) : Call<ApplyLessonResponse>
+
+    // 레슨 좋아요
+    @POST("/lessons/likes/{lessonIdx}")
+    fun lessonLike(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int) : Call<LessonLikeResponse>
+
+    // 레슨 좋아요 취소
+    @DELETE("/lessons/unlikes/{lessonIdx}")
+    fun lessonLikeDelete(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int) : Call<LessonLikeDeleteResponse>
+
+    // 찜한 레슨 정보 반환
+    @GET("/lessons/info/likes")
+    fun getLessonLikeList(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetLessonLikeListResponse>
+
+    // 알림 리스트 조회
+    @GET("/notice/notice/{userIdx}")
+    fun getNotice(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<GetNoticeResponse>
 }
