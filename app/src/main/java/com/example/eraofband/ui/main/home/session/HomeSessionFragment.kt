@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.databinding.FragmentHomeSessionBinding
 import com.example.eraofband.ui.main.home.session.band.BandListActivity
 import com.example.eraofband.ui.main.home.session.band.BandRecruitActivity
-import com.example.eraofband.ui.main.home.session.band.HomeSessionPopularBandRVAdapter
 import com.example.eraofband.remote.band.getNewBand.GetNewBandResult
 import com.example.eraofband.remote.band.getNewBand.GetNewBandService
 import com.example.eraofband.remote.band.getNewBand.GetNewBandView
