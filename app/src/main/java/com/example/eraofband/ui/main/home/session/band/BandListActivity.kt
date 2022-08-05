@@ -13,6 +13,7 @@ import com.example.eraofband.databinding.ActivityBandListBinding
 import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResult
 import com.example.eraofband.remote.band.getRegionBand.GetRegionBandService
 import com.example.eraofband.remote.band.getRegionBand.GetRegionBandView
+import com.example.eraofband.ui.main.home.HomeFabDialog
 
 class BandListActivity: AppCompatActivity(), GetRegionBandView {
 
@@ -29,7 +30,14 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
         setContentView(binding.root)
 
         initSpinner()
+
         binding.homeBandListBackIv.setOnClickListener { finish() }
+
+        binding.homeBandListFab.setOnClickListener {
+            val fabDialog = BandFabDialog()
+            fabDialog.show(supportFragmentManager, "bandFabDialog")
+        }
+
     }
 
     override fun onResume() {

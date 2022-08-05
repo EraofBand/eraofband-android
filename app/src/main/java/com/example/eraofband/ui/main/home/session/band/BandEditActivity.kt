@@ -45,6 +45,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.remote.band.getBand.GetBandResult
 import com.example.eraofband.remote.band.getBand.GetBandService
 import com.example.eraofband.remote.band.getBand.GetBandView
+import java.text.DecimalFormat
 
 
 class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendImgView{
@@ -90,10 +91,13 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         binding.homeBandEditNameEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
+
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding.homeBandEditNameCntTv.text = binding.homeBandEditNameEt.text.length.toString() + " / 20"
+                binding.homeBandEditNameCntTv.text =
+                    binding.homeBandEditNameEt.text.length.toString() + " / 20"
             }
+
             override fun afterTextChanged(p0: Editable?) {
                 binding.homeBandEditNameEt.hint = ""
             }
@@ -102,10 +106,13 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         binding.homeBandEditInfoEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
+
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding.homeBandEditInfoCntTv.text = binding.homeBandEditInfoEt.text.length.toString() + " / 20"
+                binding.homeBandEditInfoCntTv.text =
+                    binding.homeBandEditInfoEt.text.length.toString() + " / 20"
             }
+
             override fun afterTextChanged(p0: Editable?) {
                 binding.homeBandEditInfoEt.hint = ""
             }
@@ -114,51 +121,62 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         binding.homeBandEditDetailEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
+
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding.homeBandEditDetailCntTv.text = binding.homeBandEditDetailEt.text.length.toString() + " / 500"
+                binding.homeBandEditDetailCntTv.text =
+                    binding.homeBandEditDetailEt.text.length.toString() + " / 500"
             }
+
             override fun afterTextChanged(p0: Editable?) {
                 binding.homeBandEditDetailEt.hint = ""
             }
         })
 
-        binding.homeBandShowNameEt.addTextChangedListener(object : TextWatcher{
+        binding.homeBandShowNameEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
+
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding.homeBandShowNameCntTv.text = binding.homeBandShowNameEt.text.length.toString() + " / 20"
+                binding.homeBandShowNameCntTv.text =
+                    binding.homeBandShowNameEt.text.length.toString() + " / 20"
             }
+
             override fun afterTextChanged(p0: Editable?) {
                 binding.homeBandShowNameEt.hint = ""
             }
         })
 
-        binding.homeBandShowLocationEt.addTextChangedListener(object : TextWatcher{
+        binding.homeBandShowLocationEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
+
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding.homeBandShowLocationCntTv.text = binding.homeBandShowLocationEt.text.length.toString() + " / 20"
+                binding.homeBandShowLocationCntTv.text =
+                    binding.homeBandShowLocationEt.text.length.toString() + " / 20"
             }
+
             override fun afterTextChanged(p0: Editable?) {
                 binding.homeBandShowLocationEt.hint = ""
             }
         })
 
-        binding.homeBandShowFeeEt.addTextChangedListener(object : TextWatcher{
+        binding.homeBandShowFeeEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
+
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding.homeBandShowFeeCntTv.text = binding.homeBandShowFeeEt.text.length.toString() + " / 10"
+                binding.homeBandShowFeeCntTv.text =
+                    binding.homeBandShowFeeEt.text.length.toString() + " / 10"
             }
+
             override fun afterTextChanged(p0: Editable?) {
                 binding.homeBandShowFeeEt.hint = ""
             }
         })
-
 
         binding.homeBandEditRegisterBtn.setOnClickListener {
             val patchBandService = PatchBandService()
@@ -173,6 +191,7 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
                 finish()
             }, 100)
         }
+
         Log.d("CNT/TEST", "123  ${vocalCnt} , ${guitarCnt}, ${baseCnt}, $keyboardCnt, ${drumCnt}")
         initVocalCnt()
         initGuitarCnt()
@@ -219,8 +238,10 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         band.drumComment = binding.homeBandEditDrumEt.text.toString()
 
         band.performTitle = binding.homeBandShowNameEt.text.toString()
-        val performFee = binding.homeBandShowFeeEt.text.toString()
-        band.performFee = performFee.toInt()
+        if(!binding.homeBandShowFeeEt.text.isNullOrEmpty()) {
+            val performFee = binding.homeBandShowFeeEt.text.toString()
+            band.performFee = performFee.toInt()
+        }
         band.performLocation = binding.homeBandShowLocationEt.text.toString()
 
         band.performDate = binding.homeBandShowDateEt.text.toString()
@@ -588,6 +609,16 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
                 4 -> nowDrum++
             }
         }
+
+        if(!result.performTitle.isNullOrEmpty() || !result.performDate.isNullOrEmpty() || !result.performTime.isNullOrEmpty() || !result.performLocation.isNullOrEmpty()){
+            binding.homeBandShowTimeEt.text = result.performTime
+            binding.homeBandShowLocationEt.setText(result.performLocation)
+            binding.homeBandShowNameEt.setText(result.performTitle)
+            binding.homeBandShowFeeEt.setText(result.performFee.toString())
+            binding.homeBandShowDateEt.text = result.performDate
+
+        }
+
         initRegion(result.bandRegion)
         spinnerClickListener()
     }

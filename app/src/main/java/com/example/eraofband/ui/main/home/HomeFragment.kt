@@ -16,6 +16,7 @@ import com.example.eraofband.remote.notice.getNewNotice.GetNewNoticeService
 import com.example.eraofband.remote.notice.getNewNotice.GetNewNoticeView
 import com.example.eraofband.ui.login.GlobalApplication
 import com.example.eraofband.ui.main.home.notice.NoticeActivity
+import com.example.eraofband.ui.main.search.SearchActivity
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : Fragment(), GetNewNoticeView {
@@ -40,6 +41,10 @@ class HomeFragment : Fragment(), GetNewNoticeView {
         binding.homeFab.setOnClickListener{
             val fabDialog = HomeFabDialog()
             fabDialog.show(fragmentManager!!, "homeFAB")
+        }
+
+        binding.homeSearchIb.setOnClickListener {
+            startActivity(Intent(context, SearchActivity::class.java))
         }
 
         binding.homeNoticeIb.setOnClickListener {

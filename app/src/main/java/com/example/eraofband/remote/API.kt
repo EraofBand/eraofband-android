@@ -37,6 +37,9 @@ import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentResponse
 import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentWriteResponse
 import com.example.eraofband.remote.portfolio.pofolLike.PofolDeleteLikeResponse
 import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeResponse
+import com.example.eraofband.remote.search.getBand.GetSearchBandResponse
+import com.example.eraofband.remote.search.getLesson.GetSearchLessonResponse
+import com.example.eraofband.remote.search.getUser.GetSearchUserResponse
 import com.example.eraofband.remote.sendimg.SendImgResponse
 import com.example.eraofband.remote.user.checkUser.CheckUserResponse
 import com.example.eraofband.remote.user.getMyPage.GetMyPageResponse
@@ -242,4 +245,16 @@ interface API {
     // 알림 전체 삭제
     @DELETE("/notice/status")
     fun deleteNotice(@Header("X-ACCESS-TOKEN") jwt: String) : Call<DeleteNoticeResponse>
+
+    //유저 검색
+    @GET("/search/users/{keyword}")
+    fun getSearchUser(@Path("keyword") keyword: String) : Call<GetSearchUserResponse>
+
+    //밴드 검색
+    @GET("/search/bands/{keyword}")
+    fun getSearchBand(@Path("keyword") keyword: String) : Call<GetSearchBandResponse>
+
+    //레슨 검색
+    @GET("/search/lessons/{keyword}")
+    fun getSearchLesson(@Path("keyword") keyword: String) : Call<GetSearchLessonResponse>
 }
