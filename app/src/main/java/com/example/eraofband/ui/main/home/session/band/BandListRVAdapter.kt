@@ -23,11 +23,6 @@ class BandListRVAdapter : RecyclerView.Adapter<BandListRVAdapter.ViewHolder>() {
         mItemClickListener = itemClickListener
     }
 
-    fun cleanBandList(bandList: List<GetRegionBandResult>){
-        this.bandList.clear()
-        notifyDataSetChanged()
-    }
-
     @SuppressLint("NotifyDataSetChanged")
     fun initBandList(bandList: List<GetRegionBandResult>) {
         this.bandList.addAll(bandList)

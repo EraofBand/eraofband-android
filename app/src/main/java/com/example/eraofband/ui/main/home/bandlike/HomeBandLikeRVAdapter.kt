@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.ItemBandListBinding
 import com.example.eraofband.remote.band.getLikedBand.GetLikedBandResult
 import com.example.eraofband.ui.main.home.HomeFabDialog
@@ -45,7 +46,9 @@ class HomeBandLikeRVAdapter(private val context: Context): RecyclerView.Adapter<
     inner class ViewHolder(val binding: ItemBandListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(band: GetLikedBandResult) {
-            Glide.with(context).load(band.bandImgUrl).into(binding.bandListImgIv)  // 밴드 이미지
+            Glide.with(context).load(band.bandImgUrl)
+                .apply(RequestOptions.centerCropTransform())
+                .into(binding.bandListImgIv)  // 밴드 이미지
             binding.bandListImgIv.clipToOutline = true  // 모서리 깎기
 
             binding.bandListTitleTv.text = band.bandTitle  // 밴드 타이틀

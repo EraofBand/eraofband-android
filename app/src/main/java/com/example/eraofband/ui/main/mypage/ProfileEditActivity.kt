@@ -78,7 +78,7 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
         // 소개 글 글자 수 실시간 연동
         binding.profileEditIntroduceEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                binding.profileEditIntroduceEt.hint = "이거 때문인가?"
+                binding.profileEditIntroduceEt.hint = "."
             }
 
             @SuppressLint("SetTextI18n")

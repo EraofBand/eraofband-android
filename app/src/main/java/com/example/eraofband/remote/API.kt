@@ -25,7 +25,9 @@ import com.example.eraofband.remote.lesson.makeLesson.MakeLessonResponse
 import com.example.eraofband.remote.lesson.patchLesson.PatchLessonResponse
 import com.example.eraofband.remote.lesson.lessonLike.LessonLikeDeleteResponse
 import com.example.eraofband.remote.lesson.lessonLike.LessonLikeResponse
-import com.example.eraofband.remote.notice.GetNoticeResponse
+import com.example.eraofband.remote.notice.deleteNotice.DeleteNoticeResponse
+import com.example.eraofband.remote.notice.getNewNotice.GetNewNoticeResponse
+import com.example.eraofband.remote.notice.getNotice.GetNoticeResponse
 import com.example.eraofband.remote.portfolio.deletePofol.DeletePofolResponse
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResponse
 import com.example.eraofband.remote.portfolio.makePofol.MakePofolResponse
@@ -233,8 +235,16 @@ interface API {
     fun getLessonLikeList(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetLessonLikeListResponse>
 
     // 알림 리스트 조회
-    @GET("/notice/notice/{userIdx}")
+    @GET("/notice/{userIdx}")
     fun getNotice(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<GetNoticeResponse>
+
+    // 홈 화면 새 알림 여부
+    @GET("/notice/alarm")
+    fun getNewNotice(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetNewNoticeResponse>
+
+    // 알림 전체 삭제
+    @DELETE("/notice/status")
+    fun deleteNotice(@Header("X-ACCESS-TOKEN") jwt: String) : Call<DeleteNoticeResponse>
 
     //유저 검색
     @GET("/search/users/{keyword}")
@@ -244,7 +254,7 @@ interface API {
     @GET("/search/bands/{keyword}")
     fun getSearchBand(@Path("keyword") keyword: String) : Call<GetSearchBandResponse>
 
-    //레슨슨 검색
+    //레슨 검색
     @GET("/search/lessons/{keyword}")
     fun getSearchLesson(@Path("keyword") keyword: String) : Call<GetSearchLessonResponse>
 }

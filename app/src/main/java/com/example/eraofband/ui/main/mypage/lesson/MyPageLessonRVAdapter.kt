@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.ItemMypageBandBinding
 import com.example.eraofband.remote.user.getMyPage.GetUserLesson
 
@@ -44,7 +45,9 @@ class MyPageLessonRVAdapter(private val context: Context) : RecyclerView.Adapter
 
     inner class ViewHolder(val binding: ItemMypageBandBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(lesson: GetUserLesson) {
-            Glide.with(context).load(lesson.lessonImgUrl).into(binding.bandListImgIv)
+            Glide.with(context).load(lesson.lessonImgUrl)
+                .apply(RequestOptions.centerCropTransform())
+                .into(binding.bandListImgIv)
             binding.bandListImgIv.clipToOutline = true  // 모서리 깎기
 
             binding.bandListRegionTv.text = lesson.lessonRegion

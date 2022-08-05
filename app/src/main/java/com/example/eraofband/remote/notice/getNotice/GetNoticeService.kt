@@ -1,4 +1,4 @@
-package com.example.eraofband.remote.notice
+package com.example.eraofband.remote.notice.getNotice
 
 import android.util.Log
 import com.example.eraofband.remote.API
