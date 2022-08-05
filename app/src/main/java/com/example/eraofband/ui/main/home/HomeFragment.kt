@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.example.eraofband.databinding.FragmentHomeBinding
 import com.example.eraofband.ui.login.GlobalApplication
 import com.example.eraofband.ui.main.home.notice.NoticeActivity
+import com.example.eraofband.ui.main.search.SearchActivity
 import com.google.android.material.tabs.TabLayoutMediator
 
 class HomeFragment : Fragment() {
@@ -28,8 +29,6 @@ class HomeFragment : Fragment() {
 
         sizeCheck()
 
-
-
         return binding.root
     }
 
@@ -39,6 +38,10 @@ class HomeFragment : Fragment() {
         binding.homeFab.setOnClickListener{
             val fabDialog = HomeFabDialog()
             fabDialog.show(fragmentManager!!, "homeFAB")
+        }
+
+        binding.homeSearchIb.setOnClickListener {
+            startActivity(Intent(context, SearchActivity::class.java))
         }
 
         binding.homeNoticeIb.setOnClickListener {

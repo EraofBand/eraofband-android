@@ -17,6 +17,7 @@ import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.example.eraofband.remote.band.getBand.GetBandResult
 import com.example.eraofband.remote.band.getBand.SessionMembers
 import com.google.gson.Gson
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -108,7 +109,7 @@ class BandRecruitInfoFragment: Fragment() {
             initRecyclerView(band.sessionMembers)  // 세션 멤버
         }
 
-        if(!band.performTitle.isNullOrEmpty() || !band.performDate.isNullOrEmpty() || !band.performTime.isNullOrEmpty() || !band.performLocation.isNullOrEmpty()) {
+        if(!band.performTitle.isNullOrEmpty() && !band.performDate.isNullOrEmpty() && !band.performTime.isNullOrEmpty() && !band.performLocation.isNullOrEmpty()) {
             // 공연 정보가 하나라도 있는 경우
             binding.bandRecruitInfoShowCl.visibility = View.VISIBLE
 
@@ -121,7 +122,11 @@ class BandRecruitInfoFragment: Fragment() {
             binding.bandRecruitInfoShowLocationTv.text = band.performLocation  // 공연 지역
 
             if(band.performFee == 0) binding.bandInfoShowTicketTv.text = "무료"  // 공연 가격
-            else binding.bandInfoShowTicketTv.text = band.performFee.toString()
+            else {
+                val dec = DecimalFormat("#,###")
+                val editFee = dec.format(band.performFee)
+                binding.bandInfoShowTicketTv.text = editFee
+            }
 
         }
         else {

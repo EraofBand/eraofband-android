@@ -1,7 +1,10 @@
 package com.example.eraofband.ui.main.mypage.follow
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,11 +16,17 @@ import com.example.eraofband.databinding.FragmentFollowingBinding
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.example.eraofband.remote.user.userFollowList.*
 import com.example.eraofband.ui.main.mypage.MyPageActivity
+import java.util.*
+import kotlin.collections.ArrayList
 
 class FollowingFragment(var userIdx: Int) : Fragment(), UserFollowListView {
 
     private var _binding: FragmentFollowingBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
+
+    private val mAdapter = FollowingRVAdapter()
+    private lateinit var followings : List<FollowingInfo>
+    private var searchLists = ArrayList<FollowingInfo>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,7 +34,31 @@ class FollowingFragment(var userIdx: Int) : Fragment(), UserFollowListView {
     ): View? {
         _binding = FragmentFollowingBinding.inflate(inflater, container, false)
 
+        binding.followingSearchEt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            @SuppressLint("SetTextI18n")
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun afterTextChanged(p0: Editable?) {
+                val searchId = binding.followingSearchEt.text.toString()
+                searchFilter(searchId)
+                binding.followingSearchEt.hint = ""
+            }
+        })
         return binding.root
+    }
+
+    private fun searchFilter(id: String) {
+        searchLists.clear()
+        for (i in followings.indices) {
+            if (followings[i].nickName.toLowerCase()
+                    .contains(id.lowercase(Locale.getDefault()))
+            ) {
+                searchLists.add(followings[i])
+            }
+        }
+        mAdapter.filterList(searchLists)
     }
 
     override fun onResume() {
@@ -36,7 +69,6 @@ class FollowingFragment(var userIdx: Int) : Fragment(), UserFollowListView {
     }
 
     private fun connectAdapter(item: List<FollowingInfo>) {
-        val mAdapter = FollowingRVAdapter()
         binding.followingRv.adapter = mAdapter
         binding.followingRv.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -75,6 +107,7 @@ class FollowingFragment(var userIdx: Int) : Fragment(), UserFollowListView {
     override fun onUserFollowListSuccess(code: Int, result: UserFollowListResult) {
         Log.d("FOLLOWLIST", "$code $result")
         connectAdapter(result.getfollowing)
+        followings = result.getfollowing
     }
 
     override fun onUserFollowListFailure(code: Int, message: String) {

@@ -19,6 +19,9 @@
         android:theme="@style/Theme.EraofBand"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".SearchActivity"
+            android:exported="false" />
         <!-- 카카오 로그인 AuthCodeHandler -->
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
@@ -34,7 +37,6 @@
                     android:scheme="@string/kakao_native_key" />
             </intent-filter>
         </activity> <!-- FCM -->
-
         <service
             android:name="com.example.eraofband.ui.login.MyFirebaseInstanceIDService"
             android:exported="true">
@@ -137,7 +139,11 @@
         <activity
             android:name="com.example.eraofband.ui.main.home.lesson.LessonEditActivity"
             android:exported="false" />
-        <activity android:name=".ui.main.home.notice.NoticeActivity"
+        <activity
+            android:name=".ui.main.home.notice.NoticeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.search.SearchActivity"
             android:exported="false"/>
     </application>
 
