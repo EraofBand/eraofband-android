@@ -26,9 +26,9 @@ class DeleteUserBandService {
 
                 val resp : DeleteUserBandResponse = response.body()!!
 
-                when(val code = resp.code) {
-                    1000 -> deleteView.onDeleteUserSuccess(code, resp.result)  // 성공
-                    else -> deleteView.onDeleteUserFailure(resp)
+                when(resp.code) {
+                    1000 -> deleteView.onDeleteUserSuccess(resp.result)  // 성공
+                    else -> deleteView.onDeleteUserFailure(resp.code, resp.message)
                 }
             }
 

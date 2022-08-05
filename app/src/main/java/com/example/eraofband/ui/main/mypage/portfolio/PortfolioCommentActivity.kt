@@ -31,8 +31,6 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
     private val commentService = PofolCommentService()
     private val commentRVAdapter = PortfolioCommentRVAdapter(this)
 
-    private val portfolios = arrayListOf<PofolCommentResult>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
