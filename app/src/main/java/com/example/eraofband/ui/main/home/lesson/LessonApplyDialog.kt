@@ -66,9 +66,9 @@ class LessonApplyDialog(private val teacherIdx: Int, private val jwt: String, pr
     override fun onApplyLessonSuccess(result: ApplyLessonResult) {
         Log.d("APPLY/SUCCESS", result.toString())
 
-        val completeDialog = SessionCompleteDialog("lesson")
+        val completeDialog = SessionCompleteDialog()
         completeDialog.isCancelable = false
-        completeDialog.show(activity!!.supportFragmentManager, "complete")
+        completeDialog.show(activity!!.supportFragmentManager, "lessonApply")
         dismiss()
 
     }
@@ -77,9 +77,9 @@ class LessonApplyDialog(private val teacherIdx: Int, private val jwt: String, pr
         Log.d("APPLY/FAIL", "$code $message")
 
         // 중복 신청 불가 다이얼로그로 넘아감
-        val completeDialog = SessionCompleteDialog("fail")
+        val completeDialog = SessionCompleteDialog()
         completeDialog.isCancelable = false
-        completeDialog.show(activity!!.supportFragmentManager, "fail")
+        completeDialog.show(activity!!.supportFragmentManager, "duplicateLesson")
 
         dismiss()
     }

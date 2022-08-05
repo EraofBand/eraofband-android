@@ -1,6 +1,7 @@
 package com.example.eraofband.ui.main.home.session.band
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -52,6 +53,8 @@ class BandRecruitSessionListRVAdapter(private val bandName: String, private val 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(sessionList[position])
+
+        Log.d("POSITION", position.toString())
 
         // 클릭 이벤트
         holder.binding.sessionListVolunteerTv.setOnClickListener { mItemClickListener.showApplyPopup(bandIdx, sessionList[position].sessionInt) }

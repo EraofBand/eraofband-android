@@ -124,7 +124,7 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
 
     private fun navigateGallery() {
         val intent = Intent(Intent.ACTION_PICK)
-        // 가져올 컨텐츠들 중에서 Image 만을 가져온다.
+        // 가져올 컨텐츠들 중에서 video 만을 가져온다.
         intent.type = "video/*"
         // 갤러리에서 이미지를 선택한 후, 프로필 이미지뷰를 수정하기 위해 갤러리에서 수행한 값을 받아오는 startActivityForeResult를 사용한다.
         startActivityForResult(intent, 2000)

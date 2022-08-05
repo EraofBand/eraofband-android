@@ -3,6 +3,7 @@ package com.example.eraofband.ui.main.home.session.band
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -116,9 +117,9 @@ class BandRecruitSessionFragment : Fragment() {
                 applyDialog.setDialogListener(object : SessionDecisionDialog.ApplyDecision {
                     override fun applyAccept(session: Int) {  // 지원 수락
                         // 수락 다이얼로그 띄우기
-                        val completeDialog = SessionCompleteDialog("accept")
+                        val completeDialog = SessionCompleteDialog()
                         completeDialog.isCancelable = false
-                        completeDialog.show(activity!!.supportFragmentManager, "complete")
+                        completeDialog.show(activity!!.supportFragmentManager, "acceptApply")
 
                         applyDialog.dismiss()  // 창 제거
 
@@ -138,9 +139,9 @@ class BandRecruitSessionFragment : Fragment() {
 
                     override fun applyReject(session: Int) {  // 지원 거절
                         // 거절 다이얼로그 띄우기
-                        val completeDialog = SessionCompleteDialog("reject")
+                        val completeDialog = SessionCompleteDialog()
                         completeDialog.isCancelable = false
-                        completeDialog.show(activity!!.supportFragmentManager, "complete")
+                        completeDialog.show(activity!!.supportFragmentManager, "rejectApply")
 
                         applyDialog.dismiss()  // 창 제거
 
