@@ -1,4 +1,4 @@
-package com.example.eraofband.remote.notice
+package com.example.eraofband.remote.notice.getNewNotice
 
 import android.util.Log
 import com.example.eraofband.remote.API
@@ -18,7 +18,7 @@ class GetNewNoticeService {
 
         val getNewNoticeService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
-        getNewNoticeService?.getNewNotict(jwt)?.enqueue(object : Callback<GetNewNoticeResponse> {
+        getNewNoticeService?.getNewNotice(jwt)?.enqueue(object : Callback<GetNewNoticeResponse> {
             override fun onResponse(call: Call<GetNewNoticeResponse>, response: Response<GetNewNoticeResponse>) {
                 // 응답이 왔을 때 처리
                 Log.d("GET NEW NOTICE / SUCCESS", response.toString())

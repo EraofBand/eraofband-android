@@ -1,4 +1,4 @@
-package com.example.eraofband.remote.notice
+package com.example.eraofband.remote.notice.getNewNotice
 
 data class GetNewNoticeResponse (
     var code: Int,

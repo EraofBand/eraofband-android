@@ -1,5 +1,7 @@
 package com.example.eraofband.ui.main.home.notice
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,10 +9,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.ItemNoticeBinding
-import com.example.eraofband.remote.notice.GetNoticeResult
+import com.example.eraofband.remote.notice.getNotice.GetNoticeResult
+import com.example.eraofband.remote.user.getMyPage.GetUserPofol
+import com.example.eraofband.ui.main.home.lesson.LessonInfoActivity
+import com.example.eraofband.ui.main.home.lessonlike.HomeLessonLikeRVAdapter
 
-class NoticeRVAdapter(list: List<GetNoticeResult>) : RecyclerView.Adapter<NoticeRVAdapter.ViewHolder>() {
+class NoticeRVAdapter(list: ArrayList<GetNoticeResult>) : RecyclerView.Adapter<NoticeRVAdapter.ViewHolder>() {
     private var noticeList = list
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun reset() {
+        if (noticeList.isNotEmpty()) {
+            noticeList.clear()
+            notifyDataSetChanged()
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: ItemNoticeBinding = ItemNoticeBinding.inflate(
@@ -43,4 +56,5 @@ class NoticeRVAdapter(list: List<GetNoticeResult>) : RecyclerView.Adapter<Notice
                 binding.itemNoticeNewIv.visibility = View.INVISIBLE
         }
     }
+
 }

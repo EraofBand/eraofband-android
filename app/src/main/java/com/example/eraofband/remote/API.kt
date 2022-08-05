@@ -25,8 +25,9 @@ import com.example.eraofband.remote.lesson.makeLesson.MakeLessonResponse
 import com.example.eraofband.remote.lesson.patchLesson.PatchLessonResponse
 import com.example.eraofband.remote.lesson.lessonLike.LessonLikeDeleteResponse
 import com.example.eraofband.remote.lesson.lessonLike.LessonLikeResponse
-import com.example.eraofband.remote.notice.GetNewNoticeResponse
-import com.example.eraofband.remote.notice.GetNoticeResponse
+import com.example.eraofband.remote.notice.deleteNotice.DeleteNoticeResponse
+import com.example.eraofband.remote.notice.getNewNotice.GetNewNoticeResponse
+import com.example.eraofband.remote.notice.getNotice.GetNoticeResponse
 import com.example.eraofband.remote.portfolio.deletePofol.DeletePofolResponse
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResponse
 import com.example.eraofband.remote.portfolio.makePofol.MakePofolResponse
@@ -236,5 +237,9 @@ interface API {
 
     // 홈 화면 새 알림 여부
     @GET("/notice/alarm")
-    fun getNewNotict(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetNewNoticeResponse>
+    fun getNewNotice(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetNewNoticeResponse>
+
+    // 알림 전체 삭제
+    @DELETE("/notice/status")
+    fun deleteNotice(@Header("X-ACCESS-TOKEN") jwt: String) : Call<DeleteNoticeResponse>
 }

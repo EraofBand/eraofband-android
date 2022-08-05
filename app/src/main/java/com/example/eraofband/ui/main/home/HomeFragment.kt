@@ -11,9 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentHomeBinding
-import com.example.eraofband.remote.notice.GetNewNoticeResult
-import com.example.eraofband.remote.notice.GetNewNoticeService
-import com.example.eraofband.remote.notice.GetNewNoticeView
+import com.example.eraofband.remote.notice.getNewNotice.GetNewNoticeResult
+import com.example.eraofband.remote.notice.getNewNotice.GetNewNoticeService
+import com.example.eraofband.remote.notice.getNewNotice.GetNewNoticeView
 import com.example.eraofband.ui.login.GlobalApplication
 import com.example.eraofband.ui.main.home.notice.NoticeActivity
 import com.google.android.material.tabs.TabLayoutMediator

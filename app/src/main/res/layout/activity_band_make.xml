@@ -301,8 +301,6 @@
                 android:textSize="15sp"
                 android:maxLength="80"
                 android:paddingHorizontal="20dp"
-                android:linksClickable="true"
-                android:autoLink="web"
                 android:layout_marginTop="20dp"
                 app:layout_constraintTop_toBottomOf="@id/home_band_make_chat_tv"/>
 

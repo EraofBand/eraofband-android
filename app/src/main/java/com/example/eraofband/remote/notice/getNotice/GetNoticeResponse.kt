@@ -1,10 +1,10 @@
-package com.example.eraofband.remote.notice
+package com.example.eraofband.remote.notice.getNotice
 
 data class GetNoticeResponse (
     var code: Int,
     var isSuccess: Boolean,
     var message: String,
-    var result: List<GetNoticeResult>
+    var result: ArrayList<GetNoticeResult>
 )
 
 data class GetNoticeResult (
