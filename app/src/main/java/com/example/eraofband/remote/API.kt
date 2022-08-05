@@ -25,6 +25,7 @@ import com.example.eraofband.remote.lesson.makeLesson.MakeLessonResponse
 import com.example.eraofband.remote.lesson.patchLesson.PatchLessonResponse
 import com.example.eraofband.remote.lesson.lessonLike.LessonLikeDeleteResponse
 import com.example.eraofband.remote.lesson.lessonLike.LessonLikeResponse
+import com.example.eraofband.remote.notice.GetNewNoticeResponse
 import com.example.eraofband.remote.notice.GetNoticeResponse
 import com.example.eraofband.remote.portfolio.deletePofol.DeletePofolResponse
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResponse
@@ -230,6 +231,10 @@ interface API {
     fun getLessonLikeList(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetLessonLikeListResponse>
 
     // 알림 리스트 조회
-    @GET("/notice/notice/{userIdx}")
+    @GET("/notice/{userIdx}")
     fun getNotice(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<GetNoticeResponse>
+
+    // 홈 화면 새 알림 여부
+    @GET("/notice/alarm")
+    fun getNewNotict(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetNewNoticeResponse>
 }

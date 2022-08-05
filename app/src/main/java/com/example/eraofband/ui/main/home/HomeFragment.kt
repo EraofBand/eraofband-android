@@ -7,13 +7,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentHomeBinding
+import com.example.eraofband.remote.notice.GetNewNoticeResult
+import com.example.eraofband.remote.notice.GetNewNoticeService
+import com.example.eraofband.remote.notice.GetNewNoticeView
 import com.example.eraofband.ui.login.GlobalApplication
 import com.example.eraofband.ui.main.home.notice.NoticeActivity
 import com.google.android.material.tabs.TabLayoutMediator
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), GetNewNoticeView {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
@@ -23,13 +28,9 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         sizeCheck()
-
-
-
         return binding.root
     }
 
@@ -45,6 +46,13 @@ class HomeFragment : Fragment() {
             startActivity(Intent(context, NoticeActivity::class.java))
         }
         connectVP()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val getNewNotice = GetNewNoticeService()
+        getNewNotice.setNewNoticeView(this)
+        getNewNotice.getNewNotice(getJwt()!!)
     }
 
     private fun connectVP() {
@@ -70,6 +78,24 @@ class HomeFragment : Fragment() {
         GlobalApplication.height = size.y
 
         Log.d("SIZECHECK", "$size.x $size.y")
+    }
+
+    private fun getJwt() : String? {
+        val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        return userSP.getString("jwt", "")
+    }
+
+    override fun onGetSuccess(result: GetNewNoticeResult) {
+        Log.d("GET / SUCCESS",result.toString())
+        if (result.newAlarmExist == 0) {
+            binding.homeNoticeIb.setImageResource(R.drawable.ic_home_alarm_off)
+        } else {
+            binding.homeNoticeIb.setImageResource(R.drawable.ic_home_alarm_on)
+        }
+    }
+
+    override fun onGetFailure(code: Int, message: String) {
+        Log.d("GET / Failure","$code $message")
     }
 
     override fun onDestroyView() {

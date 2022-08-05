@@ -18,7 +18,6 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
 
     private lateinit var binding: ActivityBandListBinding
     private lateinit var bandListRVAdapter: BandListRVAdapter
-    private var initial = true
     private var sessionValue = 0
 
     val getRegionBandService = GetRegionBandService()
@@ -30,18 +29,17 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
         setContentView(binding.root)
 
         initSpinner()
-
-        sessionValue = intent.getIntExtra("sessionBtn", 0)
-
-
         binding.homeBandListBackIv.setOnClickListener { finish() }
-
     }
 
     override fun onResume() {
         super.onResume()
         getRegionBandService.setGetView(this)
         getRegionBandService.getRegionBand("전체", 5)
+
+        sessionValue = intent.getIntExtra("sessionBtn", 0)
+        binding.homeBandListCitySp.setSelection(0)
+        sessionSelect(sessionValue)
     }
 
     private fun initSpinner() {  // 스피너 초기화
@@ -55,31 +53,21 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
         // 지역 스피너 클릭 이벤트
         binding.homeBandListCitySp.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                if(initial) {
-                    binding.homeBandListCitySp.setSelection(0)
-                    sessionSelect(sessionValue)
-                    initial = false
+                when (position) {
+                    0 -> regionSessionSelect("전체")
+                    1 -> regionSessionSelect("서울")
+                    2 -> regionSessionSelect("경기도")
                 }
-                else {
-                    when (position) {
-                        0 -> regionSessionSelect("전체")
-                        1 -> regionSessionSelect("서울")
-                        2 -> regionSessionSelect("경기도")
-                    }
-                }
-                }
+            }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {  // 아무것도 클릭되어있지 않을 때는 기본으로 전체를 띄워줌
                 binding.homeBandListCitySp.setSelection(0)
                 getRegionBandService.getRegionBand("전체", 5)
             }
-
         })
     }
 
     private fun regionSessionSelect(region : String) {
-        binding.homeBandListTotalCp.isChecked = true
-        getRegionBandService.getRegionBand(region, 5) // 자동 전체 세션 초기화
         binding.homeBandListTotalCp.setOnClickListener { getRegionBandService.getRegionBand(region, 5)}
         binding.homeBandListVocalCp.setOnClickListener { getRegionBandService.getRegionBand(region, 0)}
         binding.homeBandListGuitarCp.setOnClickListener { getRegionBandService.getRegionBand(region, 1)}
@@ -115,7 +103,6 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
         binding.homeBandListListRv.adapter = bandListRVAdapter
         binding.homeBandListListRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        bandListRVAdapter.cleanBandList(regionBand)
         bandListRVAdapter.initBandList(regionBand)
 
         bandListRVAdapter.setMyItemClickListener(object : BandListRVAdapter.MyItemClickListener{

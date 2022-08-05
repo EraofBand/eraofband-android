@@ -93,7 +93,6 @@
                 android:id="@+id/lesson_info_lesson_intro_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:fontFamily="@font/pretendard_medium"
                 android:text="레슨 한 줄 소개"
                 android:textColor="@color/gray"
