@@ -14,16 +14,13 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityPortfolioListBinding
-import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
-import com.example.eraofband.remote.portfolio.deletePofol.DeletePofolResponse
-import com.example.eraofband.remote.portfolio.deletePofol.DeletePofolService
-import com.example.eraofband.remote.portfolio.deletePofol.DeletePofolView
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResult
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolService
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolView
+import com.example.eraofband.ui.main.home.session.band.BandDeleteDialog
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 
-class PortfolioListActivity : AppCompatActivity(), GetMyPofolView, DeletePofolView {
+class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
 
     private lateinit var binding : ActivityPortfolioListBinding
     private lateinit var portfolioAdapter : PortfolioListRVAdapter
@@ -113,32 +110,30 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView, DeletePofolVi
         popupMenu.menuInflater.inflate(R.menu.portfolio_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
 
         popupMenu.setOnMenuItemClickListener { item ->
-            if (item!!.itemId == R.id.portfolio_edit) {  // 포트폴리오 수정하기
-                // 포폴 수정 창 띄우기
-                val intent = Intent(this@PortfolioListActivity, PofolEditActivity::class.java)
-                intent.putExtra("pofolIdx", portfolio.pofolIdx)
-                intent.putExtra("title", portfolio.title)
-                intent.putExtra("content", portfolio.content)
+            when(item!!.itemId) {
+                R.id.portfolio_edit -> {  // 포트폴리오 수정하기
+                    // 포폴 수정 창 띄우기
+                    val intent = Intent(this@PortfolioListActivity, PofolEditActivity::class.java)
+                    intent.putExtra("pofolIdx", portfolio.pofolIdx)
+                    intent.putExtra("title", portfolio.title)
+                    intent.putExtra("content", portfolio.content)
 
-                startActivity(intent)
+                    startActivity(intent)
+                }
+                R.id.portfolio_delete -> {
+                    val deleteDialog = BandDeleteDialog(getJwt()!!, getUserIdx(), portfolio.pofolIdx)
+                    deleteDialog.show(supportFragmentManager, "deletePortfolio")
+
+                    deleteDialog.setDialogListener(object : BandDeleteDialog.DeleteListener{
+                        override fun deletePortfolio() {
+                            portfolioAdapter.deletePortfolio(position)
+                        }
+                    })
+                }
+                else -> {  // 포트폴리오 신고하기
+                    Log.d("REPORT", "PORTFOLIO")
+                }
             }
-            else if (item.itemId == R.id.portfolio_delete) {  // 포트폴리오 삭제하기
-                // position을 넘겨줌 이거 말고 생각이 안나요ㅠㅠ
-                val portfolioSP = getSharedPreferences("portfolio", MODE_PRIVATE)
-                val editor = portfolioSP.edit()
-
-                editor.putInt("position", position)
-                editor.apply()
-
-                // 포폴 삭제
-                val deletePofolService = DeletePofolService()
-                deletePofolService.setDeleteView(this)
-                deletePofolService.deletePortfolio(getJwt()!!, portfolio.pofolIdx, getUserIdx())
-            }
-            else {  // 포트폴리오 신고하기
-                Log.d("REPORT", "PORTFOLIO")
-            }
-
             false
         }
 
@@ -148,20 +143,5 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView, DeletePofolVi
         popupMenu.show() // 팝업 보여주기
     }
 
-    override fun onDeleteSuccess(code: Int, result: String) {  // 포트폴리오 삭제
-        Log.d("DELETE/SUC", result)
-        val portfolioSP = getSharedPreferences("portfolio", MODE_PRIVATE)
 
-        // 리사이클러뷰에서도 삭제
-        portfolioAdapter.deletePortfolio(portfolioSP.getInt("position", 0))
-
-        // 사용한 position은 지워줌
-        val editor = portfolioSP.edit()
-        editor.remove("position")
-        editor.apply()
-    }
-
-    override fun onDeleteFailure(response: DeletePofolResponse) {
-        Log.d("DELETE/FAIL", response.toString())
-    }
 }

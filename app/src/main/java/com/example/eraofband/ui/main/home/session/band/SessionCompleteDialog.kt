@@ -12,7 +12,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.eraofband.databinding.DialogSessionCompleteBinding
 import com.example.eraofband.ui.login.GlobalApplication
 
-class SessionCompleteDialog(private val code: String): DialogFragment() {
+class SessionCompleteDialog: DialogFragment() {
 
     private lateinit var binding: DialogSessionCompleteBinding
 
@@ -29,61 +29,61 @@ class SessionCompleteDialog(private val code: String): DialogFragment() {
 
         // 다이얼로그를 닫았을 때 해당 아이템이 사라지게 만들기 위해서
 
-        if(code == "apply") {  // 지원하기
-            binding.sessionCompleteTitleTv.text = "지원 완료"
-            binding.sessionCompleteContentTv.text = "좋은 소식을 기다리겠습니다 :)"
+        when(tag) {
+            "sessionApply" -> {  // 지원하기
+                binding.sessionCompleteTitleTv.text = "지원 완료"
+                binding.sessionCompleteContentTv.text = "좋은 소식을 기다리겠습니다 :)"
 
-            binding.sessionCompleteAcceptTv.text = "완료"
+                binding.sessionCompleteAcceptTv.text = "완료"
 
-            binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
-        }
-        else if(code == "lesson") { // 레슨 신청 완료 다이얼로그
-            binding.sessionCompleteTitleTv.text = "신청 완료"
-            binding.sessionCompleteContentTv.text = "강사님과 함께 열심히 배워보아요!"
-
-            binding.sessionCompleteAcceptTv.text = "완료"
-
-            binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
-        }
-        else if(code == "duplicate") { // 밴드 중복 지원 불가 다이얼로그
-            binding.sessionCompleteTitleTv.text = "중복 신청 불가"
-            binding.sessionCompleteContentTv.text = "이미 밴드에 지원했습니다!"
-
-            binding.sessionCompleteAcceptTv.text = "완료"
-
-            binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
-        }
-        else if(code == "fail") { // 레슨 중복 지원 불가 다이얼로그
-            binding.sessionCompleteTitleTv.text = "중복 신청 불가"
-            binding.sessionCompleteContentTv.text = "이미 레슨을 수강하고 있습니다!"
-
-            binding.sessionCompleteAcceptTv.text = "완료"
-
-            binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
-        }
-        else if(code == "accept") {  // 지원 수락
-            binding.sessionCompleteTitleTv.text = "수락 완료"
-            binding.sessionCompleteContentTv.text = "이제부터 같은 밴드에 소속됩니다!"
-
-            binding.sessionCompleteAcceptTv.text = "완료"
-
-            binding.sessionCompleteAcceptTv.setOnClickListener {
-                applyListener.applyAccept()
-                dismiss()
+                binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
             }
+            "duplicateBand" -> {  // 중복 지원
+                binding.sessionCompleteTitleTv.text = "중복 신청 불가"
+                binding.sessionCompleteContentTv.text = "이미 밴드에 지원했습니다!"
 
-        }
-        else {  // 지원 거절
-            binding.sessionCompleteTitleTv.text = "거절 완료"
-            binding.sessionCompleteContentTv.text = "거절이 완료되었습니다."
+                binding.sessionCompleteAcceptTv.text = "완료"
 
-            binding.sessionCompleteAcceptTv.text = "완료"
-
-            binding.sessionCompleteAcceptTv.setOnClickListener {
-                applyListener.applyReject()
-                dismiss()
+                binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
             }
+            "acceptApply" -> {  // 지원 수락
+                binding.sessionCompleteTitleTv.text = "수락 완료"
+                binding.sessionCompleteContentTv.text = "이제부터 같은 밴드에 소속됩니다!"
 
+                binding.sessionCompleteAcceptTv.text = "완료"
+
+                binding.sessionCompleteAcceptTv.setOnClickListener {
+                    applyListener.applyAccept()
+                    dismiss()
+                }
+            }
+            "rejectApply" -> {  // 지원 거절
+                binding.sessionCompleteTitleTv.text = "거절 완료"
+                binding.sessionCompleteContentTv.text = "거절이 완료되었습니다."
+
+                binding.sessionCompleteAcceptTv.text = "완료"
+
+                binding.sessionCompleteAcceptTv.setOnClickListener {
+                    applyListener.applyReject()
+                    dismiss()
+                }
+            }
+            "lessonApply" -> {  // 레슨 지원
+                binding.sessionCompleteTitleTv.text = "신청 완료"
+                binding.sessionCompleteContentTv.text = "강사님과 함께 열심히 배워보아요!"
+
+                binding.sessionCompleteAcceptTv.text = "완료"
+
+                binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
+            }
+            "duplicateLesson" -> {  // 중복 지원
+                binding.sessionCompleteTitleTv.text = "중복 신청 불가"
+                binding.sessionCompleteContentTv.text = "이미 레슨을 수강하고 있습니다!"
+
+                binding.sessionCompleteAcceptTv.text = "완료"
+
+                binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
+            }
         }
 
         return binding.root

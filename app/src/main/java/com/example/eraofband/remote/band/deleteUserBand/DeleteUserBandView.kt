@@ -1,6 +1,6 @@
 package com.example.eraofband.remote.band.deleteUserBand
 
 interface DeleteUserBandView {
-    fun onDeleteUserSuccess(code: Int, result: String)
-    fun onDeleteUserFailure(response: DeleteUserBandResponse)
+    fun onDeleteUserSuccess(result: String)
+    fun onDeleteUserFailure(code: Int, message: String)
 }

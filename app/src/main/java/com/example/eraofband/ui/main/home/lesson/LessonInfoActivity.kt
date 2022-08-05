@@ -14,12 +14,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityLessonInfoBinding
-import com.example.eraofband.remote.lesson.deleteLesson.DeleteLessonResponse
-import com.example.eraofband.remote.lesson.deleteLesson.DeleteLessonService
-import com.example.eraofband.remote.lesson.deleteLesson.DeleteLessonView
-import com.example.eraofband.remote.lesson.deleteUserLesson.DeleteUserLessonResponse
-import com.example.eraofband.remote.lesson.deleteUserLesson.DeleteUserLessonService
-import com.example.eraofband.remote.lesson.deleteUserLesson.DeleteUserLessonView
 import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoResult
 import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoService
 import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoView
@@ -27,11 +21,12 @@ import com.example.eraofband.remote.lesson.getLessonInfo.LessonMembers
 import com.example.eraofband.remote.lesson.lessonLike.LessonLikeResult
 import com.example.eraofband.remote.lesson.lessonLike.LessonLikeService
 import com.example.eraofband.remote.lesson.lessonLike.LessonLikeView
+import com.example.eraofband.ui.main.home.session.band.BandDeleteDialog
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 
 
-class LessonInfoActivity : AppCompatActivity(), GetLessonInfoView, LessonLikeView, DeleteLessonView, DeleteUserLessonView {
+class LessonInfoActivity : AppCompatActivity(), GetLessonInfoView, LessonLikeView {
     private lateinit var binding: ActivityLessonInfoBinding
     private lateinit var lessonStudentRVAdapter: LessonStudentRVAdapter
     private var lessonIdx: Int? = null
@@ -51,21 +46,23 @@ class LessonInfoActivity : AppCompatActivity(), GetLessonInfoView, LessonLikeVie
         binding.lessonInfoBackIv.setOnClickListener { // 뒤로가기
             finish()
         }
+
         binding.lessonInfoListIv.setOnClickListener {  // 레슨 수정 클릭리스너
-            val intent = Intent(this, LessonEditActivity()::class.java)
-            intent.putExtra("lessonIdx", lessonIdx)
-            startActivity(intent)
+            showPopup(binding.lessonInfoListIv)
         }
+
         binding.lessonInfoLikeIv.setOnClickListener { // 레슨 좋아요
             binding.lessonInfoLikeIv.visibility = View.INVISIBLE
             binding.lessonInfoUnlikeIv.visibility = View.VISIBLE
             lessonLike.lessonLike(getJwt()!!, lessonIdx!!)
         }
+
         binding.lessonInfoUnlikeIv.setOnClickListener { // 레슨 좋아요 취소
             binding.lessonInfoLikeIv.visibility = View.VISIBLE
             binding.lessonInfoUnlikeIv.visibility = View.INVISIBLE
             lessonLike.lessonLikeDelete(getJwt()!!, lessonIdx!!)
         }
+
         binding.lessonInfoApplyTv.setOnClickListener { // 레슨 신청 다이얼로그
             if (isFull) {  // 인원 마감 시
                 Toast.makeText(this, "신청 인원이 마감되었습니다.", Toast.LENGTH_SHORT).show()
@@ -104,7 +101,7 @@ class LessonInfoActivity : AppCompatActivity(), GetLessonInfoView, LessonLikeVie
     }
 
     private fun getUserIdx() : Int {
-        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getInt("userIdx", 0)
     }
 
@@ -138,19 +135,20 @@ class LessonInfoActivity : AppCompatActivity(), GetLessonInfoView, LessonLikeVie
         popupMenu.menuInflater.inflate(R.menu.lesson_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
 
         popupMenu.setOnMenuItemClickListener { item ->
-            if (item!!.itemId == R.id.lesson_edit) {
-                val intent = Intent(this, LessonEditActivity::class.java)
-                intent.putExtra("lessonIdx", lessonIdx)
-                startActivity(intent)
-            } else if(item!!.itemId == R.id.lesson_delete){
-                //레슨 삭제
-                val deleteLessonService = DeleteLessonService()
-                deleteLessonService.setDeleteView(this)
-                deleteLessonService.deleteLesson(getJwt()!!, lessonIdx!!, getUserIdx())
-            } else{
-                val deleteUserLessonService = DeleteUserLessonService()
-                deleteUserLessonService.setDeleteView(this)
-                deleteUserLessonService.deleteUserLesson(getJwt()!!, lessonIdx!!)
+            when(item!!.itemId) {
+                R.id.lesson_edit -> {  // 레슨 수정
+                    val intent = Intent(this, LessonEditActivity::class.java)
+                    intent.putExtra("lessonIdx", lessonIdx)
+                    startActivity(intent)
+                }
+                R.id.lesson_delete -> {  // 레슨 삭제
+                    val deleteDialog = BandDeleteDialog(getJwt()!!, getUserIdx(), lessonIdx!!)
+                    deleteDialog.show(supportFragmentManager, "deleteLesson")
+                }
+                else -> {  // 레슨 탈퇴
+                    val deleteDialog = BandDeleteDialog(getJwt()!!, getUserIdx(), lessonIdx!!)
+                    deleteDialog.show(supportFragmentManager, "resignLesson")
+                }
             }
             false
         }
@@ -275,19 +273,4 @@ class LessonInfoActivity : AppCompatActivity(), GetLessonInfoView, LessonLikeVie
         Log.d("LIKEDELETE/FAIL", "$code $message")
     }
 
-    override fun onDeleteSuccess(code: Int, result: String) {
-        Log.d("DELETE BAND / SUCCESS", result)
-    }
-
-    override fun onDeleteFailure(response: DeleteLessonResponse) {
-        Log.d("DELETE BAND / FAIL", response.toString())
-    }
-
-    override fun onDeleteUserSuccess(code: Int, result: String){
-        Log.d("DELETE BAND / SUCCESS", result)
-    }
-
-    override fun onDeleteUserFailure(response: DeleteUserLessonResponse) {
-        Log.d("DELETE BAND / FAIL", response.toString())
-    }
 }

@@ -11,12 +11,6 @@ import androidx.appcompat.view.ContextThemeWrapper
 import com.bumptech.glide.Glide
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityBandRecruitBinding
-import com.example.eraofband.remote.band.deleteBand.DeleteBandResponse
-import com.example.eraofband.remote.band.deleteBand.DeleteBandService
-import com.example.eraofband.remote.band.deleteBand.DeleteBandView
-import com.example.eraofband.remote.band.deleteUserBand.DeleteUserBandResponse
-import com.example.eraofband.remote.band.deleteUserBand.DeleteUserBandService
-import com.example.eraofband.remote.band.deleteUserBand.DeleteUserBandView
 import com.example.eraofband.remote.band.bandLike.BandLikeResult
 import com.example.eraofband.remote.band.bandLike.BandLikeService
 import com.example.eraofband.remote.band.bandLike.BandLikeView
@@ -27,7 +21,7 @@ import com.example.eraofband.remote.band.getBand.SessionMembers
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 
-class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView, DeleteBandView, DeleteUserBandView {
+class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
 
     private lateinit var binding: ActivityBandRecruitBinding
 
@@ -174,21 +168,21 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView, Delet
         popupMenu.menuInflater.inflate(R.menu.band_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
 
         popupMenu.setOnMenuItemClickListener { item ->
-            if (item!!.itemId == R.id.band_edit) {
-                val intent = Intent(this, BandEditActivity::class.java)
-                intent.putExtra("bandIdx", bandIdx)
+            when(item!!.itemId) {
+                R.id.band_edit -> {  // 밴드 수정하기
+                    val intent = Intent(this, BandEditActivity::class.java)
+                    intent.putExtra("bandIdx", bandIdx)
 
-                startActivity(intent)
-            } else if (item!!.itemId == R.id.band_delete) {
-                // 밴드 삭제
-                val deleteBandService = DeleteBandService()
-                deleteBandService.setDeleteView(this)
-                deleteBandService.deleteBand(getJwt()!!, bandIdx, getUserIdx())
-            } else {
-                //밴드 탈퇴
-                val deleteUserBandService = DeleteUserBandService()
-                deleteUserBandService.setDeleteView(this)
-                deleteUserBandService.deleteUserBand(getJwt()!!, bandIdx)
+                    startActivity(intent)
+                }
+                R.id.band_delete -> {  // 밴드 삭제하기
+                    val deleteDialog = BandDeleteDialog(getJwt()!!, getUserIdx(), bandIdx)
+                    deleteDialog.show(supportFragmentManager, "deleteBand")
+                }
+                else -> {  // 밴드 탈퇴하기
+                    val deleteDialog = BandDeleteDialog(getJwt()!!, getUserIdx(), bandIdx)
+                    deleteDialog.show(supportFragmentManager, "resignBand")
+                }
             }
             false
         }
@@ -218,21 +212,5 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView, Delet
         }
 
         return false
-    }
-
-    override fun onDeleteSuccess(code: Int, result: String) {
-        Log.d("DELETE BAND / SUCCESS", result)
-    }
-
-    override fun onDeleteFailure(response: DeleteBandResponse) {
-        Log.d("DELETE BAND / FAIL", response.toString())
-    }
-
-    override fun onDeleteUserSuccess(code: Int, result: String) {
-        Log.d("DELETE BAND / SUCCESS", result)
-    }
-
-    override fun onDeleteUserFailure(response: DeleteUserBandResponse) {
-        Log.d("DELETE BAND / FAIL", response.toString())
     }
 }

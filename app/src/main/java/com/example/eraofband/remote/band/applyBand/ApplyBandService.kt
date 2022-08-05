@@ -26,7 +26,7 @@ class ApplyBandService {
 
                 when(val code = resp.code) {
                     1000 -> applyView.onApplySuccess(resp.result)  // 성공
-                    2031 -> applyView.onDuplicateApply(code, resp.message)  // 중복 지원
+                    2030 -> applyView.onDuplicateApply(code, resp.message)  // 중복 지원
                     else -> applyView.onApplyFailure(code, resp.message)
                 }
             }
