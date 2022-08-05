@@ -1,8 +1,6 @@
 package com.example.eraofband.ui.main.mypage.follow
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +16,6 @@ import com.example.eraofband.remote.user.userFollowList.FollowerInfo
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowResponse
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowService
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowView
-import com.example.eraofband.ui.main.mypage.MyPageActivity
 
 class FollowerRVAdapter() : RecyclerView.Adapter<FollowerRVAdapter.ViewHolder>(), UserFollowView, UserUnfollowView {
     private var followList = arrayListOf<FollowerInfo>()
@@ -28,6 +25,12 @@ class FollowerRVAdapter() : RecyclerView.Adapter<FollowerRVAdapter.ViewHolder>()
     @SuppressLint("NotifyDataSetChanged")
     fun initFollowList(followList : List<FollowerInfo>) {
         this.followList.addAll(followList)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun filterList(filteredList: List<FollowerInfo>) {
+        followList = filteredList as ArrayList<FollowerInfo>
         notifyDataSetChanged()
     }
 

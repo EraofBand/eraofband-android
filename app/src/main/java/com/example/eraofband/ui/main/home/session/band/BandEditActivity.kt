@@ -45,6 +45,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.remote.band.getBand.GetBandResult
 import com.example.eraofband.remote.band.getBand.GetBandService
 import com.example.eraofband.remote.band.getBand.GetBandView
+import java.text.DecimalFormat
 
 
 class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendImgView{
@@ -156,7 +157,6 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
             }
         })
 
-
         binding.homeBandEditRegisterBtn.setOnClickListener {
             val patchBandService = PatchBandService()
             patchBandService.setPatchView(this)
@@ -205,8 +205,10 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         band.drumComment = binding.homeBandEditDrumEt.text.toString()
 
         band.performTitle = binding.homeBandShowNameEt.text.toString()
-        val performFee = binding.homeBandShowFeeEt.text.toString()
-        band.performFee = performFee.toInt()
+        if(!binding.homeBandShowFeeEt.text.isNullOrEmpty()) {
+            val performFee = binding.homeBandShowFeeEt.text.toString()
+            band.performFee = performFee.toInt()
+        }
         band.performLocation = binding.homeBandShowLocationEt.text.toString()
 
         band.performDate = binding.homeBandShowDateEt.text.toString()
@@ -572,6 +574,15 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         baseCnt = result.base
         keyboardCnt = result.keyboard
         drumCnt = result.drum
+
+        if(!result.performTitle.isNullOrEmpty() || !result.performDate.isNullOrEmpty() || !result.performTime.isNullOrEmpty() || !result.performLocation.isNullOrEmpty()){
+            binding.homeBandShowTimeEt.text = result.performTime
+            binding.homeBandShowLocationEt.setText(result.performLocation)
+            binding.homeBandShowNameEt.setText(result.performTitle)
+            binding.homeBandShowFeeEt.setText(result.performFee.toString())
+            binding.homeBandShowDateEt.text = result.performDate
+
+        }
 
         initRegion(result.bandRegion)
         spinnerClickListener()

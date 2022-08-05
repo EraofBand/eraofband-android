@@ -12,6 +12,7 @@ import com.example.eraofband.databinding.ItemFollowBinding
 import com.example.eraofband.remote.user.userFollow.UserFollowResponse
 import com.example.eraofband.remote.user.userFollow.UserFollowService
 import com.example.eraofband.remote.user.userFollow.UserFollowView
+import com.example.eraofband.remote.user.userFollowList.FollowerInfo
 import com.example.eraofband.remote.user.userFollowList.FollowingInfo
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowResponse
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowService
@@ -25,6 +26,12 @@ class FollowingRVAdapter() : RecyclerView.Adapter<FollowingRVAdapter.ViewHolder>
     @SuppressLint("NotifyDataSetChanged")
     fun initFollowList(followList : List<FollowingInfo>) {
         this.followList.addAll(followList)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun filterList(filteredList: List<FollowingInfo>) {
+        followList = filteredList as ArrayList<FollowingInfo>
         notifyDataSetChanged()
     }
 
