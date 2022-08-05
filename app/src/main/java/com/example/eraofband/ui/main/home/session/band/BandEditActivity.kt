@@ -60,11 +60,18 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
     private var bandIdx = 0
     private var profileImgUrl = ""
 
-    private var vocalCnt = 0
+    private var vocalCnt = 0  // 처음 설정했던 선발 인원
     private var guitarCnt = 0
     private var baseCnt = 0
     private var keyboardCnt = 0
     private var drumCnt = 0
+
+    private var nowVocal = 0  // 현재 있는 밴드 멤버의 수
+    private var nowGuitar = 0
+    private var nowBase = 0
+    private var nowKeyboard = 0
+    private var nowDrum = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,10 +86,6 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         binding.homeBandEditImgV.setOnClickListener {
             initImageViewBand()
         }
-
-        val bandService = GetBandService()
-        bandService.setBandView(this)
-        bandService.getBand(getJwt()!!, bandIdx)
 
         binding.homeBandEditNameEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -161,7 +164,7 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
             val patchBandService = PatchBandService()
             patchBandService.setPatchView(this)
 
-            band = updateBand()
+            updateBand()
             Log.d("BAND PATCH", band.toString())
 
             patchBandService.patchBand(getJwt()!!, bandIdx, band)
@@ -170,8 +173,7 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
                 finish()
             }, 100)
         }
-
-
+        Log.d("CNT/TEST", "123  ${vocalCnt} , ${guitarCnt}, ${baseCnt}, $keyboardCnt, ${drumCnt}")
         initVocalCnt()
         initGuitarCnt()
         initBaseCnt()
@@ -179,7 +181,13 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         initDrumCnt()
         initDatepicker()
         initTimepicker()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        val bandService = GetBandService()
+        bandService.setBandView(this)
+        bandService.getBand(getJwt()!!, bandIdx)
     }
 
     private fun getUserIdx() : Int {
@@ -197,6 +205,12 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
 
         band.bandImgUrl = profileImgUrl
         band.userIdx = getUserIdx()
+
+        band.vocal = vocalCnt
+        band.guitar = guitarCnt
+        band.base = baseCnt
+        band.keyboard = keyboardCnt
+        band.drum = drumCnt
 
         band.vocalComment = binding.homeBandEditVocalEt.text.toString()
         band.guitarComment = binding.homeBandEditGuitarEt.text.toString()
@@ -255,86 +269,77 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
 
 
     private fun initVocalCnt() {
-        var cnt = vocalCnt
-        binding.editVocalCntTv.text = cnt.toString()
         binding.editVocalPlusIb.setOnClickListener {
-            cnt += 1
-            binding.editVocalCntTv.text = cnt.toString()
+            vocalCnt += 1
+            binding.editVocalCntTv.text = vocalCnt.toString()
         }
         binding.editVocalMinusIb.setOnClickListener {
-            if(cnt != vocalCnt){
-                cnt -= 1
-                binding.editVocalCntTv.text = cnt.toString()
+            if(vocalCnt > 0 && vocalCnt > nowVocal){
+                vocalCnt -= 1
+                binding.editVocalCntTv.text = vocalCnt.toString()
             } else{
-                binding.editVocalCntTv.text = cnt.toString()
+                binding.editVocalCntTv.text = vocalCnt.toString()
             }
         }
     }
 
     private fun initGuitarCnt() {
-        var cnt = guitarCnt
-        binding.editGuitarCntTv.text = cnt.toString()
         binding.editGuitarPlusIb.setOnClickListener {
-            cnt += 1
-            binding.editGuitarCntTv.text = cnt.toString()
+            guitarCnt += 1
+            binding.editGuitarCntTv.text = guitarCnt.toString()
         }
         binding.editGuitarMinusIb.setOnClickListener {
-            if(cnt != guitarCnt){
-                cnt -= 1
-                binding.editGuitarCntTv.text = cnt.toString()
+            if(vocalCnt > 0 && guitarCnt > nowGuitar){
+                guitarCnt -= 1
+                binding.editGuitarCntTv.text = guitarCnt.toString()
             } else{
-                binding.editGuitarCntTv.text = cnt.toString()
+                binding.editGuitarCntTv.text = guitarCnt.toString()
             }
         }
     }
 
     private fun initBaseCnt() {
-        var cnt = baseCnt
-        binding.editBaseCntTv.text = cnt.toString()
         binding.editBasePlusIb.setOnClickListener {
-            cnt += 1
-            binding.editBaseCntTv.text = cnt.toString()
+            baseCnt += 1
+            binding.editBaseCntTv.text = baseCnt.toString()
         }
         binding.editBaseMinusIb.setOnClickListener {
-            if(cnt != baseCnt){
-                cnt -= 1
-                binding.editBaseCntTv.text = cnt.toString()
+            if(baseCnt > 0 && baseCnt > nowBase){
+                baseCnt -= 1
+                binding.editBaseCntTv.text = baseCnt.toString()
             } else{
-                binding.editBaseCntTv.text = cnt.toString()
+                binding.editBaseCntTv.text = baseCnt.toString()
             }
         }
     }
 
     private fun initKeyboardCnt() {
-        var cnt = keyboardCnt
-        binding.editKeyboardCntTv.text = cnt.toString()
+        band.keyboard = keyboardCnt
         binding.editKeyboardPlusIb.setOnClickListener {
-            cnt += 1
-            binding.editKeyboardCntTv.text = cnt.toString()
+            keyboardCnt += 1
+            binding.editKeyboardCntTv.text = keyboardCnt.toString()
         }
         binding.editKeyboardMinusIb.setOnClickListener {
-            if(cnt != keyboardCnt){
-                cnt -= 1
-                binding.editKeyboardCntTv.text = cnt.toString()
+            if(keyboardCnt > 0 && keyboardCnt > nowKeyboard){
+                keyboardCnt -= 1
+                binding.editKeyboardCntTv.text = keyboardCnt.toString()
             } else{
-                binding.editKeyboardCntTv.text = cnt.toString()
+                binding.editKeyboardCntTv.text = keyboardCnt.toString()
             }
         }
     }
 
     private fun initDrumCnt() {
-        var cnt = drumCnt
-        binding.editDrumCntTv.text = cnt.toString()
         binding.editDrumPlusIb.setOnClickListener {
-            cnt += 1
-            binding.editDrumCntTv.text = cnt.toString()
+            drumCnt += 1
+            binding.editDrumCntTv.text = drumCnt.toString()
         }
         binding.editDrumMinusIb.setOnClickListener {
-            if(cnt != drumCnt){
-                cnt -= 1
-                binding.editDrumCntTv.text = cnt.toString()
+            if(drumCnt > 0 && drumCnt > nowDrum){
+                drumCnt -= 1
+                binding.editDrumCntTv.text = drumCnt.toString()
             } else{
-                binding.editDrumCntTv.text = cnt.toString()
+                binding.editDrumCntTv.text = drumCnt.toString()
             }
         }
     }
@@ -536,12 +541,18 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
 
     override fun onGetSuccess(result: GetBandResult) {
         Log.d("GET BAND /SUCCESS", result.toString())
-
         profileImgUrl = result.bandImgUrl
         Glide.with(this)
             .load(result.bandImgUrl)
             .apply(RequestOptions.centerCropTransform())
             .into(binding.homeBandEditImgV)
+
+        vocalCnt = result.vocal
+        guitarCnt = result.guitar
+        baseCnt = result.base
+        keyboardCnt = result.keyboard
+        drumCnt = result.drum
+
         binding.homeBandEditImgV.clipToOutline = true
 
         binding.homeBandEditAddImgTv.visibility = View.INVISIBLE
@@ -567,15 +578,18 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         binding.editKeyboardCntTv.setText(result.keyboard.toString())
         binding.editDrumCntTv.setText(result.drum.toString())
 
-        vocalCnt = result.vocal
-        guitarCnt = result.guitar
-        baseCnt = result.base
-        keyboardCnt = result.keyboard
-        drumCnt = result.drum
 
+        for (i in 0 until result.memberCount) {
+            when(result.sessionMembers[i].buSession) {
+                0 -> nowVocal++
+                1 -> nowGuitar++
+                2 -> nowBase++
+                3 -> nowKeyboard++
+                4 -> nowDrum++
+            }
+        }
         initRegion(result.bandRegion)
         spinnerClickListener()
-
     }
 
     private fun setToast(msg : String) {
