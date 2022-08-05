@@ -62,9 +62,9 @@ class SessionApplyDialog(private val jwt: String, private val session: Int, priv
         Log.d("APPLYBAND/SUC", result.toString())
 
         // 다음 dialog로 넘어감
-        val completeDialog = SessionCompleteDialog("apply")
+        val completeDialog = SessionCompleteDialog()
         completeDialog.isCancelable = false
-        completeDialog.show(activity!!.supportFragmentManager, "complete")
+        completeDialog.show(activity!!.supportFragmentManager, "sessionApply")
 
         dismiss()
     }
@@ -73,9 +73,9 @@ class SessionApplyDialog(private val jwt: String, private val session: Int, priv
         Log.d("APPLYBAND/FAIL", "$code $message")
 
         // 다음 dialog로 넘어감
-        val completeDialog = SessionCompleteDialog("duplicate")
+        val completeDialog = SessionCompleteDialog()
         completeDialog.isCancelable = false
-        completeDialog.show(activity!!.supportFragmentManager, "complete")
+        completeDialog.show(activity!!.supportFragmentManager, "duplicateBand")
 
         dismiss()
     }
