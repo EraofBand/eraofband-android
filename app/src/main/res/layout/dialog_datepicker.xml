@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
-        android:background="@color/white"
+        android:theme="@style/AppTheme.Picker"
+        android:background="@color/datepicekr_bg"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

@@ -1,9 +1,12 @@
 package com.example.eraofband.ui.main.home.session.band
 
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -66,6 +69,9 @@ class BandDeleteDialog(private val jwt: String, private val userIdx: Int, privat
                     val deleteBandService = DeleteBandService()
                     deleteBandService.setDeleteView(this)
                     deleteBandService.deleteBand(jwt, idx, userIdx)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        requireActivity().finish()
+                    }, 100)
                 }
 
                 binding.sessionApplyCancelTv.setOnClickListener { dismiss() }
@@ -80,6 +86,9 @@ class BandDeleteDialog(private val jwt: String, private val userIdx: Int, privat
                     val deleteUserBandService = DeleteUserBandService()
                     deleteUserBandService.setDeleteView(this)
                     deleteUserBandService.deleteUserBand(jwt, idx)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        requireActivity().finish()
+                    }, 100)
                 }
 
                 binding.sessionApplyCancelTv.setOnClickListener { dismiss() }
@@ -94,6 +103,9 @@ class BandDeleteDialog(private val jwt: String, private val userIdx: Int, privat
                     val deleteLessonService = DeleteLessonService()
                     deleteLessonService.setDeleteView(this)
                     deleteLessonService.deleteLesson(jwt, idx, userIdx)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        requireActivity().finish()
+                    }, 100)
                 }
 
                 binding.sessionApplyCancelTv.setOnClickListener { dismiss() }
@@ -108,6 +120,9 @@ class BandDeleteDialog(private val jwt: String, private val userIdx: Int, privat
                     val deleteUserLessonService = DeleteUserLessonService()
                     deleteUserLessonService.setDeleteView(this)
                     deleteUserLessonService.deleteUserLesson(jwt, idx)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        requireActivity().finish()
+                    }, 100)
                 }
 
                 binding.sessionApplyCancelTv.setOnClickListener { dismiss() }

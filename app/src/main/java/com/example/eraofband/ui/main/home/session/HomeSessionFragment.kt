@@ -101,7 +101,6 @@ class HomeSessionFragment : Fragment(), GetNewBandView, GetPopularBandView {
                 intent.putExtra("bandIdx", bandIdx)
                 startActivity(intent)
             }
-
         })
     }
 
