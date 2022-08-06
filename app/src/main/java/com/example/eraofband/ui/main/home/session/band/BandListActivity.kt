@@ -63,7 +63,9 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 when (position) {
                     0 -> regionSessionSelect("전체")
+
                     1 -> regionSessionSelect("서울")
+
                     2 -> regionSessionSelect("경기도")
                 }
             }
@@ -76,8 +78,6 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
     }
 
     private fun regionSessionSelect(region : String) {
-        getRegionBandService.getRegionBand(region, 5)
-        binding.homeBandListTotalCp.isChecked = true
         binding.homeBandListTotalCp.setOnClickListener { getRegionBandService.getRegionBand(region, 5)}
         binding.homeBandListVocalCp.setOnClickListener { getRegionBandService.getRegionBand(region, 0)}
         binding.homeBandListGuitarCp.setOnClickListener { getRegionBandService.getRegionBand(region, 1)}

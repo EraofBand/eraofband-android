@@ -584,7 +584,7 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         binding.homeBandEditDetailEt.setText(result.bandContent)
         binding.homeBandEditChatEt.setText(result.chatRoomLink)
 
-        for (i in 0 until result.memberCount) {
+        for (i in 0 until result.memberCount - 1) {
             when(result.sessionMembers[i].buSession) {
                 0 -> nowVocal++
                 1 -> nowGuitar++
