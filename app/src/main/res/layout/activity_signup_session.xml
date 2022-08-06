@@ -83,7 +83,7 @@
         android:layout_height="100dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="80dp"
-        android:background="@drawable/session_selector"
+        android:background="@drawable/ic_vocal_selector"
         android:button="@null"
         app:layout_constraintStart_toStartOf="@id/signup_session_title_tv"
         app:layout_constraintTop_toBottomOf="@id/signup_session_title_tv" />
@@ -106,7 +106,7 @@
         android:id="@+id/signup_session_guitar_cb"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@drawable/session_selector"
+        android:background="@drawable/ic_guitar_selector"
         android:button="@null"
         app:layout_constraintEnd_toStartOf="@id/signup_session_base_cb"
         app:layout_constraintStart_toEndOf="@id/signup_session_vocal_cb"
@@ -131,7 +131,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginEnd="30dp"
-        android:background="@drawable/session_selector"
+        android:background="@drawable/ic_base_selector"
         android:button="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/signup_session_vocal_cb" />
@@ -153,8 +153,8 @@
         android:id="@+id/signup_session_keyboard_cb"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/session_selector"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/ic_keyboard_selector"
         android:button="@null"
         app:layout_constraintStart_toStartOf="@id/signup_session_vocal_cb"
         app:layout_constraintTop_toBottomOf="@id/signup_session_vocal_cb" />
@@ -176,7 +176,7 @@
         android:id="@+id/signup_session_drum_cb"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:background="@drawable/session_selector"
+        android:background="@drawable/ic_drum_selector"
         android:button="@null"
         app:layout_constraintStart_toStartOf="@id/signup_session_guitar_cb"
         app:layout_constraintTop_toTopOf="@id/signup_session_keyboard_cb" />
