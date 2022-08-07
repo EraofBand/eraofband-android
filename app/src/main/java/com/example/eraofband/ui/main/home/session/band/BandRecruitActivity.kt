@@ -9,6 +9,7 @@ import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityBandRecruitBinding
 import com.example.eraofband.remote.band.bandLike.BandLikeResult
@@ -101,6 +102,7 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
         binding.homeBandRecruitBandTitleTv.text = result.bandTitle  // 밴드 이름 연동
 
         Glide.with(this).load(result.bandImgUrl)
+            .apply(RequestOptions.centerCropTransform())
             .into(binding.homeBandRecruitBandImgIv)  // 밴드 이미지 연동
         binding.homeBandRecruitBandImgIv.clipToOutline = true  // 모서리 깎기
 

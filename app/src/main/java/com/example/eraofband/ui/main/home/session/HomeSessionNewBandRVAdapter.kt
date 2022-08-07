@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.ItemSessionNewBandBinding
 import com.example.eraofband.remote.band.getNewBand.GetNewBandResult
 
@@ -44,7 +45,9 @@ class HomeSessionNewBandRVAdapter(private val context: Context) : RecyclerView.A
 
     inner class ViewHolder(val binding: ItemSessionNewBandBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(band: GetNewBandResult) {
-            Glide.with(context).load(band.bandImgUrl).into(binding.itemNewBandProfileIv)  // 밴드 이미지
+            Glide.with(context).load(band.bandImgUrl)
+                .apply(RequestOptions.centerCropTransform())
+                .into(binding.itemNewBandProfileIv)  // 밴드 이미지
             binding.itemNewBandProfileIv.clipToOutline = true  // 모서리 깎기
 
             binding.itemNewBandLocationTv.text = band.bandRegion

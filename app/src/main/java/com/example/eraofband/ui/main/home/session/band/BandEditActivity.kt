@@ -192,7 +192,6 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
             }, 100)
         }
 
-        Log.d("CNT/TEST", "123  ${vocalCnt} , ${guitarCnt}, ${baseCnt}, $keyboardCnt, ${drumCnt}")
         initVocalCnt()
         initGuitarCnt()
         initBaseCnt()
@@ -283,7 +282,6 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
                 override fun saveShow(date: String) {
                     binding.homeBandShowDateEt.text = date
                 }
-
             })
         }
     }
@@ -310,7 +308,7 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
             binding.editGuitarCntTv.text = guitarCnt.toString()
         }
         binding.editGuitarMinusIb.setOnClickListener {
-            if(vocalCnt > 0 && guitarCnt > nowGuitar){
+            if(guitarCnt > 0 && guitarCnt > nowGuitar){
                 guitarCnt -= 1
                 binding.editGuitarCntTv.text = guitarCnt.toString()
             } else{
@@ -335,7 +333,6 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
     }
 
     private fun initKeyboardCnt() {
-        band.keyboard = keyboardCnt
         binding.editKeyboardPlusIb.setOnClickListener {
             keyboardCnt += 1
             binding.editKeyboardCntTv.text = keyboardCnt.toString()
@@ -568,12 +565,6 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
             .apply(RequestOptions.centerCropTransform())
             .into(binding.homeBandEditImgV)
 
-        vocalCnt = result.vocal
-        guitarCnt = result.guitar
-        baseCnt = result.base
-        keyboardCnt = result.keyboard
-        drumCnt = result.drum
-
         binding.homeBandEditImgV.clipToOutline = true
 
         binding.homeBandEditAddImgTv.visibility = View.INVISIBLE
@@ -593,14 +584,7 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         binding.homeBandEditDetailEt.setText(result.bandContent)
         binding.homeBandEditChatEt.setText(result.chatRoomLink)
 
-        binding.editVocalCntTv.setText(result.vocal.toString())
-        binding.editGuitarCntTv.setText(result.guitar.toString())
-        binding.editBaseCntTv.setText(result.base.toString())
-        binding.editKeyboardCntTv.setText(result.keyboard.toString())
-        binding.editDrumCntTv.setText(result.drum.toString())
-
-
-        for (i in 0 until result.memberCount) {
+        for (i in 0 until result.memberCount - 1) {
             when(result.sessionMembers[i].buSession) {
                 0 -> nowVocal++
                 1 -> nowGuitar++
@@ -609,6 +593,17 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
                 4 -> nowDrum++
             }
         }
+        vocalCnt = result.vocal + nowVocal
+        guitarCnt = result.guitar + nowGuitar
+        baseCnt = result.base + nowBase
+        keyboardCnt = result.keyboard + nowKeyboard
+        drumCnt = result.drum + nowDrum
+
+        binding.editVocalCntTv.text = vocalCnt.toString()
+        binding.editGuitarCntTv.text = guitarCnt.toString()
+        binding.editBaseCntTv.text = baseCnt.toString()
+        binding.editKeyboardCntTv.text = keyboardCnt.toString()
+        binding.editDrumCntTv.text = drumCnt.toString()
 
         if(!result.performTitle.isNullOrEmpty() || !result.performDate.isNullOrEmpty() || !result.performTime.isNullOrEmpty() || !result.performLocation.isNullOrEmpty()){
             binding.homeBandShowTimeEt.text = result.performTime
@@ -616,7 +611,6 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
             binding.homeBandShowNameEt.setText(result.performTitle)
             binding.homeBandShowFeeEt.setText(result.performFee.toString())
             binding.homeBandShowDateEt.text = result.performDate
-
         }
 
         initRegion(result.bandRegion)

@@ -21,7 +21,8 @@ class HomeLessonFragment: Fragment(), GetLessonListView {
 
     private var _binding: FragmentHomeLessonBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
-    private val getLessonList = GetLessonListService()
+
+    val getLessonList = GetLessonListService()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,15 +30,13 @@ class HomeLessonFragment: Fragment(), GetLessonListView {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeLessonBinding.inflate(inflater, container, false)
-
+        getLessonList.getLessonListView(this)
         initSpinner()
-
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        getLessonList.getLessonListView(this)
+    override fun onResume() {
+        super.onResume()
         getLessonList.getLessonList("전체", 5)
     }
 
