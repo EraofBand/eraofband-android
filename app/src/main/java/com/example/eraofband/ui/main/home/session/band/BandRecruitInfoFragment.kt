@@ -130,6 +130,7 @@ class BandRecruitInfoFragment: Fragment() {
 
         }
         else {
+            binding.bandRecruitInfoShowTv.text = "미정"
             binding.bandRecruitInfoShowCl.visibility = View.GONE
             binding.bandRecruitInfoNoPerformTv.visibility = View.VISIBLE
         }

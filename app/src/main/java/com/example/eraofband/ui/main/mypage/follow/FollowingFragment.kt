@@ -27,6 +27,7 @@ class FollowingFragment(var userIdx: Int) : Fragment(), UserFollowListView {
     private val mAdapter = FollowingRVAdapter()
     private lateinit var followings : List<FollowingInfo>
     private var searchLists = ArrayList<FollowingInfo>()
+    private val userFollowList = UserFollowListService()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,8 +63,8 @@ class FollowingFragment(var userIdx: Int) : Fragment(), UserFollowListView {
     }
 
     override fun onResume() {
-        super.onResume()
-        val userFollowList = UserFollowListService() // GET 해당 유저 팔로우리스트
+        super.onResume()// GET 해당 유저 팔로우리스트
+        mAdapter.clear()
         userFollowList.setUserFollowListView(this)
         userFollowList.userFollowList(getJwt()!!, userIdx)
     }
