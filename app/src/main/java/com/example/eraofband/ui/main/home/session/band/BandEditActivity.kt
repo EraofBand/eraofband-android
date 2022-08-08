@@ -46,6 +46,9 @@ import com.example.eraofband.remote.band.getBand.GetBandResult
 import com.example.eraofband.remote.band.getBand.GetBandService
 import com.example.eraofband.remote.band.getBand.GetBandView
 import java.text.DecimalFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendImgView{
@@ -241,11 +244,18 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         if(!binding.homeBandShowFeeEt.text.isNullOrEmpty()) {
             val performFee = binding.homeBandShowFeeEt.text.toString()
             band.performFee = performFee.toInt()
+        } else {
+            band.performFee = 0
         }
         band.performLocation = binding.homeBandShowLocationEt.text.toString()
-
-        band.performDate = binding.homeBandShowDateEt.text.toString()
         band.performTime = binding.homeBandShowTimeEt.text.toString()
+
+        if(!binding.homeBandShowNameEt.text.isNullOrEmpty() &&
+                !binding.homeBandShowLocationEt.text.isNullOrEmpty()){
+            band.performDate = binding.homeBandShowDateEt.text.toString()
+            } else {
+                band.performDate = ""
+        } //둘다 null일 경우 performdate에 널값 넣어서 보내고 싶은데...
 
         return band
     }
@@ -600,7 +610,7 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         binding.editDrumCntTv.setText(result.drum.toString())
 
 
-        for (i in 0 until result.memberCount) {
+       /* for (i in 0 until result.memberCount) {
             when(result.sessionMembers[i].buSession) {
                 0 -> nowVocal++
                 1 -> nowGuitar++
@@ -609,7 +619,7 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
                 4 -> nowDrum++
             }
         }
-
+*/
         if(!result.performTitle.isNullOrEmpty() || !result.performDate.isNullOrEmpty() || !result.performTime.isNullOrEmpty() || !result.performLocation.isNullOrEmpty()){
             binding.homeBandShowTimeEt.text = result.performTime
             binding.homeBandShowLocationEt.setText(result.performLocation)
@@ -617,6 +627,14 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
             binding.homeBandShowFeeEt.setText(result.performFee.toString())
             binding.homeBandShowDateEt.text = result.performDate
 
+        }
+
+        if(result.performDate.isNullOrEmpty()){
+            val current = LocalDate.now()
+            val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+            val formatted = current.format(formatter)
+
+            binding.homeBandShowDateEt.text = formatted
         }
 
         initRegion(result.bandRegion)
