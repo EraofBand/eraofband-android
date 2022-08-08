@@ -10,7 +10,7 @@ import retrofit2.Response
 class GetSearchUserService {
     private lateinit var getUserView: GetSearchUserView
 
-    fun setBandView(getUserView: GetSearchUserView) {
+    fun setUserView(getUserView: GetSearchUserView) {
         this.getUserView = getUserView
     }
 

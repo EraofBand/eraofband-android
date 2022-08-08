@@ -10,7 +10,7 @@ import retrofit2.Response
 class GetSearchLessonService {
     private lateinit var getLessonView: GetSearchLessonView
 
-    fun setBandView(getLessonView: GetSearchLessonView) {
+    fun setLessonView(getLessonView: GetSearchLessonView) {
         this.getLessonView = getLessonView
     }
 

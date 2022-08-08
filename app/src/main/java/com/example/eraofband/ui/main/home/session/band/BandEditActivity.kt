@@ -1,14 +1,13 @@
 package com.example.eraofband.ui.main.home.session.band
 
 import android.annotation.SuppressLint
+import android.app.*
+import android.content.Context
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.database.Cursor
-import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -17,24 +16,19 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.Gravity
 import android.view.View
+import android.widget.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.data.Band
 import com.example.eraofband.databinding.ActivityBandEditBinding
-import com.example.eraofband.remote.band.getBand.GetBandResult
-import com.example.eraofband.remote.band.getBand.GetBandService
-import com.example.eraofband.remote.band.getBand.GetBandView
 import com.example.eraofband.remote.band.patchBand.PatchBandService
 import com.example.eraofband.remote.band.patchBand.PatchBandView
 import com.example.eraofband.remote.sendimg.SendImgService
@@ -43,6 +37,17 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import android.content.res.Resources
+import android.graphics.Point
+import android.view.Gravity
+import com.bumptech.glide.request.RequestOptions
+import com.example.eraofband.remote.band.getBand.GetBandResult
+import com.example.eraofband.remote.band.getBand.GetBandService
+import com.example.eraofband.remote.band.getBand.GetBandView
+import java.text.DecimalFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendImgView{
@@ -237,11 +242,18 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         if(!binding.homeBandShowFeeEt.text.isNullOrEmpty()) {
             val performFee = binding.homeBandShowFeeEt.text.toString()
             band.performFee = performFee.toInt()
+        } else {
+            band.performFee = 0
         }
         band.performLocation = binding.homeBandShowLocationEt.text.toString()
-
-        band.performDate = binding.homeBandShowDateEt.text.toString()
         band.performTime = binding.homeBandShowTimeEt.text.toString()
+
+        if(!binding.homeBandShowNameEt.text.isNullOrEmpty() &&
+                !binding.homeBandShowLocationEt.text.isNullOrEmpty()){
+            band.performDate = binding.homeBandShowDateEt.text.toString()
+            } else {
+                band.performDate = ""
+        } //둘다 null일 경우 performdate에 널값 넣어서 보내고 싶은데...
 
         return band
     }
@@ -581,6 +593,14 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         binding.homeBandEditDetailEt.setText(result.bandContent)
         binding.homeBandEditChatEt.setText(result.chatRoomLink)
 
+        binding.editVocalCntTv.setText(result.vocal.toString())
+        binding.editGuitarCntTv.setText(result.guitar.toString())
+        binding.editBaseCntTv.setText(result.base.toString())
+        binding.editKeyboardCntTv.setText(result.keyboard.toString())
+        binding.editDrumCntTv.setText(result.drum.toString())
+
+
+
         for (i in 0 until result.memberCount - 1) {
             when(result.sessionMembers[i].buSession) {
                 0 -> nowVocal++
@@ -608,6 +628,14 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
             binding.homeBandShowNameEt.setText(result.performTitle)
             binding.homeBandShowFeeEt.setText(result.performFee.toString())
             binding.homeBandShowDateEt.text = result.performDate
+        }
+
+        if(result.performDate.isNullOrEmpty()){
+            val current = LocalDate.now()
+            val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+            val formatted = current.format(formatter)
+
+            binding.homeBandShowDateEt.text = formatted
         }
 
         initRegion(result.bandRegion)
