@@ -1,13 +1,14 @@
 package com.example.eraofband.ui.main.home.session.band
 
 import android.annotation.SuppressLint
-import android.app.*
-import android.content.Context
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.database.Cursor
+import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -16,36 +17,32 @@ import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.Gravity
 import android.view.View
-import android.widget.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.data.Band
 import com.example.eraofband.databinding.ActivityBandEditBinding
+import com.example.eraofband.remote.band.getBand.GetBandResult
+import com.example.eraofband.remote.band.getBand.GetBandService
+import com.example.eraofband.remote.band.getBand.GetBandView
 import com.example.eraofband.remote.band.patchBand.PatchBandService
 import com.example.eraofband.remote.band.patchBand.PatchBandView
-import com.example.eraofband.remote.sendimg.SendImgResponse
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
-import android.content.res.Resources
-import android.graphics.Point
-import android.view.Gravity
-import com.bumptech.glide.request.RequestOptions
-import com.example.eraofband.remote.band.getBand.GetBandResult
-import com.example.eraofband.remote.band.getBand.GetBandService
-import com.example.eraofband.remote.band.getBand.GetBandView
-import java.text.DecimalFormat
 
 
 class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendImgView{
@@ -650,9 +647,9 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         setToast(message)
     }
 
-    override fun onSendSuccess(response: SendImgResponse) {
-        Log.d("SEND IMG / SUCCESS", response.result)
-        profileImgUrl = response.result
+    override fun onSendSuccess(result: String) {
+        Log.d("SEND IMG / SUCCESS", result)
+        profileImgUrl = result
     }
 
     override fun onSendFailure(code: Int, message: String) {

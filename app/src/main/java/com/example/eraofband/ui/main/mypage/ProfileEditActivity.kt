@@ -26,14 +26,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.data.EditUser
 import com.example.eraofband.databinding.ActivityProfileEditBinding
+import com.example.eraofband.remote.sendimg.SendImgService
+import com.example.eraofband.remote.sendimg.SendImgView
 import com.example.eraofband.remote.user.getMyPage.GetMyPageResult
 import com.example.eraofband.remote.user.getMyPage.GetMyPageService
 import com.example.eraofband.remote.user.getMyPage.GetMyPageView
 import com.example.eraofband.remote.user.patchUser.PatchUserService
 import com.example.eraofband.remote.user.patchUser.PatchUserView
-import com.example.eraofband.remote.sendimg.SendImgResponse
-import com.example.eraofband.remote.sendimg.SendImgService
-import com.example.eraofband.remote.sendimg.SendImgView
 import com.example.eraofband.ui.signup.DialogDatePicker
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -383,9 +382,9 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
         Log.d("PATCH / FAIL", "$code $message")
     }
 
-    override fun onSendSuccess(response: SendImgResponse) {
-        Log.d("SENDIMGss", response.toString())
-        profileUrl = response.result
+    override fun onSendSuccess(result: String) {
+        Log.d("SENDIMGss", result)
+        profileUrl = result
     }
 
     override fun onSendFailure(code: Int, message: String) {

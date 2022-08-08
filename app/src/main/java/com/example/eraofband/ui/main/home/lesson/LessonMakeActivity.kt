@@ -10,29 +10,28 @@ import android.content.res.Resources
 import android.database.Cursor
 import android.graphics.Point
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.eraofband.R
-import android.util.Log
-import android.view.Gravity
-import android.widget.TextView
 import com.example.eraofband.data.Lesson
 import com.example.eraofband.databinding.ActivityLessonMakeBinding
 import com.example.eraofband.remote.lesson.makeLesson.MakeLessonResult
 import com.example.eraofband.remote.lesson.makeLesson.MakeLessonService
 import com.example.eraofband.remote.lesson.makeLesson.MakeLessonView
-import com.example.eraofband.remote.sendimg.SendImgResponse
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
 import okhttp3.MediaType
@@ -349,7 +348,7 @@ class LessonMakeActivity : AppCompatActivity(), MakeLessonView, SendImgView {
     private fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 
     private fun getUserIdx() : Int {
-        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getInt("userIdx", 0)
     }
 
@@ -368,9 +367,9 @@ class LessonMakeActivity : AppCompatActivity(), MakeLessonView, SendImgView {
         setToast(message)
     }
 
-    override fun onSendSuccess(response: SendImgResponse) {
-        Log.d("SENDIMG/SUCCESS", response.result)
-        profileUrl = response.result
+    override fun onSendSuccess(result: String) {
+        Log.d("SENDIMG/SUCCESS", result)
+        profileUrl = result
     }
 
     override fun onSendFailure(code: Int, message: String) {
