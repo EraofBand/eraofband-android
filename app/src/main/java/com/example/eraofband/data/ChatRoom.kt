@@ -7,3 +7,9 @@ data class ChatRoom(
     var recentTime : Int = 0,
     var lastMessage : String = ""
 )
+
+data class MakeChatRoom(
+    var chatRoomIdx : Int,
+    var firstUserIdx : Int,
+    var secondUserIdx : Int
+)

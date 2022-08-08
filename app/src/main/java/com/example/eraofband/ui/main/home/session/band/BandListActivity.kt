@@ -20,17 +20,18 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
 
     private lateinit var binding: ActivityBandListBinding
     private lateinit var bandListRVAdapter: BandListRVAdapter
-    private var sessionValue = 0
+    private var sessionValue = -1
+    private var regionValue = "전체"
 
     val getRegionBandService = GetRegionBandService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityBandListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initSpinner()
+        sessionSelector()
 
         binding.homeBandListSearchIv.setOnClickListener {
             val intent = Intent(this, SearchActivity::class.java)
@@ -45,17 +46,19 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
             val fabDialog = BandFabDialog()
             fabDialog.show(supportFragmentManager, "bandFabDialog")
         }
-
     }
 
     override fun onResume() {
         super.onResume()
-        getRegionBandService.setGetView(this)
-        getRegionBandService.getRegionBand("전체", 5)
-
         sessionValue = intent.getIntExtra("sessionBtn", 0)
-        binding.homeBandListCitySp.setSelection(0)
-        sessionSelect(sessionValue)
+        getRegionBandService.setGetView(this)
+
+        if (sessionValue != -1) {
+            sessionSelect(sessionValue)
+            getRegionBandService.getRegionBand("전체", sessionValue)
+        } else {
+            getRegionBandService.getRegionBand("전체", 5)
+        }
     }
 
     private fun initSpinner() {  // 스피너 초기화
@@ -64,18 +67,16 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
 
         val cityAdapter = ArrayAdapter(this, R.layout.item_spinner, city)
         binding.homeBandListCitySp.adapter = cityAdapter
-        binding.homeBandListCitySp.setSelection(0)
 
         // 지역 스피너 클릭 이벤트
         binding.homeBandListCitySp.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                when (position) {
-                    0 -> regionSessionSelect("전체")
-
-                    1 -> regionSessionSelect("서울")
-
-                    2 -> regionSessionSelect("경기도")
+                regionValue = when (position) {
+                    0 -> "전체"
+                    1 -> "서울"
+                    else -> "경기도"
                 }
+                getRegionBandService.getRegionBand(regionValue, sessionValue)
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {  // 아무것도 클릭되어있지 않을 때는 기본으로 전체를 띄워줌
@@ -84,35 +85,41 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
             }
         })
     }
-
-    private fun regionSessionSelect(region : String) {
-        binding.homeBandListTotalCp.setOnClickListener { getRegionBandService.getRegionBand(region, 5)}
-        binding.homeBandListVocalCp.setOnClickListener { getRegionBandService.getRegionBand(region, 0)}
-        binding.homeBandListGuitarCp.setOnClickListener { getRegionBandService.getRegionBand(region, 1)}
-        binding.homeBandListBaseCp.setOnClickListener { getRegionBandService.getRegionBand(region, 2)}
-        binding.homeBandListKeyboardCp.setOnClickListener { getRegionBandService.getRegionBand(region, 3)}
-        binding.homeBandListDrumCp.setOnClickListener { getRegionBandService.getRegionBand(region, 4)}
+    private fun sessionSelect(session: Int) {
+        when(session) {
+            0 -> binding.homeBandListVocalCp.isChecked = true
+            1 -> binding.homeBandListGuitarCp.isChecked = true
+            2 -> binding.homeBandListBaseCp.isChecked = true
+            3 -> binding.homeBandListKeyboardCp.isChecked = true
+            4 -> binding.homeBandListDrumCp.isChecked = true
+            5 -> binding.homeBandListTotalCp.isChecked = true
+        }
     }
 
-    private fun sessionSelect(sessionValue : Int) {
-        if(sessionValue == 0){
-            binding.homeBandListVocalCp.isChecked = true
-            getRegionBandService.getRegionBand("전체", sessionValue)
-        } else if (sessionValue == 1) {
-            binding.homeBandListGuitarCp.isChecked = true
-            getRegionBandService.getRegionBand("전체", sessionValue)
-        } else if (sessionValue == 2){
-            binding.homeBandListBaseCp.isChecked = true
-            getRegionBandService.getRegionBand("전체", sessionValue)
-        } else if (sessionValue == 3){
-            binding.homeBandListKeyboardCp.isChecked = true
-            getRegionBandService.getRegionBand("전체", sessionValue)
-        } else if (sessionValue == 4){
-            binding.homeBandListDrumCp.isChecked = true
-            getRegionBandService.getRegionBand("전체", sessionValue)
-        } else{
-            binding.homeBandListTotalCp.isChecked = true
-            getRegionBandService.getRegionBand("전체", sessionValue)
+    private fun sessionSelector() {
+        binding.homeBandListVocalCp.setOnClickListener {
+            sessionValue = 0
+            getRegionBandService.getRegionBand(regionValue, sessionValue)
+        }
+        binding.homeBandListGuitarCp.setOnClickListener {
+            sessionValue = 1
+            getRegionBandService.getRegionBand(regionValue, sessionValue)
+        }
+        binding.homeBandListBaseCp.setOnClickListener {
+            sessionValue = 2
+            getRegionBandService.getRegionBand(regionValue, sessionValue)
+        }
+        binding.homeBandListKeyboardCp.setOnClickListener {
+            sessionValue = 3
+            getRegionBandService.getRegionBand(regionValue, sessionValue)
+        }
+        binding.homeBandListDrumCp.setOnClickListener {
+            sessionValue = 4
+            getRegionBandService.getRegionBand(regionValue, sessionValue)
+        }
+        binding.homeBandListTotalCp.setOnClickListener {
+            sessionValue = 5
+            getRegionBandService.getRegionBand(regionValue, sessionValue)
         }
     }
 

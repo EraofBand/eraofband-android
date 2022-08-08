@@ -18,6 +18,9 @@ import com.example.eraofband.remote.band.getLikedBand.GetLikedBandResponse
 import com.example.eraofband.remote.band.getNewBand.GetNewBandResponse
 import com.example.eraofband.remote.band.getPopularBand.GetPopularBandResponse
 import com.example.eraofband.remote.band.makeBand.MakeBandResponse
+import com.example.eraofband.remote.chat.getChatList.GetChatListResponse
+import com.example.eraofband.remote.chat.makeChat.MakeChatResponse
+import com.example.eraofband.remote.chat.patchChat.PatchChatResponse
 import com.example.eraofband.remote.lesson.getLikeLessonList.GetLessonLikeListResponse
 import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoResponse
 import com.example.eraofband.remote.lesson.getLessonList.GetLessonListResponse
@@ -246,15 +249,27 @@ interface API {
     @DELETE("/notice/status")
     fun deleteNotice(@Header("X-ACCESS-TOKEN") jwt: String) : Call<DeleteNoticeResponse>
 
-    //유저 검색
+    // 유저 검색
     @GET("/search/users/{keyword}")
     fun getSearchUser(@Path("keyword") keyword: String) : Call<GetSearchUserResponse>
 
-    //밴드 검색
+    // 밴드 검색
     @GET("/search/bands/{keyword}")
     fun getSearchBand(@Path("keyword") keyword: String) : Call<GetSearchBandResponse>
 
-    //레슨 검색
+    // 레슨 검색
     @GET("/search/lessons/{keyword}")
     fun getSearchLesson(@Path("keyword") keyword: String) : Call<GetSearchLessonResponse>
+
+    // 채팅방 리스트 조회
+    @GET("/chat/chat-room")
+    fun getChatList(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetChatListResponse>
+
+    // 채팅방 나가기 처리
+    @PATCH("/chat/status/{chatRoomIdx}")
+    fun patchChat(@Header("X-ACCESS-TOKEN") jwt: String, @Path("chatRoomIdx") chatRoomIdx: String) : Call<PatchChatResponse>
+
+    // 채팅방 생성 처리
+    @POST("/chat")
+    fun makeChat(@Body makeChatRoom: MakeChatRoom) : Call<MakeChatResponse>
 }
