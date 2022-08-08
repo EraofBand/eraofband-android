@@ -6,38 +6,71 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.core.widget.addTextChangedListener
+import androidx.viewpager2.widget.ViewPager2
 import com.example.eraofband.databinding.ActivitySearchBinding
+import com.example.eraofband.remote.search.getBand.GetSearchBandResult
+import com.example.eraofband.remote.search.getBand.GetSearchBandService
+import com.example.eraofband.remote.search.getBand.GetSearchBandView
+import com.example.eraofband.remote.search.getLesson.GetSearchLessonResult
+import com.example.eraofband.remote.search.getLesson.GetSearchLessonService
+import com.example.eraofband.remote.search.getLesson.GetSearchLessonView
 import com.example.eraofband.remote.search.getUser.GetSearchUserResult
 import com.example.eraofband.remote.search.getUser.GetSearchUserService
 import com.example.eraofband.remote.search.getUser.GetSearchUserView
-import com.example.eraofband.remote.user.userFollowList.FollowerInfo
-import com.example.eraofband.ui.main.mypage.follow.FollowerRVAdapter
+import com.example.eraofband.ui.main.search.band.SearchBandFragment
+import com.example.eraofband.ui.main.search.lesson.SearchLessonFragment
+import com.example.eraofband.ui.main.search.user.SearchUserFragment
 import com.example.eraofband.ui.main.search.user.SearchUserRVAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import java.util.*
-import kotlin.collections.ArrayList
 
-class SearchActivity : AppCompatActivity(), GetSearchUserView {
+
+class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView, GetSearchLessonView {
     private lateinit var binding: ActivitySearchBinding
+    private var nowPage = 0
 
-    private val mAdapter = SearchUserRVAdapter()
-    private lateinit var searchUsers : List<GetSearchUserResult>
-    private var searchLists = ArrayList<GetSearchUserResult>()
-
-    private var getUserService = GetSearchUserService()
+    private val userFragment = SearchUserFragment()  // 프래그먼트 객체 선언
+    private val bandFragment = SearchBandFragment()
+    private val lessonFragment = SearchLessonFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val userService = GetSearchUserService()  // 검색 관련 api
+        val bandService = GetSearchBandService()
+        val lessonService = GetSearchLessonService()
+
+        userService.setUserView(this)
+        bandService.setBandView(this)
+        lessonService.setLessonView(this)
 
         binding.searchBackIb.setOnClickListener {
             finish()
         }
 
-        val current = intent.getIntExtra("current", 0)
+        initVPAdapter() // 뷰페이저 초기화
+
+        binding.searchBarEt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            @SuppressLint("SetTextI18n")
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            override fun afterTextChanged(s: Editable?) {
+                if (s.toString().isNotEmpty()) {
+                    when (nowPage) {
+                        0 -> userService.getSearchUser(s.toString())  //  s = 검색 문자열
+                        1 -> bandService.getSearchBand(s.toString())
+                        else -> lessonService.getSearchLesson(s.toString())
+                    }
+                }
+            }
+        })
+    }
+
+    private fun initVPAdapter() {
+        val current = intent.getIntExtra("current", 0) // 메인에서 들어왔는지, 밴드에서 들어왔는지
 
         val searchVPAdapter = SearchVPAdapter(this)
         binding.searchVp.adapter = searchVPAdapter
@@ -56,37 +89,43 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView {
             }
         }
 
-
-        mAdapter.clear()
-
-        getUserService.setBandView(this)
-
-        binding.searchBarEt.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        // 뷰페이저 리스너 (현재 뷰페이저가 어디를 띄어주고 있는지)
+        binding.searchVp.registerOnPageChangeCallback((object : ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                nowPage = when(position) {
+                    0 -> 0    // userFragment
+                    1 -> 1    // bandFragment
+                    else -> 2 // lessonFragment
+                }
             }
-            @SuppressLint("SetTextI18n")
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-            override fun afterTextChanged(p0: Editable?) {
-                val searchId = binding.searchBarEt.text.toString()
-                getUserService.getSearchUser(searchId)
-                binding.searchBarEt.hint = ""
-            }
-        })
+        }))
     }
-
-    override fun onResume() {
-        super.onResume()
-
-    }
-
 
     override fun onGetSearchUserSuccess(result: List<GetSearchUserResult>) {
         Log.d("SEARCH USER / SUCCESS", result.toString())
-        searchUsers = result
+        userFragment.initRVAdapter(result)
     }
 
     override fun onGetSearchUserFailure(code: Int, message: String) {
+        Log.d("SEARCH USER / FAIL", "$code $message")
+    }
+
+    override fun onGetSearchBandSuccess(result: List<GetSearchBandResult>) {
+        Log.d("SEARCH USER / SUCCESS", result.toString())
+        bandFragment.initRVAdapter(result)
+    }
+
+    override fun onGetSearchBandFailure(code: Int, message: String) {
+        Log.d("SEARCH USER / FAIL", "$code $message")
+    }
+
+    override fun onGetSearchLessonSuccess(result: List<GetSearchLessonResult>) {
+        Log.d("SEARCH USER / SUCCESS", result.toString())
+        lessonFragment.initRVAdapter(result)
+    }
+
+    override fun onGetSearchLessonFailure(code: Int, message: String) {
         Log.d("SEARCH USER / FAIL", "$code $message")
     }
 }

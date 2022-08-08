@@ -1,6 +1,7 @@
 package com.example.eraofband.ui.main.search.user
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +30,7 @@ class SearchUserRVAdapter : RecyclerView.Adapter<SearchUserRVAdapter.ViewHolder>
     fun initUserList(user : List<GetSearchUserResult>) {
         this.userList.addAll(user)
         notifyDataSetChanged()
+        Log.d("HHH", userList.toString())
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -66,7 +68,7 @@ class SearchUserRVAdapter : RecyclerView.Adapter<SearchUserRVAdapter.ViewHolder>
 
             binding.searchUserNicknameTv.text = list.nickName
 
-            binding.searchUserSessionTv.text = when(list.userSession) {  // 레슨 종목
+            binding.searchUserSessionTv.text = when(list.userSession) {  // 세션
                 0 -> "보컬"
                 1 -> "기타"
                 2 -> "베이스"
