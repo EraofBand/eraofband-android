@@ -12,5 +12,4 @@ data class MakeChatRoom(
     var chatRoomIdx : Int,
     var firstUserIdx : Int,
     var secondUserIdx : Int
-
 )
