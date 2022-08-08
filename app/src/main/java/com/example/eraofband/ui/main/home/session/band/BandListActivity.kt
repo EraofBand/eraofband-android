@@ -14,6 +14,7 @@ import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResult
 import com.example.eraofband.remote.band.getRegionBand.GetRegionBandService
 import com.example.eraofband.remote.band.getRegionBand.GetRegionBandView
 import com.example.eraofband.ui.main.home.HomeFabDialog
+import com.example.eraofband.ui.main.search.SearchActivity
 
 class BandListActivity: AppCompatActivity(), GetRegionBandView {
 
@@ -31,6 +32,13 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
 
         initSpinner()
         sessionSelector()
+
+        binding.homeBandListSearchIv.setOnClickListener {
+            val intent = Intent(this, SearchActivity::class.java)
+            intent.putExtra("current", 1)
+            startActivity(intent)
+            finish()
+        }
 
         binding.homeBandListBackIv.setOnClickListener { finish() }
 
