@@ -32,6 +32,8 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
     private val bandFragment = SearchBandFragment()
     private val lessonFragment = SearchLessonFragment()
 
+    internal var userLists = arrayListOf<GetSearchUserResult>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
@@ -104,7 +106,7 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
 
     override fun onGetSearchUserSuccess(result: List<GetSearchUserResult>) {
         Log.d("SEARCH USER / SUCCESS", result.toString())
-        userFragment.initRVAdapter(result)
+        userLists = result as ArrayList<GetSearchUserResult>
     }
 
     override fun onGetSearchUserFailure(code: Int, message: String) {
