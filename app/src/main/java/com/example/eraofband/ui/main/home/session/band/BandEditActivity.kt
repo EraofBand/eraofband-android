@@ -45,9 +45,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.remote.band.getBand.GetBandResult
 import com.example.eraofband.remote.band.getBand.GetBandService
 import com.example.eraofband.remote.band.getBand.GetBandView
-import java.text.DecimalFormat
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 

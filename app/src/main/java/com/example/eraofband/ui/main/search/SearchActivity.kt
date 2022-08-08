@@ -28,10 +28,6 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
     private lateinit var binding: ActivitySearchBinding
     private var nowPage = 0
 
-    private val userFragment = SearchUserFragment()  // 프래그먼트 객체 선언
-    private val bandFragment = SearchBandFragment()
-    private val lessonFragment = SearchLessonFragment()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
@@ -104,7 +100,8 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
 
     override fun onGetSearchUserSuccess(result: List<GetSearchUserResult>) {
         Log.d("SEARCH USER / SUCCESS", result.toString())
-        userFragment.initRVAdapter(result)
+        SearchUserRVAdapter().clear()
+        SearchUserRVAdapter().initUserList(result)
     }
 
     override fun onGetSearchUserFailure(code: Int, message: String) {
@@ -113,7 +110,6 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
 
     override fun onGetSearchBandSuccess(result: List<GetSearchBandResult>) {
         Log.d("SEARCH USER / SUCCESS", result.toString())
-        bandFragment.initRVAdapter(result)
     }
 
     override fun onGetSearchBandFailure(code: Int, message: String) {
@@ -122,7 +118,6 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
 
     override fun onGetSearchLessonSuccess(result: List<GetSearchLessonResult>) {
         Log.d("SEARCH USER / SUCCESS", result.toString())
-        lessonFragment.initRVAdapter(result)
     }
 
     override fun onGetSearchLessonFailure(code: Int, message: String) {
