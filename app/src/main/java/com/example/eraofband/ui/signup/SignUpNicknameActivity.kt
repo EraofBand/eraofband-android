@@ -4,6 +4,8 @@ import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Point
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -31,7 +33,7 @@ class SignUpNicknameActivity : AppCompatActivity() {
 
         binding.signupNicknameNextBtn.setOnClickListener {
             if(binding.signupNicknameNicknameEt.text.isEmpty()) {
-                setToast()
+                setToast("닉네임을 입력해주세요!")
             }
             else {
                 val nickname = binding.signupNicknameNicknameEt.text.toString()
@@ -41,6 +43,7 @@ class SignUpNicknameActivity : AppCompatActivity() {
                 overridePendingTransition(R.anim.slide_right, R.anim.slide_left)
             }
         }
+        nickNameTW()
 
         binding.signupNicknameBackIv.setOnClickListener {
             finish()
@@ -74,12 +77,30 @@ class SignUpNicknameActivity : AppCompatActivity() {
         binding.signupNicknameNameTv.text = spannableString
     }*/
 
-    private fun setToast() {
+    private fun nickNameTW() {
+        binding.signupNicknameNicknameEt.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                //
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                //
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s!!.length > 7){
+                    setToast("닉네임은 8글자 이하입니다!")
+                }
+            }
+
+        })
+    }
+    private fun setToast(str : String) {
         val view : View = layoutInflater.inflate(R.layout.toast_signup, findViewById(R.id.toast_signup))
         val toast = Toast(this)
 
         val text = view.findViewById<TextView>(R.id.toast_signup_text_tv)
-        text.text = "닉네임을 입력해주세요!"
+        text.text = str
 
         val display = windowManager.defaultDisplay // in case of Activity
         val size = Point()

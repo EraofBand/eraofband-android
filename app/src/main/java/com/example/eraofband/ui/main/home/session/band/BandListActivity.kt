@@ -71,7 +71,9 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 when (position) {
                     0 -> regionSessionSelect("전체")
+
                     1 -> regionSessionSelect("서울")
+
                     2 -> regionSessionSelect("경기도")
                 }
             }
