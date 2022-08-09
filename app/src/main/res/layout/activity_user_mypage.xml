@@ -98,11 +98,11 @@
                     android:id="@+id/user_mypage_info_nickname_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="20dp"
                     android:fontFamily="@font/pretendard_bold"
                     android:text="닉네임"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     app:layout_constraintStart_toEndOf="@+id/user_mypage_profileimg_iv"
                     app:layout_constraintTop_toTopOf="@+id/user_mypage_profileimg_iv" />
 
@@ -116,7 +116,7 @@
                     android:text="드럼"
                     android:textColor="@color/white"
                     android:textSize="12sp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="8dp"
                     app:layout_constraintTop_toTopOf="@id/user_mypage_info_nickname_tv"
                     app:layout_constraintStart_toEndOf="@id/user_mypage_info_nickname_tv"
                     app:layout_constraintBottom_toBottomOf="@id/user_mypage_info_nickname_tv"/>

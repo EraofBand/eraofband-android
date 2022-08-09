@@ -18,7 +18,7 @@ class ChatContentActivity : AppCompatActivity() {
     private val chatRef = database.getReference("chat")
 
     // 파이어베이스로 값 올리기
-    private lateinit var mDatabase : DatabaseReference
+    private lateinit var mDatabase: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,22 +55,31 @@ class ChatContentActivity : AppCompatActivity() {
 //                Log.d("FAIL", "데이터를 불러오지 못했습니다")
 //            }
 //        })
-//    }
+        }
 
 
-    // 데이터를 올리는 부분
-    private fun createChatRoom() {
-        // API로 스웨거에서 채팅룸 idx, 유저 idx들을 받아오면 이 함수 실행
-        mDatabase.child("chat").setValue("채팅방 idx")  // 채팅방 생성
-        mDatabase.child("chat").child("채팅방 idx").child("users").setValue(ChatUser(0, 1))  // 채팅방 users 입력
-        // child 부분은 위에 채팅방 idx만 확실하게 알 수 있다면 ref로 정의해서 더 깔끔하게 넣을 수 있어용 !!
-    }
+        // 데이터를 올리는 부분
+        private fun createChatRoom() {
+            // API로 스웨거에서 채팅룸 idx, 유저 idx들을 받아오면 이 함수 실행
+            mDatabase.child("chat").setValue("채팅방 idx")  // 채팅방 생성
+            mDatabase.child("chat").child("채팅방 idx").child("users")
+                .setValue(ChatUser(0, 1))  // 채팅방 users 입력
+            // child 부분은 위에 채팅방 idx만 확실하게 알 수 있다면 ref로 정의해서 더 깔끔하게 넣을 수 있어용 !!
+        }
 
-    private fun writeChat() {
-        mDatabase.child("chat").child("채팅방 idx").child("comments").child("유저인덱스${System.currentTimeMillis()}").setValue(ChatComment("음", false, System.currentTimeMillis().toInt(), 1))  // 채팅방 users 입력
-        // 인덱싱은 유저인덱스+타임스탬프
-        // 한 유저가 같은 밀리 초 안에 채팅을 보내는 건 어려울 거라고 생각하기 때문에 괜찮을 거라고 생각합니다 아닐 수도 있어요
-        // setValue로 값을 넣어주면 됩니다
-        // child에 있는 path가 없는 경우 만들어주고 있는 경우는 path를 타고 들어가서 값을 파이어베이스에 넣어주는 형식
-    }
+        private fun writeChat() {
+            mDatabase.child("chat").child("채팅방 idx").child("comments")
+                .child("유저인덱스${System.currentTimeMillis()}").setValue(
+                ChatComment(
+                    "음",
+                    false,
+                    System.currentTimeMillis().toInt(),
+                    1
+                )
+            )  // 채팅방 users 입력
+            // 인덱싱은 유저인덱스+타임스탬프
+            // 한 유저가 같은 밀리 초 안에 채팅을 보내는 건 어려울 거라고 생각하기 때문에 괜찮을 거라고 생각합니다 아닐 수도 있어요
+            // setValue로 값을 넣어주면 됩니다
+            // child에 있는 path가 없는 경우 만들어주고 있는 경우는 path를 타고 들어가서 값을 파이어베이스에 넣어주는 형식
+        }
 }
