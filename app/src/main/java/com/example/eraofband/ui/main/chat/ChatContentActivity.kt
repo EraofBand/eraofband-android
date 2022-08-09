@@ -33,33 +33,33 @@ class ChatContentActivity : AppCompatActivity() {
     }
 
     // 일단 어디에 이 함수들을 써야할 지 모르겠어서 여기에 다 모아놨어요
-    private fun getChats() {
-        // 게시물에 달린 댓글 받아오기
-        // 여기서 중요한 점 : 이 리스너는 onCreate에서 한 번만 호출되어야 함
-        // 필요할 때마다 불러오는 게 아님 <- 변화를 감지하는 리스너기 때문
-        // 자세한 기능은 리사이클러뷰에서 진행해야할 것 같습니다
-        chatRef.addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
-            override fun onDataChange(snapshot: DataSnapshot) {
-                "리사이클러뷰".clearChat()  // 새로 불러오기 때문에 초기화 필요
-
-                if (snapshot.exists()){
-                    for (commentSnapShot in snapshot.children){  // 하나씩 불러옴
-                        val getData = commentSnapShot.getValue("데이터클래스"::class.java)  // 리스폰스가 들어가겠죵
-
-                        if (getData != null) {
-                            "리사이클러뷰".addNewChat(getData)  // 리사이클러뷰에 채팅을 한 개씩 추가
-                            Log.d("SUCCESS", getData.toString())  // 추가 확인
-                        }
-
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.d("FAIL", "데이터를 불러오지 못했습니다")
-            }
-        })
-    }
+//    private fun getChats() {
+//        // 게시물에 달린 댓글 받아오기
+//        // 여기서 중요한 점 : 이 리스너는 onCreate에서 한 번만 호출되어야 함
+//        // 필요할 때마다 불러오는 게 아님 <- 변화를 감지하는 리스너기 때문
+//        // 자세한 기능은 리사이클러뷰에서 진행해야할 것 같습니다
+//        chatRef.addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                "리사이클러뷰".clearChat()  // 새로 불러오기 때문에 초기화 필요
+//
+//                if (snapshot.exists()){
+//                    for (commentSnapShot in snapshot.children){  // 하나씩 불러옴
+//                        val getData = commentSnapShot.getValue("데이터클래스"::class.java)  // 리스폰스가 들어가겠죵
+//
+//                        if (getData != null) {
+//                            "리사이클러뷰".addNewChat(getData)  // 리사이클러뷰에 채팅을 한 개씩 추가
+//                            Log.d("SUCCESS", getData.toString())  // 추가 확인
+//                        }
+//
+//                    }
+//                }
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                Log.d("FAIL", "데이터를 불러오지 못했습니다")
+//            }
+//        })
+//    }
 
     // 데이터를 올리는 부분
     private fun createChatRoom() {

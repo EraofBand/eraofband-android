@@ -45,13 +45,6 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
-import android.content.res.Resources
-import android.graphics.Point
-import android.view.Gravity
-import com.bumptech.glide.request.RequestOptions
-import com.example.eraofband.remote.band.getBand.GetBandResult
-import com.example.eraofband.remote.band.getBand.GetBandService
-import com.example.eraofband.remote.band.getBand.GetBandView
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

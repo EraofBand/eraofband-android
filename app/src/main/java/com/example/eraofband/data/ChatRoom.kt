@@ -1,11 +1,12 @@
 package com.example.eraofband.data
 
 data class ChatRoom(
-    var chatRoomIdx : Int = 0,
-    var firstUserIdx : Int = 0,
-    var secondUserIdx : Int = 0,
-    var recentTime : Int = 0,
-    var lastMessage : String = ""
+    var chatRoomIdx: Int,
+    var nickname: String,
+    var profileImgUrl: String,
+    var lastMessage: String,
+    var updateAt: String,
+    var isChecked: Boolean
 )
 
 data class MakeChatRoom(
