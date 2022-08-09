@@ -1,15 +1,11 @@
 package com.example.eraofband.ui.main.chat
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.data.ChatComment
 import com.example.eraofband.data.ChatUser
 import com.example.eraofband.databinding.ActivityChatContentBinding
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -33,11 +29,11 @@ class ChatContentActivity : AppCompatActivity() {
     }
 
     // 일단 어디에 이 함수들을 써야할 지 모르겠어서 여기에 다 모아놨어요
-//    private fun getChats() {
-//        // 게시물에 달린 댓글 받아오기
-//        // 여기서 중요한 점 : 이 리스너는 onCreate에서 한 번만 호출되어야 함
-//        // 필요할 때마다 불러오는 게 아님 <- 변화를 감지하는 리스너기 때문
-//        // 자세한 기능은 리사이클러뷰에서 진행해야할 것 같습니다
+    private fun getChats() {
+        // 게시물에 달린 댓글 받아오기
+        // 여기서 중요한 점 : 이 리스너는 onCreate에서 한 번만 호출되어야 함
+        // 필요할 때마다 불러오는 게 아님 <- 변화를 감지하는 리스너기 때문
+        // 자세한 기능은 리사이클러뷰에서 진행해야할 것 같습니다
 //        chatRef.addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
 //            override fun onDataChange(snapshot: DataSnapshot) {
 //                "리사이클러뷰".clearChat()  // 새로 불러오기 때문에 초기화 필요
@@ -60,6 +56,7 @@ class ChatContentActivity : AppCompatActivity() {
 //            }
 //        })
 //    }
+
 
     // 데이터를 올리는 부분
     private fun createChatRoom() {

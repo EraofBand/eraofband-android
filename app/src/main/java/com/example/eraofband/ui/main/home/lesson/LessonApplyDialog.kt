@@ -13,7 +13,7 @@ import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonResult
 import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonView
 import com.example.eraofband.ui.login.GlobalApplication
 import com.example.eraofband.ui.main.home.session.band.session.SessionCompleteDialog
-import com.example.eraoflesson.remote.applyLesson.ApplyLessonService
+import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonService
 
 class LessonApplyDialog(private val teacherIdx: Int, private val jwt: String, private val userIdx: Int, private val lessonIdx: Int): DialogFragment(), ApplyLessonView {
 

@@ -1,10 +1,8 @@
-package com.example.eraoflesson.remote.applyLesson
+package com.example.eraofband.remote.lesson.applyLesson
 
 import android.util.Log
 import com.example.eraofband.remote.API
 import com.example.eraofband.remote.NetworkModule
-import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonResponse
-import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

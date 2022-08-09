@@ -277,6 +277,7 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initDatepicker() {
         binding.homeBandShowDateEt.text = "2022-07-01"
 

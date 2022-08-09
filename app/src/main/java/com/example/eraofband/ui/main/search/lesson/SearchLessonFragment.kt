@@ -8,10 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.databinding.FragmentSearchLessonBinding
 import com.example.eraofband.remote.search.getLesson.GetSearchLessonResult
-import com.example.eraofband.remote.search.getUser.GetSearchUserResult
-import com.example.eraofband.ui.main.search.user.SearchUserRVAdapter
+import com.example.eraofband.ui.main.search.SearchActivity
 
-class SearchLessonFragment : Fragment() {
+class SearchLessonFragment : Fragment(), SearchLessonInterface {
 
     private var _binding: FragmentSearchLessonBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
@@ -23,18 +22,25 @@ class SearchLessonFragment : Fragment() {
     ): View? {
         _binding = FragmentSearchLessonBinding.inflate(inflater, container, false)
 
+        (activity as SearchActivity).setLessonView(this)
+
         return binding.root
     }
 
-    fun initRVAdapter(lessonList: List<GetSearchLessonResult>){
+    private fun initRVAdapter(lessonList: List<GetSearchLessonResult>){
         val searchLessonRVAdapter = SearchLessonRVAdapter()
         binding.searchLessonRv.adapter = searchLessonRVAdapter
         binding.searchLessonRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
         searchLessonRVAdapter.initLessonList(lessonList)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun initLessonRV(result: List<GetSearchLessonResult>) {
+        initRVAdapter(result)
     }
 }
