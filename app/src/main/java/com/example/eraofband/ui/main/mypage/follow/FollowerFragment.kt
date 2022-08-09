@@ -49,6 +49,7 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
                 binding.followerSearchEt.hint = ""
             }
         })
+        //
 
         return binding.root
     }
