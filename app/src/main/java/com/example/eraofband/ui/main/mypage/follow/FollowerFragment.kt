@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.eraofband.data.User
 import com.example.eraofband.databinding.FragmentFollowerBinding
 import com.example.eraofband.remote.user.userFollowList.FollowerInfo
 import com.example.eraofband.remote.user.userFollowList.UserFollowListResult
@@ -21,13 +20,12 @@ import com.example.eraofband.remote.user.userFollowList.UserFollowListView
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import java.util.*
-import kotlin.collections.ArrayList
 
 class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
     private var _binding: FragmentFollowerBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
 
-    private val mAdapter = FollowerRVAdapter()
+    private lateinit var mAdapter: FollowerRVAdapter
     private lateinit var followers : List<FollowerInfo>
     private var searchLists = ArrayList<FollowerInfo>()
 
@@ -58,9 +56,6 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
 
     override fun onResume() {
         super.onResume() // GET 해당 유저 팔로우리스트
-
-        mAdapter.clear()
-
         userFollowList.setUserFollowListView(this)
         userFollowList.userFollowList(getJwt()!!, userIdx)
     }
@@ -79,9 +74,12 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
 
 
     private fun connectAdapter(item : List<FollowerInfo>) {
+        mAdapter = FollowerRVAdapter()
         binding.followingRv.adapter = mAdapter // 리사이클러뷰 어댑터 연결
-        binding.followingRv.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.followingRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        binding.followingRv.clearAnimation()
+        mAdapter.initFollowList(item) // 팔로우리스트 초기화
 
         mAdapter.setMyItemClickListener(object : FollowerRVAdapter.MyItemClickListener {
 
@@ -107,7 +105,6 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
                 return userSP.getInt("userIdx", 0)
             }
         })
-        mAdapter.initFollowList(item) // 팔로우리스트 초기화
     }
 
     private fun getJwt(): String? {
