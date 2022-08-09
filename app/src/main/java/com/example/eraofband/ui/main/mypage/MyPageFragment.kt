@@ -14,11 +14,11 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.FragmentMypageBinding
-import com.example.eraofband.ui.main.mypage.follow.FollowActivity
-import com.example.eraofband.ui.main.mypage.portfolio.PortfolioMakeActivity
 import com.example.eraofband.remote.user.getMyPage.GetMyPageResult
 import com.example.eraofband.remote.user.getMyPage.GetMyPageService
 import com.example.eraofband.remote.user.getMyPage.GetMyPageView
+import com.example.eraofband.ui.main.mypage.follow.FollowActivity
+import com.example.eraofband.ui.main.mypage.portfolio.PortfolioMakeActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 import java.util.*
@@ -53,7 +53,7 @@ class MyPageFragment : Fragment(), GetMyPageView {
             startActivity(Intent(activity, MyPageSettingActivity::class.java))
         }
         binding.mypageSessionChangeTv.setOnClickListener {
-            var intent = Intent(activity, MyPageSessionActivity::class.java)
+            val intent = Intent(activity, MyPageSessionActivity::class.java)
             intent.putExtra("session", mySession)
             startActivity(intent)
         }
@@ -85,7 +85,7 @@ class MyPageFragment : Fragment(), GetMyPageView {
 
     private fun moveFollowActivity() {
         binding.mypageFollowing.setOnClickListener {
-            var intent = Intent(context, FollowActivity::class.java)
+            val intent = Intent(context, FollowActivity::class.java)
             intent.putExtra("current", 0)
             intent.putExtra("nickName", nickName)
             intent.putExtra("userIdx", getUserIdx())
@@ -93,7 +93,7 @@ class MyPageFragment : Fragment(), GetMyPageView {
         }
 
         binding.mypageFollower.setOnClickListener {
-            var intent = Intent(context, FollowActivity::class.java)
+            val intent = Intent(context, FollowActivity::class.java)
             intent.putExtra("current", 1)
             intent.putExtra("nickName", nickName)
             intent.putExtra("userIdx", getUserIdx())
