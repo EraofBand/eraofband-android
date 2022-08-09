@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
@@ -89,6 +90,17 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
                 2 -> tab.text = "앨범"
             }
         }.attach()
+
+        binding.homeBandRecruitVp.registerOnPageChangeCallback( object :  // 뷰페이저 리스너 : 포트폴리오 페이지에서만 FAB를 표시해줌
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                when(position){
+                    0 -> binding.bandRecruitFab.visibility = View.INVISIBLE
+                    1 -> binding.bandRecruitFab.visibility = View.INVISIBLE
+                    2 -> binding.bandRecruitFab.visibility = View.VISIBLE
+                }
+            }
+        })
     }
 
     private fun getJwt(): String? {
@@ -123,6 +135,9 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
         }
 
         // viewPager로 데이터를 넘기기 위해 저장
+        if(result.userIdx != getUserIdx()) binding.bandRecruitFab.visibility = View.GONE
+        else binding.bandRecruitFab.visibility = View.VISIBLE
+
         val bandSP = getSharedPreferences("band", MODE_PRIVATE)
         val bandEdit = bandSP.edit()
 

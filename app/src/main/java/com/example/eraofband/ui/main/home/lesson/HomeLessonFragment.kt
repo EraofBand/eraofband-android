@@ -1,7 +1,6 @@
 package com.example.eraofband.ui.main.home.lesson
 
 import android.content.Intent
-import android.graphics.Region
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,8 +29,10 @@ class HomeLessonFragment: Fragment(), GetLessonListView {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeLessonBinding.inflate(inflater, container, false)
+
         getLessonList.getLessonListView(this)
         initSpinner()
+
         return binding.root
     }
 
@@ -44,7 +45,7 @@ class HomeLessonFragment: Fragment(), GetLessonListView {
         // 지역 스피너 어뎁터 연결
         val city = resources.getStringArray(R.array.capital)  // 전체, 서울, 경기도
 
-        val cityAdapter = ArrayAdapter(context!!, R.layout.item_spinner, city)
+        val cityAdapter = ArrayAdapter(requireContext(), R.layout.item_spinner, city)
         binding.homeLessonCitySp.adapter = cityAdapter
         binding.homeLessonCitySp.setSelection(0)
 
@@ -73,6 +74,8 @@ class HomeLessonFragment: Fragment(), GetLessonListView {
     }
 
     private fun regionSessionSelect(region: String) {
+        binding.homeLessonSessionCg.isSelectionRequired = true
+
         binding.homeLessonTotalCp.isChecked = true
         getLessonList.getLessonList(region, 5) // 자동 전체 세션 초기화
         binding.homeLessonTotalCp.setOnClickListener { getLessonList.getLessonList(region, 5)}

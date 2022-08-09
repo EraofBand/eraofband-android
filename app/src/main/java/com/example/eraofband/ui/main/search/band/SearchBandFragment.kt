@@ -8,8 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.databinding.FragmentSearchBandBinding
 import com.example.eraofband.remote.search.getBand.GetSearchBandResult
+import com.example.eraofband.ui.main.search.SearchActivity
 
-class SearchBandFragment : Fragment() {
+class SearchBandFragment : Fragment(), SearchBandInterface {
 
     private var _binding: FragmentSearchBandBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
@@ -21,6 +22,8 @@ class SearchBandFragment : Fragment() {
     ): View? {
         _binding = FragmentSearchBandBinding.inflate(inflater, container, false)
 
+        (activity as SearchActivity).setBandView(this)
+
         return binding.root
     }
 
@@ -28,11 +31,16 @@ class SearchBandFragment : Fragment() {
         val searchBandRVAdapter = SearchBandRVAdapter()
         binding.searchBandRv.adapter = searchBandRVAdapter
         binding.searchBandRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
         searchBandRVAdapter.initBandList(bandList)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun initBandRV(result: List<GetSearchBandResult>) {
+        initRVAdapter(result)
     }
 }

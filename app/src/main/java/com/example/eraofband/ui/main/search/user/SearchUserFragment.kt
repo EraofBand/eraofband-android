@@ -1,7 +1,6 @@
 package com.example.eraofband.ui.main.search.user
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import com.example.eraofband.databinding.FragmentSearchUserBinding
 import com.example.eraofband.remote.search.getUser.GetSearchUserResult
 import com.example.eraofband.ui.main.search.SearchActivity
 
-class SearchUserFragment: Fragment() {
+class SearchUserFragment: Fragment(), SearchUserInterface {
 
     private var _binding: FragmentSearchUserBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
@@ -24,39 +23,28 @@ class SearchUserFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         _binding = FragmentSearchUserBinding.inflate(inflater, container, false)
 
-        arguments?.let {
-            searchUser = it.getParcelableArrayList<GetSearchUserResult>("list") as ArrayList<GetSearchUserResult>
-        }
-        initRVAdapter(searchUser)
-
-        /*searchUser = getUser() as ArrayList<GetSearchUserResult>
-        initRVAdapter(searchUser)
-        Log.d("SEARCH USER", searchUser.toString())*/
+        (activity as SearchActivity).setUserView(this)
 
         return binding.root
     }
 
-    private fun getUser(): List<GetSearchUserResult> {
-        return (activity as SearchActivity).userLists
+    private fun initRVAdapter(result: List<GetSearchUserResult>){
+        val searchUserRVAdapter = SearchUserRVAdapter()
+        binding.searchUserRv.adapter = searchUserRVAdapter
+        binding.searchUserRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        searchUserRVAdapter.initUserList(result)
     }
 
-        override fun onResume() {
-            super.onResume()
-        }
-
-        private fun initRVAdapter(item : List<GetSearchUserResult>) {
-            val searchUserRVAdapter = SearchUserRVAdapter()
-            binding.searchUserRv.adapter = searchUserRVAdapter
-            binding.searchUserRv.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
-            searchUserRVAdapter.initUserList(item)
-        }
-
-        override fun onDestroy() {
-            super.onDestroy()
-            _binding = null
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
+
+    override fun initUserRV(result: List<GetSearchUserResult>) {
+        initRVAdapter(result)
+    }
+}

@@ -21,17 +21,18 @@ class ChatFragment : Fragment(), GetChatListView {
     private val binding get() = _binding!! // 바인딩 누수 방지
 
     private val chatRVAdapter = ChatRVAdapter()
+    private var chatRooms = ArrayList<ChatRoom>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentChatBinding.inflate(inflater, container, false)
 
         return binding.root
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -43,20 +44,16 @@ class ChatFragment : Fragment(), GetChatListView {
 
         val getChatListService = GetChatListService()
         getChatListService.setChatListView(this)
-        getChatListService.getChatList(getJwt())
+        getChatListService.getChatList(getJwt()!!)
     }
 
-    private fun getJwt() : String {
-        val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
-        return userSP.getString("jwt", "")!!
-    }
 
-    private fun initRVAdapter(chatList : ArrayList<GetChatListResult>){
-        binding.chatListRv.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    private fun initRVAdapter(result: ArrayList<ChatRoom>) {
+        val chatRVAdapter = ChatRVAdapter()
+        binding.chatListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.chatListRv.adapter = chatRVAdapter
 
-        chatRVAdapter.initChatList(chatList)
+        chatRVAdapter.initChatList(result)
 
         chatRVAdapter.setMyItemClickListener(object : ChatRVAdapter.MyItemClickListener{
             override fun onItemClick(chatIdx : Int) {
@@ -68,12 +65,28 @@ class ChatFragment : Fragment(), GetChatListView {
         })
     }
 
+    private fun getJwt() : String? {
+        val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        return userSP.getString("jwt", "")
+    }
+
     override fun onGetListSuccess(result: ArrayList<GetChatListResult>) {
-        Log.d("CHATROOM / SUCCESS", result.toString())
-        initRVAdapter(result)
+        Log.d("GET CHAT / SUCCESS", result.toString())
+
+        // 결과값에서 채팅룸 인덱스, 닉네임, 프로필사진만 먼저 가져옴
+        for (i in 0 until result.size)
+            chatRooms.add(i, ChatRoom(result[i].chatRoomIdx, result[i].nickName, result[i].profileImgUrl,
+                "", "", true))
+
+        initRVAdapter(chatRooms)
     }
 
     override fun onGetListFailure(code: Int, message: String) {
-        Log.d("CHATROOM / FAIL", "$code $message")
+        Log.d("GET CHAT / FAIL", "$code $message")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

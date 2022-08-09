@@ -1,11 +1,11 @@
 package com.example.eraofband.ui.main.search
 
 import android.annotation.SuppressLint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivitySearchBinding
@@ -19,9 +19,11 @@ import com.example.eraofband.remote.search.getUser.GetSearchUserResult
 import com.example.eraofband.remote.search.getUser.GetSearchUserService
 import com.example.eraofband.remote.search.getUser.GetSearchUserView
 import com.example.eraofband.ui.main.search.band.SearchBandFragment
+import com.example.eraofband.ui.main.search.band.SearchBandInterface
 import com.example.eraofband.ui.main.search.lesson.SearchLessonFragment
+import com.example.eraofband.ui.main.search.lesson.SearchLessonInterface
 import com.example.eraofband.ui.main.search.user.SearchUserFragment
-import com.example.eraofband.ui.main.search.user.SearchUserRVAdapter
+import com.example.eraofband.ui.main.search.user.SearchUserInterface
 import com.google.android.material.tabs.TabLayoutMediator
 
 
@@ -29,9 +31,14 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
     private lateinit var binding: ActivitySearchBinding
     private var nowPage = 0
 
-    private var userfragmet = SearchUserFragment()
+    private lateinit var searchUserInterface: SearchUserInterface
+    private lateinit var searchUserFragment: SearchUserFragment
 
-    internal var userLists = arrayListOf<GetSearchUserResult>()
+    private lateinit var searchBandInterface: SearchBandInterface
+    private lateinit var searchBandFragment: SearchBandFragment
+
+    private lateinit var searchLessonInterface: SearchLessonInterface
+    private lateinit var searchLessonFragment: SearchLessonFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +77,21 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
         })
     }
 
+    fun setUserView(userFragment: SearchUserFragment) {
+        searchUserFragment = userFragment
+        searchUserInterface = searchUserFragment
+    }
+
+    fun setBandView(bandFragment: SearchBandFragment) {
+        searchBandFragment = bandFragment
+        searchBandInterface = searchBandFragment
+    }
+
+    fun setLessonView(lessonFragment: SearchLessonFragment) {
+        searchLessonFragment = lessonFragment
+        searchLessonInterface = searchLessonFragment
+    }
+
     private fun initVPAdapter() {
         val current = intent.getIntExtra("current", 0) // 메인에서 들어왔는지, 밴드에서 들어왔는지
 
@@ -105,15 +127,7 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
 
     override fun onGetSearchUserSuccess(result: List<GetSearchUserResult>) {
         Log.d("SEARCH USER / SUCCESS", result.toString())
-        userLists = result as ArrayList<GetSearchUserResult>
-
-        val bundle = Bundle()
-        bundle.putParcelableArrayList("list", userLists)
-        userfragmet.arguments = bundle
-
-
-        SearchUserRVAdapter().clear()
-        SearchUserRVAdapter().initUserList(result)
+        searchUserInterface.initUserRV(result)
     }
 
     override fun onGetSearchUserFailure(code: Int, message: String) {
@@ -122,6 +136,7 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
 
     override fun onGetSearchBandSuccess(result: List<GetSearchBandResult>) {
         Log.d("SEARCH USER / SUCCESS", result.toString())
+        searchBandInterface.initBandRV(result)
     }
 
     override fun onGetSearchBandFailure(code: Int, message: String) {
@@ -130,6 +145,7 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
 
     override fun onGetSearchLessonSuccess(result: List<GetSearchLessonResult>) {
         Log.d("SEARCH USER / SUCCESS", result.toString())
+        searchLessonFragment.initLessonRV(result)
     }
 
     override fun onGetSearchLessonFailure(code: Int, message: String) {

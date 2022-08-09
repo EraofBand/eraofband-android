@@ -10,7 +10,6 @@ import android.content.res.Resources
 import android.database.Cursor
 import android.graphics.Point
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -24,6 +23,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -37,7 +37,6 @@ import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoService
 import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoView
 import com.example.eraofband.remote.lesson.patchLesson.PatchLessonService
 import com.example.eraofband.remote.lesson.patchLesson.PatchLessonView
-import com.example.eraofband.remote.sendimg.SendImgResponse
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
 import okhttp3.MediaType
@@ -45,7 +44,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
 
-class LessonEditActivity() : AppCompatActivity(), GetLessonInfoView, PatchLessonView, SendImgView {
+class LessonEditActivity : AppCompatActivity(), GetLessonInfoView, PatchLessonView, SendImgView {
 
     private lateinit var binding: ActivityLessonEditBinding
     private var cnt = 0
@@ -70,7 +69,7 @@ class LessonEditActivity() : AppCompatActivity(), GetLessonInfoView, PatchLesson
 
         lessonIdx = intent.getIntExtra("lessonIdx", 0)
 
-        var getLessonInfo = GetLessonInfoService()
+        val getLessonInfo = GetLessonInfoService()
         getLessonInfo.getLessonInfoView(this)
         getLessonInfo.getLessonInfo(getJwt()!!, lessonIdx!!)
 
@@ -364,7 +363,7 @@ class LessonEditActivity() : AppCompatActivity(), GetLessonInfoView, PatchLesson
     private fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 
     private fun getUserIdx() : Int {
-        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getInt("userIdx", 0)
     }
 
@@ -421,9 +420,9 @@ class LessonEditActivity() : AppCompatActivity(), GetLessonInfoView, PatchLesson
         setToast(message)
     }
 
-    override fun onSendSuccess(response: SendImgResponse) {
-        Log.d("SENDIMG/SUCCESS", response.result)
-        profileUrl = response.result
+    override fun onSendSuccess(result: String) {
+        Log.d("SENDIMG/SUCCESS", result)
+        profileUrl = result
     }
 
     override fun onSendFailure(code: Int, message: String) {

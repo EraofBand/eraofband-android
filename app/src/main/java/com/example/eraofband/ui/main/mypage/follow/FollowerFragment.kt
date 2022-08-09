@@ -22,13 +22,12 @@ import com.example.eraofband.remote.user.userFollowList.UserFollowListView
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import java.util.*
-import kotlin.collections.ArrayList
 
 class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
     private var _binding: FragmentFollowerBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
 
-    private val mAdapter = FollowerRVAdapter()
+    private lateinit var mAdapter: FollowerRVAdapter
     private lateinit var followers : List<FollowerInfo>
     private var searchLists = ArrayList<FollowerInfo>()
 
@@ -53,13 +52,16 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
             }
         })
 
+
         return binding.root
     }
 
     override fun onResume() {
         super.onResume() // GET 해당 유저 팔로우리스트
-
-        mAdapter.clear()
+        if (binding.followerSearchEt.hint == "") {
+            binding.followerSearchEt.text = null
+            binding.followerSearchEt.hint = "팔로워 검색창"
+        }
         userFollowList.setUserFollowListView(this)
         userFollowList.userFollowList(getJwt()!!, userIdx)
 
@@ -79,9 +81,12 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
 
 
     private fun connectAdapter(item : List<FollowerInfo>) {
+        mAdapter = FollowerRVAdapter()
         binding.followingRv.adapter = mAdapter // 리사이클러뷰 어댑터 연결
-        binding.followingRv.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.followingRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        binding.followingRv.clearAnimation()
+        mAdapter.initFollowList(item) // 팔로우리스트 초기화
 
         binding.followingRv.apply {
             itemAnimator = null
@@ -111,7 +116,6 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
                 return userSP.getInt("userIdx", 0)
             }
         })
-        mAdapter.initFollowList(item) // 팔로우리스트 초기화
     }
 
     private fun getJwt(): String? {

@@ -12,8 +12,8 @@ import com.example.eraofband.databinding.DialogSessionApplyBinding
 import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonResult
 import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonView
 import com.example.eraofband.ui.login.GlobalApplication
-import com.example.eraofband.ui.main.home.session.band.SessionCompleteDialog
-import com.example.eraoflesson.remote.applyLesson.ApplyLessonService
+import com.example.eraofband.ui.main.home.session.band.session.SessionCompleteDialog
+import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonService
 
 class LessonApplyDialog(private val teacherIdx: Int, private val jwt: String, private val userIdx: Int, private val lessonIdx: Int): DialogFragment(), ApplyLessonView {
 
@@ -68,7 +68,7 @@ class LessonApplyDialog(private val teacherIdx: Int, private val jwt: String, pr
 
         val completeDialog = SessionCompleteDialog()
         completeDialog.isCancelable = false
-        completeDialog.show(activity!!.supportFragmentManager, "lessonApply")
+        completeDialog.show(requireActivity().supportFragmentManager, "lessonApply")
         dismiss()
 
     }
@@ -79,7 +79,7 @@ class LessonApplyDialog(private val teacherIdx: Int, private val jwt: String, pr
         // 중복 신청 불가 다이얼로그로 넘아감
         val completeDialog = SessionCompleteDialog()
         completeDialog.isCancelable = false
-        completeDialog.show(activity!!.supportFragmentManager, "duplicateLesson")
+        completeDialog.show(requireActivity().supportFragmentManager, "duplicateLesson")
 
         dismiss()
     }

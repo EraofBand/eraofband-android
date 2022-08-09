@@ -13,14 +13,14 @@ import com.example.eraofband.remote.lesson.getLessonInfo.LessonMembers
 
 class ChatRVAdapter() : RecyclerView.Adapter<ChatRVAdapter.ViewHolder>() {
 
-    private val chatRoomList = arrayListOf<GetChatListResult>()
+    private val chatRoomList = arrayListOf<ChatRoom>()
 
     interface MyItemClickListener{
         fun onItemClick(chatIdx : Int)
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun initChatList(chatList : List<GetChatListResult>) {
+    fun initChatList(chatList : List<ChatRoom>) {
         this.chatRoomList.addAll(chatList)
         notifyDataSetChanged()
     }
@@ -52,21 +52,18 @@ class ChatRVAdapter() : RecyclerView.Adapter<ChatRVAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val binding: ItemChatListBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(chatRoom: GetChatListResult) {
-
-            Glide.with(itemView)  // 수강생 프사
-                .load(chatRoom.profileImgUrl)
+        fun bind(chatRoom: ChatRoom) {
+            Glide.with(itemView).load(chatRoom.profileImgUrl)  // 프로필 사진
                 .apply(RequestOptions.centerCropTransform())
-                .apply(RequestOptions.circleCropTransform())
-                .into(binding.chatListProfileIv)
+                .apply(RequestOptions.circleCropTransform()).into(binding.chatListProfileIv)
 
-            binding.chatListNicknameTv.text = chatRoom.nickName
+            binding.chatListNicknameTv.text = chatRoom.nickname // 닉네임
+            binding.chatListTimeTv.text = "1분 전"
+            binding.chatListMessageTv.text = "마지막으로 보낸 메세지"
 
             binding.itemChatListRv.setOnClickListener {
                 mItemClickListener.onItemClick(chatRoom.chatRoomIdx)
             }
-
         }
     }
 }

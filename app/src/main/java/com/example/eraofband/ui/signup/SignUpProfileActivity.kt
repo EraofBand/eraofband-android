@@ -30,7 +30,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.data.User
 import com.example.eraofband.databinding.ActivitySignupProfileBinding
-import com.example.eraofband.remote.sendimg.SendImgResponse
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
 import okhttp3.MediaType
@@ -217,14 +216,6 @@ class SignUpProfileActivity : AppCompatActivity(), SendImgView {
         }
     }
 
-    /*private fun getStringImage(bitmap: Bitmap): String? {
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-        val imageByteArray = byteArrayOutputStream.toByteArray()
-        return Base64.encodeToString(imageByteArray, Base64.DEFAULT)
-    }*/
-
-
     private fun showPermissionContextPopup() {
         // 권한 확인 용 팝업창
         AlertDialog.Builder(this)
@@ -249,9 +240,9 @@ class SignUpProfileActivity : AppCompatActivity(), SendImgView {
         return result!!
     }
 
-    override fun onSendSuccess(response: SendImgResponse) {
-        Log.d("SENDIMGss", response.toString())
-        user.profileImgUrl = response.result
+    override fun onSendSuccess(result: String) {
+        Log.d("SENDIMGss", result)
+        user.profileImgUrl = result
     }
 
     override fun onSendFailure(code: Int, message: String) {

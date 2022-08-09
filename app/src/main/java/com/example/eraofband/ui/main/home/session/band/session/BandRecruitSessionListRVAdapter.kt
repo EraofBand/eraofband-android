@@ -1,4 +1,4 @@
-package com.example.eraofband.ui.main.home.session.band
+package com.example.eraofband.ui.main.home.session.band.session
 
 import android.annotation.SuppressLint
 import android.util.Log

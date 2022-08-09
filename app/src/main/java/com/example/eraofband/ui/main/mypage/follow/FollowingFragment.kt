@@ -6,27 +6,29 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.eraofband.databinding.FragmentFollowingBinding
-import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
-import com.example.eraofband.remote.user.userFollowList.*
+import com.example.eraofband.remote.user.userFollowList.FollowingInfo
+import com.example.eraofband.remote.user.userFollowList.UserFollowListResult
+import com.example.eraofband.remote.user.userFollowList.UserFollowListService
+import com.example.eraofband.remote.user.userFollowList.UserFollowListView
 import com.example.eraofband.ui.main.mypage.MyPageActivity
+import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import java.util.*
-import kotlin.collections.ArrayList
 
 class FollowingFragment(var userIdx: Int) : Fragment(), UserFollowListView {
 
     private var _binding: FragmentFollowingBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
 
-    private val mAdapter = FollowingRVAdapter()
+    private lateinit var mAdapter: FollowingRVAdapter
     private lateinit var followings : List<FollowingInfo>
     private var searchLists = ArrayList<FollowingInfo>()
     private val userFollowList = UserFollowListService()
@@ -66,15 +68,23 @@ class FollowingFragment(var userIdx: Int) : Fragment(), UserFollowListView {
 
     override fun onResume() {
         super.onResume()// GET 해당 유저 팔로우리스트
-        mAdapter.clear()
+
+        if (binding.followingSearchEt.hint == "") {
+            binding.followingSearchEt.text = null
+            binding.followingSearchEt.hint = "팔로잉 검색창"
+        }
+
         userFollowList.setUserFollowListView(this)
         userFollowList.userFollowList(getJwt()!!, userIdx)
+
     }
 
     private fun connectAdapter(item: List<FollowingInfo>) {
+        mAdapter = FollowingRVAdapter()
         binding.followingRv.adapter = mAdapter
-        binding.followingRv.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.followingRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        mAdapter.initFollowList(item)
 
         val animator: RecyclerView.ItemAnimator? = binding.followingRv.itemAnimator
         if (animator is SimpleItemAnimator) {
@@ -104,7 +114,6 @@ class FollowingFragment(var userIdx: Int) : Fragment(), UserFollowListView {
                 return userSP.getInt("userIdx", 0)
             }
         })
-        mAdapter.initFollowList(item)
     }
 
     private fun getJwt(): String? {
