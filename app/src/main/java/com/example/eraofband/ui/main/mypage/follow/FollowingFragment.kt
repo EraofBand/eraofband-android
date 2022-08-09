@@ -70,7 +70,6 @@ class FollowingFragment(var userIdx: Int) : Fragment(), UserFollowListView {
             binding.followingSearchEt.text = null
             binding.followingSearchEt.hint = "팔로잉 검색창"
         }
-        mAdapter.clear()
         userFollowList.setUserFollowListView(this)
         userFollowList.userFollowList(getJwt()!!, userIdx)
     }
