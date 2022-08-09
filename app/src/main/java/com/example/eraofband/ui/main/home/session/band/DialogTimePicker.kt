@@ -1,7 +1,6 @@
 package com.example.eraofband.ui.main.home.session.band
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +22,7 @@ class DialogTimePicker (private val selectedTime : String) : DialogFragment() {
         val time = selectedTime  // 넘겨받은 날짜를 기본으로
 
         // 날짜 저장
-        binding.dialogTimepicker.setOnTimeChangedListener { timePicker, hour, minute -> // string으로 넣어주기 편하게 미리 변환
+        binding.dialogTimepicker.setOnTimeChangedListener { _, hour, minute -> // string으로 넣어주기 편하게 미리 변환
             var am_pm = "AM"
             var selectedHour = hour.toString()
             var selectedMinute = minute.toString()

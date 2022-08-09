@@ -1,19 +1,22 @@
-package com.example.eraofband.ui.main.home.session.band
+package com.example.eraofband.ui.main.home.session.band.session
 
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
 import androidx.fragment.app.DialogFragment
 import com.example.eraofband.databinding.DialogSessionApplyBinding
-import com.example.eraofband.ui.login.GlobalApplication
 import com.example.eraofband.remote.band.applyBand.ApplyBandResult
 import com.example.eraofband.remote.band.applyBand.ApplyBandService
 import com.example.eraofband.remote.band.applyBand.ApplyBandView
+import com.example.eraofband.ui.login.GlobalApplication
 
-class SessionApplyDialog(private val jwt: String, private val session: Int, private val bandIdx: Int, private val position: Int): DialogFragment(),
+class SessionApplyDialog(private val jwt: String, private val session: Int, private val bandIdx: Int): DialogFragment(),
     ApplyBandView {
 
     private lateinit var binding: DialogSessionApplyBinding
@@ -64,7 +67,7 @@ class SessionApplyDialog(private val jwt: String, private val session: Int, priv
         // 다음 dialog로 넘어감
         val completeDialog = SessionCompleteDialog()
         completeDialog.isCancelable = false
-        completeDialog.show(activity!!.supportFragmentManager, "sessionApply")
+        completeDialog.show(requireActivity().supportFragmentManager, "sessionApply")
 
         dismiss()
     }
@@ -75,7 +78,7 @@ class SessionApplyDialog(private val jwt: String, private val session: Int, priv
         // 다음 dialog로 넘어감
         val completeDialog = SessionCompleteDialog()
         completeDialog.isCancelable = false
-        completeDialog.show(activity!!.supportFragmentManager, "duplicateBand")
+        completeDialog.show(requireActivity().supportFragmentManager, "duplicateBand")
 
         dismiss()
     }
