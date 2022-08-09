@@ -15,6 +15,9 @@ class SearchUserFragment: Fragment(), SearchUserInterface {
     private var _binding: FragmentSearchUserBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
 
+    private var searchUser = arrayListOf<GetSearchUserResult>()
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

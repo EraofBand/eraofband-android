@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivitySearchBinding
 import com.example.eraofband.remote.search.getBand.GetSearchBandResult
 import com.example.eraofband.remote.search.getBand.GetSearchBandService
@@ -67,7 +68,7 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
             override fun afterTextChanged(s: Editable?) {
                 if (s.toString().isNotEmpty()) {
                     when (nowPage) {
-                        0 -> userService.getSearchUser(s.toString())  //  s = 검색 문자열
+                        0 -> {userService.getSearchUser(s.toString()) }  //  s = 검색 문자열
                         1 -> bandService.getSearchBand(s.toString())
                         else -> lessonService.getSearchLesson(s.toString())
                     }

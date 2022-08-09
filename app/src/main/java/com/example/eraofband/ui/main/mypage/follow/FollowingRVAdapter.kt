@@ -23,6 +23,7 @@ class FollowingRVAdapter() : RecyclerView.Adapter<FollowingRVAdapter.ViewHolder>
     private var userFollowService = UserFollowService()
     private var userUnfollowService = UserUnfollowService()
 
+
     @SuppressLint("NotifyDataSetChanged")
     fun initFollowList(followList : List<FollowingInfo>) {
         this.followList.addAll(followList)
@@ -131,4 +132,5 @@ class FollowingRVAdapter() : RecyclerView.Adapter<FollowingRVAdapter.ViewHolder>
     override fun onUserUnfollowFailure(code: Int, message: String) {
         Log.d("USER UNLLOW / FAIL", "$code $message")
     }
+
 }

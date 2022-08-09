@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.eraofband.databinding.FragmentFollowingBinding
 import com.example.eraofband.remote.user.userFollowList.FollowingInfo
 import com.example.eraofband.remote.user.userFollowList.UserFollowListResult
@@ -83,6 +85,11 @@ class FollowingFragment(var userIdx: Int) : Fragment(), UserFollowListView {
         binding.followingRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         mAdapter.initFollowList(item)
+
+        val animator: RecyclerView.ItemAnimator? = binding.followingRv.itemAnimator
+        if (animator is SimpleItemAnimator) {
+            animator.supportsChangeAnimations = false
+        }
 
         mAdapter.setMyItemClickListener(object : FollowingRVAdapter.MyItemClickListener {
             override fun onItemClick(item: FollowingInfo) {
