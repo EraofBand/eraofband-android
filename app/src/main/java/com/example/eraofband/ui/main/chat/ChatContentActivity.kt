@@ -55,7 +55,8 @@ class ChatContentActivity : AppCompatActivity() {
 //                Log.d("FAIL", "데이터를 불러오지 못했습니다")
 //            }
 //        })
-    }
+//    }
+
 
     // 데이터를 올리는 부분
     private fun createChatRoom() {
