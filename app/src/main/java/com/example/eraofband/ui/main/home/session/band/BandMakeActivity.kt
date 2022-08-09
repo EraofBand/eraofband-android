@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.database.Cursor
-import android.graphics.Color
 import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
@@ -33,7 +32,6 @@ import com.example.eraofband.databinding.ActivityBandMakeBinding
 import com.example.eraofband.remote.band.makeBand.MakeBandResult
 import com.example.eraofband.remote.band.makeBand.MakeBandService
 import com.example.eraofband.remote.band.makeBand.MakeBandView
-import com.example.eraofband.remote.sendimg.SendImgResponse
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
 import okhttp3.MediaType
@@ -434,9 +432,9 @@ class BandMakeActivity : AppCompatActivity(), MakeBandView, SendImgView {
         setToast(message)
     }
 
-    override fun onSendSuccess(response: SendImgResponse) {
-        Log.d("SENDIMG/SUC", response.toString())
-        imgUrl = response.result
+    override fun onSendSuccess(result: String) {
+        Log.d("SENDIMG/SUC", result)
+        imgUrl = result
     }
 
     override fun onSendFailure(code: Int, message: String) {

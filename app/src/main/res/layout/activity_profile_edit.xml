@@ -140,7 +140,7 @@
                 android:fontFamily="@font/pretendard_regular"
                 android:textColor="@color/white"
                 android:textSize="17sp"
-                android:maxLength="10390"
+                android:maxLength="100"
                 android:lineSpacingExtra="5dp"
                 android:background="@drawable/medium_gray_round_bg"
                 android:paddingHorizontal="15dp"

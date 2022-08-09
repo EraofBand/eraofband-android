@@ -45,6 +45,7 @@
             android:textColor="@color/white"
             android:textSize="14sp"
             android:maxLines="2"
+            android:ellipsize="end"
             app:layout_constraintStart_toStartOf="@+id/item_new_band_profile_iv"
             app:layout_constraintTop_toBottomOf="@id/item_new_band_location_tv" />
 

@@ -1,9 +1,8 @@
-package com.example.eraofband.ui.main.home.session.band
+package com.example.eraofband.ui.main.home.session.band.session
 
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.data.SessionInfo
 import com.example.eraofband.data.SessionList
 import com.example.eraofband.databinding.FragmentBandRecruitSessionBinding
-import com.example.eraofband.ui.main.mypage.MyPageActivity
-import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.example.eraofband.remote.band.getBand.Applicants
 import com.example.eraofband.remote.band.getBand.GetBandResult
+import com.example.eraofband.ui.main.mypage.MyPageActivity
+import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.google.gson.Gson
 
 class BandRecruitSessionFragment : Fragment() {
@@ -101,7 +100,7 @@ class BandRecruitSessionFragment : Fragment() {
 
     private fun initApplicantRV(applyItem: List<Applicants>, bandIdx: Int) {
         // 지원자 목록 리사이클러뷰
-        volunteerRVAdapter = BandRecruitSessionVolunteerRVAdapter(context!!, bandIdx)
+        volunteerRVAdapter = BandRecruitSessionVolunteerRVAdapter(requireContext(), bandIdx)
         binding.bandRecruitSessionVolunteerRv.adapter = volunteerRVAdapter
         binding.bandRecruitSessionVolunteerRv.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -230,7 +229,7 @@ class BandRecruitSessionFragment : Fragment() {
                 if(band.userIdx == getUserIdx()) {
                     Toast.makeText(context, "자신이 생성한 밴드에는 지원할 수 없습니다.", Toast.LENGTH_SHORT).show()
                 } else {
-                    val applyDialog = SessionApplyDialog(getJwt()!!, session, bandIdx, -1)
+                    val applyDialog = SessionApplyDialog(getJwt()!!, session, bandIdx)
                     applyDialog.show(activity!!.supportFragmentManager, "apply")
                 }
             }

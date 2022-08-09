@@ -27,7 +27,7 @@ class SendImgService {
                 val resp : SendImgResponse = response.body()!!
 
                 when(val code = resp.code) {
-                    1000 -> imageView.onSendSuccess(resp)  // 성공
+                    1000 -> imageView.onSendSuccess(resp.result)  // 성공
                     else -> imageView.onSendFailure(code, resp.message)
                 }
             }

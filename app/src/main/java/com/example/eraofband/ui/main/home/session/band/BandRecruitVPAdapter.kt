@@ -3,6 +3,9 @@ package com.example.eraofband.ui.main.home.session.band
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.eraofband.ui.main.home.session.band.album.BandRecruitAlbumFragment
+import com.example.eraofband.ui.main.home.session.band.info.BandRecruitInfoFragment
+import com.example.eraofband.ui.main.home.session.band.session.BandRecruitSessionFragment
 
 class BandRecruitVPAdapter (fragmentActivity : FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
     override fun getItemCount(): Int = 3

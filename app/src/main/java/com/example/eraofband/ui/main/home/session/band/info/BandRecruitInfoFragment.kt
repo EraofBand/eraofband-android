@@ -1,4 +1,4 @@
-package com.example.eraofband.ui.main.home.session.band
+package com.example.eraofband.ui.main.home.session.band.info
 
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
@@ -149,7 +149,8 @@ class BandRecruitInfoFragment: Fragment() {
 
         bandMemberRVAdapter.initMemberList(item)
 
-        bandMemberRVAdapter.setMyItemClickListener(object : BandMemberRVAdapter.MyItemClickListener {
+        bandMemberRVAdapter.setMyItemClickListener(object :
+            BandMemberRVAdapter.MyItemClickListener {
             override fun onShowUserPage(userIdx: Int) {
                 if(userIdx == getUserIdx()) {
                     startActivity(Intent(activity, MyPageActivity::class.java))

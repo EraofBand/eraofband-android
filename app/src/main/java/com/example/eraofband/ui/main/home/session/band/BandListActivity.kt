@@ -13,7 +13,6 @@ import com.example.eraofband.databinding.ActivityBandListBinding
 import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResult
 import com.example.eraofband.remote.band.getRegionBand.GetRegionBandService
 import com.example.eraofband.remote.band.getRegionBand.GetRegionBandView
-import com.example.eraofband.ui.main.home.HomeFabDialog
 import com.example.eraofband.ui.main.search.SearchActivity
 
 class BandListActivity: AppCompatActivity(), GetRegionBandView {
@@ -98,6 +97,8 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
     }
 
     private fun sessionSelector() {
+        binding.homeBandListSessionCg.isSelectionRequired = true
+
         binding.homeBandListVocalCp.setOnClickListener {
             sessionValue = 0
             getRegionBandService.getRegionBand(regionValue, sessionValue)
