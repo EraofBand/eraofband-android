@@ -47,7 +47,6 @@ class ChatRVAdapter(private val chatRoomList : ArrayList<ChatRoom>) : RecyclerVi
             binding.itemChatListRv.setOnClickListener {
                 mItemClickListener.onItemClick()
             }
-
         }
     }
 }
