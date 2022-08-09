@@ -305,12 +305,14 @@
 
             <LinearLayout
                 android:id="@+id/lesson_info_teacher_ly"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="20dp"
                 app:layout_constraintBottom_toBottomOf="@id/lesson_info_teacher_profile_iv"
                 app:layout_constraintStart_toEndOf="@id/lesson_info_teacher_profile_iv"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/lesson_info_teacher_profile_iv">
 
                 <TextView

@@ -1,17 +1,20 @@
-package com.example.eraofband.ui.main.home.session.band
+package com.example.eraofband.ui.main.home.session.band.session
 
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
 import androidx.fragment.app.DialogFragment
 import com.example.eraofband.databinding.DialogSessionApplyBinding
-import com.example.eraofband.ui.login.GlobalApplication
 import com.example.eraofband.remote.band.applyDecision.ApplyDecisionService
 import com.example.eraofband.remote.band.applyDecision.ApplyDecisionView
 import com.example.eraofband.remote.band.getBand.Applicants
+import com.example.eraofband.ui.login.GlobalApplication
 
 class SessionDecisionDialog(private val bandIdx: Int, private val applicant: Applicants): DialogFragment(),
     ApplyDecisionView {

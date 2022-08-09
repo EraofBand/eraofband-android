@@ -32,28 +32,36 @@
 
     <TextView
         android:id="@+id/popular_band_title_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="-5dp"
         android:fontFamily="@font/pretendard_medium"
         android:text="인기 순위 1등 밴드"
         android:textColor="@color/white"
         android:textSize="16sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="-5dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintStart_toEndOf="@+id/popular_band_profile_iv"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/popular_band_profile_iv" />
 
     <TextView
         android:id="@+id/popular_band_introduction_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
         android:fontFamily="@font/pretendard_medium"
         android:text="1등 밴드 한 줄 소개"
         android:textColor="@color/gray"
         android:textSize="12sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/popular_band_profile_iv"
         app:layout_constraintStart_toStartOf="@+id/popular_band_title_tv"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/popular_band_title_tv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

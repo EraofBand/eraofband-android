@@ -16,24 +16,33 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import com.bumptech.glide.Glide
 import com.example.eraofband.data.Portfolio
 import com.example.eraofband.databinding.ActivityPortfolioMakeBinding
 import com.example.eraofband.remote.portfolio.makePofol.MakePofolResult
 import com.example.eraofband.remote.portfolio.makePofol.MakePofolService
 import com.example.eraofband.remote.portfolio.makePofol.MakePofolView
-import com.example.eraofband.remote.sendimg.SendImgResponse
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import java.io.ByteArrayOutputStream
 import java.io.File
 
 
 class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
 
     private lateinit var binding: ActivityPortfolioMakeBinding
+
+    private val sendImgService = SendImgService()
+
+    private lateinit var videoPath: Uri
     private var videoUrl = ""
+
+    private var thumbnail = false
+    private var thumbnailUrl = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,20 +50,23 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
         binding = ActivityPortfolioMakeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        sendImgService.setImageView(this)
+
         binding.portfolioMakeBackIb.setOnClickListener { finish() }  // 뒤로가기
 
         // 비디오 올리기 혹은 올린 썸네일을 누르면 갤러리에 들어갈 수 있도록 해줌 (조은아 내가 그냥 레이아웃 클릭하면 갤러리로 바꿨어)
         binding.portfolioMakeVideoCl.setOnClickListener { initImageViewProfile() }
 
         binding.portfolioMakeSaveBt.setOnClickListener {  // 포트폴리오 올리기
-            if(binding.portfolioMakeTitleEt.text.isNotEmpty() && binding.portfolioMakeVideoIntroEt.text.isNotEmpty() && videoUrl != "") {
+            if(binding.portfolioMakeTitleEt.text.isNotEmpty() && binding.portfolioMakeVideoIntroEt.text.isNotEmpty()
+                && videoUrl != "" && thumbnailUrl != "") {
                 // 제목, 소개, 비디오를 모두 올린 경우 정보 저장 후 포트폴리오 올려줌
                 val title = binding.portfolioMakeTitleEt.text.toString()
                 val content = binding.portfolioMakeVideoIntroEt.text.toString()
 
                 val makeService = MakePofolService()
                 makeService.setMakeView(this)
-                makeService.makePortfolio(getJwt()!!, Portfolio(content, videoUrl, title, getUserIdx(), videoUrl))
+                makeService.makePortfolio(getJwt()!!, Portfolio(content, thumbnailUrl, title, getUserIdx(), videoUrl))
 
                 finish()
             }
@@ -69,11 +81,6 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
     private fun getUserIdx(): Int {
         val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getInt("userIdx", 0)
-    }
-
-    private fun getProfileUrl(): String? {
-        val profileSp = getSharedPreferences("profile", MODE_PRIVATE)
-        return profileSp.getString("url", "")
     }
 
     private fun initImageViewProfile() {
@@ -142,20 +149,11 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
                 val selectedVideoUri: Uri? = data?.data
                 // 이미지 가져오기 성공하면 원래 이미지를 없애고 가져온 사진을 넣어줌
                 if (selectedVideoUri != null) {
+
                     // 썸네일 띄우기
-                    binding.portfolioThumbnailIv.visibility = View.VISIBLE
-                    binding.portfolioThumbnailIv.clipToOutline = true
-                    binding.portfolioThumbnailIv.setImageBitmap(createThumbnail(this, selectedVideoUri))
-
-                    // 절대 주소 받아오기
-                    val videoPath = absolutelyPath(selectedVideoUri, this)
-                    val file = File(videoPath)
-                    val requestBody = RequestBody.create(MediaType.parse("video/*"), file)
-                    val body = MultipartBody.Part.createFormData("file", file.name, requestBody)
-
-                    val sendImgService = SendImgService()
-                    sendImgService.setImageView(this)
-                    sendImgService.sendImg(body)
+                    thumbnail = true
+                    videoPath = selectedVideoUri
+                    createThumbnail(this, selectedVideoUri)
 
                 } else {
                     Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
@@ -191,13 +189,14 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
         return result!!
     }
 
-    override fun onSendSuccess(response: SendImgResponse) {
-        Log.d("SENDIMG/SUC", response.toString())
-        videoUrl = response.result
-    }
+    private fun sendImage(selectedVideoUri: Uri) {
+        // 절대 주소 받아오기
+        val videoPath = absolutelyPath(selectedVideoUri, this)
+        val file = File(videoPath)
+        val requestBody = RequestBody.create(MediaType.parse("video/*"), file)
+        val body = MultipartBody.Part.createFormData("file", file.name, requestBody)
 
-    override fun onSendFailure(code: Int, message: String) {
-        Log.d("SENDIMG/FAIL", "$code $message")
+        sendImgService.sendImg(body)
     }
 
     private fun createThumbnail(context: Context, path: Uri): Bitmap? {
@@ -209,6 +208,8 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
             retriever.setDataSource(context, path)
 
             bitmap = retriever.getFrameAtTime(1000000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC)
+
+            getImageUri(bitmap!!)
         }
         catch (e: Exception) {
             e.printStackTrace()
@@ -218,6 +219,37 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
         }
 
         return bitmap
+    }
+
+    private fun getImageUri(bitmap: Bitmap) {
+        val bytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(this.contentResolver, bitmap, "uri", null)
+
+        sendImage(path.toUri())
+    }
+
+    override fun onSendSuccess(result: String) {
+        Log.d("SENDIMG/SUC", result)
+        if(thumbnail) {  // 썸네일
+            Log.d("THUMBNAIL", result)
+            binding.portfolioThumbnailIv.visibility = View.VISIBLE
+            binding.portfolioThumbnailIv.clipToOutline = true
+            Glide.with(this).load(result).into(binding.portfolioThumbnailIv)
+
+            thumbnailUrl = result
+            thumbnail = false
+
+            sendImage(videoPath)  // 비디오
+        }
+        else {
+            Log.d("VIDEO", result)
+            videoUrl = result
+        }
+    }
+
+    override fun onSendFailure(code: Int, message: String) {
+        Log.d("SENDIMG/FAIL", "$code $message")
     }
 
     override fun onMakeSuccess(code: Int, result: MakePofolResult) {

@@ -47,7 +47,7 @@ class MyPagePortfolioFragment : Fragment(), GetMyPageView {
     }
 
     private fun connectAdapter(item : List<GetUserPofol>) {
-        val mAdapter = MyPagePortfolioRVAdapter(context!!)
+        val mAdapter = MyPagePortfolioRVAdapter(requireContext())
         binding.mypagePortfolioRv.adapter = mAdapter
 
         val gridLayoutManager = GridLayoutManager(context,3)
