@@ -84,6 +84,7 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
             }
         })
     }
+
     private fun sessionSelect(session: Int) {
         when(session) {
             0 -> binding.homeBandListVocalCp.isChecked = true
