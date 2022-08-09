@@ -1,15 +1,34 @@
 package com.example.eraofband.ui.main.chat
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.data.ChatRoom
 import com.example.eraofband.databinding.ItemChatListBinding
+import com.example.eraofband.remote.chat.getChatList.GetChatListResult
+import com.example.eraofband.remote.lesson.getLessonInfo.LessonMembers
 
-class ChatRVAdapter(private val chatRoomList : ArrayList<ChatRoom>) : RecyclerView.Adapter<ChatRVAdapter.ViewHolder>() {
+class ChatRVAdapter() : RecyclerView.Adapter<ChatRVAdapter.ViewHolder>() {
+
+    private val chatRoomList = arrayListOf<GetChatListResult>()
 
     interface MyItemClickListener{
-        fun onItemClick()
+        fun onItemClick(chatIdx : Int)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun initChatList(chatList : List<GetChatListResult>) {
+        this.chatRoomList.addAll(chatList)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun clear(){
+        chatRoomList.clear()
+        notifyDataSetChanged()
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -34,12 +53,18 @@ class ChatRVAdapter(private val chatRoomList : ArrayList<ChatRoom>) : RecyclerVi
     inner class ViewHolder(private val binding: ItemChatListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(chatRoom: ChatRoom) {
-            binding.chatListTimeTv.text = chatRoom.recentTime.toString() + "분 전"
-            binding.chatListMessageTv.text = chatRoom.lastMessage
+        fun bind(chatRoom: GetChatListResult) {
+
+            Glide.with(itemView)  // 수강생 프사
+                .load(chatRoom.profileImgUrl)
+                .apply(RequestOptions.centerCropTransform())
+                .apply(RequestOptions.circleCropTransform())
+                .into(binding.chatListProfileIv)
+
+            binding.chatListNicknameTv.text = chatRoom.nickName
 
             binding.itemChatListRv.setOnClickListener {
-                mItemClickListener.onItemClick()
+                mItemClickListener.onItemClick(chatRoom.chatRoomIdx)
             }
 
         }

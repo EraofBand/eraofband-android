@@ -11,7 +11,7 @@ import com.example.eraofband.databinding.FragmentSearchUserBinding
 import com.example.eraofband.remote.search.getUser.GetSearchUserResult
 import com.example.eraofband.ui.main.search.SearchActivity
 
-class SearchUserFragment(): Fragment() {
+class SearchUserFragment: Fragment() {
 
     private var _binding: FragmentSearchUserBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
@@ -26,9 +26,14 @@ class SearchUserFragment(): Fragment() {
     ): View? {
         _binding = FragmentSearchUserBinding.inflate(inflater, container, false)
 
-        searchUser = getUser() as ArrayList<GetSearchUserResult>
+        arguments?.let {
+            searchUser = it.getParcelableArrayList<GetSearchUserResult>("list") as ArrayList<GetSearchUserResult>
+        }
         initRVAdapter(searchUser)
-        Log.d("SEARCH USER", searchUser.toString())
+
+        /*searchUser = getUser() as ArrayList<GetSearchUserResult>
+        initRVAdapter(searchUser)
+        Log.d("SEARCH USER", searchUser.toString())*/
 
         return binding.root
     }
@@ -37,15 +42,21 @@ class SearchUserFragment(): Fragment() {
         return (activity as SearchActivity).userLists
     }
 
-    fun initRVAdapter(userList: List<GetSearchUserResult>){
-        val searchUserRVAdapter = SearchUserRVAdapter()
-        binding.searchUserRv.adapter = searchUserRVAdapter
-        binding.searchUserRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        searchUserRVAdapter.initUserList(userList)
-    }
+        override fun onResume() {
+            super.onResume()
+        }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+        private fun initRVAdapter(item : List<GetSearchUserResult>) {
+            val searchUserRVAdapter = SearchUserRVAdapter()
+            binding.searchUserRv.adapter = searchUserRVAdapter
+            binding.searchUserRv.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+            searchUserRVAdapter.initUserList(item)
+        }
+
+        override fun onDestroy() {
+            super.onDestroy()
+            _binding = null
+        }
     }
-}

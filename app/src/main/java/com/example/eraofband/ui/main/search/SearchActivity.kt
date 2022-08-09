@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import androidx.viewpager2.widget.ViewPager2
+import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivitySearchBinding
 import com.example.eraofband.remote.search.getBand.GetSearchBandResult
 import com.example.eraofband.remote.search.getBand.GetSearchBandService
@@ -28,9 +29,7 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
     private lateinit var binding: ActivitySearchBinding
     private var nowPage = 0
 
-    private val userFragment = SearchUserFragment()  // 프래그먼트 객체 선언
-    private val bandFragment = SearchBandFragment()
-    private val lessonFragment = SearchLessonFragment()
+    private var userfragmet = SearchUserFragment()
 
     internal var userLists = arrayListOf<GetSearchUserResult>()
 
@@ -62,7 +61,7 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
             override fun afterTextChanged(s: Editable?) {
                 if (s.toString().isNotEmpty()) {
                     when (nowPage) {
-                        0 -> userService.getSearchUser(s.toString())  //  s = 검색 문자열
+                        0 -> {userService.getSearchUser(s.toString()) }  //  s = 검색 문자열
                         1 -> bandService.getSearchBand(s.toString())
                         else -> lessonService.getSearchLesson(s.toString())
                     }
@@ -107,6 +106,14 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
     override fun onGetSearchUserSuccess(result: List<GetSearchUserResult>) {
         Log.d("SEARCH USER / SUCCESS", result.toString())
         userLists = result as ArrayList<GetSearchUserResult>
+
+        val bundle = Bundle()
+        bundle.putParcelableArrayList("list", userLists)
+        userfragmet.arguments = bundle
+
+
+        SearchUserRVAdapter().clear()
+        SearchUserRVAdapter().initUserList(result)
     }
 
     override fun onGetSearchUserFailure(code: Int, message: String) {
@@ -115,7 +122,6 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
 
     override fun onGetSearchBandSuccess(result: List<GetSearchBandResult>) {
         Log.d("SEARCH USER / SUCCESS", result.toString())
-        bandFragment.initRVAdapter(result)
     }
 
     override fun onGetSearchBandFailure(code: Int, message: String) {
@@ -124,7 +130,6 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
 
     override fun onGetSearchLessonSuccess(result: List<GetSearchLessonResult>) {
         Log.d("SEARCH USER / SUCCESS", result.toString())
-        lessonFragment.initRVAdapter(result)
     }
 
     override fun onGetSearchLessonFailure(code: Int, message: String) {

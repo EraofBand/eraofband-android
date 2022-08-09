@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.eraofband.data.User
 import com.example.eraofband.databinding.FragmentFollowerBinding
 import com.example.eraofband.remote.user.userFollowList.FollowerInfo
@@ -55,14 +56,13 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
         return binding.root
     }
 
-
     override fun onResume() {
         super.onResume() // GET 해당 유저 팔로우리스트
 
         mAdapter.clear()
-
         userFollowList.setUserFollowListView(this)
         userFollowList.userFollowList(getJwt()!!, userIdx)
+
     }
 
     fun searchFilter(searchText: String) {
@@ -82,6 +82,10 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
         binding.followingRv.adapter = mAdapter // 리사이클러뷰 어댑터 연결
         binding.followingRv.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        binding.followingRv.apply {
+            itemAnimator = null
+        }
 
         mAdapter.setMyItemClickListener(object : FollowerRVAdapter.MyItemClickListener {
 

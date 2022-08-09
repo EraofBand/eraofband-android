@@ -23,12 +23,14 @@ class SearchBandFragment : Fragment() {
 
         return binding.root
     }
+
     fun initRVAdapter(bandList: List<GetSearchBandResult>){
         val searchBandRVAdapter = SearchBandRVAdapter()
         binding.searchBandRv.adapter = searchBandRVAdapter
         binding.searchBandRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         searchBandRVAdapter.initBandList(bandList)
     }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
