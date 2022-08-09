@@ -15,7 +15,7 @@ import com.example.eraofband.remote.search.getUser.GetSearchUserResult
 import com.example.eraofband.ui.main.home.lesson.LessonStudentRVAdapter
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 
-class SearchUserFragment(): Fragment() {
+class SearchUserFragment: Fragment() {
 
     private var _binding: FragmentSearchUserBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
@@ -30,12 +30,16 @@ class SearchUserFragment(): Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        initRVAdapter()
+        Log.d("userF","ok")
+    }
 
-    fun initRVAdapter(userList: List<GetSearchUserResult>){
+    private fun initRVAdapter(){
         val searchUserRVAdapter = SearchUserRVAdapter()
         binding.searchUserRv.adapter = searchUserRVAdapter
         binding.searchUserRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        searchUserRVAdapter.initUserList(userList)
     }
 
     override fun onDestroy() {

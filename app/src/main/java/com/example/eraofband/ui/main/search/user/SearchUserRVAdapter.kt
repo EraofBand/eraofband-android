@@ -52,7 +52,6 @@ class SearchUserRVAdapter : RecyclerView.Adapter<SearchUserRVAdapter.ViewHolder>
 
     override fun onBindViewHolder(holder: SearchUserRVAdapter.ViewHolder, position: Int) {
         holder.bind(userList[position])
-
         holder.binding.searchUserCl.setOnClickListener {
             mItemClickListener.userInfo(userList[position].userIdx)
         }
@@ -75,7 +74,6 @@ class SearchUserRVAdapter : RecyclerView.Adapter<SearchUserRVAdapter.ViewHolder>
                 3 -> "키보드"
                 else -> "드럼"
             }
-
         }
     }
 }

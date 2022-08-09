@@ -25,12 +25,14 @@ class SearchLessonFragment : Fragment() {
 
         return binding.root
     }
+
     fun initRVAdapter(lessonList: List<GetSearchLessonResult>){
         val searchLessonRVAdapter = SearchLessonRVAdapter()
         binding.searchLessonRv.adapter = searchLessonRVAdapter
         binding.searchLessonRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         searchLessonRVAdapter.initLessonList(lessonList)
     }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
