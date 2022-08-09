@@ -56,6 +56,10 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
 
     override fun onResume() {
         super.onResume() // GET 해당 유저 팔로우리스트
+        if (binding.followerSearchEt.hint == "") {
+            binding.followerSearchEt.text = null
+            binding.followerSearchEt.hint = "팔로워 검색창"
+        }
         userFollowList.setUserFollowListView(this)
         userFollowList.userFollowList(getJwt()!!, userIdx)
     }
