@@ -1,5 +1,6 @@
 package com.example.eraofband.ui.main.chat
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,11 +8,27 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.data.ChatRoom
 import com.example.eraofband.databinding.ItemChatListBinding
+import com.example.eraofband.remote.chat.getChatList.GetChatListResult
+import com.example.eraofband.remote.lesson.getLessonInfo.LessonMembers
 
-class ChatRVAdapter(private val chatRoomList : ArrayList<ChatRoom>) : RecyclerView.Adapter<ChatRVAdapter.ViewHolder>() {
+class ChatRVAdapter() : RecyclerView.Adapter<ChatRVAdapter.ViewHolder>() {
+
+    private val chatRoomList = arrayListOf<ChatRoom>()
 
     interface MyItemClickListener{
-        fun onItemClick()
+        fun onItemClick(chatIdx : Int)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun initChatList(chatList : List<ChatRoom>) {
+        this.chatRoomList.addAll(chatList)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun clear(){
+        chatRoomList.clear()
+        notifyDataSetChanged()
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -45,7 +62,7 @@ class ChatRVAdapter(private val chatRoomList : ArrayList<ChatRoom>) : RecyclerVi
             binding.chatListMessageTv.text = "마지막으로 보낸 메세지"
 
             binding.itemChatListRv.setOnClickListener {
-                mItemClickListener.onItemClick()
+                mItemClickListener.onItemClick(chatRoom.chatRoomIdx)
             }
         }
     }

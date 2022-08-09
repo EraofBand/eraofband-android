@@ -3,6 +3,7 @@ package com.example.eraofband.ui.main.search
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.eraofband.remote.search.getUser.GetSearchUserResult
 import com.example.eraofband.ui.main.search.band.SearchBandFragment
 import com.example.eraofband.ui.main.search.lesson.SearchLessonFragment
 import com.example.eraofband.ui.main.search.user.SearchUserFragment

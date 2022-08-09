@@ -40,16 +40,15 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/chat_content_nsv"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chat_content_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="20dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_chat_left"
         app:layout_constraintTop_toBottomOf="@id/chat_content_cl"
-        app:layout_constraintBottom_toTopOf="@id/chat_content_send_v">
-
-
-    </androidx.core.widget.NestedScrollView>
+        app:layout_constraintBottom_toTopOf="@id/chat_content_send_v"/>
 
     <View
         android:id="@+id/chat_content_send_v"
@@ -62,6 +61,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
+
+    <EditText
+        android:id="@+id/chat_content_text_et"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:hint="대충 여기에 입력"
+        android:textSize="16sp"
+        android:fontFamily="@font/pretendard_medium"
+        android:textColor="@color/black"
+        android:background="@null"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toTopOf="@id/chat_content_send_v"
+        app:layout_constraintStart_toStartOf="@id/chat_content_send_v"
+        app:layout_constraintEnd_toStartOf="@id/chat_content_send_tv"/>
 
     <TextView
         android:id="@+id/chat_content_send_tv"

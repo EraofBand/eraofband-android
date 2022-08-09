@@ -20,6 +20,7 @@ class ChatFragment : Fragment(), GetChatListView {
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
 
+    private val chatRVAdapter = ChatRVAdapter()
     private var chatRooms = ArrayList<ChatRoom>()
 
     override fun onCreateView(
@@ -32,20 +33,30 @@ class ChatFragment : Fragment(), GetChatListView {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val getChatList = GetChatListService()
-        getChatList.setChatListView(this)
-        getChatList.getChatList(getJwt()!!)
+
+    override fun onStart() {
+        super.onStart()
+        chatRVAdapter.clear()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        val getChatListService = GetChatListService()
+        getChatListService.setChatListView(this)
+        getChatListService.getChatList(getJwt()!!)
+    }
+
+
     private fun initRVAdapter(result: ArrayList<ChatRoom>) {
-        val chatRVAdapter = ChatRVAdapter(result)
+        val chatRVAdapter = ChatRVAdapter()
         binding.chatListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.chatListRv.adapter = chatRVAdapter
 
+        chatRVAdapter.initChatList(result)
+
         chatRVAdapter.setMyItemClickListener(object : ChatRVAdapter.MyItemClickListener{
-            override fun onItemClick() {
+            override fun onItemClick(chatIdx : Int) {
                 activity?.let {
                     val intent = Intent(activity, ChatContentActivity::class.java)
                     startActivity(intent)
@@ -60,7 +71,7 @@ class ChatFragment : Fragment(), GetChatListView {
     }
 
     override fun onGetListSuccess(result: ArrayList<GetChatListResult>) {
-        Log.d("GET / SUCCESS", result.toString())
+        Log.d("GET CHAT / SUCCESS", result.toString())
 
         // 결과값에서 채팅룸 인덱스, 닉네임, 프로필사진만 먼저 가져옴
         for (i in 0 until result.size)
@@ -71,7 +82,7 @@ class ChatFragment : Fragment(), GetChatListView {
     }
 
     override fun onGetListFailure(code: Int, message: String) {
-        Log.d("GET / FAIL", "$code $message")
+        Log.d("GET CHAT / FAIL", "$code $message")
     }
 
     override fun onDestroy() {
