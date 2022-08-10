@@ -1,5 +1,6 @@
 package com.example.eraofband.ui.main.home.session.band
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -97,7 +98,10 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
                 when(position){
                     0 -> binding.bandRecruitFab.visibility = View.INVISIBLE
                     1 -> binding.bandRecruitFab.visibility = View.INVISIBLE
-                    2 -> binding.bandRecruitFab.visibility = View.VISIBLE
+                    2 -> {
+                            if(leaderIdx != getUserIdx()) binding.bandRecruitFab.visibility = View.GONE
+                            else binding.bandRecruitFab.visibility = View.VISIBLE
+                        }
                 }
             }
         })
@@ -108,6 +112,7 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
         return userSP.getString("jwt", "")
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onGetSuccess(result: GetBandResult) {
         Log.d("GETBAND/SUC", result.toString())
         // 밴드 정보 연동
@@ -135,8 +140,6 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
         }
 
         // viewPager로 데이터를 넘기기 위해 저장
-        if(result.userIdx != getUserIdx()) binding.bandRecruitFab.visibility = View.GONE
-        else binding.bandRecruitFab.visibility = View.VISIBLE
 
         val bandSP = getSharedPreferences("band", MODE_PRIVATE)
         val bandEdit = bandSP.edit()
