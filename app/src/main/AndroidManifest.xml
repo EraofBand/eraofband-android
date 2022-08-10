@@ -19,9 +19,6 @@
         android:theme="@style/Theme.EraofBand"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".SearchActivity"
-            android:exported="false" />
         <!-- 카카오 로그인 AuthCodeHandler -->
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
@@ -120,7 +117,8 @@
             android:exported="false" />
         <activity
             android:name="com.example.eraofband.ui.main.chat.ChatContentActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustUnspecified|adjustPan" />
         <activity
             android:name="com.example.eraofband.ui.main.usermypage.UserMyPageActivity"
             android:exported="false" />

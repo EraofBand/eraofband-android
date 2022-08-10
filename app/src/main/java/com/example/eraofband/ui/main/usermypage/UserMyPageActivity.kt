@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.ActivityUserMypageBinding
-import com.example.eraofband.ui.main.mypage.follow.FollowActivity
 import com.example.eraofband.remote.user.getOtherUser.GetOtherUserResult
 import com.example.eraofband.remote.user.getOtherUser.GetOtherUserService
 import com.example.eraofband.remote.user.getOtherUser.GetOtherUserView
@@ -19,6 +18,8 @@ import com.example.eraofband.remote.user.userFollow.UserFollowView
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowResponse
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowService
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowView
+import com.example.eraofband.ui.main.chat.ChatContentActivity
+import com.example.eraofband.ui.main.mypage.follow.FollowActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,9 +27,12 @@ import java.util.*
 class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView, UserUnfollowView {
 
     private lateinit var binding: ActivityUserMypageBinding
-    internal var otherUserIdx : Int? = null
+    internal var otherUserIdx: Int? = null
     private var followerCnt = 0
-    private lateinit var nickName : String
+
+    private lateinit var nickName: String
+    private lateinit var profileImg: String
+    private var secondIndex = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +42,16 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
 
         binding.userMypageBackIb.setOnClickListener {
             finish()
+        }
+
+        // 메세지 클릭하면 채팅방으로 이동
+        binding.userMypageMessageTv.setOnClickListener {
+            val intent = Intent(this, ChatContentActivity::class.java)
+            intent.putExtra("name", nickName)
+            intent.putExtra("profileImg", profileImg)
+            intent.putExtra("firstIndex", getUserIdx())
+            intent.putExtra("secondIndex", secondIndex)
+            startActivity(intent)
         }
 
         val intent = intent
@@ -61,7 +75,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         binding.userMypageFollowTv.setOnClickListener {  // 팔로우 리스트에서 언팔 및 팔로우 시 visibility 변경
             binding.userMypageFollowTv.visibility = View.INVISIBLE
             binding.userMypageUnfollowTv.visibility = View.VISIBLE
-            binding.userMypageFollowerCntTv.text = (followerCnt+ 1).toString()
+            binding.userMypageFollowerCntTv.text = "${followerCnt++}"
             followerCnt += 1
             val userFollowService = UserFollowService() // 팔로우
             userFollowService.setUserFollowView(this)
@@ -87,9 +101,14 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         getOtherUserService.getOtherUser(getJwt()!!, otherUserIdx!!)
     }
 
+    private fun getUserIdx() : Int {
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        return userSP.getInt("userIdx", 0)
+    }
+
     private fun moveFollowActivity() {
         binding.userMypageFollowing.setOnClickListener {
-            var intent = Intent(this, FollowActivity::class.java)
+            val intent = Intent(this, FollowActivity::class.java)
             intent.putExtra("nickName", nickName)
             intent.putExtra("current", 0)
             intent.putExtra("userIdx", otherUserIdx)
@@ -97,7 +116,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         }
 
         binding.userMypageFollower.setOnClickListener {
-            var intent = Intent(this, FollowActivity::class.java)
+            val intent = Intent(this, FollowActivity::class.java)
             intent.putExtra("nickName", nickName)
             intent.putExtra("current", 1)
             intent.putExtra("userIdx", otherUserIdx)
@@ -106,7 +125,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     }
 
     private fun getJwt() : String? {
-        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getString("jwt", "")
     }
 
@@ -131,15 +150,16 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
 
     @SuppressLint("SetTextI18n")
     override fun onGetSuccess(code: Int, result: GetOtherUserResult) {
-        // 나중에 프사도 연동 예정, 포트폴리오는 아직
-
         Glide.with(this).load(result.getUser.profileImgUrl)
-            .apply(RequestOptions.centerCropTransform())
-            .apply(RequestOptions.circleCropTransform())
+            .apply(RequestOptions.centerCropTransform()).apply(RequestOptions.circleCropTransform())
             .into(binding.userMypageProfileimgIv)
+        profileImg = result.getUser.profileImgUrl
+
 
         Log.d("MYPAGE", result.toString())
         nickName = result.getUser.nickName
+        secondIndex = result.getUser.userIdx
+
         binding.userMypageNicknameTv.text = nickName
         binding.userMypageInfoNicknameTv.text = nickName // 닉네임 연동
 
@@ -182,13 +202,6 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
 
         setSession(result.getUser.userSession)  // 세션 연동
 
-
-        //프사 연동
-        Glide.with(this).load(result.getUser.profileImgUrl)
-            .apply(RequestOptions.centerCropTransform())
-            .apply(RequestOptions.circleCropTransform())
-            .into(binding.userMypageProfileimgIv)
-
         if (result.getUser.follow == 0){
             binding.userMypageFollowTv.visibility = View.VISIBLE
             binding.userMypageUnfollowTv.visibility = View.INVISIBLE
@@ -219,4 +232,5 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     override fun onUserUnfollowFailure(code: Int, message: String) {
         Log.d("USER UNLLOW / FAIL", "$code $message")
     }
+
 }
