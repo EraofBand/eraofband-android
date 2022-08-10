@@ -20,8 +20,8 @@ class ChatFragment : Fragment(), GetChatListView {
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
 
-    private val chatRVAdapter = ChatRVAdapter()
     private var chatRooms = ArrayList<ChatRoom>()
+    private var getChatListService = GetChatListService()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,17 +34,12 @@ class ChatFragment : Fragment(), GetChatListView {
     }
 
 
-    override fun onStart() {
-        super.onStart()
-        chatRVAdapter.clear()
-    }
-
     override fun onResume() {
         super.onResume()
 
-        val getChatListService = GetChatListService()
         getChatListService.setChatListView(this)
         getChatListService.getChatList(getJwt()!!)
+
     }
 
 
@@ -52,6 +47,8 @@ class ChatFragment : Fragment(), GetChatListView {
         val chatRVAdapter = ChatRVAdapter()
         binding.chatListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.chatListRv.adapter = chatRVAdapter
+
+        chatRVAdapter.clear()
 
         chatRVAdapter.initChatList(result)
 

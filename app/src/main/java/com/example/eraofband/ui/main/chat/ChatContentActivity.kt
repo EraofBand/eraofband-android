@@ -26,6 +26,10 @@ class ChatContentActivity : AppCompatActivity() {
         binding = ActivityChatContentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.chatContentBackIb.setOnClickListener {
+            finish()
+        }
+
     }
 
     // 일단 어디에 이 함수들을 써야할 지 모르겠어서 여기에 다 모아놨어요
