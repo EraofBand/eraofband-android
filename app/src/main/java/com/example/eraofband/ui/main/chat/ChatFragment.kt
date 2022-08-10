@@ -20,7 +20,7 @@ class ChatFragment : Fragment(), GetChatListView {
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
 
-    private val chatRVAdapter = ChatRVAdapter()
+    private var chatRVAdapter = ChatRVAdapter()
     private var chatRooms = ArrayList<ChatRoom>()
 
     override fun onCreateView(
@@ -33,15 +33,8 @@ class ChatFragment : Fragment(), GetChatListView {
         return binding.root
     }
 
-
-    override fun onStart() {
-        super.onStart()
-        chatRVAdapter.clear()
-    }
-
     override fun onResume() {
         super.onResume()
-
         val getChatListService = GetChatListService()
         getChatListService.setChatListView(this)
         getChatListService.getChatList(getJwt()!!)
@@ -49,7 +42,7 @@ class ChatFragment : Fragment(), GetChatListView {
 
 
     private fun initRVAdapter(result: ArrayList<ChatRoom>) {
-        val chatRVAdapter = ChatRVAdapter()
+        chatRVAdapter = ChatRVAdapter()
         binding.chatListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.chatListRv.adapter = chatRVAdapter
 
@@ -77,8 +70,8 @@ class ChatFragment : Fragment(), GetChatListView {
         for (i in 0 until result.size)
             chatRooms.add(i, ChatRoom(result[i].chatRoomIdx, result[i].nickName, result[i].profileImgUrl,
                 "", "", true))
-
         initRVAdapter(chatRooms)
+        chatRooms.clear()
     }
 
     override fun onGetListFailure(code: Int, message: String) {

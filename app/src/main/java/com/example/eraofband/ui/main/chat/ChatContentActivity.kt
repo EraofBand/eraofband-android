@@ -1,15 +1,24 @@
 package com.example.eraofband.ui.main.chat
 
 import android.os.Bundle
+import android.util.Log
+import android.view.Gravity
+import android.view.View
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ContextThemeWrapper
+import com.example.eraofband.R
 import com.example.eraofband.data.ChatComment
 import com.example.eraofband.data.ChatUser
 import com.example.eraofband.databinding.ActivityChatContentBinding
+import com.example.eraofband.remote.chat.patchChat.PatchChatService
+import com.example.eraofband.remote.chat.patchChat.PatchChatView
+import com.example.eraofband.remote.notice.deleteNotice.DeleteNoticeService
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-class ChatContentActivity : AppCompatActivity() {
+class ChatContentActivity : AppCompatActivity(), PatchChatView {
 
     private lateinit var binding: ActivityChatContentBinding
 
@@ -26,6 +35,30 @@ class ChatContentActivity : AppCompatActivity() {
         binding = ActivityChatContentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.chatContentMenuIv.setOnClickListener{
+            showPopup(binding.chatContentMenuIv)
+        }
+    }
+
+    private fun showPopup(view: View) {
+        val themeWrapper = ContextThemeWrapper(applicationContext, R.style.MyPopupMenu)
+        val popupMenu = PopupMenu(themeWrapper, view, Gravity.END, 0, R.style.MyPopupMenu)
+        popupMenu.menuInflater.inflate(R.menu.chat_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            if (item!!.itemId == R.id.chat_delete) {
+                val patchChatService = PatchChatService() // 채팅방 나가기 api
+                patchChatService.setChatView(this)
+                patchChatService.patchChat(getJwt()!!, "")
+            }
+            false
+        }
+        popupMenu.show()
+    }
+
+    private fun getJwt() : String? {
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        return userSP.getString("jwt", "")
     }
 
     // 일단 어디에 이 함수들을 써야할 지 모르겠어서 여기에 다 모아놨어요
@@ -72,5 +105,13 @@ class ChatContentActivity : AppCompatActivity() {
         // 한 유저가 같은 밀리 초 안에 채팅을 보내는 건 어려울 거라고 생각하기 때문에 괜찮을 거라고 생각합니다 아닐 수도 있어요
         // setValue로 값을 넣어주면 됩니다
         // child에 있는 path가 없는 경우 만들어주고 있는 경우는 path를 타고 들어가서 값을 파이어베이스에 넣어주는 형식
+    }
+
+    override fun onPatchSuccess(result: String) {
+        Log.d("PATCH / SUCCESS", result)
+    }
+
+    override fun onPatchFailure(code: Int, message: String) {
+        Log.d("PATCH / FAIL", "$code $message")
     }
 }

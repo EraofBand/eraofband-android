@@ -18,6 +18,7 @@ import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeService
 import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeView
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 
 class PortfolioListRVAdapter(private val jwt: String, private val context: Context) : RecyclerView.Adapter<PortfolioListRVAdapter.ViewHolder>(),
     PofolLikeView {
@@ -43,6 +44,15 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
     @SuppressLint("NotifyDataSetChanged")
     fun deletePortfolio(position: Int) {
         this.portfolio.removeAt(position)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun clear() {
+        this.portfolio.clear()
+        videoPlayer?.stop()
+        videoPlayer?.release()
+        videoPlayer = null
         notifyDataSetChanged()
     }
 
@@ -147,8 +157,34 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
         Log.d("POFOLLIKEDELETE", message)
     }
 
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView)
-        videoPlayer?.release() // 비디오플레이어 해제
+    @SuppressLint("NotifyDataSetChanged")
+    fun clearVideo() {
+        Log.d("vpvp", videoPlayer!!.toString())
+        videoPlayer?.volume = 0F
     }
+//    override fun onViewDetachedFromWindow(holder: ViewHolder) {
+//        super.onViewDetachedFromWindow(holder)
+//        if (holder.binding.portfolioListVideoPv.player?.isPlaying == true) {
+//            holder.binding.portfolioListVideoPv.player?.stop()
+//            holder.binding.portfolioListVideoPv.player?.release()
+//            holder.binding.portfolioListVideoPv.player = null
+//        }
+//            if (videoPlayer?.isPlaying == true) {
+//                videoPlayer?.pause()
+//                videoPlayer?.stop()
+//                videoPlayer?.release() // mp가 갖고 있던 리소스 해제
+//                videoPlayer = null // 미디어 해제
+//            }
+//        }
+//
+//    override fun onViewRecycled(holder: ViewHolder) {
+//        super.onViewRecycled(holder)
+//        holder.binding.portfolioListVideoPv.player?.stop()
+//        holder.binding.portfolioListVideoPv.player?.release()
+//        holder.binding.portfolioListVideoPv.player = null
+//        videoPlayer?.pause()
+//        videoPlayer?.stop()
+//        videoPlayer?.release() // mp가 갖고 있던 리소스 해제
+//        videoPlayer = null // 미디어 해제
+//    }
 }

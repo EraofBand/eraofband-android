@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityPortfolioListBinding
+import com.example.eraofband.databinding.ItemPortfolioListBinding
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResult
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolService
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolView
@@ -32,7 +33,9 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
         setContentView(binding.root)
 
         binding.portfolioListBackIv.setOnClickListener { finish() }  // 뒤로 가기
-
+        binding.portfolioListTitleTv.setOnClickListener {
+            clearAll()
+        }
     }
 
     override fun onResume() {
@@ -139,9 +142,15 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
 
         // 여기는 무조건 내 포트폴리오만 나오기 때문에 내 포트폴리오인 경우만 고려
         popupMenu.menu.setGroupVisible(R.id.portfolio_report_gr, false)
-
         popupMenu.show() // 팝업 보여주기
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        clearAll()
+    }
 
+    private fun clearAll() {
+        portfolioAdapter.clearVideo()
+    }
 }
