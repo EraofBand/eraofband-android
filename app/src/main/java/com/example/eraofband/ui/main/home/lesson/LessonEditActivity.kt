@@ -19,6 +19,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
@@ -77,6 +78,13 @@ class LessonEditActivity : AppCompatActivity(), GetLessonInfoView, PatchLessonVi
 
         binding.homeLessonEditImgV.setOnClickListener {  // 이미지 등록 클릭 리스너
             initImageViewLesson()
+        }
+
+        binding.root.setOnClickListener {  // 화면 누르면 키보드 내리기
+            if(binding.homeLessonEditChatEt.isFocused) hideKeyboard()
+            else if(binding.homeLessonEditInfoEt.isFocused) hideKeyboard()
+            else if(binding.homeLessonEditNameEt.isFocused) hideKeyboard()
+            else if(binding.homeLessonEditDetailEt.isFocused) hideKeyboard()
         }
 
         binding.homeLessonEditRegisterBtn.setOnClickListener {
@@ -210,6 +218,11 @@ class LessonEditActivity : AppCompatActivity(), GetLessonInfoView, PatchLessonVi
                 binding.editCntTv.text = cnt.toString()
             }
         }
+    }
+
+    private fun hideKeyboard() {
+        val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
     private fun initImageViewLesson() {

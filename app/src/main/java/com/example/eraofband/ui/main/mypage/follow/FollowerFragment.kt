@@ -1,6 +1,7 @@
 package com.example.eraofband.ui.main.mypage.follow
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -9,11 +10,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.SimpleItemAnimator
-import com.example.eraofband.data.User
 import com.example.eraofband.databinding.FragmentFollowerBinding
 import com.example.eraofband.remote.user.userFollowList.FollowerInfo
 import com.example.eraofband.remote.user.userFollowList.UserFollowListResult
@@ -38,6 +38,10 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentFollowerBinding.inflate(inflater,container,false)
+
+        binding.root.setOnClickListener {
+            if(binding.followerSearchEt.isFocused) hideKeyboard()
+        }
 
         binding.followerSearchEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -116,6 +120,11 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
                 return userSP.getInt("userIdx", 0)
             }
         })
+    }
+
+    private fun hideKeyboard() {
+        val inputManager: InputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
     private fun getJwt(): String? {

@@ -1,13 +1,14 @@
 package com.example.eraofband.ui.main.search
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
-import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivitySearchBinding
 import com.example.eraofband.remote.search.getBand.GetSearchBandResult
 import com.example.eraofband.remote.search.getBand.GetSearchBandService
@@ -55,6 +56,10 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
 
         binding.searchBackIb.setOnClickListener {
             finish()
+        }
+
+        binding.root.setOnClickListener {
+            if(binding.searchBarEt.isFocused) hideKeyboard()
         }
 
         initVPAdapter() // 뷰페이저 초기화
@@ -123,6 +128,11 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
                 }
             }
         }))
+    }
+
+    private fun hideKeyboard() {
+        val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
     override fun onGetSearchUserSuccess(result: List<GetSearchUserResult>) {

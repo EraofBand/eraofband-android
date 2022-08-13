@@ -1,8 +1,10 @@
 package com.example.eraofband.ui.main.mypage.portfolio
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.data.Portfolio
 import com.example.eraofband.databinding.ActivityPofolEditBinding
 import com.example.eraofband.remote.portfolio.patchPofol.PatchPofolResponse
@@ -21,7 +23,10 @@ class PofolEditActivity : AppCompatActivity(), PatchPofolView {
 
         binding.portfolioEditBackIb.setOnClickListener { finish() }
 
-        Log.d("CHECKING", intent.getStringExtra("title").toString())
+        binding.root.setOnClickListener {
+            if(binding.portfolioEditTitleEt.isFocused) hideKeyboard()
+            else if(binding.portfolioEditVideoIntroEt.isFocused) hideKeyboard()
+        }
 
         // 내용 불러오기
         binding.portfolioEditTitleEt.setText(intent.getStringExtra("title").toString())
@@ -47,6 +52,11 @@ class PofolEditActivity : AppCompatActivity(), PatchPofolView {
     private fun getJwt() : String? {  // 내 jwt를 불러옴
         val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getString("jwt", "")
+    }
+
+    private fun hideKeyboard() {
+        val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
     override fun onPatchSuccess(code: Int, result: String) {

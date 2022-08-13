@@ -16,6 +16,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -59,6 +60,14 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
 
         binding.profileEditBackIv.setOnClickListener {  // 백 버튼을 누르면 뒤로
             finish()
+        }
+
+        binding.root.setOnClickListener {
+            if(binding.profileEditNicknameEt.isFocused) {
+                hideKeyboard()
+                binding.profileEditNicknameEt.clearFocus()
+            }
+//            else if(binding.profileEditIntroduceEt.isFocused) hideKeyboard()
         }
 
         // 유저 정보를 받아온 후 프로필 편집 화면에 연동
@@ -136,6 +145,11 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
         val userSP = getSharedPreferences("user", MODE_PRIVATE)
         Log.d("jwt value", userSP.getString("jwt", "").toString())
         return userSP.getString("jwt", "")
+    }
+
+    private fun hideKeyboard() {
+        val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
     @SuppressLint("SetTextI18n")

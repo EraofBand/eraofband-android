@@ -1,5 +1,6 @@
 package com.example.eraofband.ui.main.mypage.portfolio
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -16,12 +17,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
 import com.example.eraofband.data.Comment
 import com.example.eraofband.databinding.ActivityPortfolioCommentBinding
-import com.example.eraofband.ui.main.mypage.MyPageActivity
-import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentResult
 import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentService
 import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentView
 import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentWriteResult
+import com.example.eraofband.ui.main.mypage.MyPageActivity
+import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 
 
 class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
@@ -38,6 +39,10 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
         setContentView(binding.root)
 
         binding.portfolioCommentBackIv.setOnClickListener { finish() }  // 뒤로 가기
+
+        binding.root.setOnClickListener {
+            if(binding.portfolioCommentWriteEt.isFocused) hideKeyboard()
+        }
 
         textWatcher()  // 댓글 창에 뭐가 있는지 확인하는 용도, 입력 색을 바꾸기 위해
 
@@ -149,6 +154,11 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
         }
 
         popupMenu.show() // 팝업 보여주기
+    }
+
+    private fun hideKeyboard() {
+        val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
     override fun onCommentSuccess(code: Int, result: List<PofolCommentResult>) {

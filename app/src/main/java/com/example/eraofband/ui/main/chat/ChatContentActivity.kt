@@ -57,6 +57,10 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView {
 
         binding.chatContentBackIb.setOnClickListener{ finish() }  // 뒤로가기
 
+        binding.root.setOnClickListener {
+            if(binding.chatContentTextEt.isFocused) hideKeyboard()
+        }
+
         binding.chatContentSendTv.setOnClickListener {  // 메세지 보내기
             if(binding.chatContentTextEt.text.isNotEmpty()) {
                 val message = binding.chatContentTextEt.text.toString()
@@ -124,11 +128,15 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView {
             .addOnSuccessListener {
                 if(binding.chatContentTextEt.isFocused) {  // 다 올라갔으면 내용 초기화 후 키보드 내려주기
                     binding.chatContentTextEt.setText("")
-                    val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                    hideKeyboard()
                 }
             }
         // child에 있는 path가 없는 경우 만들어주고 있는 경우는 path를 타고 들어가서 값을 파이어베이스에 넣어주는 형식
+    }
+
+    private fun hideKeyboard() {
+        val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
     override fun onMakeSuccess(result: String) {
