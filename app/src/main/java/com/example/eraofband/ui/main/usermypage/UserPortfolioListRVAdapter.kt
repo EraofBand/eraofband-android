@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ItemPortfolioListBinding
-import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResult
+import com.example.eraofband.remote.portfolio.getPofol.GetPofolResult
 import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeResult
 import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeService
 import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeView
@@ -21,14 +21,14 @@ import com.google.android.exoplayer2.MediaItem
 
 class UserPortfolioListRVAdapter(private val jwt : String, private val context: Context) : RecyclerView.Adapter<UserPortfolioListRVAdapter.ViewHolder>(),
     PofolLikeView {
-    private val portfolio = arrayListOf<GetMyPofolResult>()
+    private val portfolio = arrayListOf<GetPofolResult>()
     private var videoPlayer: ExoPlayer? = null
 
     private val pofolLikeService = PofolLikeService()
     private lateinit var mItemListener: MyItemListener
 
     @SuppressLint("NotifyDataSetChanged")
-    fun initPortfolio(portfolio : List<GetMyPofolResult>) {
+    fun initPortfolio(portfolio : List<GetPofolResult>) {
         this.portfolio.addAll(portfolio)
         notifyDataSetChanged()
     }
@@ -36,7 +36,7 @@ class UserPortfolioListRVAdapter(private val jwt : String, private val context: 
     interface MyItemListener {
         fun urlParse(url : String) : Uri
         fun onShowComment(pofolIdx : Int)
-        fun onShowPopup(portfolio: GetMyPofolResult, position: Int, view: View)
+        fun onShowPopup(portfolio: GetPofolResult, position: Int, view: View)
         fun onShowInfoPage(userIdx: Int)
     }
 
@@ -89,7 +89,7 @@ class UserPortfolioListRVAdapter(private val jwt : String, private val context: 
 
     inner class ViewHolder(val binding: ItemPortfolioListBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(portfolio: GetMyPofolResult) {
+        fun bind(portfolio: GetPofolResult) {
             val mediaItem = MediaItem.fromUri(mItemListener.urlParse(portfolio.videoUrl))  // 비디오 url
             videoPlayer?.setMediaItem(mediaItem)
 

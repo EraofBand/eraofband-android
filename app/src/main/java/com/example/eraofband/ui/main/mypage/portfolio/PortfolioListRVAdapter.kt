@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ItemPortfolioListBinding
-import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResult
+import com.example.eraofband.remote.portfolio.getPofol.GetPofolResult
 import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeResult
 import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeService
 import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeView
@@ -21,21 +21,21 @@ import com.google.android.exoplayer2.MediaItem
 
 class PortfolioListRVAdapter(private val jwt: String, private val context: Context) : RecyclerView.Adapter<PortfolioListRVAdapter.ViewHolder>(),
     PofolLikeView {
-    private val portfolio = arrayListOf<GetMyPofolResult>()
+    private val portfolio = arrayListOf<GetPofolResult>()
     private var videoPlayer: ExoPlayer? = null
 
     private val pofolLikeService = PofolLikeService()
     private lateinit var mItemListener: MyItemListener
 
     @SuppressLint("NotifyDataSetChanged")
-    fun initPortfolio(portfolio : List<GetMyPofolResult>) {
+    fun initPortfolio(portfolio : List<GetPofolResult>) {
         this.portfolio.addAll(portfolio)
         notifyDataSetChanged()
     }
 
     // 나중에 포트폴리오 추가, 삭제를 위해서 이렇게 함수로 추가, 삭제하도록 만들었습니다 변경 값이 바로바로 화면에 나타나야하니까!
     @SuppressLint("NotifyDataSetChanged")
-    fun addPortfolio(portfolio: GetMyPofolResult) {
+    fun addPortfolio(portfolio: GetPofolResult) {
         this.portfolio.add(portfolio)
         notifyDataSetChanged()
     }
@@ -49,7 +49,7 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
     interface MyItemListener {
         fun urlParse(url : String) : Uri
         fun onShowComment(pofolIdx : Int)
-        fun onShowPopup(portfolio: GetMyPofolResult, position: Int, view: View)
+        fun onShowPopup(portfolio: GetPofolResult, position: Int, view: View)
         fun onShowInfoPage(userIdx: Int)
     }
 
@@ -103,7 +103,7 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
 
     inner class ViewHolder(val binding: ItemPortfolioListBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(portfolio: GetMyPofolResult) {
+        fun bind(portfolio: GetPofolResult) {
             val mediaItem = MediaItem.fromUri(mItemListener.urlParse(portfolio.videoUrl))  // 비디오 url
             videoPlayer?.setMediaItem(mediaItem)
             

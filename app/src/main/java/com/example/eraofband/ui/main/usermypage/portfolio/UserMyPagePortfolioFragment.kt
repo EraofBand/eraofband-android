@@ -10,9 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.eraofband.databinding.FragmentUserMypagePortfolioBinding
-import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResult
-import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolService
-import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolView
+import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolService
+import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolView
+import com.example.eraofband.remote.portfolio.getPofol.GetPofolResult
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.example.eraofband.ui.main.usermypage.UserPortfolioListActivity
 
@@ -50,7 +50,7 @@ class UserMyPagePortfolioFragment : Fragment(), GetMyPofolView {
         return userSP.getString("jwt", "")
     }
 
-    private fun connectAdapter(item : List<GetMyPofolResult>) {
+    private fun connectAdapter(item : List<GetPofolResult>) {
         val mAdapter = UserMyPagePortfolioRVAdapter()
         binding.userMypagePortfolioRv.adapter = mAdapter
 
@@ -74,7 +74,7 @@ class UserMyPagePortfolioFragment : Fragment(), GetMyPofolView {
         _binding = null
     }
 
-    override fun onGetSuccess(result: List<GetMyPofolResult>) {
+    override fun onGetSuccess(result: List<GetPofolResult>) {
         Log.d("PORTFOLIO/SUC", result.toString())
         connectAdapter(result)
     }
