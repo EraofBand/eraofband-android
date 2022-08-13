@@ -1,24 +1,44 @@
 package com.example.eraofband.ui.main.chat
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.data.ChatComment
 import com.example.eraofband.data.ChatUser
+import com.example.eraofband.data.MakeChatRoom
 import com.example.eraofband.databinding.ActivityChatContentBinding
-import com.google.firebase.database.DatabaseReference
+import com.example.eraofband.remote.chat.makeChat.MakeChatService
+import com.example.eraofband.remote.chat.makeChat.MakeChatView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.util.*
 
-class ChatContentActivity : AppCompatActivity() {
+class ChatContentActivity : AppCompatActivity(), MakeChatView {
 
     private lateinit var binding: ActivityChatContentBinding
 
-    // 채팅 목록을 받아오기 위한 파이어베이스
+    // 채팅방 인덱스
+    private var chatIdx = ""
+    private var num = 0
+
+    // 채팅 내역을 받아오기 위한 파이어베이스
     private val database = Firebase.database
-    private val chatRef = database.getReference("chat")
+    private val getChatRef = database.getReference("chat")
+    private val getChatRoomRef = getChatRef.child(chatIdx)
 
     // 파이어베이스로 값 올리기
-    private lateinit var mDatabase : DatabaseReference
+    private var mDatabase = FirebaseDatabase.getInstance().reference
+    private val sendChatRef = mDatabase.child("chat")
+    private val sendChatRoomRef = sendChatRef.child(chatIdx)
+
+    // 채팅방 생성 API
+    private val makeChatService = MakeChatService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,55 +46,90 @@ class ChatContentActivity : AppCompatActivity() {
         binding = ActivityChatContentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.chatContentBackIb.setOnClickListener {
-            finish()
+        makeChatService.setChatView(this)
+        if(intent.getStringExtra("chatRoomIdx").isNullOrEmpty()) chatIdx = "${UUID.randomUUID()}"
+        else intent.getStringExtra("chatRoomIdx")
+
+        binding.chatContentNicknameTv.text = intent.getStringExtra("name")
+
+        binding.chatContentBackIb.setOnClickListener{ finish() }  // 뒤로가기
+
+        binding.chatContentSendTv.setOnClickListener {  // 메세지 보내기
+            val message = binding.chatContentTextEt.text.toString()
+            val timeStamp = System.currentTimeMillis()
+            writeChat(ChatComment(message, false, timeStamp, getUserIdx()))
         }
 
+        getChats()
     }
 
-    // 일단 어디에 이 함수들을 써야할 지 모르겠어서 여기에 다 모아놨어요
+    private fun getUserIdx() : Int {
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        return userSP.getInt("userIdx", 0)
+    }
+
     private fun getChats() {
         // 게시물에 달린 댓글 받아오기
         // 여기서 중요한 점 : 이 리스너는 onCreate에서 한 번만 호출되어야 함
         // 필요할 때마다 불러오는 게 아님 <- 변화를 감지하는 리스너기 때문
+        // 처음 화면을 열면 무조건 한 번 실행돼서 초기 값 받아올 수 있음
+        // 데이터를 받아오는 것은 비동기적으로 진행되기 때문에 return 값은 무조건 null, size를 세는 것도 안됨
         // 자세한 기능은 리사이클러뷰에서 진행해야할 것 같습니다
-//        chatRef.addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
-//            override fun onDataChange(snapshot: DataSnapshot) {
+        getChatRoomRef.child("comments").addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
+            override fun onDataChange(snapshot: DataSnapshot) {
+                num = 0
 //                "리사이클러뷰".clearChat()  // 새로 불러오기 때문에 초기화 필요
-//
-//                if (snapshot.exists()){
-//                    for (commentSnapShot in snapshot.children){  // 하나씩 불러옴
-//                        val getData = commentSnapShot.getValue("데이터클래스"::class.java)  // 리스폰스가 들어가겠죵
-//
-//                        if (getData != null) {
-//                            "리사이클러뷰".addNewChat(getData)  // 리사이클러뷰에 채팅을 한 개씩 추가
-//                            Log.d("SUCCESS", getData.toString())  // 추가 확인
-//                        }
-//
-//                    }
-//                }
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                Log.d("FAIL", "데이터를 불러오지 못했습니다")
-//            }
-//        })
-    }
+                if (snapshot.exists()){
+                    for (commentSnapShot in snapshot.children){  // 하나씩 불러옴
+                        val getData = commentSnapShot.getValue(ChatComment::class.java)  // 리스폰스가 들어가겠죵
 
+                        if (getData != null) {
+//                            "리사이클러뷰".addNewChat(getData)  // 리사이클러뷰에 채팅을 한 개씩 추가
+                            num++
+                            Log.d("SUCCESS", getData.toString())  // 추가 확인
+                        }
+
+                    }
+                    if(num == 1) { createChatRoom() }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("FAIL", "데이터를 불러오지 못했습니다")
+            }
+        })
+    }
 
     // 데이터를 올리는 부분
     private fun createChatRoom() {
-        // API로 스웨거에서 채팅룸 idx, 유저 idx들을 받아오면 이 함수 실행
-        mDatabase.child("chat").setValue("채팅방 idx")  // 채팅방 생성
-        mDatabase.child("chat").child("채팅방 idx").child("users").setValue(ChatUser(0, 1))  // 채팅방 users 입력
-        // child 부분은 위에 채팅방 idx만 확실하게 알 수 있다면 ref로 정의해서 더 깔끔하게 넣을 수 있어용 !!
+        // 다른 유저 마이페이지에서 들어온 경우
+        // 채팅방이 없는 상태면 파이어베이스에 올려주고 서버에도 채팅방 생성
+        // 채팅방이 있는지 없는지 파악 여부는 comments가 1개인지로 파악
+        val firstIndex = intent.getIntExtra("firstIndex", -1)
+        val secondIndex = intent.getIntExtra("secondIndex", -1)
+
+        sendChatRoomRef.child("users").setValue(ChatUser(firstIndex, secondIndex))
+            .addOnSuccessListener {
+                makeChatService.makeChat(MakeChatRoom(chatIdx, firstIndex, secondIndex))
+            }  // 채팅방 users 입력, 채팅방 생성
     }
 
-    private fun writeChat() {
-        mDatabase.child("chat").child("채팅방 idx").child("comments").child("유저인덱스${System.currentTimeMillis()}").setValue(ChatComment("음", false, System.currentTimeMillis().toInt(), 1))  // 채팅방 users 입력
-        // 인덱싱은 유저인덱스+타임스탬프
-        // 한 유저가 같은 밀리 초 안에 채팅을 보내는 건 어려울 거라고 생각하기 때문에 괜찮을 거라고 생각합니다 아닐 수도 있어요
-        // setValue로 값을 넣어주면 됩니다
+    private fun writeChat(chatComment: ChatComment) {
+        sendChatRoomRef.child("comments").child("${num + 1}").setValue(chatComment)
+            .addOnSuccessListener {
+                if(binding.chatContentTextEt.isFocused) {  // 다 올라갔으면 키보드 내려주기
+                    val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                }
+            }
         // child에 있는 path가 없는 경우 만들어주고 있는 경우는 path를 타고 들어가서 값을 파이어베이스에 넣어주는 형식
+    }
+
+    override fun onMakeSuccess(result: String) {
+        Log.d("MAKE/SUC", result)
+    }
+
+    override fun onMakeFailure(code: Int, message: String) {
+        Log.d("MAKE/SUC", "$code $message")
     }
 }

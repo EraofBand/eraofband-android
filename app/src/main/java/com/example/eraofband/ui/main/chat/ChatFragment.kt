@@ -20,6 +20,7 @@ class ChatFragment : Fragment(), GetChatListView {
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
 
+    private lateinit var chatRVAdapter: ChatRVAdapter
     private var chatRooms = ArrayList<ChatRoom>()
     private var getChatListService = GetChatListService()
 
@@ -33,7 +34,6 @@ class ChatFragment : Fragment(), GetChatListView {
         return binding.root
     }
 
-
     override fun onResume() {
         super.onResume()
 
@@ -44,7 +44,7 @@ class ChatFragment : Fragment(), GetChatListView {
 
 
     private fun initRVAdapter(result: ArrayList<ChatRoom>) {
-        val chatRVAdapter = ChatRVAdapter()
+        chatRVAdapter = ChatRVAdapter()
         binding.chatListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.chatListRv.adapter = chatRVAdapter
 
@@ -53,9 +53,10 @@ class ChatFragment : Fragment(), GetChatListView {
         chatRVAdapter.initChatList(result)
 
         chatRVAdapter.setMyItemClickListener(object : ChatRVAdapter.MyItemClickListener{
-            override fun onItemClick(chatIdx : Int) {
+            override fun onItemClick(chatIdx : String) {
                 activity?.let {
                     val intent = Intent(activity, ChatContentActivity::class.java)
+                    intent.putExtra("chatRoomIndex", chatIdx)
                     startActivity(intent)
                 }
             }
@@ -70,10 +71,10 @@ class ChatFragment : Fragment(), GetChatListView {
     override fun onGetListSuccess(result: ArrayList<GetChatListResult>) {
         Log.d("GET CHAT / SUCCESS", result.toString())
 
-        // 결과값에서 채팅룸 인덱스, 닉네임, 프로필사진만 먼저 가져옴
-        for (i in 0 until result.size)
-            chatRooms.add(i, ChatRoom(result[i].chatRoomIdx, result[i].nickName, result[i].profileImgUrl,
-                "", "", true))
+//        // 결과값에서 채팅룸 인덱스, 닉네임, 프로필사진만 먼저 가져옴
+//        for (i in 0 until result.size)
+//            chatRooms.add(i, ChatRoom(result[i].chatRoomIdx, result[i].nickName, result[i].profileImgUrl,
+//                "", "", true))
 
         initRVAdapter(chatRooms)
     }
