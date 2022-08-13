@@ -47,17 +47,22 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView {
         setContentView(binding.root)
 
         makeChatService.setChatView(this)
+        // 채팅룸 idx가 없으면 랜덤 uuid 생성, 아니면 불러오기
         if(intent.getStringExtra("chatRoomIdx").isNullOrEmpty()) chatIdx = "${UUID.randomUUID()}"
         else intent.getStringExtra("chatRoomIdx")
+
+        Log.d("TIMESTAMP", System.currentTimeMillis().toString())
 
         binding.chatContentNicknameTv.text = intent.getStringExtra("name")
 
         binding.chatContentBackIb.setOnClickListener{ finish() }  // 뒤로가기
 
         binding.chatContentSendTv.setOnClickListener {  // 메세지 보내기
-            val message = binding.chatContentTextEt.text.toString()
-            val timeStamp = System.currentTimeMillis()
-            writeChat(ChatComment(message, false, timeStamp, getUserIdx()))
+            if(binding.chatContentTextEt.text.isNotEmpty()) {
+                val message = binding.chatContentTextEt.text.toString()
+                val timeStamp = System.currentTimeMillis()
+                writeChat(ChatComment(message, false, timeStamp, getUserIdx()))
+            }
         }
 
         getChats()
@@ -117,7 +122,8 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView {
     private fun writeChat(chatComment: ChatComment) {
         sendChatRoomRef.child("comments").child("${num + 1}").setValue(chatComment)
             .addOnSuccessListener {
-                if(binding.chatContentTextEt.isFocused) {  // 다 올라갔으면 키보드 내려주기
+                if(binding.chatContentTextEt.isFocused) {  // 다 올라갔으면 내용 초기화 후 키보드 내려주기
+                    binding.chatContentTextEt.setText("")
                     val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
                 }
