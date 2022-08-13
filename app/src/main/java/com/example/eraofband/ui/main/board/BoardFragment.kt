@@ -1,22 +1,27 @@
 package com.example.eraofband.ui.main.board
 
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentBoardBinding
 import com.example.eraofband.remote.portfolio.getPofol.GetOtherPofolService
 import com.example.eraofband.remote.portfolio.getPofol.GetOtherPofolView
 import com.example.eraofband.remote.portfolio.getPofol.GetPofolResult
+import com.example.eraofband.ui.main.home.session.band.BandDeleteDialog
 import com.example.eraofband.ui.main.mypage.MyPageActivity
+import com.example.eraofband.ui.main.mypage.portfolio.PofolEditActivity
 import com.example.eraofband.ui.main.mypage.portfolio.PortfolioCommentActivity
 import com.example.eraofband.ui.main.mypage.portfolio.PortfolioMakeActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
@@ -29,7 +34,7 @@ class BoardFragment : Fragment(), GetOtherPofolView {
     private lateinit var feedRVAdapter: BoardFeedRVAdapter
     private val pofolService = GetOtherPofolService()
 
-    private val total = true
+    private var total = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,10 +48,25 @@ class BoardFragment : Fragment(), GetOtherPofolView {
 
         binding.boardTotalTv.setOnClickListener {
             if(!total) {
-                binding.boardTotalTv.setBackgroundColor(Color.parseColor("#1864FD"))  // 파란색
+                binding.boardTotalTv.setBackgroundResource(R.drawable.blue_round_bg2)  // 파란색
+                binding.boardFollowTv.setBackgroundResource(R.drawable.gray_round_bg)  // 회색
 
                 pofolService.getTotalPortfolio(getJwt()!!, 0)
                 binding.boardFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
+
+                total = true
+            }
+        }
+
+        binding.boardFollowTv.setOnClickListener {
+            if(total) {
+                binding.boardTotalTv.setBackgroundResource(R.drawable.gray_round_bg)  // 회색
+                binding.boardFollowTv.setBackgroundResource(R.drawable.blue_round_bg2)  // 파란색
+
+                pofolService.getFollowPortfolio(getJwt()!!, 0)
+                binding.boardFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
+
+                total = false
             }
         }
 
@@ -79,7 +99,8 @@ class BoardFragment : Fragment(), GetOtherPofolView {
 
                     if(feedRVAdapter.itemCount % 20 == 0) {
                         // 마지막 인덱스를 어케 알죠 좀 더 고민해봐야할 듯
-//                        pofolService.getTotalPortfolio(getJwt()!!, 80)
+//                        if(total) pofolService.getTotalPortfolio(getJwt()!!, 80)
+//                        else pofolService.getFollowPortfolio(getJwt()!!, 80)
                     }
                 }
                 else {
@@ -100,7 +121,7 @@ class BoardFragment : Fragment(), GetOtherPofolView {
             }
 
             override fun onShowPopup(portfolio: GetPofolResult, position: Int, view: View) {
-//                showPopup(portfolio, position, view)
+                showPopup(portfolio, position, view)
             }
 
             override fun onShowInfoPage(userIdx: Int) {
@@ -117,6 +138,50 @@ class BoardFragment : Fragment(), GetOtherPofolView {
 
             }
         })
+    }
+
+    private fun showPopup(portfolio: GetPofolResult, position: Int, view: View) {  // 내 댓글인 경우 삭제, 신고 둘 다 가능
+        val themeWrapper = ContextThemeWrapper(context , R.style.MyPopupMenu)
+        val popupMenu = PopupMenu(themeWrapper, view, Gravity.END, 0, R.style.MyPopupMenu)
+        popupMenu.menuInflater.inflate(R.menu.portfolio_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            when(item!!.itemId) {
+                R.id.portfolio_edit -> {  // 포트폴리오 수정하기
+                    // 포폴 수정 창 띄우기
+                    val intent = Intent(activity, PofolEditActivity::class.java)
+                    intent.putExtra("pofolIdx", portfolio.pofolIdx)
+                    intent.putExtra("title", portfolio.title)
+                    intent.putExtra("content", portfolio.content)
+
+                    startActivity(intent)
+                }
+                R.id.portfolio_delete -> {
+                    val deleteDialog = BandDeleteDialog(getJwt()!!, getUserIdx(), portfolio.pofolIdx)
+                    deleteDialog.show(parentFragmentManager, "deletePortfolio")
+
+                    deleteDialog.setDialogListener(object : BandDeleteDialog.DeleteListener{
+                        override fun deletePortfolio() {
+                            feedRVAdapter.deleteFeed(position)
+                        }
+                    })
+                }
+                else -> {  // 포트폴리오 신고하기
+                    Log.d("REPORT", "PORTFOLIO")
+                }
+            }
+            false
+        }
+
+        if(portfolio.userIdx == getUserIdx()) {  // 내 포트폴리오인 경우
+            popupMenu.menu.setGroupVisible(R.id.portfolio_report_gr, false)
+        }
+        else {  // 다른 사람 포트폴리오인 경우
+            popupMenu.menu.setGroupVisible(R.id.portfolio_edit_gr, false)
+            popupMenu.menu.setGroupVisible(R.id.portfolio_delete_gr, false)
+        }
+
+        popupMenu.show() // 팝업 보여주기
     }
 
     private fun getUserIdx() : Int {
@@ -139,10 +204,11 @@ class BoardFragment : Fragment(), GetOtherPofolView {
     }
 
     override fun onGetFollowSuccess(result: List<GetPofolResult>) {
-        TODO("Not yet implemented")
+        Log.d("GET/SUC", "$result")
+        initFeedRV(result)
     }
 
     override fun onGetFollowFailure(code: Int, message: String) {
-        TODO("Not yet implemented")
+        Log.d("GET/FAIL", "$code $message")
     }
 }

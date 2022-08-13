@@ -32,7 +32,7 @@ import com.example.eraofband.remote.notice.deleteNotice.DeleteNoticeResponse
 import com.example.eraofband.remote.notice.getNewNotice.GetNewNoticeResponse
 import com.example.eraofband.remote.notice.getNotice.GetNoticeResponse
 import com.example.eraofband.remote.portfolio.deletePofol.DeletePofolResponse
-import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResponse
+import com.example.eraofband.remote.portfolio.getPofol.GetPofolResponse
 import com.example.eraofband.remote.portfolio.makePofol.MakePofolResponse
 import com.example.eraofband.remote.portfolio.patchPofol.PatchPofolResponse
 import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentDeleteResponse
@@ -125,9 +125,17 @@ interface API {
     @PATCH("/users/status/{userIdx}")
     fun resign(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<ResignResponse>
 
+    // 전체 포트폴리오 리스트 조회
+    @GET("/pofols/info/all/{pofolIdx}")
+    fun getPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx: Int) : Call<GetPofolResponse>
+
+    // 팔로우 한 유저 포트폴리오 리스트 조회
+    @GET("/pofols/info/follow/{pofolIdx}")
+    fun getFollowPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx: Int) : Call<GetPofolResponse>
+
     // 내 포트폴리오 리스트 조회
     @GET("/pofols/info/{userIdx}")
-    fun getMyPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<GetMyPofolResponse>
+    fun getMyPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<GetPofolResponse>
 
     // 내 포트폴리오 등록
     @POST("/pofols")
