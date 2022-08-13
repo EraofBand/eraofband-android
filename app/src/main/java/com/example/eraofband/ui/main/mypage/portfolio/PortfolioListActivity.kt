@@ -40,7 +40,7 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
 
         val getMypofol = GetMyPofolService()
         getMypofol.setPofolView(this)
-        getMypofol.getPortfolio(getUserIdx())
+        getMypofol.getPortfolio(getJwt()!!, getUserIdx())
     }
 
     private fun getUserIdx() : Int {

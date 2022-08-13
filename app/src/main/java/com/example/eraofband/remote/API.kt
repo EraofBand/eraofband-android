@@ -1,33 +1,33 @@
 package com.example.eraofband.remote
 
 import com.example.eraofband.data.*
-import com.example.eraofband.remote.band.deleteBand.DeleteBandResponse
-import com.example.eraofband.remote.lesson.deleteLesson.DeleteLessonResponse
-import com.example.eraofband.remote.band.deleteUserBand.DeleteUserBandResponse
-import com.example.eraofband.remote.lesson.deleteUserLesson.DeleteUserLessonResponse
-import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResponse
-import com.example.eraofband.remote.band.patchBand.PatchBandResponse
-import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonResponse
 import com.example.eraofband.remote.band.applyBand.ApplyBandResponse
 import com.example.eraofband.remote.band.applyDecision.AcceptApplyResponse
 import com.example.eraofband.remote.band.applyDecision.RejectApplyResponse
 import com.example.eraofband.remote.band.bandLike.BandLikeDeleteResponse
 import com.example.eraofband.remote.band.bandLike.BandLikeResponse
+import com.example.eraofband.remote.band.deleteBand.DeleteBandResponse
+import com.example.eraofband.remote.band.deleteUserBand.DeleteUserBandResponse
 import com.example.eraofband.remote.band.getBand.GetBandResponse
 import com.example.eraofband.remote.band.getLikedBand.GetLikedBandResponse
 import com.example.eraofband.remote.band.getNewBand.GetNewBandResponse
 import com.example.eraofband.remote.band.getPopularBand.GetPopularBandResponse
+import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResponse
 import com.example.eraofband.remote.band.makeBand.MakeBandResponse
+import com.example.eraofband.remote.band.patchBand.PatchBandResponse
 import com.example.eraofband.remote.chat.getChatList.GetChatListResponse
 import com.example.eraofband.remote.chat.makeChat.MakeChatResponse
 import com.example.eraofband.remote.chat.patchChat.PatchChatResponse
-import com.example.eraofband.remote.lesson.getLikeLessonList.GetLessonLikeListResponse
+import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonResponse
+import com.example.eraofband.remote.lesson.deleteLesson.DeleteLessonResponse
+import com.example.eraofband.remote.lesson.deleteUserLesson.DeleteUserLessonResponse
 import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoResponse
 import com.example.eraofband.remote.lesson.getLessonList.GetLessonListResponse
-import com.example.eraofband.remote.lesson.makeLesson.MakeLessonResponse
-import com.example.eraofband.remote.lesson.patchLesson.PatchLessonResponse
+import com.example.eraofband.remote.lesson.getLikeLessonList.GetLessonLikeListResponse
 import com.example.eraofband.remote.lesson.lessonLike.LessonLikeDeleteResponse
 import com.example.eraofband.remote.lesson.lessonLike.LessonLikeResponse
+import com.example.eraofband.remote.lesson.makeLesson.MakeLessonResponse
+import com.example.eraofband.remote.lesson.patchLesson.PatchLessonResponse
 import com.example.eraofband.remote.notice.deleteNotice.DeleteNoticeResponse
 import com.example.eraofband.remote.notice.getNewNotice.GetNewNoticeResponse
 import com.example.eraofband.remote.notice.getNotice.GetNoticeResponse
@@ -127,7 +127,7 @@ interface API {
 
     // 내 포트폴리오 리스트 조회
     @GET("/pofols/info/{userIdx}")
-    fun getMyPofol(@Path("userIdx") userIdx: Int) : Call<GetMyPofolResponse>
+    fun getMyPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<GetMyPofolResponse>
 
     // 내 포트폴리오 등록
     @POST("/pofols")

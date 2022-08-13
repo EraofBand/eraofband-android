@@ -13,11 +13,10 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityUserPortfolioListBinding
-import com.example.eraofband.ui.main.mypage.portfolio.PortfolioCommentActivity
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResult
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolService
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolView
-import com.example.eraofband.ui.main.mypage.MyPageActivity
+import com.example.eraofband.ui.main.mypage.portfolio.PortfolioCommentActivity
 import android.view.View as View1
 
 class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
@@ -40,7 +39,7 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
 
         val getMypofol = GetMyPofolService()
         getMypofol.setPofolView(this)
-        getMypofol.getPortfolio(getUserIdx())
+        getMypofol.getPortfolio(getJwt()!!, getUserIdx())
     }
 
     private fun getUserIdx(): Int {
