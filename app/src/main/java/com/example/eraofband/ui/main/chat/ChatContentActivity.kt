@@ -140,8 +140,9 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         // 다른 유저 마이페이지에서 들어온 경우
         // 채팅방이 없는 상태면 파이어베이스에 올려주고 서버에도 채팅방 생성
         // 채팅방이 있는지 없는지 파악 여부는 comments가 1개인지로 파악
+        // 우선 나간 채팅은 0으로 할게요!! 0부터 다 보여주면 되니까!!
         Log.d("CHATIDX", chatIdx)
-        sendChatRef.child(chatIdx).child("users").setValue(ChatUser(firstIndex, secondIndex))
+        sendChatRef.child(chatIdx).child("users").setValue(ChatUser(firstIndex, 0, secondIndex, 0))
             .addOnSuccessListener {
                 makeChatService.makeChat(MakeChatRoom(chatIdx, firstIndex, secondIndex))
             }  // 채팅방 users 입력, 채팅방 생성
