@@ -1,6 +1,7 @@
 package com.example.eraofband.ui.main.mypage
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -20,6 +21,13 @@ class MyPageSettingActivity : AppCompatActivity(), ResignView {
 
         binding = ActivityMypageSettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.settingMailCl.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SENDTO)
+            intent.type = "text/plain"
+            intent.setData(Uri.parse("mailto:lsh929500@gmail.com"))
+            startActivity(intent)
+        }
 
         binding.settingBackIb.setOnClickListener{ finish() }  // 뒤로가기
 
