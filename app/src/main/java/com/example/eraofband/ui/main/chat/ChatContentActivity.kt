@@ -81,8 +81,6 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView {
                 else writeChat(ChatComment(message, false, timeStamp, getUserIdx()))
             }
         }
-
-        getChats()
     }
 
     private fun getUserIdx() : Int {
@@ -172,6 +170,8 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView {
         // 채팅룸 idx가 없으면 랜덤 uuid 생성, 아니면 불러오기
         chatIdx = if(result.chatRoomIdx.isNullOrEmpty()) "${UUID.randomUUID()}"
                   else result.chatRoomIdx!!
+
+        getChats()
     }
 
     override fun onGetFailure(code: Int, message: String) {
