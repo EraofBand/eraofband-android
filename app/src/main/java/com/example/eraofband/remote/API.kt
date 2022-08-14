@@ -127,7 +127,7 @@ interface API {
 
     // 내 포트폴리오 리스트 조회
     @GET("/pofols/info/{userIdx}")
-    fun getMyPofol(@Path("userIdx") userIdx: Int) : Call<GetMyPofolResponse>
+    fun getMyPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<GetMyPofolResponse>
 
     // 내 포트폴리오 등록
     @POST("/pofols")

@@ -14,11 +14,11 @@ class GetMyPofolService {
         this.getMyPofolView = getMyPofolView
     }
 
-    fun getPortfolio(userIdx: Int) {
+    fun getPortfolio(jwt: String, userIdx: Int) {
 
         val getMyPofolService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
-        getMyPofolService?.getMyPofol(userIdx)?.enqueue(object : Callback<GetMyPofolResponse> {
+        getMyPofolService?.getMyPofol(jwt, userIdx)?.enqueue(object : Callback<GetMyPofolResponse> {
             override fun onResponse(call: Call<GetMyPofolResponse>, response: Response<GetMyPofolResponse>) {
                 // 응답이 왔을 때 처리
                 Log.d("GETPOFOL / SUCCESS", response.toString())

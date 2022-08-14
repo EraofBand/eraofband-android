@@ -31,8 +31,10 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
         binding = ActivityUserPortfolioListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.userPortfolioListBackIv.setOnClickListener { finish() }  // 뒤로 가기
-
+        binding.userPortfolioListBackIv.setOnClickListener {   // 뒤로 가기
+            initRecyclerView(arrayListOf())
+            finish()
+        }
     }
 
     override fun onStart() {
@@ -40,7 +42,7 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
 
         val getMypofol = GetMyPofolService()
         getMypofol.setPofolView(this)
-        getMypofol.getPortfolio(getUserIdx())
+        getMypofol.getPortfolio(getJwt()!!, getUserIdx())
     }
 
     private fun getUserIdx(): Int {
@@ -121,5 +123,10 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
 
     override fun onGetFailure(code: Int, message: String) {
         Log.d("MYPORTFOLIO/FAIL", "$code $message")
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        initRecyclerView(arrayListOf())
     }
 }

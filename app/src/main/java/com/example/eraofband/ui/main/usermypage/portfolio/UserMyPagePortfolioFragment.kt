@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.eraofband.databinding.FragmentUserMypagePortfolioBinding
 import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResult
@@ -36,12 +37,17 @@ class UserMyPagePortfolioFragment : Fragment(), GetMyPofolView {
 
         val getMypofol = GetMyPofolService()
         getMypofol.setPofolView(this)
-        getMypofol.getPortfolio(getUserIdx())
+        getMypofol.getPortfolio(getJwt()!!, getUserIdx())
     }
 
     private fun getUserIdx(): Int {  //임시방편입니다요...
         val userIdx = (activity as UserMyPageActivity).otherUserIdx
         return userIdx!!.toInt()
+    }
+
+    private fun getJwt() : String? {
+        val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        return userSP.getString("jwt", "")
     }
 
     private fun connectAdapter(item : List<GetMyPofolResult>) {

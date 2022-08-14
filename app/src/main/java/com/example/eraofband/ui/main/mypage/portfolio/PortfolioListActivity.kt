@@ -32,9 +32,9 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
         binding = ActivityPortfolioListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.portfolioListBackIv.setOnClickListener { finish() }  // 뒤로 가기
-        binding.portfolioListTitleTv.setOnClickListener {
-            clearAll()
+        binding.portfolioListBackIv.setOnClickListener {   // 뒤로 가기
+            initRecyclerView(arrayListOf())
+            finish()
         }
     }
 
@@ -43,7 +43,7 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
 
         val getMypofol = GetMyPofolService()
         getMypofol.setPofolView(this)
-        getMypofol.getPortfolio(getUserIdx())
+        getMypofol.getPortfolio(getJwt()!!, getUserIdx())
     }
 
     private fun getUserIdx() : Int {
@@ -147,10 +147,6 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        clearAll()
-    }
-
-    private fun clearAll() {
-        portfolioAdapter.clearVideo()
+        initRecyclerView(arrayListOf())
     }
 }
