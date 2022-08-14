@@ -99,13 +99,13 @@ class FollowingFragment(var userIdx: Int) : Fragment(), UserFollowListView {
 
         mAdapter.setMyItemClickListener(object : FollowingRVAdapter.MyItemClickListener {
             override fun onItemClick(item: FollowingInfo) {
-                val intent = Intent(context, UserMyPageActivity::class.java)
+                val intent = Intent(activity, UserMyPageActivity::class.java)
                 intent.putExtra("userIdx", item.userIdx)
                 startActivity(intent)
             }
 
             override fun clickMySelf() {
-                startActivity(Intent(context, MyPageActivity::class.java))
+                startActivity(Intent(activity, MyPageActivity::class.java))
             }
 
             override fun getJwt(): String? {

@@ -32,6 +32,10 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
     private var searchLists = ArrayList<FollowerInfo>()
 
     private val userFollowList = UserFollowListService()
+//
+//    FollowFragment(userIdx: Int) {
+//
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -99,13 +103,13 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
         mAdapter.setMyItemClickListener(object : FollowerRVAdapter.MyItemClickListener {
 
             override fun onItemClick(item: FollowerInfo) {
-                val intent = Intent(context, UserMyPageActivity::class.java)
+                val intent = Intent(activity, UserMyPageActivity::class.java)
                 intent.putExtra("userIdx", item.userIdx)
                 startActivity(intent)
             }
 
             override fun clickMySelf() {
-                startActivity(Intent(context, MyPageActivity::class.java))
+                startActivity(Intent(activity, MyPageActivity::class.java))
             }
 
             override fun getJwt(): String? {

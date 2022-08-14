@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.databinding.ActivityFollowBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
-class FollowActivity() : AppCompatActivity() {
+class FollowActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFollowBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

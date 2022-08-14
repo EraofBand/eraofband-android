@@ -16,6 +16,7 @@ import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResponse
 import com.example.eraofband.remote.band.makeBand.MakeBandResponse
 import com.example.eraofband.remote.band.patchBand.PatchBandResponse
 import com.example.eraofband.remote.chat.getChatList.GetChatListResponse
+import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResponse
 import com.example.eraofband.remote.chat.makeChat.MakeChatResponse
 import com.example.eraofband.remote.chat.patchChat.PatchChatResponse
 import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonResponse
@@ -213,7 +214,7 @@ interface API {
     @GET("/lessons/info/{lessonIdx}")
     fun getLessonInfo(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int) : Call<GetLessonInfoResponse>
 
-    //지역-세션 분류 레슨 리스트트 반환
+    //지역-세션 분류 레슨 리스트 반환
     @GET("/lessons/info/list/{lesson-region}/{lesson-session}")
     fun getLessonList(@Path("lesson-region") lessonRegion: String, @Path("lesson-session") lessonSession: Int) : Call<GetLessonListResponse>
 
@@ -273,7 +274,11 @@ interface API {
     @GET("/chat/chat-room")
     fun getChatList(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetChatListResponse>
 
-    // 채팅방 나가기 처리
+    // 채팅방 존재 유무 조회
+    @PATCH("/chat/chat-room/exist")
+    fun isChatRoom(@Header("X-ACCESS-TOKEN") jwt: String, @Body users: Users) : Call<IsChatRoomResponse>
+
+   // 채팅방 나가기 처리
     @PATCH("/chat/status/{chatRoomIdx}")
     fun patchChat(@Header("X-ACCESS-TOKEN") jwt: String, @Path("chatRoomIdx") chatRoomIdx: String) : Call<PatchChatResponse>
 
