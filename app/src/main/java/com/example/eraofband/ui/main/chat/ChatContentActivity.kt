@@ -113,7 +113,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         // 자세한 기능은 리사이클러뷰에서 진행해야할 것 같습니다
         getChatRef.child(chatIdx).child("comments").addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
             override fun onDataChange(snapshot: DataSnapshot) {
-                num = 0
+                num = -1
 //                "리사이클러뷰".clearChat()  // 새로 불러오기 때문에 초기화 필요
                 if (snapshot.exists()){
                     for (commentSnapShot in snapshot.children){  // 하나씩 불러옴
