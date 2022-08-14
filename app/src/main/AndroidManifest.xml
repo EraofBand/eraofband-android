@@ -120,7 +120,8 @@
             android:exported="false" />
         <activity
             android:name="com.example.eraofband.ui.main.chat.ChatContentActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustUnspecified|adjustPan" />
         <activity
             android:name="com.example.eraofband.ui.main.usermypage.UserMyPageActivity"
             android:exported="false" />

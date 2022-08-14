@@ -8,15 +8,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.data.ChatRoom
 import com.example.eraofband.databinding.ItemChatListBinding
-import com.example.eraofband.remote.chat.getChatList.GetChatListResult
-import com.example.eraofband.remote.lesson.getLessonInfo.LessonMembers
 
-class ChatRVAdapter() : RecyclerView.Adapter<ChatRVAdapter.ViewHolder>() {
+class ChatRVAdapter : RecyclerView.Adapter<ChatRVAdapter.ViewHolder>() {
 
     private val chatRoomList = arrayListOf<ChatRoom>()
 
     interface MyItemClickListener{
-        fun onItemClick(chatIdx : Int)
+        fun onItemClick(chatIdx : String)
     }
 
     @SuppressLint("NotifyDataSetChanged")
