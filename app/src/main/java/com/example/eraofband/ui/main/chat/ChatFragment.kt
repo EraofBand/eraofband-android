@@ -35,7 +35,6 @@ class ChatFragment : Fragment(), GetChatListView {
 
     override fun onResume() {
         super.onResume()
-
         val getChatListService = GetChatListService()
         getChatListService.setChatListView(this)
         getChatListService.getChatList(getJwt()!!)
@@ -74,6 +73,7 @@ class ChatFragment : Fragment(), GetChatListView {
 //                "", "", true))
 
         initRVAdapter(chatRooms)
+        chatRooms.clear()
     }
 
     override fun onGetListFailure(code: Int, message: String) {

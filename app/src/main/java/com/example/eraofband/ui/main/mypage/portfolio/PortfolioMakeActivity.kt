@@ -10,6 +10,8 @@ import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -68,7 +70,9 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
                 makeService.setMakeView(this)
                 makeService.makePortfolio(getJwt()!!, Portfolio(content, thumbnailUrl, title, getUserIdx(), videoUrl))
 
-                finish()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    finish()
+                }, 100)
             }
         }
     }

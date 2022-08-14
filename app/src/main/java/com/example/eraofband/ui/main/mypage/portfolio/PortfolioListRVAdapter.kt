@@ -16,27 +16,23 @@ import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResult
 import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeResult
 import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeService
 import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeView
+import com.example.eraofband.ui.main.usermypage.UserPortfolioListRVAdapter
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
+import kotlinx.coroutines.NonDisposableHandle.parent
 
 class PortfolioListRVAdapter(private val jwt: String, private val context: Context) : RecyclerView.Adapter<PortfolioListRVAdapter.ViewHolder>(),
     PofolLikeView {
     private val portfolio = arrayListOf<GetMyPofolResult>()
     private var videoPlayer: ExoPlayer? = null
-
+    private var mediaItem: MediaItem? = null
     private val pofolLikeService = PofolLikeService()
     private lateinit var mItemListener: MyItemListener
 
     @SuppressLint("NotifyDataSetChanged")
     fun initPortfolio(portfolio : List<GetMyPofolResult>) {
         this.portfolio.addAll(portfolio)
-        notifyDataSetChanged()
-    }
-
-    // 나중에 포트폴리오 추가, 삭제를 위해서 이렇게 함수로 추가, 삭제하도록 만들었습니다 변경 값이 바로바로 화면에 나타나야하니까!
-    @SuppressLint("NotifyDataSetChanged")
-    fun addPortfolio(portfolio: GetMyPofolResult) {
-        this.portfolio.add(portfolio)
         notifyDataSetChanged()
     }
 
@@ -59,8 +55,7 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: ItemPortfolioListBinding = ItemPortfolioListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        videoPlayer = ExoPlayer.Builder(parent.context).build()
-
+        videoPlayer = ExoPlayer.Builder(parent.context).build() // 비디오플레이어 초기화
         return ViewHolder(binding)
     }
 
@@ -68,6 +63,7 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(portfolio[position])
         pofolLikeService.setLikeView(this)
+        videoPlayer = ExoPlayer.Builder(context).build() // 비디오플레이어 초기화
 
         // 좋아요 관련
         holder.binding.portfolioListLikeIv.setOnClickListener {
@@ -90,22 +86,35 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
         }
 
         // 프사 누르면 유저 페이지로 전환
-        holder.binding.portfolioListProfileIv.setOnClickListener { mItemListener.onShowInfoPage(portfolio[position].userIdx) }
-        holder.binding.portfolioListNicknameTv.setOnClickListener { mItemListener.onShowInfoPage(portfolio[position].userIdx) }
+        holder.binding.portfolioListProfileIv.setOnClickListener {
+            mItemListener.onShowInfoPage(portfolio[position].userIdx)
+            holder.binding.portfolioListVideoPv.player?.stop()
+        }
+        holder.binding.portfolioListNicknameTv.setOnClickListener {
+            mItemListener.onShowInfoPage(portfolio[position].userIdx)
+            holder.binding.portfolioListVideoPv.player?.stop()
+        }
 
         // 댓글 창 관련
-        holder.binding.portfolioListComment.setOnClickListener { mItemListener.onShowComment(portfolio[position].pofolIdx) }
+        holder.binding.portfolioListComment.setOnClickListener {
+            mItemListener.onShowComment(portfolio[position].pofolIdx)
+            holder.binding.portfolioListVideoPv.player?.stop()
+        }
 
         // 댓글 수정, 신고하기 popup menu 띄우기
-        holder.binding.portfolioListListIv.setOnClickListener { mItemListener.onShowPopup(portfolio[position], position, holder.binding.portfolioListListIv) }
+        holder.binding.portfolioListListIv.setOnClickListener {
+            mItemListener.onShowPopup(portfolio[position], position, holder.binding.portfolioListListIv)
+            holder.binding.portfolioListVideoPv.player?.stop()
+        }
     }
+
     override fun getItemCount(): Int = portfolio.size
 
     inner class ViewHolder(val binding: ItemPortfolioListBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(portfolio: GetMyPofolResult) {
-            val mediaItem = MediaItem.fromUri(mItemListener.urlParse(portfolio.videoUrl))  // 비디오 url
-            videoPlayer?.setMediaItem(mediaItem)
+            mediaItem = MediaItem.fromUri(mItemListener.urlParse(portfolio.videoUrl))  // 비디오 url
+            videoPlayer?.setMediaItem(mediaItem!!)
             
             // 내 정보
             Glide.with(context).load(portfolio.profileImgUrl)  // 프로필 사진
@@ -126,7 +135,6 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
             if(portfolio.likeOrNot == "Y") binding.portfolioListLikeIv.setImageResource(R.drawable.ic_heart_on)
             else binding.portfolioListLikeIv.setImageResource(R.drawable.ic_heart_off)
             binding.portfolioListLikeCntTv.text = portfolio.pofolLikeCount.toString()
-
             binding.portfolioListCommentCntTv.text = portfolio.commentCount.toString()
         }
     }
@@ -147,8 +155,9 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
         Log.d("POFOLLIKEDELETE", message)
     }
 
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView)
-        videoPlayer?.release() // 비디오플레이어 해제
+    override fun onViewRecycled(holder: ViewHolder) {
+        super.onViewRecycled(holder)
+        holder.binding.portfolioListVideoPv.player?.release()
+        holder.binding.portfolioListVideoPv.player = null
     }
 }

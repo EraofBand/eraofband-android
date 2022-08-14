@@ -302,10 +302,10 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/mypage_session_iv"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="20dp"
-                    android:src="@drawable/ic_guitar_temp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/ic_mypage_session_vocal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -314,7 +314,7 @@
                     android:id="@+id/mypage_session_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="10dp"
                     android:fontFamily="@font/pretendard_medium"
                     android:text="@string/guitar"
                     android:textColor="@color/white"
