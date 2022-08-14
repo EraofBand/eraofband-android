@@ -35,6 +35,8 @@ class BoardFragment : Fragment(), GetOtherPofolView {
     private val pofolService = GetOtherPofolService()
 
     private var total = true
+    private var lastPofolIdx = 0
+    private var add = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,6 +53,7 @@ class BoardFragment : Fragment(), GetOtherPofolView {
                 binding.boardTotalTv.setBackgroundResource(R.drawable.blue_round_bg2)  // 파란색
                 binding.boardFollowTv.setBackgroundResource(R.drawable.gray_round_bg)  // 회색
 
+                add = false
                 pofolService.getTotalPortfolio(getJwt()!!, 0)
                 binding.boardFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
 
@@ -63,6 +66,7 @@ class BoardFragment : Fragment(), GetOtherPofolView {
                 binding.boardTotalTv.setBackgroundResource(R.drawable.gray_round_bg)  // 회색
                 binding.boardFollowTv.setBackgroundResource(R.drawable.blue_round_bg2)  // 파란색
 
+                add = false
                 pofolService.getFollowPortfolio(getJwt()!!, 0)
                 binding.boardFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
 
@@ -76,6 +80,7 @@ class BoardFragment : Fragment(), GetOtherPofolView {
     override fun onResume() {
         super.onResume()
 
+        add = false
         pofolService.setPofolView(this)
         pofolService.getTotalPortfolio(getJwt()!!, 0)
     }
@@ -95,12 +100,12 @@ class BoardFragment : Fragment(), GetOtherPofolView {
                 }
                 else if (binding.boardFeedRv.canScrollVertically(-1)) {  // 맨 아래
                     Log.d("SCROLL", "BOTTOM")
-                    Log.d("GET / SUCCESS", "${feedRVAdapter.itemCount}")
+                    Log.d("SCROLL / SUCCESS", "${feedRVAdapter.itemCount}")
 
-                    if(feedRVAdapter.itemCount % 20 == 0) {
-                        // 마지막 인덱스를 어케 알죠 좀 더 고민해봐야할 듯
-//                        if(total) pofolService.getTotalPortfolio(getJwt()!!, 80)
-//                        else pofolService.getFollowPortfolio(getJwt()!!, 80)
+                    if(feedRVAdapter.itemCount % 10 == 0) {
+                        add = true
+                        if(total) pofolService.getTotalPortfolio(getJwt()!!, lastPofolIdx)
+                        else pofolService.getFollowPortfolio(getJwt()!!, lastPofolIdx)
                     }
                 }
                 else {
@@ -136,6 +141,10 @@ class BoardFragment : Fragment(), GetOtherPofolView {
                     startActivity(intent)
                 }
 
+            }
+
+            override fun onLastPofolIndex(pofolIdx: Int) {
+                lastPofolIdx = pofolIdx
             }
         })
     }
@@ -196,7 +205,8 @@ class BoardFragment : Fragment(), GetOtherPofolView {
 
     override fun onGetTotalSuccess(result: List<GetPofolResult>) {
         Log.d("GET/SUC", "$result")
-        initFeedRV(result)
+        if(add) feedRVAdapter.addFeed(result)
+        else initFeedRV(result)
     }
 
     override fun onGetTotalFailure(code: Int, message: String) {
@@ -205,7 +215,8 @@ class BoardFragment : Fragment(), GetOtherPofolView {
 
     override fun onGetFollowSuccess(result: List<GetPofolResult>) {
         Log.d("GET/SUC", "$result")
-        initFeedRV(result)
+        if(add) feedRVAdapter.addFeed(result)
+        else initFeedRV(result)
     }
 
     override fun onGetFollowFailure(code: Int, message: String) {

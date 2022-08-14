@@ -35,8 +35,8 @@ class BoardFeedRVAdapter(private val jwt: String, private val context: Context) 
 
     // 나중에 포트폴리오 추가, 삭제를 위해서 이렇게 함수로 추가, 삭제하도록 만들었습니다 변경 값이 바로바로 화면에 나타나야하니까!
     @SuppressLint("NotifyDataSetChanged")
-    fun addFeed(feed: GetPofolResult) {
-        this.feed.add(feed)
+    fun addFeed(feed : List<GetPofolResult>) {
+        this.feed.addAll(feed)
         notifyDataSetChanged()
     }
 
@@ -51,6 +51,7 @@ class BoardFeedRVAdapter(private val jwt: String, private val context: Context) 
         fun onShowComment(pofolIdx : Int)
         fun onShowPopup(portfolio: GetPofolResult, position: Int, view: View)
         fun onShowInfoPage(userIdx: Int)
+        fun onLastPofolIndex(pofolIdx: Int)
     }
 
     fun setMyItemClickListener(itemListener: MyItemListener) {
@@ -68,6 +69,8 @@ class BoardFeedRVAdapter(private val jwt: String, private val context: Context) 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(feed[position])
         pofolLikeService.setLikeView(this)
+
+        if(feed.size % 10 == 0) mItemListener.onLastPofolIndex(feed[feed.size - 1].pofolIdx)  // 페이징을 위해서 마지막 포폴 인덱스를 넘겨줌
 
         // 좋아요 관련
         holder.binding.portfolioListLikeIv.setOnClickListener {
