@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/pretendard_medium"
-            android:text="2분 이내, ???MB 이하의\n영상을 추가해주세요"
+            android:text="200MB 이하의\n영상을 추가해주세요"
             android:textAlignment="center"
             android:textColor="#E2E2E2"
             android:textSize="12sp"

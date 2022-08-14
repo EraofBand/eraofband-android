@@ -214,7 +214,7 @@ interface API {
     @GET("/lessons/info/{lessonIdx}")
     fun getLessonInfo(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int) : Call<GetLessonInfoResponse>
 
-    //지역-세션 분류 레슨 리스트 반환
+    // 지역-세션 분류 레슨 리스트 반환
     @GET("/lessons/info/list/{lesson-region}/{lesson-session}")
     fun getLessonList(@Path("lesson-region") lessonRegion: String, @Path("lesson-session") lessonSession: Int) : Call<GetLessonListResponse>
 

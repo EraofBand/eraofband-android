@@ -19,6 +19,7 @@
         android:theme="@style/Theme.EraofBand"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
         <!-- 카카오 로그인 AuthCodeHandler -->
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
@@ -33,9 +34,11 @@
                     android:host="oauth"
                     android:scheme="@string/kakao_native_key" />
             </intent-filter>
-        </activity> <!-- FCM -->
+        </activity>
+        <!-- FCM -->
         <service
             android:name="com.example.eraofband.ui.login.MyFirebaseInstanceIDService"
+            android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />

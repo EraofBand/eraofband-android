@@ -3,8 +3,13 @@ package com.example.eraofband.ui.main.chat
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.ContextThemeWrapper
+import android.view.Gravity
+import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
+import com.example.eraofband.R
 import com.example.eraofband.data.ChatComment
 import com.example.eraofband.data.ChatUser
 import com.example.eraofband.data.MakeChatRoom
@@ -15,6 +20,8 @@ import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomService
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomView
 import com.example.eraofband.remote.chat.makeChat.MakeChatService
 import com.example.eraofband.remote.chat.makeChat.MakeChatView
+import com.example.eraofband.remote.chat.patchChat.PatchChatService
+import com.example.eraofband.remote.chat.patchChat.PatchChatView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -23,7 +30,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
-class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView {
+class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, PatchChatView {
 
     private lateinit var binding: ActivityChatContentBinding
 
@@ -63,7 +70,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView {
         binding.chatContentNicknameTv.text = intent.getStringExtra("name")
 
         // 채팅방 존재 유무 확인
-        chatRoomService.isChatRoom(getUserJwt()!!, Users(firstIndex, secondIndex))
+        chatRoomService.isChatRoom(getJwt()!!, Users(firstIndex, secondIndex))
 
 
         binding.chatContentBackIb.setOnClickListener{ finish() }  // 뒤로가기
@@ -81,6 +88,10 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView {
                 else writeChat(ChatComment(message, false, timeStamp, getUserIdx()))
             }
         }
+
+        binding.chatContentMenuIv.setOnClickListener {
+            showPopup(binding.chatContentMenuIv)
+        }
     }
 
     private fun getUserIdx() : Int {
@@ -88,8 +99,8 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView {
         return userSP.getInt("userIdx", 0)
     }
 
-    private fun getUserJwt() : String? {
-        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+    private fun getJwt() : String? {
+        val userSP = getSharedPreferences("user",MODE_PRIVATE)
         return userSP.getString("jwt", "")
     }
 
@@ -152,6 +163,22 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView {
         inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
+    private fun showPopup(view: View) {
+        val themeWrapper = ContextThemeWrapper(applicationContext, R.style.MyPopupMenu)
+        val popupMenu = PopupMenu(themeWrapper, view, Gravity.END, 0, R.style.MyPopupMenu)
+        popupMenu.menuInflater.inflate(R.menu.chat_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
+
+        popupMenu.setOnMenuItemClickListener{item->
+            if (item!!.itemId== R.id.chat_delete) {
+                val patchChatService = PatchChatService() // 채팅방 나가기 api
+                patchChatService.setChatView(this)
+                patchChatService.patchChat(getJwt()!!, "")
+            }
+            false
+        }
+        popupMenu.show()
+    }
+
     override fun onMakeSuccess(result: String) {
         Log.d("MAKE/SUC", result)
 
@@ -176,5 +203,13 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView {
 
     override fun onGetFailure(code: Int, message: String) {
         Log.d("GET/SUC", "$code $message")
+    }
+
+    override fun onPatchSuccess(result: String) {
+        Log.d("PATCH / SUCCESS", result)
+    }
+
+    override fun onPatchFailure(code: Int, message: String) {
+        Log.d("PATCH / FAIL", "$code $message")
     }
 }

@@ -24,7 +24,6 @@
         app:singleLine="true"
         app:singleSelection="true"
         app:chipSpacingHorizontal="5dp"
-        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/home_lesson_city_sp">
