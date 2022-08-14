@@ -1,4 +1,4 @@
-package com.example.eraofband.ui.main.board
+package com.example.eraofband.ui.main.community
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -19,8 +19,8 @@ import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeView
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 
-class BoardFeedRVAdapter(private val jwt: String, private val context: Context) : RecyclerView.Adapter<BoardFeedRVAdapter.ViewHolder>(),
-    PofolLikeView {
+class CommunityFeedRVAdapter(private val jwt: String, private val context: Context)
+    : RecyclerView.Adapter<CommunityFeedRVAdapter.ViewHolder>(), PofolLikeView {
     private val feed = arrayListOf<GetPofolResult>()
     private var videoPlayer: ExoPlayer? = null
 
@@ -69,6 +69,7 @@ class BoardFeedRVAdapter(private val jwt: String, private val context: Context) 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(feed[position])
         pofolLikeService.setLikeView(this)
+        videoPlayer = ExoPlayer.Builder(context).build() // 비디오플레이어 초기화
 
         if(feed.size % 10 == 0) mItemListener.onLastPofolIndex(feed[feed.size - 1].pofolIdx)  // 페이징을 위해서 마지막 포폴 인덱스를 넘겨줌
 
@@ -93,15 +94,28 @@ class BoardFeedRVAdapter(private val jwt: String, private val context: Context) 
         }
 
         // 프사 누르면 유저 페이지로 전환
-        holder.binding.portfolioListProfileIv.setOnClickListener { mItemListener.onShowInfoPage(feed[position].userIdx) }
-        holder.binding.portfolioListNicknameTv.setOnClickListener { mItemListener.onShowInfoPage(feed[position].userIdx) }
+        holder.binding.portfolioListProfileIv.setOnClickListener {
+            mItemListener.onShowInfoPage(feed[position].userIdx)
+            holder.binding.portfolioListVideoPv.player?.stop()
+        }
+        holder.binding.portfolioListNicknameTv.setOnClickListener {
+            mItemListener.onShowInfoPage(feed[position].userIdx)
+            holder.binding.portfolioListVideoPv.player?.stop()
+        }
 
         // 댓글 창 관련
-        holder.binding.portfolioListComment.setOnClickListener { mItemListener.onShowComment(feed[position].pofolIdx) }
+        holder.binding.portfolioListComment.setOnClickListener {
+            mItemListener.onShowComment(feed[position].pofolIdx)
+            holder.binding.portfolioListVideoPv.player?.stop()
+        }
 
         // 댓글 수정, 신고하기 popup menu 띄우기
-        holder.binding.portfolioListListIv.setOnClickListener { mItemListener.onShowPopup(feed[position], position, holder.binding.portfolioListListIv) }
+        holder.binding.portfolioListListIv.setOnClickListener {
+            mItemListener.onShowPopup(feed[position], position, holder.binding.portfolioListListIv)
+            holder.binding.portfolioListVideoPv.player?.stop()
+        }
     }
+
     override fun getItemCount(): Int = feed.size
 
     inner class ViewHolder(val binding: ItemPortfolioListBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -129,7 +143,6 @@ class BoardFeedRVAdapter(private val jwt: String, private val context: Context) 
             if(portfolio.likeOrNot == "Y") binding.portfolioListLikeIv.setImageResource(R.drawable.ic_heart_on)
             else binding.portfolioListLikeIv.setImageResource(R.drawable.ic_heart_off)
             binding.portfolioListLikeCntTv.text = portfolio.pofolLikeCount.toString()
-
             binding.portfolioListCommentCntTv.text = portfolio.commentCount.toString()
         }
     }
@@ -150,8 +163,9 @@ class BoardFeedRVAdapter(private val jwt: String, private val context: Context) 
         Log.d("POFOLLIKEDELETE", message)
     }
 
-    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView)
-        videoPlayer?.release() // 비디오플레이어 해제
+    override fun onViewRecycled(holder: ViewHolder) {
+        holder.binding.portfolioListVideoPv.player?.release()
+        holder.binding.portfolioListVideoPv.player = null
+        super.onViewRecycled(holder)
     }
 }

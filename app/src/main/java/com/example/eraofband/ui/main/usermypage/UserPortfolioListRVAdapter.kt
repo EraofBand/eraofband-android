@@ -19,8 +19,8 @@ import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeView
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 
-class UserPortfolioListRVAdapter(private val jwt : String, private val context: Context) : RecyclerView.Adapter<UserPortfolioListRVAdapter.ViewHolder>(),
-    PofolLikeView {
+class UserPortfolioListRVAdapter(private val jwt : String, private val context: Context)
+    : RecyclerView.Adapter<UserPortfolioListRVAdapter.ViewHolder>(), PofolLikeView {
     private val portfolio = arrayListOf<GetPofolResult>()
     private var videoPlayer: ExoPlayer? = null
 
@@ -99,6 +99,7 @@ class UserPortfolioListRVAdapter(private val jwt : String, private val context: 
             holder.binding.portfolioListVideoPv.player?.stop()
         }
     }
+
     override fun getItemCount(): Int = portfolio.size
 
     inner class ViewHolder(val binding: ItemPortfolioListBinding) : RecyclerView.ViewHolder(binding.root) {
