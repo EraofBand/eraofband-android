@@ -1,12 +1,10 @@
 package com.example.eraofband.ui.onboarding
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
-import com.example.eraofband.ui.login.LoginActivity
-import com.example.eraofband.R
+import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.databinding.ActivityOnboardingBinding
+import com.example.eraofband.ui.login.LoginActivity
 
 class OnboardingActivity : AppCompatActivity() {
     lateinit var binding: ActivityOnboardingBinding
@@ -20,26 +18,9 @@ class OnboardingActivity : AppCompatActivity() {
         val fragmentList = listOf(OnBandFragment(), OnLessonFragment(), OnPortfolioFragment(), OnTogetherFragment())
         val onboardingAdapter = OnboardingVPAdapter(this)
         onboardingAdapter.fragments = fragmentList
+
         binding.onboardingVp.adapter = onboardingAdapter
-
-        //뷰페이저 인디케이터 연결
-        binding.onboardingVp.registerOnPageChangeCallback(object :
-            OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                binding.onboardingIndicator1Iv.setImageDrawable(getDrawable(R.drawable.indicator_circle_nonselected1))
-                binding.onboardingIndicator2Iv.setImageDrawable(getDrawable(R.drawable.indicator_circle_nonselected2))
-                binding.onboardingIndicator3Iv.setImageDrawable(getDrawable(R.drawable.indicator_circle_nonselected2))
-                binding.onboardingIndicator4Iv.setImageDrawable(getDrawable(R.drawable.indicator_circle_nonselected2))
-
-                //뷰페이저 넘길 때마다 컬러 및 크기변경 적용
-                when(position){
-                    0 -> binding.onboardingIndicator1Iv.setImageDrawable(getDrawable(R.drawable.indicator_circle_selected))
-                    1 -> binding.onboardingIndicator2Iv.setImageDrawable(getDrawable(R.drawable.indicator_circle_selected))
-                    2 -> binding.onboardingIndicator3Iv.setImageDrawable(getDrawable(R.drawable.indicator_circle_selected))
-                    3 -> binding.onboardingIndicator4Iv.setImageDrawable(getDrawable(R.drawable.indicator_circle_selected))
-                }
-            }
-        })
+        binding.onboardingIndicator.attachTo(binding.onboardingVp)
 
         //스킵 버튼 누르면 로그인 액티비티 이동
         binding.onboardingSkipTv.setOnClickListener {
