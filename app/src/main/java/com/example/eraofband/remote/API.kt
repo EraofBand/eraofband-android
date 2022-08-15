@@ -15,6 +15,7 @@ import com.example.eraofband.remote.band.getPopularBand.GetPopularBandResponse
 import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResponse
 import com.example.eraofband.remote.band.makeBand.MakeBandResponse
 import com.example.eraofband.remote.band.patchBand.PatchBandResponse
+import com.example.eraofband.remote.board.getBoard.GetBoardResponse
 import com.example.eraofband.remote.chat.getChatList.GetChatListResponse
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResponse
 import com.example.eraofband.remote.chat.makeChat.MakeChatResponse
@@ -133,6 +134,10 @@ interface API {
     // 팔로우 한 유저 포트폴리오 리스트 조회
     @GET("/pofols/info/follow/{pofolIdx}")
     fun getFollowPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx: Int) : Call<GetPofolResponse>
+
+    // 게시물 정보 조회
+    @GET("/board/info/{boardIdx}")
+    fun getBoard(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardIdx") boardIdx: Int) : Call<GetBoardResponse>
 
     // 내 포트폴리오 리스트 조회
     @GET("/pofols/info/{userIdx}")

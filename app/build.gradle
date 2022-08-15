@@ -40,7 +40,7 @@ android {
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.appcompat:appcompat:1.5.0'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.1'
@@ -78,11 +78,14 @@ dependencies {
     // 밑으로 당겨서 새로고침하기
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
+    // viewPager indicator
+    implementation 'com.tbuonomo:dotsindicator:4.3'
+
     // 파이어베이스 / FCM
     implementation platform('com.google.firebase:firebase-bom:30.3.1')
     implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-messaging:23.0.6'
-    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.6'
+    implementation 'com.google.firebase:firebase-messaging:23.0.7'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.7'
     implementation 'com.google.firebase:firebase-database-ktx:20.0.5'
 
 }

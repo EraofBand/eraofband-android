@@ -130,11 +130,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/board_post_picture_tb"
+            <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+                android:id="@+id/board_post_picture_indicator"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                app:tabBackground="@drawable/post_indicator_bg"
+                android:layout_height="wrap_content"
+                app:dotsColor="@color/indicator_gray"
+                app:selectedDotColor="@color/blue"
+                app:dotsCornerRadius="8dp"
+                app:dotsSize="6dp"
+                app:dotsSpacing="3.5dp"
+                app:dotsWidthFactor="4"
+                app:progressMode="false"
+                android:layout_marginTop="10dp"
                 app:layout_constraintTop_toBottomOf="@id/board_post_picture_vp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -147,9 +154,10 @@
                 android:textSize="22sp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/pretendard_medium"
+                app:layout_goneMarginTop="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginHorizontal="20dp"
-                app:layout_constraintTop_toBottomOf="@id/board_post_picture_tb"
+                app:layout_constraintTop_toBottomOf="@id/board_post_picture_indicator"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -205,7 +213,7 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/board_post_like_iv"
-                android:layout_width="30dp"
+                android:layout_width="25dp"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:src="@drawable/ic_heart_off"
@@ -221,7 +229,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/tablayout_gray"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintTop_toBottomOf="@id/board_post_like_iv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
@@ -257,6 +265,7 @@
             android:textColor="@color/content"
             android:textSize="15sp"
             android:fontFamily="@font/pretendard_regular"
+            android:visibility="gone"
             android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
             app:layout_constraintTop_toTopOf="@id/board_post_write_reply_delete_iv"
@@ -270,8 +279,10 @@
             android:src="@drawable/ic_delete_round"
             android:paddingTop="5dp"
             android:paddingStart="5dp"
-            android:layout_marginBottom="10dp"
+            android:visibility="gone"
+            android:layout_marginVertical="10dp"
             android:layout_marginEnd="15dp"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/board_post_write_comment_et"/>
 
@@ -287,8 +298,10 @@
             android:paddingStart="25dp"
             android:paddingEnd="60dp"
             android:paddingVertical="12dp"
+            app:layout_goneMarginTop="15dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="20dp"
+            app:layout_constraintTop_toBottomOf="@id/board_post_write_reply_delete_iv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
