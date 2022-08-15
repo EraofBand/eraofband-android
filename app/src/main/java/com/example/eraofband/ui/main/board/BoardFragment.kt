@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.eraofband.databinding.FragmentBoardBinding
 
-class BoardFragment : Fragment() {
+class BoardFragment : Fragment(){
 
     private var _binding: FragmentBoardBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지

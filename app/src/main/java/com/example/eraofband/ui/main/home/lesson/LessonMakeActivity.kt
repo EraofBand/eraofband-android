@@ -17,6 +17,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
@@ -57,6 +58,13 @@ class LessonMakeActivity : AppCompatActivity(), MakeLessonView, SendImgView {
         setContentView(binding.root)
 
         binding.homeLessonMakeBackIb.setOnClickListener { finish() }
+
+        binding.root.setOnClickListener {
+            if(binding.homeLessonMakeChatEt.isFocused) hideKeyboard()
+            else if(binding.homeLessonMakeNameEt.isFocused) hideKeyboard()
+            else if(binding.homeLessonMakeInfoEt.isFocused) hideKeyboard()
+            else if(binding.homeLessonMakeDetailEt.isFocused) hideKeyboard()
+        }
 
         binding.homeLessonMakeImgV.setOnClickListener {  // 이미지 등록 클릭 리스너
             initImageViewLesson()
@@ -195,6 +203,11 @@ class LessonMakeActivity : AppCompatActivity(), MakeLessonView, SendImgView {
                 binding.makeCntTv.text = cnt.toString()
             }
         }
+    }
+
+    private fun hideKeyboard() {
+        val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
     private fun initImageViewLesson() {

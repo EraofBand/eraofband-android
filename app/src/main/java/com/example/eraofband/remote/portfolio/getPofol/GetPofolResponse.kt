@@ -1,13 +1,13 @@
-package com.example.eraofband.remote.portfolio.getMyPofol
+package com.example.eraofband.remote.portfolio.getPofol
 
-data class GetMyPofolResponse (
+data class GetPofolResponse (
     var code : Int,
     var isSuccess : Boolean,
     var message : String,
-    var result : List<GetMyPofolResult>
+    var result : List<GetPofolResult>
 )
 
-data class GetMyPofolResult (
+data class GetPofolResult (
     var commentCount : Int,
     var content : String,
     var likeOrNot : String,

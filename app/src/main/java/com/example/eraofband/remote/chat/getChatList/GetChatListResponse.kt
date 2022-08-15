@@ -8,7 +8,7 @@ data class GetChatListResponse (
 )
 
 data class GetChatListResult (
-    var chatRoomIdx: Int,
+    var chatRoomIdx: String,
     var nickName: String,
     var profileImgUrl: String
 )

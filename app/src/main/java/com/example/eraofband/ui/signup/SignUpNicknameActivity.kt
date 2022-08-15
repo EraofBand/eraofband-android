@@ -1,5 +1,6 @@
 package com.example.eraofband.ui.signup
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Point
@@ -9,6 +10,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -29,15 +31,19 @@ class SignUpNicknameActivity : AppCompatActivity() {
         binding = ActivitySignupNicknameBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val intent = Intent(this, SignUpGenderActivity::class.java)
+        binding.root.setOnClickListener {
+            if(binding.signupNicknameNicknameEt.isFocused) hideKeyboard()
+        }
 
         binding.signupNicknameNextBtn.setOnClickListener {
-            if(binding.signupNicknameNicknameEt.text.isEmpty()) {
+            val nickname = binding.signupNicknameNicknameEt.text.toString()
+            user.nickName = nickname
+
+            if(nickname.isEmpty()) {
                 setToast("닉네임을 입력해주세요!")
             }
             else {
-                val nickname = binding.signupNicknameNicknameEt.text.toString()
-                user.nickName = nickname
+                val intent = Intent(this, SignUpGenderActivity::class.java)
                 intent.putExtra("user", user)
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_right, R.anim.slide_left)
@@ -59,23 +65,7 @@ class SignUpNicknameActivity : AppCompatActivity() {
             }
         }
 
-        //setTextColor()
     }
-
-    /*private fun setTextColor() {
-        // 글씨 파란색, 두껍게 만들기
-        val nickname = binding.signupNicknameNameTv.text  // 텍스트 가져옴
-        val spannableString = SpannableString(nickname)  //객체 생성
-
-        // 유저 이름 부분만 두껍게 표시
-        val word = "이승희"
-        val start = nickname.indexOf(nickname)
-        val end = nickname.length
-
-        spannableString.setSpan(ForegroundColorSpan(Color.parseColor("#1864FD")), 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannableString.setSpan(StyleSpan(Typeface.BOLD), 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        binding.signupNicknameNameTv.text = spannableString
-    }*/
 
     private fun nickNameTW() {
         binding.signupNicknameNicknameEt.addTextChangedListener(object : TextWatcher{
@@ -92,9 +82,14 @@ class SignUpNicknameActivity : AppCompatActivity() {
                     setToast("닉네임은 8글자 이하입니다!")
                 }
             }
-
         })
     }
+
+    private fun hideKeyboard() {
+        val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+    }
+
     private fun setToast(str : String) {
         val view : View = layoutInflater.inflate(R.layout.toast_signup, findViewById(R.id.toast_signup))
         val toast = Toast(this)

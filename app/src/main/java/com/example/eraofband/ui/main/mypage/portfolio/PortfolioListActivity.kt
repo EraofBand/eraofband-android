@@ -14,10 +14,9 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityPortfolioListBinding
-import com.example.eraofband.databinding.ItemPortfolioListBinding
-import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResult
-import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolService
-import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolView
+import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolService
+import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolView
+import com.example.eraofband.remote.portfolio.getPofol.GetPofolResult
 import com.example.eraofband.ui.main.home.session.band.BandDeleteDialog
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 
@@ -56,7 +55,7 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
         return userSP.getString("jwt", "")
     }
 
-    private fun initRecyclerView(item: List<GetMyPofolResult>) {
+    private fun initRecyclerView(item: List<GetPofolResult>) {
         portfolioAdapter = PortfolioListRVAdapter(getJwt()!!, this)
         binding.portfolioListPortfolioRv.adapter = portfolioAdapter
         binding.portfolioListPortfolioRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -84,7 +83,7 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
                 startActivity(intent)
             }
 
-            override fun onShowPopup(portfolio: GetMyPofolResult, position: Int, view: View) {
+            override fun onShowPopup(portfolio: GetPofolResult, position: Int, view: View) {
                 showPopup(portfolio, position, view)
             }
 
@@ -97,7 +96,7 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
         })
     }
 
-    override fun onGetSuccess(result: List<GetMyPofolResult>) {
+    override fun onGetSuccess(result: List<GetPofolResult>) {
         Log.d("MYPORTFOLIO/FAIL", result.toString())
         initRecyclerView(result)
         result[0].userIdx
@@ -107,7 +106,7 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
         Log.d("MYPORTFOLIO/FAIL", "$code $message")
     }
 
-    private fun showPopup(portfolio: GetMyPofolResult, position: Int, view: View) {  // 내 댓글인 경우 삭제, 신고 둘 다 가능
+    private fun showPopup(portfolio: GetPofolResult, position: Int, view: View) {  // 내 댓글인 경우 삭제, 신고 둘 다 가능
         val themeWrapper = ContextThemeWrapper(applicationContext , R.style.MyPopupMenu)
         val popupMenu = PopupMenu(themeWrapper, view, Gravity.END, 0, R.style.MyPopupMenu)
         popupMenu.menuInflater.inflate(R.menu.portfolio_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
