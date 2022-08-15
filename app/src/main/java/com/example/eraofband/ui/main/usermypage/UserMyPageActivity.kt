@@ -47,8 +47,8 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         // 메세지 클릭하면 채팅방으로 이동
         binding.userMypageMessageTv.setOnClickListener {
             val intent = Intent(this, ChatContentActivity::class.java)
-            intent.putExtra("name", nickName)
-            intent.putExtra("profileImg", profileImg)
+            intent.putExtra("nickname", nickName)
+            intent.putExtra("profile", profileImg)
             intent.putExtra("firstIndex", getUserIdx())
             intent.putExtra("secondIndex", secondIndex)
             startActivity(intent)

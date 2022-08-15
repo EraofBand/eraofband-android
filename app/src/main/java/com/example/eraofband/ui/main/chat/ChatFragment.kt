@@ -53,10 +53,12 @@ class ChatFragment : Fragment(), GetChatListView {
         chatRVAdapter.initChatList(result)
 
         chatRVAdapter.setMyItemClickListener(object : ChatRVAdapter.MyItemClickListener{
-            override fun onItemClick(chatIdx : String) {
+            override fun onItemClick(chatIdx : String, profileImg: String, nickname : String) {
                 activity?.let {
                     val intent = Intent(activity, ChatContentActivity::class.java)
                     intent.putExtra("chatRoomIndex", chatIdx)
+                    intent.putExtra("profile", profileImg)
+                    intent.putExtra("nickname", nickname)
                     startActivity(intent)
                 }
             }

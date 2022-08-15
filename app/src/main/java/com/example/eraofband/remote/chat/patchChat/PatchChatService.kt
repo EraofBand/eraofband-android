@@ -3,6 +3,7 @@ package com.example.eraofband.remote.chat.patchChat
 import android.util.Log
 import com.example.eraofband.remote.API
 import com.example.eraofband.remote.NetworkModule
+import com.example.eraofband.ui.main.chat.ChatContentActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

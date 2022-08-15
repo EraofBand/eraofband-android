@@ -18,6 +18,7 @@ import com.example.eraofband.remote.band.getLikedBand.GetLikedBandResponse
 import com.example.eraofband.remote.band.getNewBand.GetNewBandResponse
 import com.example.eraofband.remote.band.getPopularBand.GetPopularBandResponse
 import com.example.eraofband.remote.band.makeBand.MakeBandResponse
+import com.example.eraofband.remote.chat.activeChat.ActiveChatResponse
 import com.example.eraofband.remote.chat.getChatList.GetChatListResponse
 import com.example.eraofband.remote.chat.makeChat.MakeChatResponse
 import com.example.eraofband.remote.chat.patchChat.PatchChatResponse
@@ -272,4 +273,8 @@ interface API {
     // 채팅방 생성 처리
     @POST("/chat")
     fun makeChat(@Body makeChatRoom: MakeChatRoom) : Call<MakeChatResponse>
+
+    // 채팅방 활성화
+    @PATCH("/chat/status/active")
+    fun activeChat(@Header("X_ACCESS-TOKEN") jwt : String, @Body makeChatRoom: MakeChatRoom) : Call<ActiveChatResponse>
 }
