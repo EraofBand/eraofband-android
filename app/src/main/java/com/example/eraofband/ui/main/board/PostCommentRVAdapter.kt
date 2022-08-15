@@ -8,20 +8,23 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.eraofband.databinding.ItemCommentBinding
-import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentResult
+import com.example.eraofband.databinding.ItemPostCommentBinding
+import com.example.eraofband.databinding.ItemPostReplyBinding
+import com.example.eraofband.remote.board.getBoard.GetBoardComments
 
-class PostCommentRVAdapter(private val context: Context) : RecyclerView.Adapter<PostCommentRVAdapter.ViewHolder>() {
-    private var comment = arrayListOf<PofolCommentResult>()
+class PostCommentRVAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val COMMENT = 0
+    private val REPLY = 1
+    private var comment = arrayListOf<GetBoardComments>()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun initComment(comment: List<PofolCommentResult>) {
+    fun initComment(comment: List<GetBoardComments>) {
         this.comment.addAll(comment)
         notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addComment(comment: PofolCommentResult) {
+    fun addComment(comment: GetBoardComments) {
         this.comment.add(comment)
         notifyDataSetChanged()
     }
@@ -39,7 +42,7 @@ class PostCommentRVAdapter(private val context: Context) : RecyclerView.Adapter<
     }
 
     interface MyItemClickListener {
-        fun onItemClick(comment: PofolCommentResult)
+        fun onItemClick(comment: GetBoardComments)
         fun onShowPopUp(commentIdx: Int, position: Int, userIdx: Int, view: View)
     }
 
@@ -48,37 +51,83 @@ class PostCommentRVAdapter(private val context: Context) : RecyclerView.Adapter<
         mItemClickListener = itemClickListener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding: ItemCommentBinding = ItemCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when(viewType) {
+            COMMENT -> {
+                val binding: ItemPostCommentBinding = ItemPostCommentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                CommentViewHolder(binding)
+            }
+            REPLY -> {
+                val binding: ItemPostReplyBinding = ItemPostReplyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                ReplyViewHolder(binding)
+            }
+            else -> {
+                throw RuntimeException("알 수 없는 ViewType입니다.")
+            }
+        }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(comment[position])
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if(holder is CommentViewHolder) {
+            holder.bind(comment[position])
 
-        // 댓글 팝업 메뉴 띄우기
-        holder.binding.commentMoreIv.setOnClickListener { mItemClickListener.onShowPopUp(comment[position].pofolCommentIdx, position, comment[position].userIdx, holder.binding.commentMoreIv) }
+            // 구분선 제거
+            if(position != comment.size - 1) {
+                if(comment[position].groupNum == comment[position + 1].groupNum) holder.binding.postCommentLine.visibility = View.GONE
+            }
+
+            // 댓글 팝업 메뉴 띄우기
+            holder.binding.postCommentMoreIv.setOnClickListener { mItemClickListener.onShowPopUp(comment[position].boardCommentIdx, position, comment[position].userIdx, holder.binding.postCommentMoreIv) }
+
+            // 유저 페이지로 이동
+            holder.binding.postCommentProfileIv.setOnClickListener { mItemClickListener.onItemClick(comment[position]) }
+            holder.binding.postCommentNicknameTv.setOnClickListener { mItemClickListener.onItemClick(comment[position]) }
+        }
+        else if(holder is ReplyViewHolder) {
+            holder.bind(comment[position])
+
+            // 구분선 제거
+            if(position != comment.size - 1) {
+                if(comment[position].groupNum == comment[position + 1].groupNum) holder.binding.postReplyLine.visibility = View.GONE
+            }
+
+            // 답글 팝업 메뉴 띄우기
+            holder.binding.postReplyMoreIv.setOnClickListener { mItemClickListener.onShowPopUp(comment[position].boardCommentIdx, position, comment[position].userIdx, holder.binding.postReplyMoreIv) }
+
+            // 유저 페이지로 이동
+            holder.binding.postReplyProfileIv.setOnClickListener { mItemClickListener.onItemClick(comment[position]) }
+            holder.binding.postReplyNicknameTv.setOnClickListener { mItemClickListener.onItemClick(comment[position]) }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if(comment[position].classNum == 0) COMMENT
+               else REPLY
     }
 
     override fun getItemCount(): Int = comment.size
 
-    inner class ViewHolder(val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(comment: PofolCommentResult) {
+    inner class CommentViewHolder(val binding: ItemPostCommentBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(comment: GetBoardComments) {
             Glide.with(context).load(comment.profileImgUrl)  // 프로필 사진
-                .apply(RequestOptions.centerCropTransform())
-                .apply(RequestOptions.circleCropTransform()).into(binding.commentProfileIv)
+                .apply(RequestOptions.centerCropTransform()).apply(RequestOptions.circleCropTransform())
+                .into(binding.postCommentProfileIv)
 
-            binding.commentNicknameTv.text = comment.nickName  // 닉네임
-            binding.commentCommentTv.text = comment.content  // 댓글 내용
-            binding.commentTimeTv.text = comment.updatedAt  // 댓글 단 시간
-
-            binding.commentProfileIv.setOnClickListener {
-                mItemClickListener.onItemClick(comment)
-            }
-            binding.commentNicknameTv.setOnClickListener {
-                mItemClickListener.onItemClick(comment)
-            }
+            binding.postCommentNicknameTv.text = comment.nickName  // 닉네임
+            binding.postCommentCommentTv.text = comment.content  // 댓글 내용
+            binding.postCommentTimeTv.text = comment.updatedAt  // 댓글 단 시간
        }
+    }
+
+    inner class ReplyViewHolder(val binding: ItemPostReplyBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(comment: GetBoardComments) {
+            Glide.with(context).load(comment.profileImgUrl)  // 프로필 사진
+                .apply(RequestOptions.centerCropTransform()).apply(RequestOptions.circleCropTransform())
+                .into(binding.postReplyProfileIv)
+
+            binding.postReplyNicknameTv.text = comment.nickName  // 닉네임
+            binding.postReplyCommentTv.text = comment.content  // 댓글 내용
+            binding.postReplyTimeTv.text = comment.updatedAt  // 댓글 단 시간
+        }
     }
 }

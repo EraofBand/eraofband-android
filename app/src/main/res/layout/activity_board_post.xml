@@ -55,9 +55,11 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/board_post_sv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:overScrollMode="never"
         app:layout_constraintTop_toBottomOf="@id/board_post_top_cl"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/board_post_write_comment_cl">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -238,8 +240,8 @@
                 android:id="@+id/board_post_comment_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/item_post_comment"
                 android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_post_comment"
                 app:layout_constraintTop_toBottomOf="@id/board_post_post_line"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
