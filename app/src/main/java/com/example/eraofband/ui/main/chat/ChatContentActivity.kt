@@ -13,7 +13,11 @@ import com.example.eraofband.R
 import com.example.eraofband.data.ChatComment
 import com.example.eraofband.data.ChatUser
 import com.example.eraofband.data.MakeChatRoom
+import com.example.eraofband.data.Users
 import com.example.eraofband.databinding.ActivityChatContentBinding
+import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResult
+import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomService
+import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomView
 import com.example.eraofband.remote.chat.makeChat.MakeChatService
 import com.example.eraofband.remote.chat.makeChat.MakeChatView
 import com.example.eraofband.remote.chat.patchChat.PatchChatService
@@ -26,7 +30,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
-class ChatContentActivity : AppCompatActivity(), MakeChatView, PatchChatView {
+class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, PatchChatView {
 
     private lateinit var binding: ActivityChatContentBinding
 
@@ -34,18 +38,20 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, PatchChatView {
     private var chatIdx = ""
     private var num = 0
 
+    private var firstIndex = -1
+    private var secondIndex = -1
+
     // 채팅 내역을 받아오기 위한 파이어베이스
     private val database = Firebase.database
     private val getChatRef = database.getReference("chat")
-    private val getChatRoomRef = getChatRef.child(chatIdx)
 
     // 파이어베이스로 값 올리기
     private var mDatabase = FirebaseDatabase.getInstance().reference
     private val sendChatRef = mDatabase.child("chat")
-    private val sendChatRoomRef = sendChatRef.child(chatIdx)
 
-    // 채팅방 생성 API
+    // 채팅방 API
     private val makeChatService = MakeChatService()
+    private val chatRoomService = IsChatRoomService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,24 +60,38 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, PatchChatView {
         setContentView(binding.root)
 
         makeChatService.setChatView(this)
-        if(intent.getStringExtra("chatRoomIdx").isNullOrEmpty()) chatIdx = "${UUID.randomUUID()}"
-        else intent.getStringExtra("chatRoomIdx")
+        chatRoomService.setChatListView(this)
+
+        firstIndex = intent.getIntExtra("firstIndex", -1)
+        secondIndex = intent.getIntExtra("secondIndex", -1)
+
+        Log.d("FIRSTINDEX", firstIndex.toString())
 
         binding.chatContentNicknameTv.text = intent.getStringExtra("name")
 
+        // 채팅방 존재 유무 확인
+        chatRoomService.isChatRoom(getJwt()!!, Users(firstIndex, secondIndex))
+
+
         binding.chatContentBackIb.setOnClickListener{ finish() }  // 뒤로가기
 
+        binding.root.setOnClickListener {
+            if(binding.chatContentTextEt.isFocused) hideKeyboard()
+        }
+
         binding.chatContentSendTv.setOnClickListener {  // 메세지 보내기
-            val message = binding.chatContentTextEt.text.toString()
-            val timeStamp = System.currentTimeMillis()
-            writeChat(ChatComment(message, false, timeStamp, getUserIdx()))
+            if(binding.chatContentTextEt.text.isNotEmpty()) {
+                val message = binding.chatContentTextEt.text.toString()
+                val timeStamp = System.currentTimeMillis()
+
+                if(num == 0) createChatRoom()  // 그 전에 올린 채팅이 한 개도 없을 경우
+                else writeChat(ChatComment(message, false, timeStamp, getUserIdx()))
+            }
         }
 
         binding.chatContentMenuIv.setOnClickListener {
             showPopup(binding.chatContentMenuIv)
         }
-
-        getChats()
     }
 
     private fun getUserIdx() : Int {
@@ -91,9 +111,9 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, PatchChatView {
         // 처음 화면을 열면 무조건 한 번 실행돼서 초기 값 받아올 수 있음
         // 데이터를 받아오는 것은 비동기적으로 진행되기 때문에 return 값은 무조건 null, size를 세는 것도 안됨
         // 자세한 기능은 리사이클러뷰에서 진행해야할 것 같습니다
-        getChatRoomRef.child("comments").addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
+        getChatRef.child(chatIdx).child("comments").addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
             override fun onDataChange(snapshot: DataSnapshot) {
-                num = 0
+                num = -1
 //                "리사이클러뷰".clearChat()  // 새로 불러오기 때문에 초기화 필요
                 if (snapshot.exists()){
                     for (commentSnapShot in snapshot.children){  // 하나씩 불러옴
@@ -106,7 +126,6 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, PatchChatView {
                         }
 
                     }
-                    if(num == 1) { createChatRoom() }
                 }
             }
 
@@ -121,24 +140,28 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, PatchChatView {
         // 다른 유저 마이페이지에서 들어온 경우
         // 채팅방이 없는 상태면 파이어베이스에 올려주고 서버에도 채팅방 생성
         // 채팅방이 있는지 없는지 파악 여부는 comments가 1개인지로 파악
-        val firstIndex = intent.getIntExtra("firstIndex", -1)
-        val secondIndex = intent.getIntExtra("secondIndex", -1)
-
-        sendChatRoomRef.child("users").setValue(ChatUser(firstIndex, secondIndex))
+        // 우선 나간 채팅은 0으로 할게요!! 0부터 다 보여주면 되니까!!
+        Log.d("CHATIDX", chatIdx)
+        sendChatRef.child(chatIdx).child("users").setValue(ChatUser(firstIndex, 0, secondIndex, 0))
             .addOnSuccessListener {
                 makeChatService.makeChat(MakeChatRoom(chatIdx, firstIndex, secondIndex))
             }  // 채팅방 users 입력, 채팅방 생성
     }
 
     private fun writeChat(chatComment: ChatComment) {
-        sendChatRoomRef.child("comments").child("${num + 1}").setValue(chatComment)
+        sendChatRef.child(chatIdx).child("comments").child("${num + 1}").setValue(chatComment)
             .addOnSuccessListener {
-                if(binding.chatContentTextEt.isFocused) {  // 다 올라갔으면 키보드 내려주기
-                    val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                if(binding.chatContentTextEt.isFocused) {  // 다 올라갔으면 내용 초기화 후 키보드 내려주기
+                    binding.chatContentTextEt.setText("")
+                    hideKeyboard()
                 }
             }
         // child에 있는 path가 없는 경우 만들어주고 있는 경우는 path를 타고 들어가서 값을 파이어베이스에 넣어주는 형식
+    }
+
+    private fun hideKeyboard() {
+        val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
     private fun showPopup(view: View) {
@@ -159,10 +182,28 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, PatchChatView {
 
     override fun onMakeSuccess(result: String) {
         Log.d("MAKE/SUC", result)
+
+        val message = binding.chatContentTextEt.text.toString()
+        val timeStamp = System.currentTimeMillis()
+        writeChat(ChatComment(message, false, timeStamp, getUserIdx()))
     }
 
     override fun onMakeFailure(code: Int, message: String) {
-        Log.d("MAKE/SUC", "$code $message")
+        Log.d("MAKE/FAIL", "$code $message")
+    }
+
+    override fun onGetSuccess(result: IsChatRoomResult) {
+        Log.d("GET/SUC", "$result")
+
+        // 채팅룸 idx가 없으면 랜덤 uuid 생성, 아니면 불러오기
+        chatIdx = if(result.chatRoomIdx.isNullOrEmpty()) "${UUID.randomUUID()}"
+                  else result.chatRoomIdx!!
+
+        getChats()
+    }
+
+    override fun onGetFailure(code: Int, message: String) {
+        Log.d("GET/SUC", "$code $message")
     }
 
     override fun onPatchSuccess(result: String) {

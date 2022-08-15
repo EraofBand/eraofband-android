@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentHomeBinding
 import com.example.eraofband.remote.notice.getNewNotice.GetNewNoticeResult
-import com.example.eraofband.remote.notice.getNewNotice.GetNewNoticeService
 import com.example.eraofband.remote.notice.getNewNotice.GetNewNoticeView
 import com.example.eraofband.ui.login.GlobalApplication
 import com.example.eraofband.ui.main.home.notice.NoticeActivity
@@ -40,7 +39,7 @@ class HomeFragment : Fragment(), GetNewNoticeView {
 
         binding.homeFab.setOnClickListener{
             val fabDialog = HomeFabDialog()
-            fabDialog.show(fragmentManager!!, "homeFAB")
+            fabDialog.show(requireFragmentManager(), "homeFAB")
         }
 
         binding.homeSearchIb.setOnClickListener {
@@ -55,9 +54,9 @@ class HomeFragment : Fragment(), GetNewNoticeView {
 
     override fun onResume() {
         super.onResume()
-        val getNewNotice = GetNewNoticeService()
-        getNewNotice.setNewNoticeView(this)
-        getNewNotice.getNewNotice(getJwt()!!)
+//        val getNewNotice = GetNewNoticeService()
+//        getNewNotice.setNewNoticeView(this)
+//        getNewNotice.getNewNotice(getJwt()!!)
     }
 
     private fun connectVP() {
@@ -75,7 +74,7 @@ class HomeFragment : Fragment(), GetNewNoticeView {
     }
 
     private fun sizeCheck() {
-        val display = activity!!.windowManager.defaultDisplay
+        val display = requireActivity().windowManager.defaultDisplay
         val size = Point()
         display.getSize(size)  // 상단바 등을 제외한 스크린 전체 크기 구하기
 
