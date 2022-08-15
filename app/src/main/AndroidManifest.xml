@@ -82,6 +82,10 @@
             android:name="com.example.eraofband.ui.main.MainActivity"
             android:exported="false" />
         <activity
+            android:name="com.example.eraofband.ui.main.board.BoardPostActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustUnspecified|adjustPan"/>
+        <activity
             android:name="com.example.eraofband.ui.main.home.session.band.BandListActivity"
             android:exported="false" />
         <activity

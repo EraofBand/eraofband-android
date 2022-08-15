@@ -75,6 +75,24 @@
     <string name="feed">피드</string>
     <string name="follow">팔로우</string>
 
+    <!-- 게시판 관련 String -->
+
+    <!-- 게시글 자세히 보기 관련 String -->
+    <string name="free_board">자유게시판</string>
+    <string name="question_board">질문게시판</string>
+    <string name="promotion_board">홍보게시판</string>
+    <string name="sell_board">거래게시판</string>
+    <string name="my_board">MY게시판</string>
+
+    <string name="time">시간</string>
+    <string name="view_cnt">조회수</string>
+
+    <string name="write_reply">답글 달기</string>
+    <string name="write_reply_info">님에게 답글을 남기는 중</string>
+
+    <string name="enter_message">메세지를 입력해주세요.</string>
+    <string name="enter">입력</string>
+
     <!-- 마이페이지 관련 String -->
     <string name="mypage">마이페이지</string>
     <string name="look_more">더보기</string>

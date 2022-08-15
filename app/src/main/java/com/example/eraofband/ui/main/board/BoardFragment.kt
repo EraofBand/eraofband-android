@@ -1,5 +1,6 @@
 package com.example.eraofband.ui.main.board
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,10 @@ class BoardFragment : Fragment(){
     ): View? {
 
         _binding = FragmentBoardBinding.inflate(inflater, container, false)
+
+        binding.root.setOnClickListener {
+            startActivity(Intent(activity, BoardPostActivity::class.java))
+        }
 
         return binding.root
     }
