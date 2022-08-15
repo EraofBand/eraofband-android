@@ -196,8 +196,8 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         Log.d("GET/SUC", "$result")
 
         // 채팅룸 idx가 없으면 랜덤 uuid 생성, 아니면 불러오기
-        chatIdx = if(result.chatRoomIdx.isNullOrEmpty()) "${UUID.randomUUID()}"
-                  else result.chatRoomIdx!!
+        chatIdx = if(result.chatRoomIdx == "null") "${UUID.randomUUID()}"
+                  else result.chatRoomIdx
 
         getChats()
     }

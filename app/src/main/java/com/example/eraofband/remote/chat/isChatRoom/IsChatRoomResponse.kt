@@ -8,5 +8,5 @@ data class IsChatRoomResponse(
 )
 
 data class IsChatRoomResult(
-    var chatRoomIdx: String?
+    var chatRoomIdx: String
 )
