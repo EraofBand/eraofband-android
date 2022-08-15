@@ -142,7 +142,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         // 채팅방이 있는지 없는지 파악 여부는 comments가 1개인지로 파악
         // 우선 나간 채팅은 0으로 할게요!! 0부터 다 보여주면 되니까!!
         Log.d("CHATIDX", chatIdx)
-        sendChatRef.child(chatIdx).child("users").setValue(ChatUser(firstIndex, 0, secondIndex, 0))
+        sendChatRef.child(chatIdx).child("users").setValue(ChatUser(firstIndex, -1, secondIndex, -1))
             .addOnSuccessListener {
                 makeChatService.makeChat(MakeChatRoom(chatIdx, firstIndex, secondIndex))
             }  // 채팅방 users 입력, 채팅방 생성
