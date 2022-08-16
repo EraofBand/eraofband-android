@@ -10,7 +10,7 @@ import retrofit2.Response
 class GetBoardService {
     private lateinit var getBoardView: GetBoardView
 
-    fun setBandView(getBoardView: GetBoardView) {
+    fun setBoardView(getBoardView: GetBoardView) {
         this.getBoardView = getBoardView
     }
 
@@ -20,7 +20,7 @@ class GetBoardService {
         getBoardService?.getBoard(jwt, boardIdx)?.enqueue(object : Callback<GetBoardResponse> {
             override fun onResponse(call: Call<GetBoardResponse>, response: Response<GetBoardResponse>) {
                 // 응답이 왔을 때 처리
-                Log.d("GETBAND / SUCCESS", response.toString())
+                Log.d("BOARD / SUCCESS", response.toString())
 
                 val resp : GetBoardResponse = response.body()!!
 
@@ -32,7 +32,7 @@ class GetBoardService {
 
             override fun onFailure(call: Call<GetBoardResponse>, t: Throwable) {
                 // 네트워크 연결이 실패했을 때 실행
-                Log.d("GETBAND / FAILURE", t.message.toString())
+                Log.d("BOARD / FAILURE", t.message.toString())
             }
 
         })  // api 호출, enqueue에서 응답 처리

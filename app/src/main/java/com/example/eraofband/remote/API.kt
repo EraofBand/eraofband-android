@@ -15,6 +15,8 @@ import com.example.eraofband.remote.band.getPopularBand.GetPopularBandResponse
 import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResponse
 import com.example.eraofband.remote.band.makeBand.MakeBandResponse
 import com.example.eraofband.remote.band.patchBand.PatchBandResponse
+import com.example.eraofband.remote.board.boardComment.BoardDeleteCommentResponse
+import com.example.eraofband.remote.board.boardComment.BoardWriteCommentResponse
 import com.example.eraofband.remote.board.getBoard.GetBoardResponse
 import com.example.eraofband.remote.chat.getChatList.GetChatListResponse
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResponse
@@ -138,6 +140,14 @@ interface API {
     // 게시물 정보 조회
     @GET("/board/info/{boardIdx}")
     fun getBoard(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardIdx") boardIdx: Int) : Call<GetBoardResponse>
+
+    // 게시물 댓글 등록
+    @POST("/board/comment/{boardIdx}")
+    fun writeBoardComment(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardIdx") boardIdx: Int, @Body comment: Comment) : Call<BoardWriteCommentResponse>
+
+    // 게시물 댓글 삭제
+    @PATCH("/board/comment/status/{boardCommentIdx}")
+    fun deleteBoardComment(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardCommentIdx") boardCommentIdx: Int, @Body userIdx: Int) : Call<BoardDeleteCommentResponse>
 
     // 내 포트폴리오 리스트 조회
     @GET("/pofols/info/{userIdx}")

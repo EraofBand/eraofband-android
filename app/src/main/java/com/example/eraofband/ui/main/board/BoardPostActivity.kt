@@ -2,25 +2,34 @@ package com.example.eraofband.ui.main.board
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
+import com.example.eraofband.data.Comment
 import com.example.eraofband.databinding.ActivityBoardPostBinding
+import com.example.eraofband.remote.board.boardComment.BoardCommentService
+import com.example.eraofband.remote.board.boardComment.BoardCommentView
 import com.example.eraofband.remote.board.getBoard.*
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 
-class BoardPostActivity: AppCompatActivity(), GetBoardView {
+class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView {
 
     private lateinit var binding: ActivityBoardPostBinding
 
     private lateinit var commentRVAdapter: PostCommentRVAdapter
+    private val commentService = BoardCommentService()
+    private var commentPosition = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,14 +37,25 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView {
         binding = ActivityBoardPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        commentService.setBoardView(this)
+        textWatcher()
+
         binding.boardPostTopBackIv.setOnClickListener { finish() }  // 뒤로가기
+
+        binding.boardPostWriteCommentUploadTv.setOnClickListener {
+            val comment = binding.boardPostWriteCommentEt.text.toString()
+            val userIdx = getUserIdx()
+            if(comment.isNotEmpty()) {  // 댓글에 적은 내용이 있는 경우 댓글 업로드
+                commentService.writeComment(getJwt()!!, 9, Comment(comment, userIdx))
+            }
+        }
 
     }
 
     override fun onResume() {
         super.onResume()
         val boardService = GetBoardService()
-        boardService.setBandView(this)
+        boardService.setBoardView(this)
         boardService.getBoard(getJwt()!!, 9)
     }
 
@@ -97,15 +117,8 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView {
 
         popupMenu.setOnMenuItemClickListener { item ->
             if (item!!.itemId == R.id.comment_delete) {  // 댓글 삭제하기
-                // position을 넘겨줌 이거 말고 생각이 안나요ㅠㅠ
-                val commentSP = getSharedPreferences("comment", MODE_PRIVATE)
-                val editor = commentSP.edit()
-
-                editor.putInt("position", position)
-                editor.apply()
-
-                // 댓글 삭제
-//                commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
+                commentPosition = position
+                commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
             }
             else {  // 댓글 신고하기
                 Log.d("REPORT", "COMMENT")
@@ -122,6 +135,30 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView {
         }
 
         popupMenu.show() // 팝업 보여주기
+    }
+
+    private fun textWatcher() {  // 댓글 입력 감시
+        binding.boardPostWriteCommentEt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                // 입력이 시작되기 전에 작동
+                binding.boardPostWriteCommentEt.hint = getString(R.string.enter_message)
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                // 입력이 시작되면 작동
+                if(binding.boardPostWriteCommentEt.text.isNotEmpty()) {
+                    binding.boardPostWriteCommentUploadTv.setTextColor(Color.parseColor("#1864FD"))
+                }
+                else {
+                    binding.boardPostWriteCommentUploadTv.setTextColor(Color.parseColor("#7FA8FF"))
+                }
+            }
+
+            override fun afterTextChanged(text: Editable?) {
+                // 입력이 끝난 후에 작동
+                binding.boardPostWriteCommentEt.hint = getString(R.string.enter_message)
+            }
+        })
     }
 
     private fun getJwt() : String? {
@@ -166,4 +203,28 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView {
             else -> getString(R.string.sell_board)
         }
    }
+
+    override fun onWriteSuccess(result: GetBoardComments) {
+        Log.d("WRITE/SUC", "$result")
+        commentRVAdapter.addComment(0, result)
+    }
+
+    override fun onWriteFailure(code: Int, message: String) {
+        Log.d("WRITE/FAIL", "$code $message")
+    }
+
+    override fun onDeleteSuccess(result: String) {
+        Log.d("DELETE/SUC", result)
+        commentRVAdapter.deleteComment(commentPosition)
+        commentPosition = -1  // position 값 초기화 <- 엉뚱한 댓글이 삭제되지 않도록
+    }
+
+    override fun onHaveReply(code: Int, message: String) {
+        Log.d("DELETE/FAIL", "$code $message")
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()  // 삭제 불가능하다는 토스트 메세지를 띄워줌
+    }
+
+    override fun onDeleteFailure(code: Int, message: String) {
+        Log.d("DELETE/FAIL", "$code $message")
+    }
 }
