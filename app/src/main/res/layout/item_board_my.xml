@@ -7,17 +7,6 @@
     android:layout_marginHorizontal="20dp"
     android:layout_marginTop="12dp">
 
-    <ImageView
-        android:id="@+id/item_board_title_image_iv"
-        android:layout_width="27dp"
-        android:layout_height="20dp"
-        android:paddingEnd="5dp"
-        android:src="@drawable/ic_board_question"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/item_board_title_tv"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/item_board_title_tv" />
-
     <TextView
         android:id="@+id/item_board_title_tv"
         android:layout_width="wrap_content"
@@ -26,49 +15,25 @@
         android:text="게시판 타이틀"
         android:textColor="@color/white"
         android:textSize="17sp"
-        app:layout_constraintStart_toEndOf="@+id/item_board_title_image_iv"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/item_board_intro_tv"
-        android:layout_width="290dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/pretendard_medium"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:text="게시판 한 줄 내용"
-        android:textColor="@color/gray"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/item_board_image_iv"
-        app:layout_constraintStart_toStartOf="@+id/item_board_title_image_iv" />
 
     <TextView
         android:id="@+id/item_board_info_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
         android:fontFamily="@font/pretendard_medium"
-        android:text="닉네임   |   1분 전   |   조회수 0"
+        android:text="게시판   |   1분 전   |   조회수 0"
         android:textColor="@color/gray"
         android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/item_board_intro_tv" />
-
-    <ImageView
-        android:id="@+id/item_board_image_iv"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/gray_round_bg"
-        android:src="@drawable/ic_basic_profile"
-        android:clipToOutline="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/item_board_title_tv" />
+        app:layout_constraintStart_toStartOf="@+id/item_board_title_tv"
+        app:layout_constraintTop_toBottomOf="@id/item_board_title_tv" />
 
     <TextView
         android:id="@+id/item_board_comment_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:fontFamily="@font/pretendard_medium"
         android:text="0"
         android:textColor="@color/blue"

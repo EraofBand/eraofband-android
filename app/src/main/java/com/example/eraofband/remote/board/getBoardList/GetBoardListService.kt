@@ -14,11 +14,11 @@ class GetBoardListService {
         this.getBoardListView = getBoardListView
     }
 
-    fun getBoardList(category: Int) {
+    fun getBoardList(category: Int, boardIdx: Int) {
 
         val getBoardListService = NetworkModule().getRetrofit()?.create(API::class.java)
 
-        getBoardListService?.getBoardList(category)?.enqueue(object : Callback<GetBoardListResponse> {
+        getBoardListService?.getBoardList(category, boardIdx)?.enqueue(object : Callback<GetBoardListResponse> {
             override fun onResponse(call: Call<GetBoardListResponse>, response: Response<GetBoardListResponse>) {
                 // 응답이 왔을 때 처리
                 Log.d("GET BOARD LIST / SUCCESS", response.toString())

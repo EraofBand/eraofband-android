@@ -39,7 +39,7 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
         super.onResume()
         val service = GetBoardListService()
         service.setBoardListView(this)
-        service.getBoardList(0)
+        service.getBoardList(0,0)
     }
 
     private fun connectAdapter(list: ArrayList<GetBoardListResult>) {

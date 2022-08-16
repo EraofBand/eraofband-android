@@ -3,6 +3,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.main.board.my.BoardMyFragment">
+
+    <TextView
+        android:id="@+id/board_writing_tv"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:text="작성 글"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:fontFamily="@font/pretendard_medium"
+        android:background="@drawable/blue_round_bg2"
+        android:paddingVertical="5dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/board_comment_tv"
+        android:layout_width="85dp"
+        android:layout_height="wrap_content"
+        android:text="댓글 단 글"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:fontFamily="@font/pretendard_medium"
+        android:background="@drawable/gray_round_bg"
+        android:paddingVertical="5dp"
+        android:layout_marginStart="15dp"
+        app:layout_constraintTop_toTopOf="@id/board_writing_tv"
+        app:layout_constraintBottom_toBottomOf="@id/board_writing_tv"
+        app:layout_constraintStart_toEndOf="@id/board_writing_tv"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/board_my_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="5dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/item_board_my"
+        app:layout_constraintTop_toBottomOf="@id/board_writing_tv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
