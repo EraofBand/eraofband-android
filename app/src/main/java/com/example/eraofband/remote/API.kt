@@ -17,6 +17,8 @@ import com.example.eraofband.remote.band.makeBand.MakeBandResponse
 import com.example.eraofband.remote.band.patchBand.PatchBandResponse
 import com.example.eraofband.remote.board.boardComment.BoardDeleteCommentResponse
 import com.example.eraofband.remote.board.boardComment.BoardWriteCommentResponse
+import com.example.eraofband.remote.board.boardLike.BoardDeleteLikeResponse
+import com.example.eraofband.remote.board.boardLike.BoardLikeResponse
 import com.example.eraofband.remote.board.getBoard.GetBoardResponse
 import com.example.eraofband.remote.chat.getChatList.GetChatListResponse
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResponse
@@ -152,6 +154,14 @@ interface API {
     // 게시물 답글 등록
     @POST("/board/re-comment/{boardIdx}")
     fun writeBoardReply(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardIdx") boardIdx: Int, @Body reply: Reply) : Call<BoardWriteCommentResponse>
+
+    // 게시물 좋아요
+    @POST("/board/likes/{boardIdx}")
+    fun likeBoard(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardIdx") boardIdx: Int) : Call<BoardLikeResponse>
+
+    // 게시물 좋아요 취소
+    @DELETE("/board/unlikes/{boardIdx}")
+    fun deleteBoardLike(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardIdx") boardIdx: Int) : Call<BoardDeleteLikeResponse>
 
     // 내 포트폴리오 리스트 조회
     @GET("/pofols/info/{userIdx}")

@@ -22,13 +22,20 @@ import com.example.eraofband.data.Reply
 import com.example.eraofband.databinding.ActivityBoardPostBinding
 import com.example.eraofband.remote.board.boardComment.BoardCommentService
 import com.example.eraofband.remote.board.boardComment.BoardCommentView
+import com.example.eraofband.remote.board.boardLike.BoardLikeResult
+import com.example.eraofband.remote.board.boardLike.BoardLikeService
+import com.example.eraofband.remote.board.boardLike.BoardLikeView
 import com.example.eraofband.remote.board.getBoard.*
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 
-class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView {
+class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, BoardLikeView {
 
     private lateinit var binding: ActivityBoardPostBinding
+
+    private val likeService = BoardLikeService()
+    private var like = false
+    private var likeCnt = 0
 
     private lateinit var commentRVAdapter: PostCommentRVAdapter
     private val commentService = BoardCommentService()
@@ -41,6 +48,7 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView {
         binding = ActivityBoardPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        likeService.setLikeView(this)
         commentService.setBoardView(this)
         textWatcher()
 
@@ -224,10 +232,24 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView {
         binding.boardPostTitleTv.text = result.title  // 게시물 제목
         binding.boardPostContentTv.text = result.content  // 게시물 본문
 
-        binding.boardPostLikeTv.text = "${getString(R.string.like)} ${result.boardLikeCount}"  // 좋아요
+        likeCnt = result.boardLikeCount
+        binding.boardPostLikeTv.text = "${getString(R.string.like)} $likeCnt"  // 좋아요
         binding.boardPostCommentTv.text = "${getString(R.string.comment)} ${result.commentCount}"  // 댓글
         binding.boardPostViewTv.text = "${getString(R.string.view_cnt)} ${result.views}"  // 조회수
 
+        if(result.likeOrNot == "Y") {
+            binding.boardPostLikeIv.setImageResource(R.drawable.ic_heart_on)
+            like = true
+        }
+        else {
+            binding.boardPostLikeIv.setImageResource(R.drawable.ic_heart_off)
+            like = false
+        }
+
+        binding.boardPostLikeIv.setOnClickListener {
+            if(like) Toast.makeText(this, "기달", Toast.LENGTH_SHORT).show()
+            else likeService.like(getJwt()!!, result.boardIdx)
+        }
         initCommentRV(result.getBoardComments)
     }
 
@@ -280,5 +302,18 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView {
 
     override fun onDeleteFailure(code: Int, message: String) {
         Log.d("DELETE/FAIL", "$code $message")
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onLikeSuccess(result: BoardLikeResult) {
+        Log.d("LIKE/SUC", "$result")
+        binding.boardPostLikeIv.setImageResource(R.drawable.ic_heart_on)  // 좋아요 완료
+        likeCnt++
+        binding.boardPostLikeTv.text = "${getString(R.string.like)} $likeCnt"
+        like = true
+    }
+
+    override fun onLikeFailure(code: Int, result: String) {
+        Log.d("LIKE/FAIL", "$code $result")
     }
 }
