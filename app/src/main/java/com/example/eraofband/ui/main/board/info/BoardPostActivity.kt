@@ -1,4 +1,4 @@
-package com.example.eraofband.ui.main.board
+package com.example.eraofband.ui.main.board.info
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -53,6 +53,7 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
         binding = ActivityBoardPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        boardIdx = intent.getIntExtra("boardIdx", -1)
         likeService.setLikeView(this)
         commentService.setBoardView(this)
         textWatcher()
@@ -75,8 +76,8 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
             val userIdx = getUserIdx()
             if(comment.isNotEmpty()) {  // 댓글에 적은 내용이 있는 경우 댓글 업로드
                 // 답글 어쩌구가 있으면 답글, 아무것도 없으면 댓글
-                if(binding.boardPostWriteReplyInfoTv.visibility == View.VISIBLE) commentService.writeReply(getJwt()!!, 9, Reply(comment, groupNum, userIdx))
-                else commentService.writeComment(getJwt()!!, 9, Comment(comment, userIdx))
+                if(binding.boardPostWriteReplyInfoTv.visibility == View.VISIBLE) commentService.writeReply(getJwt()!!, boardIdx, Reply(comment, groupNum, userIdx))
+                else commentService.writeComment(getJwt()!!, boardIdx, Comment(comment, userIdx))
             }
         }
 
@@ -86,7 +87,7 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
         super.onResume()
         val boardService = GetBoardService()
         boardService.setBoardView(this)
-        boardService.getBoard(getJwt()!!, 9)
+        boardService.getBoard(getJwt()!!, boardIdx)
     }
 
     private fun initVP(img: List<GetBoardImgs>) {
@@ -266,7 +267,6 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
     @SuppressLint("SetTextI18n")
     override fun onGetSuccess(result: GetBoardResult) {
         Log.d("GET/SUC", "$result")
-        boardIdx = result.boardIdx
         userIdx = result.userIdx
 
         binding.boardPostTopTitleTv.text = getCategory(result.category)  // 게시판 설정

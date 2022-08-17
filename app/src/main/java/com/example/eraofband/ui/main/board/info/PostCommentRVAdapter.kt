@@ -1,4 +1,4 @@
-package com.example.eraofband.ui.main.board
+package com.example.eraofband.ui.main.board.info
 
 import android.annotation.SuppressLint
 import android.content.Context

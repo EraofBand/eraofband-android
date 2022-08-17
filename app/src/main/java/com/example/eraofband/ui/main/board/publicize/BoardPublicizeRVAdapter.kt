@@ -16,7 +16,7 @@ class BoardPublicizeRVAdapter : RecyclerView.Adapter<BoardPublicizeRVAdapter.Vie
     private lateinit var mItemClickListener: MyItemClickListener
 
     interface MyItemClickListener{ // RV 아이템 클릭 리스너 인터페이스
-        fun onItemClick(boardIdx : String)
+        fun onItemClick(boardIdx : Int)
     }
 
     fun setMyItemClickListener(itemClickListener: MyItemClickListener){ // 리스너 초기화
@@ -36,22 +36,22 @@ class BoardPublicizeRVAdapter : RecyclerView.Adapter<BoardPublicizeRVAdapter.Vie
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        val binding: ItemBoardBinding =
-            ItemBoardBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
-
+        val binding: ItemBoardBinding = ItemBoardBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(boardList[position])
+
+        holder.binding.boardLayout.setOnClickListener { mItemClickListener.onItemClick(boardList[position].boardIdx) }
     }
     override fun getItemCount(): Int = boardList.size
 
-    inner class ViewHolder(private val binding: ItemBoardBinding) :
+    inner class ViewHolder(val binding: ItemBoardBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(boardList: GetBoardListResult) {
 
-            if (boardList.imgUrl == null) { // 게시물 이미지가 없으면 invisible
+            if (boardList.imgUrl == "null") { // 게시물 이미지가 없으면 invisible
                 binding.itemBoardImageIv.visibility = View.INVISIBLE
             } else {
                 Glide.with(itemView).load(boardList.imgUrl)
