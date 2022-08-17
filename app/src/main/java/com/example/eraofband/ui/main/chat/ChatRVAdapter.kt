@@ -1,6 +1,7 @@
 package com.example.eraofband.ui.main.chat
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +15,7 @@ class ChatRVAdapter : RecyclerView.Adapter<ChatRVAdapter.ViewHolder>() {
     private val chatRoomList = arrayListOf<ChatRoom>()
 
     interface MyItemClickListener{
-        fun onItemClick(chatIdx : String)
+        fun onItemClick(chatIdx : String, profileImg : String, nickname : String)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -25,7 +26,7 @@ class ChatRVAdapter : RecyclerView.Adapter<ChatRVAdapter.ViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
     fun clear(){
-        chatRoomList.clear()
+        this.chatRoomList.clear()
         notifyDataSetChanged()
     }
 
@@ -60,7 +61,7 @@ class ChatRVAdapter : RecyclerView.Adapter<ChatRVAdapter.ViewHolder>() {
             binding.chatListMessageTv.text = "마지막으로 보낸 메세지"
 
             binding.itemChatListRv.setOnClickListener {
-                mItemClickListener.onItemClick(chatRoom.chatRoomIdx)
+                mItemClickListener.onItemClick(chatRoom.chatRoomIdx, chatRoom.profileImgUrl, chatRoom.nickname)
             }
         }
     }
