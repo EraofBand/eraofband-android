@@ -39,7 +39,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
 
     // 채팅방 인덱스
     private var chatIdx = ""
-    private var num = 0
+    private var num = -1
 
     private var firstIndex = -1
     private var secondIndex = -1
@@ -74,13 +74,10 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         firstIndex = intent.getIntExtra("firstIndex", -1)
         secondIndex = intent.getIntExtra("secondIndex", -1)
 
-        Log.d("FIRSTINDEX", firstIndex.toString())
-
         binding.chatContentNicknameTv.text = intent.getStringExtra("nickname")
 
         // 채팅방 존재 유무 확인
         chatRoomService.isChatRoom(getJwt()!!, Users(firstIndex, secondIndex))
-
 
         binding.chatContentBackIb.setOnClickListener{ finish() }  // 뒤로가기
 
@@ -96,7 +93,6 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         binding.chatContentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         patchChatService.setChatView(this)
-        getChats()
         readCheck()
 
         binding.chatContentSendTv.setOnClickListener {  // 메세지 보내기
@@ -104,7 +100,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
                 val message = binding.chatContentTextEt.text.toString()
                 val timeStamp = System.currentTimeMillis()
 
-                if(num == 0) createChatRoom()  // 그 전에 올린 채팅이 한 개도 없을 경우
+                if(num == -1) createChatRoom()  // 그 전에 올린 채팅이 한 개도 없을 경우
                 else writeChat(ChatComment(message, false, timeStamp, getUserIdx()))
             }
         }
@@ -134,21 +130,21 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
 
         getChatRef.child(chatIdx).child("comments").addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
             override fun onDataChange(snapshot: DataSnapshot) {
-                num = -1
-                chatRVAdapter.clearChat()  // 새로 불러오기 때문에 초기화 필요
                 if (snapshot.exists()){
+                    num = -1
+                    chatRVAdapter.clearChat()  // 새로 불러오기 때문에 초기화 필요
                     for (commentSnapShot in snapshot.children){  // 하나씩 불러옴
                         val getData = commentSnapShot.getValue(ChatComment::class.java)  // 리스폰스가 들어가겠죵
 
                         if (getData != null) {
                             if(getData.userIdx == getUserIdx()) {
-                                var chat : ChatComment = getData
+                                val chat : ChatComment = getData
                                 chat.type = 1
                                 chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
                                 num++
                                 Log.d("SUCCESS", getData.toString())  // 추가 확인
                             } else{
-                                var chat : ChatComment = getData
+                                val chat : ChatComment = getData
                                 chat.type = 0
                                 chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
                                 num++
@@ -232,6 +228,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
 
         val message = binding.chatContentTextEt.text.toString()
         val timeStamp = System.currentTimeMillis()
+
         writeChat(ChatComment(message, false, timeStamp, getUserIdx()))
     }
 
@@ -251,11 +248,12 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
 
         // 채팅룸 idx가 없으면 랜덤 uuid 생성, 아니면 불러오기
         chatIdx = if(result.chatRoomIdx == "null") "${UUID.randomUUID()}"
-                  else result.chatRoomIdx
-
-        if(result.status == 0){
-            activeChatContent(chatIdx)
-        }
+                  else {
+                      if(result.status == 0){
+                          activeChatContent(chatIdx)
+                      }
+                      result.chatRoomIdx
+                  }
 
         getChats()
     }

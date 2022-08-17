@@ -67,6 +67,7 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
                 hideKeyboard()
                 binding.profileEditNicknameEt.clearFocus()
             }
+            Log.d("CURRENT", currentFocus.toString())
 //            else if(binding.profileEditIntroduceEt.isFocused) hideKeyboard()
         }
 
