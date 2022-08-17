@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.eraofband.databinding.FragmentBoardBinding
+import com.example.eraofband.ui.main.home.HomeVPAdapter
+import com.google.android.material.tabs.TabLayoutMediator
 
 class BoardFragment : Fragment(){
 
@@ -18,7 +20,6 @@ class BoardFragment : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentBoardBinding.inflate(inflater, container, false)
 
         binding.root.setOnClickListener {
@@ -26,5 +27,30 @@ class BoardFragment : Fragment(){
         }
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        connectVP()
+    }
+
+    private fun connectVP() {
+        val boardAdapter = BoardVPAdapter(this)
+        binding.boardVp.adapter = boardAdapter
+
+        TabLayoutMediator(binding.boardTb, binding.boardVp) { tab, position ->
+            when (position) {
+                0 -> tab.text = "자유"
+                1 -> tab.text = "질문"
+                2 -> tab.text = "홍보"
+                3 -> tab.text = "거래"
+                else -> tab.text = "MY"
+            }
+        }.attach()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

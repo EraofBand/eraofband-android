@@ -8,19 +8,23 @@ import com.example.eraofband.databinding.ActivityMainBinding
 import com.example.eraofband.ui.main.board.BoardFragment
 import com.example.eraofband.ui.main.chat.ChatFragment
 import com.example.eraofband.ui.main.community.CommunityFragment
+import com.example.eraofband.ui.main.community.CommunityInterface
 import com.example.eraofband.ui.main.home.HomeFragment
 import com.example.eraofband.ui.main.mypage.MyPageFragment
+import com.example.eraofband.ui.main.search.user.SearchUserFragment
+import com.example.eraofband.ui.main.search.user.SearchUserInterface
 import com.kakao.sdk.user.UserApiClient
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
+    private lateinit var communityInterface: CommunityInterface
     private var boardFragment: BoardFragment? = null
     private var communityFragment: CommunityFragment? = null
     private var homeFragment: HomeFragment? = null
     private var chatFragment: ChatFragment? = null
     private var myPageFragment: MyPageFragment? = null
+    private var nowCommunity = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +60,11 @@ class MainActivity : AppCompatActivity() {
         return userSP.getString("jwt", "")
     }
 
+    fun setUserView(cf: CommunityFragment) {
+        communityFragment = cf
+        communityInterface = communityFragment as CommunityFragment
+    }
+
     private fun initBottomNav(){
         // 시작 화면은 홈 화면으로 설정
         homeFragment = HomeFragment()
@@ -72,6 +81,7 @@ class MainActivity : AppCompatActivity() {
 
             binding.mainBottomNav.setBackgroundResource(R.drawable.bottom_nav_bg)
             binding.mainBottomNav.selectedItemId = R.id.home
+            nowCommunity = false
         }
 
         binding.mainBottomNav.setOnItemSelectedListener{
@@ -90,7 +100,13 @@ class MainActivity : AppCompatActivity() {
                     if(chatFragment != null)  supportFragmentManager.beginTransaction().hide(chatFragment!!).commitAllowingStateLoss()
                     if(myPageFragment != null)  supportFragmentManager.beginTransaction().hide(myPageFragment!!).commitAllowingStateLoss()
 
+
                     binding.mainBottomNav.setBackgroundResource(R.drawable.bottom_nav_bg)
+
+                    if (nowCommunity) {
+                        communityInterface.refresh()
+                    }
+                    nowCommunity = true
                     return@setOnItemSelectedListener true
                 }
 
@@ -107,6 +123,7 @@ class MainActivity : AppCompatActivity() {
                     if(myPageFragment != null)  supportFragmentManager.beginTransaction().hide(myPageFragment!!).commitAllowingStateLoss()
 
                     binding.mainBottomNav.setBackgroundResource(R.drawable.bottom_nav_bg)
+                    nowCommunity = false
                     return@setOnItemSelectedListener true
                 }
 
@@ -124,6 +141,7 @@ class MainActivity : AppCompatActivity() {
 
 
                     binding.mainBottomNav.setBackgroundResource(R.drawable.bottom_nav_bg)
+                    nowCommunity = false
                     return@setOnItemSelectedListener true
                 }
 
@@ -140,6 +158,7 @@ class MainActivity : AppCompatActivity() {
                     if(myPageFragment != null)  supportFragmentManager.beginTransaction().show(myPageFragment!!).commitAllowingStateLoss()
 
                     binding.mainBottomNav.setBackgroundResource(R.drawable.bottom_nav_bg_none)
+                    nowCommunity = false
                     return@setOnItemSelectedListener true
                 }
             }

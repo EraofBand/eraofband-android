@@ -10,7 +10,7 @@
     <color name="transparent">#00ff0000</color>
     <color name="background">#111111</color>
     <color name="blue">#1864FD</color>
-
+    <color name="red">#DD0000</color>
     <color name="gray">#B7B7B7</color>
 
     <color name="light_gray">#B7B7B7</color>

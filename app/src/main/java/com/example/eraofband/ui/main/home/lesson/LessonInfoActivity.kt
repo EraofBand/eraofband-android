@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityLessonInfoBinding
+import com.example.eraofband.remote.band.getBand.GetBandService
 import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoResult
 import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoService
 import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoView
@@ -34,6 +35,7 @@ class LessonInfoActivity : AppCompatActivity(), GetLessonInfoView, LessonLikeVie
     private var lessonMember = false
     private var isFull = false
     private var studentIdxList = arrayListOf<Int>()
+    private var getLessonInfo = GetLessonInfoService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +44,14 @@ class LessonInfoActivity : AppCompatActivity(), GetLessonInfoView, LessonLikeVie
 
         val lessonLike = LessonLikeService() // 레슨 좋아요 api
         lessonLike.setLikeView(this)
+
+        binding.homeLessonInfoRl.setOnRefreshListener {
+
+            getLessonInfo.getLessonInfoView(this)
+            getLessonInfo.getLessonInfo(getJwt()!!, lessonIdx!!)
+
+            binding.homeLessonInfoRl.isRefreshing = false
+        }
 
         binding.lessonInfoBackIv.setOnClickListener { // 뒤로가기
             finish()
@@ -95,7 +105,6 @@ class LessonInfoActivity : AppCompatActivity(), GetLessonInfoView, LessonLikeVie
     override fun onResume() {
         super.onResume()
         lessonIdx = intent.getIntExtra("lessonIdx", 0)
-        var getLessonInfo = GetLessonInfoService()
         getLessonInfo.getLessonInfoView(this)
         getLessonInfo.getLessonInfo(getJwt()!!, lessonIdx!!)
     }
