@@ -54,7 +54,7 @@
         android:id="@+id/home_tb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+
         app:tabBackground="@drawable/tab_home_underline"
         app:tabRippleColor="@android:color/transparent"
         app:tabSelectedTextColor="@color/blue"

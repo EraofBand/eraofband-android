@@ -19,21 +19,23 @@ import com.example.eraofband.databinding.FragmentCommunityBinding
 import com.example.eraofband.remote.portfolio.getPofol.GetOtherPofolService
 import com.example.eraofband.remote.portfolio.getPofol.GetOtherPofolView
 import com.example.eraofband.remote.portfolio.getPofol.GetPofolResult
+import com.example.eraofband.ui.main.MainActivity
 import com.example.eraofband.ui.main.home.session.band.BandDeleteDialog
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.mypage.portfolio.PofolEditActivity
 import com.example.eraofband.ui.main.mypage.portfolio.PortfolioCommentActivity
 import com.example.eraofband.ui.main.mypage.portfolio.PortfolioMakeActivity
+import com.example.eraofband.ui.main.search.SearchActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 
-class CommunityFragment : Fragment(), GetOtherPofolView {
+class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
 
     private var _binding: FragmentCommunityBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
 
     private lateinit var feedRVAdapter: CommunityFeedRVAdapter
     private val pofolService = GetOtherPofolService()
-
+    private var nowPosition = 0
     private var total = true
     private var lastPofolIdx = 0
     private var add = false
@@ -45,6 +47,12 @@ class CommunityFragment : Fragment(), GetOtherPofolView {
     ): View? {
 
         _binding = FragmentCommunityBinding.inflate(inflater, container, false)
+
+        (activity as MainActivity).setUserView(this)
+
+        add = false
+        pofolService.setPofolView(this)
+        pofolService.getTotalPortfolio(getJwt()!!, 0)
 
         binding.communityTopEditIv.setOnClickListener { startActivity(Intent(activity, PortfolioMakeActivity::class.java)) }
 
@@ -58,6 +66,7 @@ class CommunityFragment : Fragment(), GetOtherPofolView {
                 binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
 
                 total = true
+                nowPosition = 0
             }
         }
 
@@ -71,18 +80,13 @@ class CommunityFragment : Fragment(), GetOtherPofolView {
                 binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
 
                 total = false
+                nowPosition = 1
             }
         }
 
+        layoutRefresh()
+
         return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        add = false
-        pofolService.setPofolView(this)
-        pofolService.getTotalPortfolio(getJwt()!!, 0)
     }
 
     private fun initFeedRV(item: List<GetPofolResult>) {
@@ -193,6 +197,19 @@ class CommunityFragment : Fragment(), GetOtherPofolView {
         popupMenu.show() // 팝업 보여주기
     }
 
+    private fun layoutRefresh() {
+        binding.communityRl.setOnRefreshListener {
+            if (nowPosition == 0) {
+                pofolService.getTotalPortfolio(getJwt()!!, 0)
+                binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
+            } else {
+                pofolService.getFollowPortfolio(getJwt()!!, 0)
+                binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
+            }
+            binding.communityRl.isRefreshing = false
+        }
+    }
+
     private fun getUserIdx() : Int {
         val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
         return userSP.getInt("userIdx", 0)
@@ -223,4 +240,12 @@ class CommunityFragment : Fragment(), GetOtherPofolView {
         Log.d("GET/FAIL", "$code $message")
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun refresh() {
+        binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
+    }
 }

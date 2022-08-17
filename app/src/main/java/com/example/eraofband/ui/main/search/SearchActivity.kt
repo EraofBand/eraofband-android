@@ -73,10 +73,13 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
             override fun afterTextChanged(s: Editable?) {
                 if (s.toString().isNotEmpty()) {
                     when (nowPage) {
-                        0 -> {userService.getSearchUser(s.toString()) }  //  s = 검색 문자열
+                        0 -> userService.getSearchUser(s.toString())  //  s = 검색 문자열
                         1 -> bandService.getSearchBand(s.toString())
                         else -> lessonService.getSearchLesson(s.toString())
                     }
+                }
+                if (s.toString() == ""){
+                    searchUserInterface.initUserRV(arrayListOf())
                 }
             }
         })
