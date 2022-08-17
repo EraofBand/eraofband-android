@@ -76,6 +76,9 @@
     <string name="follow">팔로우</string>
 
     <!-- 게시판 관련 String -->
+    <string name="board_edit">게시물 수정하기</string>
+    <string name="board_remove">게시물 삭제하기</string>
+    <string name="board_report">게시물 신고하기</string>
 
     <!-- 게시글 자세히 보기 관련 String -->
     <string name="free_board">자유게시판</string>

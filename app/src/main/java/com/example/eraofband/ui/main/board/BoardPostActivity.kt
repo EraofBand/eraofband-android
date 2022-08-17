@@ -25,13 +25,18 @@ import com.example.eraofband.remote.board.boardComment.BoardCommentView
 import com.example.eraofband.remote.board.boardLike.BoardLikeResult
 import com.example.eraofband.remote.board.boardLike.BoardLikeService
 import com.example.eraofband.remote.board.boardLike.BoardLikeView
+import com.example.eraofband.remote.board.deleteBoard.DeleteBoardService
+import com.example.eraofband.remote.board.deleteBoard.DeleteBoardView
 import com.example.eraofband.remote.board.getBoard.*
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 
-class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, BoardLikeView {
+class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, BoardLikeView, DeleteBoardView {
 
     private lateinit var binding: ActivityBoardPostBinding
+
+    private var boardIdx = -1
+    private var userIdx = -1
 
     private val likeService = BoardLikeService()
     private var like = false
@@ -56,6 +61,13 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
 
         binding.root.setOnClickListener {
             if(binding.boardPostWriteCommentEt.isFocused) hideKeyboard()
+        }
+
+        binding.boardPostTopMoreIv.setOnClickListener { showPopup(binding.boardPostTopMoreIv) }
+
+        binding.boardPostLikeIv.setOnClickListener {
+            if(like) likeService.deleteLike(getJwt()!!, boardIdx)
+            else likeService.like(getJwt()!!, boardIdx)
         }
 
         binding.boardPostWriteCommentUploadTv.setOnClickListener {
@@ -112,7 +124,7 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
         commentRVAdapter.setMyItemClickListener(object : PostCommentRVAdapter.MyItemClickListener {
             // 팝업 메뉴 띄우기
             override fun onShowPopUp(commentIdx: Int, position: Int, userIdx: Int, view: View) {
-                showPopup(commentIdx, position, userIdx, view)
+                showCommentPopup(commentIdx, position, userIdx, view)
             }
 
             @SuppressLint("SetTextI18n")
@@ -147,7 +159,39 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
         })
     }
 
-    private fun showPopup(commentIdx: Int, position: Int, userIdx: Int, view: View) {  // 내 댓글인 경우 삭제 가능
+    private fun showPopup(view: View) {  // 내 댓글인 경우 삭제 가능
+        val themeWrapper = ContextThemeWrapper(applicationContext , R.style.MyPopupMenu)
+        val popupMenu = PopupMenu(themeWrapper, view, Gravity.END, 0, R.style.MyPopupMenu)
+        popupMenu.menuInflater.inflate(R.menu.board_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            if(item!!.itemId == R.id.board_edit) {
+                // 수정 창 띄우기
+            }
+            else if (item.itemId == R.id.board_delete) {  // 게시물 삭제하기
+                val deleteService = DeleteBoardService()
+                deleteService.setDeleteView(this)
+                deleteService.deleteBoard(getJwt()!!, boardIdx, getUserIdx())
+            }
+            else {  // 게시물 신고하기
+                Log.d("REPORT", "COMMENT")
+            }
+
+            false
+        }
+
+        if(userIdx == getUserIdx()) {
+            popupMenu.menu.setGroupVisible(R.id.board_report_gr, false)
+        }
+        else {
+            popupMenu.menu.setGroupVisible(R.id.board_edit_gr, false)
+            popupMenu.menu.setGroupVisible(R.id.board_delete_gr, false)
+        }
+
+        popupMenu.show() // 팝업 보여주기
+    }
+
+    private fun showCommentPopup(commentIdx: Int, position: Int, userIdx: Int, view: View) {  // 내 댓글인 경우 삭제 가능
         val themeWrapper = ContextThemeWrapper(applicationContext , R.style.MyPopupMenu)
         val popupMenu = PopupMenu(themeWrapper, view, Gravity.END, 0, R.style.MyPopupMenu)
         popupMenu.menuInflater.inflate(R.menu.comment_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
@@ -222,6 +266,8 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
     @SuppressLint("SetTextI18n")
     override fun onGetSuccess(result: GetBoardResult) {
         Log.d("GET/SUC", "$result")
+        boardIdx = result.boardIdx
+        userIdx = result.userIdx
 
         binding.boardPostTopTitleTv.text = getCategory(result.category)  // 게시판 설정
 
@@ -245,10 +291,6 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
                     false
                 }
 
-        binding.boardPostLikeIv.setOnClickListener {
-            if(like) likeService.deleteLike(getJwt()!!, result.boardIdx)
-            else likeService.like(getJwt()!!, result.boardIdx)
-        }
         initCommentRV(result.getBoardComments)
     }
 
@@ -265,7 +307,7 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
         }
    }
 
-    override fun onWriteSuccess(result: GetBoardComments) {
+    override fun onWriteCommentSuccess(result: GetBoardComments) {
         Log.d("WRITE/SUC", "$result")
         if(binding.boardPostWriteReplyInfoTv.visibility == View.GONE) {
             commentRVAdapter.addComment(result)
@@ -284,11 +326,11 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
         }
     }
 
-    override fun onWriteFailure(code: Int, message: String) {
+    override fun onWriteCommentFailure(code: Int, message: String) {
         Log.d("WRITE/FAIL", "$code $message")
     }
 
-    override fun onDeleteSuccess(result: String) {
+    override fun onDeleteCommentSuccess(result: String) {
         Log.d("DELETE/SUC", result)
         commentRVAdapter.deleteComment(commentPosition)
         commentPosition = -1  // position 값 초기화 <- 엉뚱한 댓글이 삭제되지 않도록
@@ -299,7 +341,7 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()  // 삭제 불가능하다는 토스트 메세지를 띄워줌
     }
 
-    override fun onDeleteFailure(code: Int, message: String) {
+    override fun onDeleteCommentFailure(code: Int, message: String) {
         Log.d("DELETE/FAIL", "$code $message")
     }
 
@@ -326,6 +368,15 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
     }
 
     override fun onDeleteLikeFailure(code: Int, message: String) {
+        Log.d("DELETE/FAIL", "$code $message")
+    }
+
+    override fun onDeleteSuccess(result: String) {
+        Log.d("DELETE/SUC", result)
+        finish()
+    }
+
+    override fun onDeleteFailure(code: Int, message: String) {
         Log.d("DELETE/FAIL", "$code $message")
     }
 }

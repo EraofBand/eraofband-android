@@ -26,8 +26,8 @@ class BoardCommentService {
                 val resp : BoardWriteCommentResponse = response.body()!!
 
                 when(resp.code) {
-                    1000 -> boardView.onWriteSuccess(resp.result)  // 성공
-                    else -> boardView.onWriteFailure(resp.code, resp.message)
+                    1000 -> boardView.onWriteCommentSuccess(resp.result)  // 성공
+                    else -> boardView.onWriteCommentFailure(resp.code, resp.message)
                 }
             }
 
@@ -48,9 +48,9 @@ class BoardCommentService {
                 val resp : BoardDeleteCommentResponse = response.body()!!
 
                 when(resp.code) {
-                    1000 -> boardView.onDeleteSuccess(resp.result)  // 성공
+                    1000 -> boardView.onDeleteCommentSuccess(resp.result)  // 성공
                     2107 -> boardView.onHaveReply(resp.code, resp.message)
-                    else -> boardView.onDeleteFailure(resp.code, resp.message)
+                    else -> boardView.onDeleteCommentFailure(resp.code, resp.message)
                 }
             }
 
@@ -71,8 +71,8 @@ class BoardCommentService {
                 val resp : BoardWriteCommentResponse = response.body()!!
 
                 when(resp.code) {
-                    1000 -> boardView.onWriteSuccess(resp.result)  // 성공
-                    else -> boardView.onWriteFailure(resp.code, resp.message)
+                    1000 -> boardView.onWriteCommentSuccess(resp.result)  // 성공
+                    else -> boardView.onWriteCommentFailure(resp.code, resp.message)
                 }
             }
 

@@ -19,6 +19,7 @@ import com.example.eraofband.remote.board.boardComment.BoardDeleteCommentRespons
 import com.example.eraofband.remote.board.boardComment.BoardWriteCommentResponse
 import com.example.eraofband.remote.board.boardLike.BoardDeleteLikeResponse
 import com.example.eraofband.remote.board.boardLike.BoardLikeResponse
+import com.example.eraofband.remote.board.deleteBoard.DeleteBoardResponse
 import com.example.eraofband.remote.board.getBoard.GetBoardResponse
 import com.example.eraofband.remote.chat.getChatList.GetChatListResponse
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResponse
@@ -162,6 +163,10 @@ interface API {
     // 게시물 좋아요 취소
     @DELETE("/board/unlikes/{boardIdx}")
     fun deleteBoardLike(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardIdx") boardIdx: Int) : Call<BoardDeleteLikeResponse>
+
+    // 게시물 삭제
+    @PATCH("/board/status/{boardIdx}")
+    fun deleteBoard(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardIdx") boardIdx: Int, @Body userIdx: Int) : Call<DeleteBoardResponse>
 
     // 내 포트폴리오 리스트 조회
     @GET("/pofols/info/{userIdx}")
