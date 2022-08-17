@@ -2,6 +2,7 @@ package com.example.eraofband.ui.main.chat
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -104,7 +105,7 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         lastTime = if(position > 0){
             chatContents[position - 1].timeStamp
         } else {
@@ -113,16 +114,16 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
 
         val currentItem = chatContents[position]
         viewType = currentItem.type
-        if(viewType == 0){
-            lastIndex = position
-        }
         when(currentItem.type){
-            0 -> (holder as LeftViewHolder).bind(currentItem)
+            0 -> {
+                (holder as LeftViewHolder).bind(currentItem)
+                 lastIndex = position
+                 Log.d("LAST INDEX 2", lastIndex.toString())}
             1 -> (holder as RightViewHolder).bind(currentItem)
         }
     }
 
-    fun returnLastIndex(): Int = lastIndex
+    fun returnLastIndex() : Int = lastIndex
 
     override fun getItemCount(): Int = chatContents.size
 

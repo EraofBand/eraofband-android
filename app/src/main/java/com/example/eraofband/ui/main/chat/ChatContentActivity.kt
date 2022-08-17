@@ -74,8 +74,6 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         firstIndex = intent.getIntExtra("firstIndex", -1)
         secondIndex = intent.getIntExtra("secondIndex", -1)
 
-        Log.d("FIRSTINDEX", firstIndex.toString())
-
         binding.chatContentNicknameTv.text = intent.getStringExtra("nickname")
 
         // 채팅방 존재 유무 확인
@@ -95,7 +93,6 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         binding.chatContentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         patchChatService.setChatView(this)
-        readCheck()
 
         binding.chatContentSendTv.setOnClickListener {  // 메세지 보내기
             if(binding.chatContentTextEt.text.isNotEmpty()) {
@@ -132,24 +129,26 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
 
         getChatRef.child(chatIdx).child("comments").addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
             override fun onDataChange(snapshot: DataSnapshot) {
-                num = -1
-                chatRVAdapter.clearChat()  // 새로 불러오기 때문에 초기화 필요
                 if (snapshot.exists()){
+                    num = 0
+                    chatRVAdapter.clearChat()  // 새로 불러오기 때문에 초기화 필요
                     for (commentSnapShot in snapshot.children){  // 하나씩 불러옴
                         val getData = commentSnapShot.getValue(ChatComment::class.java)  // 리스폰스가 들어가겠죵
 
                         if (getData != null) {
                             if(getData.userIdx == getUserIdx()) {
-                                var chat : ChatComment = getData
+                                val chat : ChatComment = getData
                                 chat.type = 1
                                 chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
                                 num++
+                                readCheck()
                                 Log.d("SUCCESS", getData.toString())  // 추가 확인
                             } else{
-                                var chat : ChatComment = getData
+                                val chat : ChatComment = getData
                                 chat.type = 0
                                 chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
                                 num++
+                                readCheck()
                                 Log.d("SUCCESS", getData.toString())  // 추가 확인
                             }
                         }
@@ -171,7 +170,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         // 채팅방이 있는지 없는지 파악 여부는 comments가 1개인지로 파악
         // 우선 나간 채팅은 0으로 할게요!! 0부터 다 보여주면 되니까!!
         Log.d("CHATIDX", chatIdx)
-        sendChatRef.child(chatIdx).child("users").setValue(ChatUser(firstIndex, 0, secondIndex, 0))
+        sendChatRef.child(chatIdx).child("users").setValue(ChatUser(firstIndex, -1, secondIndex, -1))
             .addOnSuccessListener {
                 makeChatService.makeChat(MakeChatRoom(chatIdx, firstIndex, secondIndex))
             }  // 채팅방 users 입력, 채팅방 생성
@@ -220,6 +219,8 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         val hashMap = HashMap<String, Boolean>()
         hashMap["readUser"] = true
 
+        Log.d("LAST INDEX", chatRVAdapter.returnLastIndex().toString())
+
         for( i in 0 until chatRVAdapter.returnLastIndex() ) {
             sendChatRef.child(chatIdx).child("comments").child("$i").updateChildren(hashMap as Map<String, Any>)
         }
@@ -230,6 +231,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
 
         val message = binding.chatContentTextEt.text.toString()
         val timeStamp = System.currentTimeMillis()
+
         writeChat(ChatComment(message, false, timeStamp, getUserIdx()))
     }
 
@@ -248,12 +250,13 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         Log.d("GET/SUC", "$result")
 
         // 채팅룸 idx가 없으면 랜덤 uuid 생성, 아니면 불러오기
-        chatIdx = if(result.chatRoomIdx.isNullOrEmpty()) "${UUID.randomUUID()}"
-                  else result.chatRoomIdx!!
-
-        if(result.status == 0){
-            activeChatContent(chatIdx)
-        }
+        chatIdx = if(result.chatRoomIdx == "null") "${UUID.randomUUID()}"
+                    else {
+                        if(result.status == 0){
+                            activeChatContent(chatIdx)
+                        }
+                        result.chatRoomIdx
+                    }
 
         getChats()
     }
