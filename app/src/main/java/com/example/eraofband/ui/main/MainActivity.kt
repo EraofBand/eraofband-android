@@ -2,6 +2,7 @@ package com.example.eraofband.ui.main
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityMainBinding
@@ -11,20 +12,21 @@ import com.example.eraofband.ui.main.community.CommunityFragment
 import com.example.eraofband.ui.main.community.CommunityInterface
 import com.example.eraofband.ui.main.home.HomeFragment
 import com.example.eraofband.ui.main.mypage.MyPageFragment
-import com.example.eraofband.ui.main.search.user.SearchUserFragment
-import com.example.eraofband.ui.main.search.user.SearchUserInterface
 import com.kakao.sdk.user.UserApiClient
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var communityInterface: CommunityInterface
+
     private var boardFragment: BoardFragment? = null
     private var communityFragment: CommunityFragment? = null
     private var homeFragment: HomeFragment? = null
     private var chatFragment: ChatFragment? = null
     private var myPageFragment: MyPageFragment? = null
     private var nowCommunity = false
+
+    private var waitTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +65,15 @@ class MainActivity : AppCompatActivity() {
     fun setUserView(cf: CommunityFragment) {
         communityFragment = cf
         communityInterface = communityFragment as CommunityFragment
+    }
+
+    override fun onBackPressed() {
+        if(System.currentTimeMillis() - waitTime >= 1000 ) {
+            waitTime = System.currentTimeMillis()
+            Toast.makeText(this,"앱을 종료하시겠습니까?",Toast.LENGTH_SHORT).show()
+        } else {
+            finish() // 액티비티 종료
+        }
     }
 
     private fun initBottomNav(){
