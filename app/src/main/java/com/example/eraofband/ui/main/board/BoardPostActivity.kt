@@ -85,7 +85,7 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView {
 
         val comment = arrayListOf<GetBoardComments>()
         comment.addAll(item)
-        comment.sortBy { it.groupNum }
+        comment.sortByDescending { it.groupNum }
         comment.reverse()
         Log.d("COMMENT", "$comment")
 
@@ -206,7 +206,7 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView {
 
     override fun onWriteSuccess(result: GetBoardComments) {
         Log.d("WRITE/SUC", "$result")
-        commentRVAdapter.addComment(0, result)
+        commentRVAdapter.addComment(result)
     }
 
     override fun onWriteFailure(code: Int, message: String) {

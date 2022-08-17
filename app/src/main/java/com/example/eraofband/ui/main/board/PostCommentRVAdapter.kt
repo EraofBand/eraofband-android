@@ -24,7 +24,13 @@ class PostCommentRVAdapter(private val context: Context) : RecyclerView.Adapter<
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addComment(position: Int, comment: GetBoardComments) {
+    fun addComment(comment: GetBoardComments) {
+        this.comment.add(comment)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun addReply(position: Int, comment: GetBoardComments) {
         this.comment.add(position, comment)
         notifyDataSetChanged()
     }
