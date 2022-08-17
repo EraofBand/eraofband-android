@@ -22,9 +22,12 @@ class SearchLessonFragment : Fragment(), SearchLessonInterface {
     ): View? {
         _binding = FragmentSearchLessonBinding.inflate(inflater, container, false)
 
-        (activity as SearchActivity).setLessonView(this)
-
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as SearchActivity).setLessonView(this)
     }
 
     private fun initRVAdapter(lessonList: List<GetSearchLessonResult>){

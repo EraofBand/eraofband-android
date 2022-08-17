@@ -22,12 +22,15 @@ class SearchBandFragment : Fragment(), SearchBandInterface {
     ): View? {
         _binding = FragmentSearchBandBinding.inflate(inflater, container, false)
 
-        (activity as SearchActivity).setBandView(this)
-
         return binding.root
     }
 
-    fun initRVAdapter(bandList: List<GetSearchBandResult>){
+    override fun onResume() {
+        super.onResume()
+        (activity as SearchActivity).setBandView(this)
+    }
+
+    private fun initRVAdapter(bandList: List<GetSearchBandResult>){
         val searchBandRVAdapter = SearchBandRVAdapter()
         binding.searchBandRv.adapter = searchBandRVAdapter
         binding.searchBandRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
