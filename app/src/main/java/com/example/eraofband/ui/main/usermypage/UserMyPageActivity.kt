@@ -75,7 +75,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         binding.userMypageFollowTv.setOnClickListener {  // 팔로우 리스트에서 언팔 및 팔로우 시 visibility 변경
             binding.userMypageFollowTv.visibility = View.INVISIBLE
             binding.userMypageUnfollowTv.visibility = View.VISIBLE
-            binding.userMypageFollowerCntTv.text = "${followerCnt++}"
+            binding.userMypageFollowerCntTv.text = (followerCnt + 1).toString()
             followerCnt += 1
             val userFollowService = UserFollowService() // 팔로우
             userFollowService.setUserFollowView(this)

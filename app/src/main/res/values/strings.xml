@@ -71,6 +71,9 @@
     <string name="lesson_intro">레슨 소개</string>
     <string name="student_list">수강생 목록</string>
 
+    <!-- 게시판 관련 String -->
+    <string name="board">게시판</string>
+
     <!-- 피드 관련 String -->
     <string name="feed">피드</string>
     <string name="follow">팔로우</string>

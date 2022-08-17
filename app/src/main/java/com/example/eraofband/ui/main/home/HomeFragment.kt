@@ -90,7 +90,7 @@ class HomeFragment : Fragment(), GetNewNoticeView {
     }
 
     override fun onGetSuccess(result: GetNewNoticeResult) {
-        Log.d("GET / SUCCESS",result.toString())
+        Log.d("GET / SUCCESS",result. toString())
         if (result.newAlarmExist == 0) {
             binding.homeNoticeIb.setImageResource(R.drawable.ic_home_alarm_off)
         } else {
