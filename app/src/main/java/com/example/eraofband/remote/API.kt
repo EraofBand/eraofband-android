@@ -149,6 +149,10 @@ interface API {
     @PATCH("/board/comment/status/{boardCommentIdx}")
     fun deleteBoardComment(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardCommentIdx") boardCommentIdx: Int, @Body userIdx: Int) : Call<BoardDeleteCommentResponse>
 
+    // 게시물 답글 등록
+    @POST("/board/re-comment/{boardIdx}")
+    fun writeBoardReply(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardIdx") boardIdx: Int, @Body reply: Reply) : Call<BoardWriteCommentResponse>
+
     // 내 포트폴리오 리스트 조회
     @GET("/pofols/info/{userIdx}")
     fun getMyPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<GetPofolResponse>

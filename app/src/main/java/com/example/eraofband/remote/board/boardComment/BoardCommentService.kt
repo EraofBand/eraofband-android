@@ -2,6 +2,7 @@ package com.example.eraofband.remote.board.boardComment
 
 import android.util.Log
 import com.example.eraofband.data.Comment
+import com.example.eraofband.data.Reply
 import com.example.eraofband.remote.API
 import com.example.eraofband.remote.NetworkModule
 import retrofit2.Call
@@ -24,9 +25,9 @@ class BoardCommentService {
 
                 val resp : BoardWriteCommentResponse = response.body()!!
 
-                when(val code = resp.code) {
+                when(resp.code) {
                     1000 -> boardView.onWriteSuccess(resp.result)  // 성공
-                    else -> boardView.onWriteFailure(code, resp.message)
+                    else -> boardView.onWriteFailure(resp.code, resp.message)
                 }
             }
 
@@ -54,6 +55,28 @@ class BoardCommentService {
             }
 
             override fun onFailure(call: Call<BoardDeleteCommentResponse>, t: Throwable) {
+                // 네트워크 연결이 실패했을 때 실행
+                Log.d("COMMENT / FAILURE", t.message.toString())
+            }
+
+        })  // api 호출, enqueue에서 응답 처리
+    }
+
+    fun writeReply(jwt: String, boardIdx: Int, reply: Reply) {  // 댓글 달기
+        boardService?.writeBoardReply(jwt, boardIdx, reply)?.enqueue(object : Callback<BoardWriteCommentResponse> {
+            override fun onResponse(call: Call<BoardWriteCommentResponse>, response: Response<BoardWriteCommentResponse>) {
+                // 응답이 왔을 때 처리
+                Log.d("COMMENT / SUCCESS", response.toString())
+
+                val resp : BoardWriteCommentResponse = response.body()!!
+
+                when(resp.code) {
+                    1000 -> boardView.onWriteSuccess(resp.result)  // 성공
+                    else -> boardView.onWriteFailure(resp.code, resp.message)
+                }
+            }
+
+            override fun onFailure(call: Call<BoardWriteCommentResponse>, t: Throwable) {
                 // 네트워크 연결이 실패했을 때 실행
                 Log.d("COMMENT / FAILURE", t.message.toString())
             }

@@ -50,6 +50,7 @@ class PostCommentRVAdapter(private val context: Context) : RecyclerView.Adapter<
     interface MyItemClickListener {
         fun onItemClick(comment: GetBoardComments)
         fun onShowPopUp(commentIdx: Int, position: Int, userIdx: Int, view: View)
+        fun onWriteReply(commentIdx: Int, name: String, position: Int)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -84,6 +85,9 @@ class PostCommentRVAdapter(private val context: Context) : RecyclerView.Adapter<
 
             // 댓글 팝업 메뉴 띄우기
             holder.binding.postCommentMoreIv.setOnClickListener { mItemClickListener.onShowPopUp(comment[position].boardCommentIdx, position, comment[position].userIdx, holder.binding.postCommentMoreIv) }
+
+            // 답글 달기
+            holder.binding.postCommentTimeReplyTv.setOnClickListener { mItemClickListener.onWriteReply(comment[position].boardCommentIdx, comment[position].nickName, findIndex(position, comment[position].groupNum)) }
 
             // 유저 페이지로 이동
             holder.binding.postCommentProfileIv.setOnClickListener { mItemClickListener.onItemClick(comment[position]) }
@@ -135,5 +139,14 @@ class PostCommentRVAdapter(private val context: Context) : RecyclerView.Adapter<
             binding.postReplyCommentTv.text = comment.content  // 댓글 내용
             binding.postReplyTimeTv.text = comment.updatedAt  // 댓글 단 시간
         }
+    }
+
+    private fun findIndex(position: Int, groupNum: Int): Int {
+        var index = position
+        while (index < comment.size){
+           if(comment[index].groupNum != groupNum) return index
+            index++
+        }
+        return index  // 그 댓글 밑에 아무것도 없는 경우
     }
 }

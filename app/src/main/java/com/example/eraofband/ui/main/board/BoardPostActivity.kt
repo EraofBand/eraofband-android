@@ -1,6 +1,7 @@
 package com.example.eraofband.ui.main.board
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +18,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
 import com.example.eraofband.data.Comment
+import com.example.eraofband.data.Reply
 import com.example.eraofband.databinding.ActivityBoardPostBinding
 import com.example.eraofband.remote.board.boardComment.BoardCommentService
 import com.example.eraofband.remote.board.boardComment.BoardCommentView
@@ -30,6 +33,7 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView {
     private lateinit var commentRVAdapter: PostCommentRVAdapter
     private val commentService = BoardCommentService()
     private var commentPosition = -1
+    private var groupNum = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,11 +46,17 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView {
 
         binding.boardPostTopBackIv.setOnClickListener { finish() }  // 뒤로가기
 
+        binding.root.setOnClickListener {
+            if(binding.boardPostWriteCommentEt.isFocused) hideKeyboard()
+        }
+
         binding.boardPostWriteCommentUploadTv.setOnClickListener {
             val comment = binding.boardPostWriteCommentEt.text.toString()
             val userIdx = getUserIdx()
             if(comment.isNotEmpty()) {  // 댓글에 적은 내용이 있는 경우 댓글 업로드
-                commentService.writeComment(getJwt()!!, 9, Comment(comment, userIdx))
+                // 답글 어쩌구가 있으면 답글, 아무것도 없으면 댓글
+                if(binding.boardPostWriteReplyInfoTv.visibility == View.VISIBLE) commentService.writeReply(getJwt()!!, 9, Reply(comment, groupNum, userIdx))
+                else commentService.writeComment(getJwt()!!, 9, Comment(comment, userIdx))
             }
         }
 
@@ -95,6 +105,25 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView {
             // 팝업 메뉴 띄우기
             override fun onShowPopUp(commentIdx: Int, position: Int, userIdx: Int, view: View) {
                 showPopup(commentIdx, position, userIdx, view)
+            }
+
+            @SuppressLint("SetTextI18n")
+            override fun onWriteReply(commentIdx: Int, name: String, position: Int) {
+                binding.boardPostWriteReplyInfoTv.text = "$name${getString(R.string.write_reply_info)}"
+                groupNum = commentIdx
+                commentPosition = position
+
+                binding.boardPostWriteReplyInfoTv.visibility = View.VISIBLE
+                binding.boardPostWriteReplyDeleteIv.visibility = View.VISIBLE
+                showKeyboard()
+
+                binding.boardPostWriteReplyDeleteIv.setOnClickListener {
+                    binding.boardPostWriteCommentEt.setText("")
+                    binding.boardPostWriteReplyInfoTv.visibility = View.GONE
+                    binding.boardPostWriteReplyDeleteIv.visibility = View.GONE
+
+                    if(binding.boardPostWriteCommentEt.isFocused) hideKeyboard()
+                }
             }
 
             override fun onItemClick(comment: GetBoardComments) {
@@ -161,6 +190,17 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView {
         })
     }
 
+    private fun hideKeyboard() {
+        val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+    }
+
+    private fun showKeyboard() {
+        binding.boardPostWriteCommentEt.requestFocus()
+        val inputManager : InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.showSoftInput(binding.boardPostWriteCommentEt, InputMethodManager.SHOW_IMPLICIT)
+    }
+
     private fun getJwt() : String? {
         val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getString("jwt", "")
@@ -206,7 +246,21 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView {
 
     override fun onWriteSuccess(result: GetBoardComments) {
         Log.d("WRITE/SUC", "$result")
-        commentRVAdapter.addComment(result)
+        if(binding.boardPostWriteReplyInfoTv.visibility == View.GONE) {
+            commentRVAdapter.addComment(result)
+
+            binding.boardPostWriteCommentEt.setText("")
+            hideKeyboard()
+        }
+        else {
+            commentRVAdapter.addReply(commentPosition, result)
+            commentPosition = -1
+
+            binding.boardPostWriteCommentEt.setText("")
+            hideKeyboard()
+            binding.boardPostWriteReplyInfoTv.visibility = View.GONE
+            binding.boardPostWriteReplyDeleteIv.visibility = View.GONE
+        }
     }
 
     override fun onWriteFailure(code: Int, message: String) {

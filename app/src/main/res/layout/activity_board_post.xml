@@ -306,7 +306,9 @@
             app:layout_constraintTop_toBottomOf="@id/board_post_write_reply_delete_iv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent">
+            <requestFocus/>
+        </EditText>
 
         <TextView
             android:id="@+id/board_post_write_comment_upload_tv"
