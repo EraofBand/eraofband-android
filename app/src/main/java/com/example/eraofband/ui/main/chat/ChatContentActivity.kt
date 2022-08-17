@@ -3,18 +3,21 @@ package com.example.eraofband.ui.main.chat
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
 import com.example.eraofband.data.ChatComment
 import com.example.eraofband.data.ChatUser
 import com.example.eraofband.data.MakeChatRoom
 import com.example.eraofband.data.Users
 import com.example.eraofband.databinding.ActivityChatContentBinding
+import com.example.eraofband.remote.chat.activeChat.ActiveChatService
+import com.example.eraofband.remote.chat.activeChat.ActiveChatView
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResult
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomService
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomView
@@ -30,7 +33,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
-class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, PatchChatView {
+class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, PatchChatView, ActiveChatView {
 
     private lateinit var binding: ActivityChatContentBinding
 
@@ -53,6 +56,12 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
     private val makeChatService = MakeChatService()
     private val chatRoomService = IsChatRoomService()
 
+    // 채팅방 어댑터
+    private lateinit var chatRVAdapter : ChatContentRVAdapter
+
+    // 채팅방 나가기 API
+    private val patchChatService = PatchChatService()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -67,7 +76,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
 
         Log.d("FIRSTINDEX", firstIndex.toString())
 
-        binding.chatContentNicknameTv.text = intent.getStringExtra("name")
+        binding.chatContentNicknameTv.text = intent.getStringExtra("nickname")
 
         // 채팅방 존재 유무 확인
         chatRoomService.isChatRoom(getJwt()!!, Users(firstIndex, secondIndex))
@@ -78,6 +87,17 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         binding.root.setOnClickListener {
             if(binding.chatContentTextEt.isFocused) hideKeyboard()
         }
+
+        val profileImg = intent.getStringExtra("profile")!!
+        val nickname = intent.getStringExtra("nickname")!!
+
+        chatRVAdapter = ChatContentRVAdapter(profileImg, nickname)
+        binding.chatContentRv.adapter = chatRVAdapter
+        binding.chatContentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        patchChatService.setChatView(this)
+        getChats()
+        readCheck()
 
         binding.chatContentSendTv.setOnClickListener {  // 메세지 보내기
             if(binding.chatContentTextEt.text.isNotEmpty()) {
@@ -111,18 +131,29 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         // 처음 화면을 열면 무조건 한 번 실행돼서 초기 값 받아올 수 있음
         // 데이터를 받아오는 것은 비동기적으로 진행되기 때문에 return 값은 무조건 null, size를 세는 것도 안됨
         // 자세한 기능은 리사이클러뷰에서 진행해야할 것 같습니다
+
         getChatRef.child(chatIdx).child("comments").addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
             override fun onDataChange(snapshot: DataSnapshot) {
                 num = -1
-//                "리사이클러뷰".clearChat()  // 새로 불러오기 때문에 초기화 필요
+                chatRVAdapter.clearChat()  // 새로 불러오기 때문에 초기화 필요
                 if (snapshot.exists()){
                     for (commentSnapShot in snapshot.children){  // 하나씩 불러옴
                         val getData = commentSnapShot.getValue(ChatComment::class.java)  // 리스폰스가 들어가겠죵
 
                         if (getData != null) {
-//                            "리사이클러뷰".addNewChat(getData)  // 리사이클러뷰에 채팅을 한 개씩 추가
-                            num++
-                            Log.d("SUCCESS", getData.toString())  // 추가 확인
+                            if(getData.userIdx == getUserIdx()) {
+                                var chat : ChatComment = getData
+                                chat.type = 1
+                                chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
+                                num++
+                                Log.d("SUCCESS", getData.toString())  // 추가 확인
+                            } else{
+                                var chat : ChatComment = getData
+                                chat.type = 0
+                                chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
+                                num++
+                                Log.d("SUCCESS", getData.toString())  // 추가 확인
+                            }
                         }
 
                     }
@@ -180,6 +211,22 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         popupMenu.show()
     }
 
+    private fun activeChatContent(chatIdx: String){
+        val activeChatService = ActiveChatService()
+        activeChatService.setActiveView(this)
+        activeChatService.activeChat(getJwt()!!, MakeChatRoom(chatIdx, firstIndex, secondIndex))
+
+    }
+
+    private fun readCheck(){
+        val hashMap = HashMap<String, Boolean>()
+        hashMap["readUser"] = true
+
+        for( i in 0 until chatRVAdapter.itemCount ) {
+            sendChatRef.child(chatIdx).child("comments").child("$i").updateChildren(hashMap as Map<String, Any>)
+        }
+    }
+
     override fun onMakeSuccess(result: String) {
         Log.d("MAKE/SUC", result)
 
@@ -192,12 +239,23 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         Log.d("MAKE/FAIL", "$code $message")
     }
 
+    override fun onPatchSuccess(result: String) {
+        Log.d("PATCH CHAT/SUC", result)
+    }
+
+    override fun onPatchFailure(code: Int, message: String) {
+        Log.d("PATCH CHAT/FAIL", "$code $message")
+    }
     override fun onGetSuccess(result: IsChatRoomResult) {
         Log.d("GET/SUC", "$result")
 
         // 채팅룸 idx가 없으면 랜덤 uuid 생성, 아니면 불러오기
         chatIdx = if(result.chatRoomIdx.isNullOrEmpty()) "${UUID.randomUUID()}"
                   else result.chatRoomIdx!!
+
+        if(result.status == 0){
+            activeChatContent(chatIdx)
+        }
 
         getChats()
     }
@@ -206,11 +264,11 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         Log.d("GET/SUC", "$code $message")
     }
 
-    override fun onPatchSuccess(result: String) {
-        Log.d("PATCH / SUCCESS", result)
+    override fun onActiveSuccess(result: String) {
+        Log.d("ACTIVE/SUC", result)
     }
 
-    override fun onPatchFailure(code: Int, message: String) {
-        Log.d("PATCH / FAIL", "$code $message")
+    override fun onActiveFailure(code: Int, message: String) {
+        Log.d("ACTIVE/FAIL", "$code $message")
     }
 }

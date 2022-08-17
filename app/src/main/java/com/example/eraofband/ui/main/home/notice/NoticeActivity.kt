@@ -39,7 +39,7 @@ class NoticeActivity : AppCompatActivity(), GetNoticeView, DeleteNoticeView {
         super.onResume()
         val noticeService = GetNoticeService()
         noticeService.setNoticeView(this)
-        noticeService.getNotice(getJwt()!!, getUserIdx())
+        // noticeService.getNotice(getJwt()!!, getUserIdx())
     }
 
     private fun initNoticeRV(list: ArrayList<GetNoticeResult>) {
