@@ -36,4 +36,26 @@ class BoardLikeService {
 
         })  // api 호출, enqueue에서 응답 처리
     }
+
+    fun deleteLike(jwt: String, boardIdx: Int) {  // 밴드 정보 조회
+        getBoardService?.deleteBoardLike(jwt, boardIdx)?.enqueue(object : Callback<BoardDeleteLikeResponse> {
+            override fun onResponse(call: Call<BoardDeleteLikeResponse>, response: Response<BoardDeleteLikeResponse>) {
+                // 응답이 왔을 때 처리
+                Log.d("BOARD / SUCCESS", response.toString())
+
+                val resp : BoardDeleteLikeResponse = response.body()!!
+
+                when(resp.code) {
+                    1000 -> likeView.onDeleteLikeSuccess(resp.result)  // 성공
+                    else -> likeView.onDeleteLikeFailure(resp.code, resp.message)
+                }
+            }
+
+            override fun onFailure(call: Call<BoardDeleteLikeResponse>, t: Throwable) {
+                // 네트워크 연결이 실패했을 때 실행
+                Log.d("BOARD / FAILURE", t.message.toString())
+            }
+
+        })  // api 호출, enqueue에서 응답 처리
+    }
 }

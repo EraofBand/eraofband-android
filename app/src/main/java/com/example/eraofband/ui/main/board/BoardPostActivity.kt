@@ -237,17 +237,16 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
         binding.boardPostCommentTv.text = "${getString(R.string.comment)} ${result.commentCount}"  // 댓글
         binding.boardPostViewTv.text = "${getString(R.string.view_cnt)} ${result.views}"  // 조회수
 
-        if(result.likeOrNot == "Y") {
-            binding.boardPostLikeIv.setImageResource(R.drawable.ic_heart_on)
-            like = true
-        }
-        else {
-            binding.boardPostLikeIv.setImageResource(R.drawable.ic_heart_off)
-            like = false
-        }
+        like = if(result.likeOrNot == "Y") {
+                    binding.boardPostLikeIv.setImageResource(R.drawable.ic_heart_on)
+                    true
+                } else {
+                    binding.boardPostLikeIv.setImageResource(R.drawable.ic_heart_off)
+                    false
+                }
 
         binding.boardPostLikeIv.setOnClickListener {
-            if(like) Toast.makeText(this, "기달", Toast.LENGTH_SHORT).show()
+            if(like) likeService.deleteLike(getJwt()!!, result.boardIdx)
             else likeService.like(getJwt()!!, result.boardIdx)
         }
         initCommentRV(result.getBoardComments)
@@ -313,7 +312,20 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
         like = true
     }
 
-    override fun onLikeFailure(code: Int, result: String) {
-        Log.d("LIKE/FAIL", "$code $result")
+    override fun onLikeFailure(code: Int, message: String) {
+        Log.d("LIKE/FAIL", "$code $message")
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onDeleteLikeSuccess(result: String) {
+        Log.d("DELETE/SUC", result)
+        binding.boardPostLikeIv.setImageResource(R.drawable.ic_heart_off)  // 좋아요 취소 완료
+        likeCnt--
+        binding.boardPostLikeTv.text = "${getString(R.string.like)} $likeCnt"
+        like = false
+    }
+
+    override fun onDeleteLikeFailure(code: Int, message: String) {
+        Log.d("DELETE/FAIL", "$code $message")
     }
 }
