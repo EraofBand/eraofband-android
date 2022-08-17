@@ -1,60 +1,102 @@
 package com.example.eraofband.ui.main.chat
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.eraofband.R
 import com.example.eraofband.data.Chat
-import com.example.eraofband.data.Chat.Companion.VIEW_TYPE_LEFT
-import com.example.eraofband.data.Chat.Companion.VIEW_TYPE_RIGHT
+import com.example.eraofband.data.ChatComment
+import com.example.eraofband.data.ChatUser
 import com.example.eraofband.databinding.ItemChatLeftBinding
 import com.example.eraofband.databinding.ItemChatRightBinding
+import java.text.SimpleDateFormat
 
-class ChatContentRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatContentRVAdapter(private val profileImg : String, private val nickname : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var chatContents = arrayListOf<Chat>()
+    private var chatContents = arrayListOf<ChatComment>()
+
+    private var lastTime : Long = 0
+    private var viewType = -1
+    private var lastIndex = -1
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun addNewChat(chatComment: List<ChatComment>){
+        this.chatContents.addAll(chatComment)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun clearChat(){
+        this.chatContents.clear()
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun convertTimestampToDate(timestamp: Long) : String{
+        val compareSdf = SimpleDateFormat("yyyy/MM/dd")
+        val dateSdf = SimpleDateFormat("MM/dd" +"   " + "hh:mm")
+        val timeSdf = SimpleDateFormat("hh:mm")
+
+        return if(compareSdf.format(timestamp) == compareSdf.format(lastTime)){
+            val date = timeSdf.format(timestamp)
+            date
+        } else {
+            val date = dateSdf.format(timestamp)
+            date
+        }
+    }
 
     //채팅 왼쪽 뷰홀더
     inner class LeftViewHolder(private val binding : ItemChatLeftBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(item : Chat){
+        fun bind(item : ChatComment){
             binding.apply {
-                //binding.leftChatContentTv.text = item.comments[i].message // 보내는 사람
+                binding.leftChatContentTv.text = item.message // 보내는 사람
 
                 Glide.with(itemView) //보내는 사람의 프사
-                    .load(item.profileImgUrl)
+                    .load(profileImg)
                     .apply(RequestOptions.centerCropTransform())
                     .apply(RequestOptions.circleCropTransform())
                     .into(binding.leftChatProfileIv)
 
-                binding.leftChatNameTv.text = item.nickName
-                //binding.leftChatTimeTv.text = item.comments[i].timeStamp
+                binding.leftChatNameTv.text = nickname
+                binding.leftChatTimeTv.text = convertTimestampToDate(item.timeStamp)
             }
         }
     }
 
     // 오른쪽 뷰홀더
     inner class RightViewHolder(private val binding : ItemChatRightBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(item : Chat){
+        fun bind(item : ChatComment){
             binding.apply {
-                //binding.rightChatContentTv.text = item.comments[i].message // 보내는 사람
-                //binding.rightChatTimeTv.text = item.comments[i].timeStamp
+                binding.rightChatContentTv.text = item.message // 보내는 사람
+                binding.rightChatTimeTv.text = convertTimestampToDate(item.timeStamp)
+
+                if(item.readUser){
+                    binding.rightChatIndicator.visibility = View.INVISIBLE
+                }
             }
         }
     }
 
+
     override fun getItemViewType(position: Int): Int {
-        return chatContents[position].viewType
+        return chatContents[position].type
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return when(viewType){
-            VIEW_TYPE_LEFT ->{
+            0 ->{
                 val binding = ItemChatLeftBinding.inflate(LayoutInflater.from(parent.context),parent,false)
                 LeftViewHolder(binding)
             }
-            VIEW_TYPE_RIGHT ->{
+            1 ->{
                 val binding = ItemChatRightBinding.inflate(LayoutInflater.from(parent.context),parent,false)
                 RightViewHolder(binding)
             }
@@ -63,14 +105,21 @@ class ChatContentRVAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val currentItem = chatContents[position]
+        lastTime = if(position > 0){
+            chatContents[position - 1].timeStamp
+        } else {
+            0
+        }
 
-        when(currentItem.viewType){
-            VIEW_TYPE_LEFT -> (holder as LeftViewHolder).bind(currentItem)
-            VIEW_TYPE_RIGHT -> (holder as RightViewHolder).bind(currentItem)
+        val currentItem = chatContents[position]
+        viewType = currentItem.type
+        when(currentItem.type){
+            0 -> (holder as LeftViewHolder).bind(currentItem)
+            1 -> (holder as RightViewHolder).bind(currentItem)
         }
     }
 
     override fun getItemCount(): Int = chatContents.size
+
 
 }

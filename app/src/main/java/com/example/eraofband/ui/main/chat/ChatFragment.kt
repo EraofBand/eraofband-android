@@ -44,6 +44,7 @@ class ChatFragment : Fragment(), GetChatListView {
         val getChatListService = GetChatListService()
         getChatListService.setChatListView(this)
         getChatListService.getChatList(getJwt()!!)
+
     }
 
 
@@ -52,13 +53,17 @@ class ChatFragment : Fragment(), GetChatListView {
         binding.chatListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.chatListRv.adapter = chatRVAdapter
 
+        chatRVAdapter.clear()
+
         chatRVAdapter.initChatList(result)
 
         chatRVAdapter.setMyItemClickListener(object : ChatRVAdapter.MyItemClickListener{
-            override fun onItemClick(chatIdx : String) {
+            override fun onItemClick(chatIdx : String, profileImg: String, nickname : String) {
                 activity?.let {
                     val intent = Intent(activity, ChatContentActivity::class.java)
                     intent.putExtra("chatRoomIndex", chatIdx)
+                    intent.putExtra("profile", profileImg)
+                    intent.putExtra("nickname", nickname)
                     startActivity(intent)
                 }
             }
@@ -82,6 +87,7 @@ class ChatFragment : Fragment(), GetChatListView {
         for (i in 0 until result.size)
             chatRooms.add(i, ChatRoom(result[i].chatRoomIdx, result[i].nickName, result[i].profileImgUrl,
                 "", "", true))
+
 
         initRVAdapter(chatRooms)
         chatRooms.clear()
