@@ -12,7 +12,7 @@ import com.example.eraofband.remote.band.getLikedBand.GetLikedBandResult
 import com.example.eraofband.ui.main.home.HomeFabDialog
 
 
-class HomeBandLikeRVAdapter(private val context: Context): RecyclerView.Adapter<HomeBandLikeRVAdapter.ViewHolder>() {
+class HomeBandLikeRVAdapter(): RecyclerView.Adapter<HomeBandLikeRVAdapter.ViewHolder>() {
     private var bandList = arrayListOf<GetLikedBandResult>()
 
     @SuppressLint("NotifyDataSetChanged")
@@ -46,7 +46,7 @@ class HomeBandLikeRVAdapter(private val context: Context): RecyclerView.Adapter<
     inner class ViewHolder(val binding: ItemBandListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(band: GetLikedBandResult) {
-            Glide.with(context).load(band.bandImgUrl)
+            Glide.with(itemView).load(band.bandImgUrl)
                 .apply(RequestOptions.centerCropTransform())
                 .into(binding.bandListImgIv)  // 밴드 이미지
             binding.bandListImgIv.clipToOutline = true  // 모서리 깎기

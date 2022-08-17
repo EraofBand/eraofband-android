@@ -85,8 +85,10 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
                 }
                 if (s.toString() == ""){ // 문자열이 비어있을 때 리스트 초기화
                     searchUserInterface.initUserRV(arrayListOf())
-                    searchBandInterface.initBandRV(arrayListOf())
-                    searchLessonInterface.initLessonRV(arrayListOf())
+                    if (bandInit)
+                        searchBandInterface.initBandRV(arrayListOf())
+                    if (lessonInit)
+                        searchLessonInterface.initLessonRV(arrayListOf())
                 }
             }
         })

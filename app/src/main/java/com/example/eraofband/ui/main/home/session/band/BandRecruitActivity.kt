@@ -27,15 +27,11 @@ import com.google.gson.Gson
 class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
 
     private lateinit var binding: ActivityBandRecruitBinding
-
     private val gson = Gson()
-
-    private var like = false
-
     private var bandIdx = 0
     private var leaderIdx = 0
-
     private var bandMember = false
+    private var like = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -146,6 +142,7 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
 
         val bandJson = gson.toJson(result)
         bandEdit.putString("bandInfo", bandJson)
+        bandEdit.putInt("bandIdx", bandIdx)
         bandEdit.apply()
 
         initViewPager()  // 뷰페이저 연결

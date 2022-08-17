@@ -8,6 +8,7 @@ import com.example.eraofband.remote.band.bandLike.BandLikeDeleteResponse
 import com.example.eraofband.remote.band.bandLike.BandLikeResponse
 import com.example.eraofband.remote.band.deleteBand.DeleteBandResponse
 import com.example.eraofband.remote.band.deleteUserBand.DeleteUserBandResponse
+import com.example.eraofband.remote.band.getAlbumBand.GetAlbumBandResponse
 import com.example.eraofband.remote.band.getBand.GetBandResponse
 import com.example.eraofband.remote.band.getLikedBand.GetLikedBandResponse
 import com.example.eraofband.remote.band.getNewBand.GetNewBandResponse
@@ -201,13 +202,17 @@ interface API {
     @GET("/sessions/info/list/{band-region}/{band-session}")
     fun getRegionBand(@Path("band-region") bandRegion : String, @Path("band-session") bandSession : Int) : Call<GetRegionBandResponse>
 
-    //밴드 삭제
+    // 밴드 삭제
     @PATCH("/sessions/status/{bandIdx}")
     fun deleteBand(@Header("X-ACCESS-TOKEN") jwt: String, @Path("bandIdx") bandIdx: Int, @Body userIdx: Int) : Call<DeleteBandResponse>
 
-    //밴드 탈퇴
+    // 밴드 탈퇴
     @DELETE("/sessions/out/{bandIdx}")
     fun deleteUserBand(@Header("X-ACCESS-TOKEN") jwt: String, @Path("bandIdx") bandIdx: Int) : Call<DeleteUserBandResponse>
+
+    // 밴드 앨범 리스트 반환
+    @GET("/sessions/album/info/{bandIdx}")
+    fun getAlbumBand(@Header("X-ACCESS-TOKEN") jwt: String, @Path("bandIdx") bandIdx: Int) : Call<GetAlbumBandResponse>
 
     // 레슨 생성
     @POST("/lessons")
@@ -225,11 +230,11 @@ interface API {
     @PATCH("/lessons/lesson-info/{lessonIdx}")
     fun patchLesson(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int, @Body lesson: Lesson) : Call<PatchLessonResponse>
 
-    //레슨 삭제
+    // 레슨 삭제
     @PATCH("/lessons/status/{lessonIdx}")
     fun deleteLesson(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int, @Body userIdx: Int) : Call<DeleteLessonResponse>
 
-    //레슨 탈퇴
+    // 레슨 탈퇴
     @DELETE("/lessons/out/{lessonIdx}")
     fun deleteUserLesson(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int) : Call<DeleteUserLessonResponse>
 
