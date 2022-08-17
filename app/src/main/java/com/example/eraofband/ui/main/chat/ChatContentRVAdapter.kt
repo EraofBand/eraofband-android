@@ -113,11 +113,16 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
 
         val currentItem = chatContents[position]
         viewType = currentItem.type
+        if(viewType == 0){
+            lastIndex = position
+        }
         when(currentItem.type){
             0 -> (holder as LeftViewHolder).bind(currentItem)
             1 -> (holder as RightViewHolder).bind(currentItem)
         }
     }
+
+    fun returnLastIndex(): Int = lastIndex
 
     override fun getItemCount(): Int = chatContents.size
 

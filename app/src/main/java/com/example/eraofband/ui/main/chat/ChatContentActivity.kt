@@ -81,7 +81,6 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         // 채팅방 존재 유무 확인
         chatRoomService.isChatRoom(getJwt()!!, Users(firstIndex, secondIndex))
 
-
         binding.chatContentBackIb.setOnClickListener{ finish() }  // 뒤로가기
 
         binding.root.setOnClickListener {
@@ -96,7 +95,6 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         binding.chatContentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         patchChatService.setChatView(this)
-        getChats()
         readCheck()
 
         binding.chatContentSendTv.setOnClickListener {  // 메세지 보내기
@@ -222,7 +220,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         val hashMap = HashMap<String, Boolean>()
         hashMap["readUser"] = true
 
-        for( i in 0 until chatRVAdapter.itemCount ) {
+        for( i in 0 until chatRVAdapter.returnLastIndex() ) {
             sendChatRef.child(chatIdx).child("comments").child("$i").updateChildren(hashMap as Map<String, Any>)
         }
     }
