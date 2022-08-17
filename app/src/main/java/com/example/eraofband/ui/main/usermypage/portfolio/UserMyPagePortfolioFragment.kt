@@ -3,15 +3,16 @@ package com.example.eraofband.ui.main.usermypage.portfolio
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.eraofband.databinding.FragmentUserMypagePortfolioBinding
-import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResult
-import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolService
-import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolView
+import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolService
+import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolView
+import com.example.eraofband.remote.portfolio.getPofol.GetPofolResult
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.example.eraofband.ui.main.usermypage.UserPortfolioListActivity
 
@@ -36,7 +37,7 @@ class UserMyPagePortfolioFragment : Fragment(), GetMyPofolView {
 
         val getMypofol = GetMyPofolService()
         getMypofol.setPofolView(this)
-        getMypofol.getPortfolio(getUserIdx())
+        getMypofol.getPortfolio(getJwt()!!, getUserIdx())
     }
 
     private fun getUserIdx(): Int {  //임시방편입니다요...
@@ -44,7 +45,12 @@ class UserMyPagePortfolioFragment : Fragment(), GetMyPofolView {
         return userIdx!!.toInt()
     }
 
-    private fun connectAdapter(item : List<GetMyPofolResult>) {
+    private fun getJwt() : String? {
+        val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        return userSP.getString("jwt", "")
+    }
+
+    private fun connectAdapter(item : List<GetPofolResult>) {
         val mAdapter = UserMyPagePortfolioRVAdapter()
         binding.userMypagePortfolioRv.adapter = mAdapter
 
@@ -68,7 +74,7 @@ class UserMyPagePortfolioFragment : Fragment(), GetMyPofolView {
         _binding = null
     }
 
-    override fun onGetSuccess(result: List<GetMyPofolResult>) {
+    override fun onGetSuccess(result: List<GetPofolResult>) {
         Log.d("PORTFOLIO/SUC", result.toString())
         connectAdapter(result)
     }

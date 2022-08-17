@@ -23,6 +23,7 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
 
     private var lastTime : Long = 0
     private var viewType = -1
+    private var lastIndex = -1
 
     @SuppressLint("NotifyDataSetChanged")
     fun addNewChat(chatComment: List<ChatComment>){

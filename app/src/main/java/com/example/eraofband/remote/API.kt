@@ -1,39 +1,40 @@
 package com.example.eraofband.remote
 
 import com.example.eraofband.data.*
-import com.example.eraofband.remote.band.deleteBand.DeleteBandResponse
-import com.example.eraofband.remote.lesson.deleteLesson.DeleteLessonResponse
-import com.example.eraofband.remote.band.deleteUserBand.DeleteUserBandResponse
-import com.example.eraofband.remote.lesson.deleteUserLesson.DeleteUserLessonResponse
-import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResponse
-import com.example.eraofband.remote.band.patchBand.PatchBandResponse
-import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonResponse
 import com.example.eraofband.remote.band.applyBand.ApplyBandResponse
 import com.example.eraofband.remote.band.applyDecision.AcceptApplyResponse
 import com.example.eraofband.remote.band.applyDecision.RejectApplyResponse
 import com.example.eraofband.remote.band.bandLike.BandLikeDeleteResponse
 import com.example.eraofband.remote.band.bandLike.BandLikeResponse
+import com.example.eraofband.remote.band.deleteBand.DeleteBandResponse
+import com.example.eraofband.remote.band.deleteUserBand.DeleteUserBandResponse
 import com.example.eraofband.remote.band.getBand.GetBandResponse
 import com.example.eraofband.remote.band.getLikedBand.GetLikedBandResponse
 import com.example.eraofband.remote.band.getNewBand.GetNewBandResponse
 import com.example.eraofband.remote.band.getPopularBand.GetPopularBandResponse
+import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResponse
 import com.example.eraofband.remote.band.makeBand.MakeBandResponse
 import com.example.eraofband.remote.chat.activeChat.ActiveChatResponse
+import com.example.eraofband.remote.band.patchBand.PatchBandResponse
 import com.example.eraofband.remote.chat.getChatList.GetChatListResponse
+import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResponse
 import com.example.eraofband.remote.chat.makeChat.MakeChatResponse
 import com.example.eraofband.remote.chat.patchChat.PatchChatResponse
-import com.example.eraofband.remote.lesson.getLikeLessonList.GetLessonLikeListResponse
+import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonResponse
+import com.example.eraofband.remote.lesson.deleteLesson.DeleteLessonResponse
+import com.example.eraofband.remote.lesson.deleteUserLesson.DeleteUserLessonResponse
 import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoResponse
 import com.example.eraofband.remote.lesson.getLessonList.GetLessonListResponse
-import com.example.eraofband.remote.lesson.makeLesson.MakeLessonResponse
-import com.example.eraofband.remote.lesson.patchLesson.PatchLessonResponse
+import com.example.eraofband.remote.lesson.getLikeLessonList.GetLessonLikeListResponse
 import com.example.eraofband.remote.lesson.lessonLike.LessonLikeDeleteResponse
 import com.example.eraofband.remote.lesson.lessonLike.LessonLikeResponse
+import com.example.eraofband.remote.lesson.makeLesson.MakeLessonResponse
+import com.example.eraofband.remote.lesson.patchLesson.PatchLessonResponse
 import com.example.eraofband.remote.notice.deleteNotice.DeleteNoticeResponse
 import com.example.eraofband.remote.notice.getNewNotice.GetNewNoticeResponse
 import com.example.eraofband.remote.notice.getNotice.GetNoticeResponse
 import com.example.eraofband.remote.portfolio.deletePofol.DeletePofolResponse
-import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResponse
+import com.example.eraofband.remote.portfolio.getPofol.GetPofolResponse
 import com.example.eraofband.remote.portfolio.makePofol.MakePofolResponse
 import com.example.eraofband.remote.portfolio.patchPofol.PatchPofolResponse
 import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentDeleteResponse
@@ -126,9 +127,17 @@ interface API {
     @PATCH("/users/status/{userIdx}")
     fun resign(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<ResignResponse>
 
+    // 전체 포트폴리오 리스트 조회
+    @GET("/pofols/info/all/{pofolIdx}")
+    fun getPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx: Int) : Call<GetPofolResponse>
+
+    // 팔로우 한 유저 포트폴리오 리스트 조회
+    @GET("/pofols/info/follow/{pofolIdx}")
+    fun getFollowPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx: Int) : Call<GetPofolResponse>
+
     // 내 포트폴리오 리스트 조회
     @GET("/pofols/info/{userIdx}")
-    fun getMyPofol(@Path("userIdx") userIdx: Int) : Call<GetMyPofolResponse>
+    fun getMyPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<GetPofolResponse>
 
     // 내 포트폴리오 등록
     @POST("/pofols")
@@ -206,7 +215,7 @@ interface API {
     @GET("/lessons/info/{lessonIdx}")
     fun getLessonInfo(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int) : Call<GetLessonInfoResponse>
 
-    //지역-세션 분류 레슨 리스트트 반환
+    // 지역-세션 분류 레슨 리스트 반환
     @GET("/lessons/info/list/{lesson-region}/{lesson-session}")
     fun getLessonList(@Path("lesson-region") lessonRegion: String, @Path("lesson-session") lessonSession: Int) : Call<GetLessonListResponse>
 
@@ -266,7 +275,11 @@ interface API {
     @GET("/chat/chat-room")
     fun getChatList(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetChatListResponse>
 
-    // 채팅방 나가기 처리
+    // 채팅방 존재 유무 조회
+    @PATCH("/chat/chat-room/exist")
+    fun isChatRoom(@Header("X-ACCESS-TOKEN") jwt: String, @Body users: Users) : Call<IsChatRoomResponse>
+
+   // 채팅방 나가기 처리
     @PATCH("/chat/status/{chatRoomIdx}")
     fun patchChat(@Header("X-ACCESS-TOKEN") jwt: String, @Path("chatRoomIdx") chatRoomIdx: String) : Call<PatchChatResponse>
 

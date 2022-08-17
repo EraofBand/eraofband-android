@@ -13,11 +13,10 @@ import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityUserPortfolioListBinding
+import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolService
+import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolView
+import com.example.eraofband.remote.portfolio.getPofol.GetPofolResult
 import com.example.eraofband.ui.main.mypage.portfolio.PortfolioCommentActivity
-import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResult
-import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolService
-import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolView
-import com.example.eraofband.ui.main.mypage.MyPageActivity
 import android.view.View as View1
 
 class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
@@ -31,8 +30,10 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
         binding = ActivityUserPortfolioListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.userPortfolioListBackIv.setOnClickListener { finish() }  // 뒤로 가기
-
+        binding.userPortfolioListBackIv.setOnClickListener {   // 뒤로 가기
+            initRecyclerView(arrayListOf())
+            finish()
+        }
     }
 
     override fun onStart() {
@@ -40,7 +41,7 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
 
         val getMypofol = GetMyPofolService()
         getMypofol.setPofolView(this)
-        getMypofol.getPortfolio(getUserIdx())
+        getMypofol.getPortfolio(getJwt()!!, getUserIdx())
     }
 
     private fun getUserIdx(): Int {
@@ -53,7 +54,7 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
         return userSP.getString("jwt", "")
     }
 
-    private fun initRecyclerView(item: List<GetMyPofolResult>) {
+    private fun initRecyclerView(item: List<GetPofolResult>) {
         userPortfolioAdapter = UserPortfolioListRVAdapter(getJwt()!!, this)
         binding.userPortfolioListPortfolioRv.adapter = userPortfolioAdapter
         binding.userPortfolioListPortfolioRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -81,7 +82,7 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
                 startActivity(intent)
             }
 
-            override fun onShowPopup(portfolio: GetMyPofolResult, position: Int, view: View1) {
+            override fun onShowPopup(portfolio: GetPofolResult, position: Int, view: View1) {
                  showPopup(portfolio, position, view)  // 다른 사람이 단 댓글
             }
 
@@ -94,7 +95,7 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
         })
     }
 
-    private fun showPopup(portfolio: GetMyPofolResult, position: Int, view: android.view.View) {  // 내 댓글인 경우 삭제, 신고 둘 다 가능
+    private fun showPopup(portfolio: GetPofolResult, position: Int, view: android.view.View) {  // 내 댓글인 경우 삭제, 신고 둘 다 가능
         val themeWrapper = ContextThemeWrapper(applicationContext , R.style.MyPopupMenu)
         val popupMenu = PopupMenu(themeWrapper, view, Gravity.END, 0, R.style.MyPopupMenu)
         popupMenu.menuInflater.inflate(R.menu.portfolio_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
@@ -114,12 +115,17 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
         popupMenu.show() // 팝업 보여주기
     }
 
-    override fun onGetSuccess(result: List<GetMyPofolResult>) {
+    override fun onGetSuccess(result: List<GetPofolResult>) {
         Log.d("MYPORTFOLIO/FAIL", result.toString())
         initRecyclerView(result)
     }
 
     override fun onGetFailure(code: Int, message: String) {
         Log.d("MYPORTFOLIO/FAIL", "$code $message")
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        initRecyclerView(arrayListOf())
     }
 }

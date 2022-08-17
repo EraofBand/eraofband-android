@@ -10,9 +10,12 @@ import android.graphics.Bitmap
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -54,6 +57,11 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
 
         binding.portfolioMakeBackIb.setOnClickListener { finish() }  // 뒤로가기
 
+        binding.root.setOnClickListener {
+            if(binding.portfolioMakeTitleEt.isFocused) hideKeyboard()
+            else if(binding.portfolioMakeVideoIntroEt.isFocused) hideKeyboard()
+        }
+
         // 비디오 올리기 혹은 올린 썸네일을 누르면 갤러리에 들어갈 수 있도록 해줌 (조은아 내가 그냥 레이아웃 클릭하면 갤러리로 바꿨어)
         binding.portfolioMakeVideoCl.setOnClickListener { initImageViewProfile() }
 
@@ -68,7 +76,9 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
                 makeService.setMakeView(this)
                 makeService.makePortfolio(getJwt()!!, Portfolio(content, thumbnailUrl, title, getUserIdx(), videoUrl))
 
-                finish()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    finish()
+                }, 100)
             }
         }
     }
@@ -81,6 +91,11 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
     private fun getUserIdx(): Int {
         val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getInt("userIdx", 0)
+    }
+
+    private fun hideKeyboard() {
+        val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
     private fun initImageViewProfile() {

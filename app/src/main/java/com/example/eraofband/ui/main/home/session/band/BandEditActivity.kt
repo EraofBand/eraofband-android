@@ -20,6 +20,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
@@ -87,6 +88,22 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
 
         binding.homeBandEditImgV.setOnClickListener {
             initImageViewBand()
+        }
+
+        binding.root.setOnClickListener {  // 화면 누르면 키보드 내리기
+            if(binding.homeBandEditBaseEt.isFocused) hideKeyboard()
+            else if(binding.homeBandEditChatEt.isFocused) hideKeyboard()
+            else if(binding.homeBandEditDrumEt.isFocused) hideKeyboard()
+            else if(binding.homeBandEditGuitarEt.isFocused) hideKeyboard()
+            else if(binding.homeBandEditInfoEt.isFocused) hideKeyboard()
+            else if(binding.homeBandEditKeyboardEt.isFocused) hideKeyboard()
+            else if(binding.homeBandEditNameEt.isFocused) hideKeyboard()
+            else if(binding.homeBandEditVocalEt.isFocused) hideKeyboard()
+            else if(binding.homeBandShowDateEt.isFocused) hideKeyboard()
+            else if(binding.homeBandShowFeeEt.isFocused) hideKeyboard()
+            else if(binding.homeBandShowLocationEt.isFocused) hideKeyboard()
+            else if(binding.homeBandShowNameEt.isFocused) hideKeyboard()
+            else if(binding.homeBandShowTimeEt.isFocused) hideKeyboard()
         }
 
         binding.homeBandEditNameEt.addTextChangedListener(object : TextWatcher {
@@ -641,6 +658,11 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
 
         initRegion(result.bandRegion)
         spinnerClickListener()
+    }
+
+    private fun hideKeyboard() {
+        val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
     private fun setToast(msg : String) {

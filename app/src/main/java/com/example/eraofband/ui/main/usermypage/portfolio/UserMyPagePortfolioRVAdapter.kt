@@ -7,13 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.ItemPortfolioBinding
-import com.example.eraofband.remote.portfolio.getMyPofol.GetMyPofolResult
+import com.example.eraofband.remote.portfolio.getPofol.GetPofolResult
 
 class UserMyPagePortfolioRVAdapter : RecyclerView.Adapter<UserMyPagePortfolioRVAdapter.ViewHolder>() {
-    private var portfolio = arrayListOf<GetMyPofolResult>()
+    private var portfolio = arrayListOf<GetPofolResult>()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun initPortfolio(portfolio : List<GetMyPofolResult>) {
+    fun initPortfolio(portfolio : List<GetPofolResult>) {
         this.portfolio.addAll(portfolio)
         notifyDataSetChanged()
     }
@@ -43,7 +43,7 @@ class UserMyPagePortfolioRVAdapter : RecyclerView.Adapter<UserMyPagePortfolioRVA
 
     inner class ViewHolder(val binding: ItemPortfolioBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(portfolio: GetMyPofolResult) {
+        fun bind(portfolio: GetPofolResult) {
             Glide.with(itemView).load(portfolio.videoUrl) // 썸네일
                 .apply(RequestOptions.centerCropTransform())
                 .into(binding.itemPortfolioIv)

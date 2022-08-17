@@ -17,6 +17,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
@@ -62,6 +63,17 @@ class BandMakeActivity : AppCompatActivity(), MakeBandView, SendImgView {
 
         binding.homeBandMakeImgV.setOnClickListener {
             initImageViewBand()
+        }
+
+        binding.root.setOnClickListener {  // 화면 누르면 키보드 내리기
+            if(binding.homeBandMakeChatEt.isFocused) hideKeyboard()
+            else if(binding.homeBandMakeDrumEt.isFocused) hideKeyboard()
+            else if(binding.homeBandMakeBaseEt.isFocused) hideKeyboard()
+            else if(binding.homeBandMakeGuitarEt.isFocused) hideKeyboard()
+            else if(binding.homeBandMakeKeyboardEt.isFocused) hideKeyboard()
+            else if(binding.homeBandMakeInfoEt.isFocused) hideKeyboard()
+            else if(binding.homeBandMakeVocalEt.isFocused) hideKeyboard()
+            else if(binding.homeBandMakeNameEt.isFocused) hideKeyboard()
         }
 
         binding.homeBandMakeNameEt.addTextChangedListener(object : TextWatcher {
@@ -272,6 +284,11 @@ class BandMakeActivity : AppCompatActivity(), MakeBandView, SendImgView {
             }
 
         })
+    }
+
+    private fun hideKeyboard() {
+        val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
     private fun initImageViewBand() {

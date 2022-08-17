@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentMypageBinding
 import com.example.eraofband.remote.user.getMyPage.GetMyPageResult
 import com.example.eraofband.remote.user.getMyPage.GetMyPageService
@@ -179,6 +180,13 @@ class MyPageFragment : Fragment(), GetMyPageView {
 
         setSession(result.getUser.userSession)  // 세션 연동
         mySession = result.getUser.userSession
+        when(result.getUser.userSession) {
+            0 -> binding.mypageSessionIv.setImageResource(R.drawable.ic_mypage_session_vocal)
+            1 -> binding.mypageSessionIv.setImageResource(R.drawable.ic_mypage_session_guitar)
+            2 -> binding.mypageSessionIv.setImageResource(R.drawable.ic_mypage_session_base)
+            3 -> binding.mypageSessionIv.setImageResource(R.drawable.ic_mypage_session_keyboard)
+            4 -> binding.mypageSessionIv.setImageResource(R.drawable.ic_mypage_session_drum)
+        }
     }
 
     override fun onGetFailure(code: Int, message: String) {

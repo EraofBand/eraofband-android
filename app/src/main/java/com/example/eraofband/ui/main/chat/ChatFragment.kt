@@ -1,11 +1,13 @@
 package com.example.eraofband.ui.main.chat
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +24,6 @@ class ChatFragment : Fragment(), GetChatListView {
 
     private lateinit var chatRVAdapter: ChatRVAdapter
     private var chatRooms = ArrayList<ChatRoom>()
-    private var getChatListService = GetChatListService()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,12 +32,16 @@ class ChatFragment : Fragment(), GetChatListView {
     ): View? {
         _binding = FragmentChatBinding.inflate(inflater, container, false)
 
+        binding.root.setOnClickListener {
+            if(binding.chatSearchEt.isFocused) hideKeyboard()
+        }
+
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
-
+        val getChatListService = GetChatListService()
         getChatListService.setChatListView(this)
         getChatListService.getChatList(getJwt()!!)
 
@@ -65,6 +70,11 @@ class ChatFragment : Fragment(), GetChatListView {
         })
     }
 
+    private fun hideKeyboard() {
+        val inputManager: InputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+    }
+
     private fun getJwt() : String? {
         val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
         return userSP.getString("jwt", "")
@@ -73,12 +83,14 @@ class ChatFragment : Fragment(), GetChatListView {
     override fun onGetListSuccess(result: ArrayList<GetChatListResult>) {
         Log.d("GET CHAT / SUCCESS", result.toString())
 
-//        // 결과값에서 채팅룸 인덱스, 닉네임, 프로필사진만 먼저 가져옴
-//        for (i in 0 until result.size)
-//            chatRooms.add(i, ChatRoom(result[i].chatRoomIdx, result[i].nickName, result[i].profileImgUrl,
-//                "", "", true))
+        // 결과값에서 채팅룸 인덱스, 닉네임, 프로필사진만 먼저 가져옴
+        for (i in 0 until result.size)
+            chatRooms.add(i, ChatRoom(result[i].chatRoomIdx, result[i].nickName, result[i].profileImgUrl,
+                "", "", true))
+
 
         initRVAdapter(chatRooms)
+        chatRooms.clear()
     }
 
     override fun onGetListFailure(code: Int, message: String) {

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group android:id="@+id/chat_exit_gr">
+
+    <group android:id="@+id/chat_delete_gr">
         <item
-            android:id="@+id/chat_exit"
-            android:title="@string/chat_exit"/>
-
+            android:id="@+id/chat_delete"
+            android:title="채팅방 나가기" />
     </group>
-
 </menu>

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "597406857066",
+    "firebase_url": "https://eraofband-5bbf4-default-rtdb.firebaseio.com",
     "project_id": "eraofband-5bbf4",
     "storage_bucket": "eraofband-5bbf4.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "597406857066-tok5sro10u4had63ro53th8scvsjc5ph.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "597406857066-fsiqglfodk3b8omdqvroae15p0fgs1oj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.yeonghyeon.EraOfBand-iOS"
+              }
             }
           ]
         }
