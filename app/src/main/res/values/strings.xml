@@ -8,6 +8,7 @@
     <string name="total">전체</string>
     <string name="more">더보기</string>
     <string name="complete">완료</string>
+    <string name="cancel">취소하기</string>
 
     <!-- 온보딩 화면 관련 String -->
     <string name="onboarding_band_title">밴드결성을 쉽고 간편하게</string>
@@ -172,6 +173,10 @@
 
     <!--채팅 관련 String -->
     <string name="chat_exit">채팅방 나가기</string>
+
+    <!-- 신고 관련 String -->
+    <string name="report">신고하기</string>
+    <string name="report_info">신고 사유를 적어주세요.</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
