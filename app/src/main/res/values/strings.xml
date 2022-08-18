@@ -45,6 +45,8 @@
     <string name="signup_mola">미정(필수)</string>
     <string name="signup_mola2">미정(선택)</string>
 
+    <string name="signup_finish">밴드의 시대에 오신 것을\n진심으로 환영합니다!</string>
+
     <!-- 카카오 로그인 앱 키 -->
     <string name="kakao_app_key">ccf29d74d82be869acd9bcd90e665533</string>
     <string name="kakao_native_key">kakaoccf29d74d82be869acd9bcd90e665533</string>
