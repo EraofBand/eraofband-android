@@ -23,6 +23,7 @@ import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentView
 import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentWriteResult
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
+import com.example.eraofband.ui.report.ReportDialog
 
 
 class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
@@ -139,8 +140,11 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
                 // 댓글 삭제
                 commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
             }
-            else {  // 댓글 신고하기
-                Log.d("REPORT", "COMMENT")
+            else {
+                // 댓글 신고하기
+                val reportDialog = ReportDialog(getJwt()!!, 2, commentIdx, getUserIdx())
+                reportDialog.isCancelable = false
+                reportDialog.show(supportFragmentManager, "report")
             }
 
             false

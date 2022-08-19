@@ -133,6 +133,9 @@
     <string name="portfolio">포트폴리오</string>
     <string name="belong_band">소속밴드</string>
 
+    <string name="user_report">유저 신고하기</string>
+    <string name="user_block">유저 차단하기</string>
+
     <!-- 포트폴리오 등록 관련 String -->
     <string name="makePortfolio">포트폴리오 등록</string>
     <string name="title">제목</string>

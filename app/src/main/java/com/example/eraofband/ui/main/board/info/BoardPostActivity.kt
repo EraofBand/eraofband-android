@@ -30,6 +30,7 @@ import com.example.eraofband.remote.board.deleteBoard.DeleteBoardView
 import com.example.eraofband.remote.board.getBoard.*
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
+import com.example.eraofband.ui.report.ReportDialog
 
 class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, BoardLikeView, DeleteBoardView {
 
@@ -62,6 +63,18 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
 
         binding.root.setOnClickListener {
             if(binding.boardPostWriteCommentEt.isFocused) hideKeyboard()
+        }
+
+        binding.boardPostProfileIv.setOnClickListener {
+            val intent = Intent(this, UserMyPageActivity::class.java)
+            intent.putExtra("userIdx", userIdx)
+            startActivity(intent)
+        }
+
+        binding.boardPostNameTv.setOnClickListener {
+            val intent = Intent(this, UserMyPageActivity::class.java)
+            intent.putExtra("userIdx", userIdx)
+            startActivity(intent)
         }
 
         binding.boardPostTopMoreIv.setOnClickListener { showPopup(binding.boardPostTopMoreIv) }
@@ -175,7 +188,9 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
                 deleteService.deleteBoard(getJwt()!!, boardIdx, getUserIdx())
             }
             else {  // 게시물 신고하기
-                Log.d("REPORT", "COMMENT")
+                val reportDialog = ReportDialog(getJwt()!!, 5, boardIdx, getUserIdx())
+                reportDialog.isCancelable = false
+                reportDialog.show(supportFragmentManager, "report")
             }
 
             false
@@ -203,7 +218,9 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
                 commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
             }
             else {  // 댓글 신고하기
-                Log.d("REPORT", "COMMENT")
+                val reportDialog = ReportDialog(getJwt()!!, 6, commentIdx, getUserIdx())
+                reportDialog.isCancelable = false
+                reportDialog.show(supportFragmentManager, "report")
             }
 
             false

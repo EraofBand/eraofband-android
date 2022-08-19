@@ -1,5 +1,6 @@
 package com.example.eraofband.ui.main.home.session.band.info
 
+import android.annotation.SuppressLint
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
@@ -12,10 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.FragmentBandRecruitInfoBinding
-import com.example.eraofband.ui.main.mypage.MyPageActivity
-import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.example.eraofband.remote.band.getBand.GetBandResult
 import com.example.eraofband.remote.band.getBand.SessionMembers
+import com.example.eraofband.ui.main.mypage.MyPageActivity
+import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.google.gson.Gson
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -89,7 +90,7 @@ class BandRecruitInfoFragment: Fragment() {
         else binding.bandRecruitInfoShowTv.text = "확정"
         binding.bandRecruitInfoAreaTv.text = band.bandRegion  // 활동 지역
 
-        Glide.with(context!!).load(band.profileImgUrl)  // 글라이드를 이용한 프로필사진 연동
+        Glide.with(requireContext()).load(band.profileImgUrl)  // 글라이드를 이용한 프로필사진 연동
             .apply(RequestOptions.centerCropTransform()).apply(RequestOptions.circleCropTransform())
             .into(binding.bandRecruitInfoLeaderProfileIv)
         binding.bandRecruitInfoLeaderNicknameTv.text = band.nickName  // 리더 닉네임
@@ -142,7 +143,7 @@ class BandRecruitInfoFragment: Fragment() {
     }
 
     private fun initRecyclerView(item: List<SessionMembers>) {
-        bandMemberRVAdapter = BandMemberRVAdapter(context!!)
+        bandMemberRVAdapter = BandMemberRVAdapter(requireContext())
 
         binding.bandRecruitInfoMemberRv.adapter = bandMemberRVAdapter
         binding.bandRecruitInfoMemberRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -165,6 +166,7 @@ class BandRecruitInfoFragment: Fragment() {
 
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun checkLeftDay(performDate: String): String {
 
         val dateFormat = SimpleDateFormat("yyyyMMdd")

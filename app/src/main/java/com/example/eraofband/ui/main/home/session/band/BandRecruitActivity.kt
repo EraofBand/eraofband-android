@@ -21,6 +21,7 @@ import com.example.eraofband.remote.band.getBand.GetBandResult
 import com.example.eraofband.remote.band.getBand.GetBandService
 import com.example.eraofband.remote.band.getBand.GetBandView
 import com.example.eraofband.remote.band.getBand.SessionMembers
+import com.example.eraofband.ui.report.ReportDialog
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 
@@ -199,9 +200,14 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
                     val deleteDialog = BandDeleteDialog(getJwt()!!, getUserIdx(), bandIdx)
                     deleteDialog.show(supportFragmentManager, "deleteBand")
                 }
-                else -> {  // 밴드 탈퇴하기
+                R.id.band_leave -> {  // 밴드 탈퇴하기
                     val deleteDialog = BandDeleteDialog(getJwt()!!, getUserIdx(), bandIdx)
                     deleteDialog.show(supportFragmentManager, "resignBand")
+                }
+                else -> {  // 밴드 신고하기
+                    val reportDialog = ReportDialog(getJwt()!!, 3, bandIdx, getUserIdx())
+                    reportDialog.isCancelable = false
+                    reportDialog.show(supportFragmentManager, "report")
                 }
             }
             false
@@ -210,11 +216,13 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
         if(getUserIdx() == leaderIdx){
             popupMenu.menu.setGroupVisible(R.id.band_report_gr, false)
             popupMenu.menu.setGroupVisible(R.id.band_leave_gr, false)
-        } else if(bandMember) {
+        }
+        else if(bandMember) {
             popupMenu.menu.setGroupVisible(R.id.band_report_gr, false)
             popupMenu.menu.setGroupVisible(R.id.band_edit_gr, false)
             popupMenu.menu.setGroupVisible(R.id.band_delete_gr, false)
-        } else{
+        }
+        else{
             popupMenu.menu.setGroupVisible(R.id.band_leave_gr, false)
             popupMenu.menu.setGroupVisible(R.id.band_edit_gr, false)
             popupMenu.menu.setGroupVisible(R.id.band_delete_gr, false)

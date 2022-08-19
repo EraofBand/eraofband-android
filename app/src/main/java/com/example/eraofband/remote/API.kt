@@ -14,7 +14,6 @@ import com.example.eraofband.remote.band.getNewBand.GetNewBandResponse
 import com.example.eraofband.remote.band.getPopularBand.GetPopularBandResponse
 import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResponse
 import com.example.eraofband.remote.band.makeBand.MakeBandResponse
-import com.example.eraofband.remote.chat.activeChat.ActiveChatResponse
 import com.example.eraofband.remote.band.patchBand.PatchBandResponse
 import com.example.eraofband.remote.board.boardComment.BoardDeleteCommentResponse
 import com.example.eraofband.remote.board.boardComment.BoardWriteCommentResponse
@@ -25,6 +24,7 @@ import com.example.eraofband.remote.board.getBoard.GetBoardResponse
 import com.example.eraofband.remote.board.getBoardList.GetBoardListResponse
 import com.example.eraofband.remote.board.getMyBoardList.GetMyBoardListResponse
 import com.example.eraofband.remote.board.getMyCommentList.GetMyCommentListResponse
+import com.example.eraofband.remote.chat.activeChat.ActiveChatResponse
 import com.example.eraofband.remote.chat.getChatList.GetChatListResponse
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResponse
 import com.example.eraofband.remote.chat.makeChat.MakeChatResponse
@@ -51,6 +51,7 @@ import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentResponse
 import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentWriteResponse
 import com.example.eraofband.remote.portfolio.pofolLike.PofolDeleteLikeResponse
 import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeResponse
+import com.example.eraofband.remote.report.ReportResponse
 import com.example.eraofband.remote.search.getBand.GetSearchBandResponse
 import com.example.eraofband.remote.search.getLesson.GetSearchLessonResponse
 import com.example.eraofband.remote.search.getUser.GetSearchUserResponse
@@ -339,5 +340,9 @@ interface API {
     // 채팅방 활성화
     @PATCH("/chat/status/active")
     fun activeChat(@Header("X_ACCESS-TOKEN") jwt : String, @Body makeChatRoom: MakeChatRoom) : Call<ActiveChatResponse>
+
+    // 신고하기
+    @POST("/notice/report")
+    fun report(@Header("X-ACCESS-TOKEN") jwt: String, @Body report: Report) : Call<ReportResponse>
 
 }
