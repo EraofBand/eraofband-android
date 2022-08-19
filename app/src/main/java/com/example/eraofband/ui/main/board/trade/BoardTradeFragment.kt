@@ -1,5 +1,6 @@
 package com.example.eraofband.ui.main.board.trade
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import com.example.eraofband.databinding.FragmentBoardTradeBinding
 import com.example.eraofband.remote.board.getBoardList.GetBoardListResult
 import com.example.eraofband.remote.board.getBoardList.GetBoardListService
 import com.example.eraofband.remote.board.getBoardList.GetBoardListView
+import com.example.eraofband.ui.main.board.info.BoardPostActivity
 import com.example.eraofband.ui.main.board.free.BoardFreeRVAdapter
 
 class BoardTradeFragment : Fragment(), GetBoardListView {
@@ -51,7 +53,7 @@ class BoardTradeFragment : Fragment(), GetBoardListView {
                 else if (binding.boardTradeRv.canScrollVertically(-1)) {  // 맨 아래
                     Log.d("SCROLL", "BOTTOM")
                     Log.d("SCROLL / SUCCESS", "${mAdapter.itemCount}")
-
+                    
                     if(mAdapter.itemCount % 20 == 0) {
                         service.getBoardList(0, lastIdx)
                     }
@@ -63,15 +65,15 @@ class BoardTradeFragment : Fragment(), GetBoardListView {
         })
         mAdapter.setMyItemClickListener(object : BoardTradeRVAdapter.MyItemClickListener {
             override fun onItemClick(boardIdx: Int) {
-//                val intent = Intent(activity, 게시물 상세보기 액티비티::class.java)
-//                intent.putExtra("boardIdx", boardIdx)
-//                startActivity(intent)
+                val intent = Intent(activity, BoardPostActivity::class.java)
+                intent.putExtra("boardIdx", boardIdx)
+                startActivity(intent)
             }
-
             override fun onLastIndex(boardIdx: Int) {
                 lastIdx = boardIdx
             }
         })
+        
         mAdapter.initBoardList(list)
     }
 

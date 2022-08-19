@@ -19,6 +19,7 @@ import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolView
 import com.example.eraofband.remote.portfolio.getPofol.GetPofolResult
 import com.example.eraofband.ui.main.home.session.band.BandDeleteDialog
 import com.example.eraofband.ui.main.mypage.MyPageActivity
+import com.example.eraofband.ui.report.ReportDialog
 
 class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
 
@@ -131,9 +132,6 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
                             portfolioAdapter.deletePortfolio(position)
                         }
                     })
-                }
-                else -> {  // 포트폴리오 신고하기
-                    Log.d("REPORT", "PORTFOLIO")
                 }
             }
             false

@@ -4,10 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.View
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ContextThemeWrapper
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityUserMypageBinding
 import com.example.eraofband.remote.user.getOtherUser.GetOtherUserResult
 import com.example.eraofband.remote.user.getOtherUser.GetOtherUserService
@@ -20,6 +24,7 @@ import com.example.eraofband.remote.user.userUnfollow.UserUnfollowService
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowView
 import com.example.eraofband.ui.main.chat.ChatContentActivity
 import com.example.eraofband.ui.main.mypage.follow.FollowActivity
+import com.example.eraofband.ui.report.ReportDialog
 import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,6 +39,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     private lateinit var profileImg: String
     private var secondIndex = -1
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -43,6 +49,8 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         binding.userMypageBackIb.setOnClickListener {
             finish()
         }
+
+        binding.userMypageMoreIv.setOnClickListener { showPopup() }
 
         // 메세지 클릭하면 채팅방으로 이동
         binding.userMypageMessageTv.setOnClickListener {
@@ -75,7 +83,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         binding.userMypageFollowTv.setOnClickListener {  // 팔로우 리스트에서 언팔 및 팔로우 시 visibility 변경
             binding.userMypageFollowTv.visibility = View.INVISIBLE
             binding.userMypageUnfollowTv.visibility = View.VISIBLE
-            binding.userMypageFollowerCntTv.text = (followerCnt + 1).toString()
+            binding.userMypageFollowerCntTv.text = "${followerCnt + 1}"
             followerCnt += 1
             val userFollowService = UserFollowService() // 팔로우
             userFollowService.setUserFollowView(this)
@@ -101,11 +109,6 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         getOtherUserService.getOtherUser(getJwt()!!, otherUserIdx!!)
     }
 
-    private fun getUserIdx() : Int {
-        val userSP = getSharedPreferences("user", MODE_PRIVATE)
-        return userSP.getInt("userIdx", 0)
-    }
-
     private fun moveFollowActivity() {
         binding.userMypageFollowing.setOnClickListener {
             val intent = Intent(this, FollowActivity::class.java)
@@ -129,6 +132,11 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         return userSP.getString("jwt", "")
     }
 
+    private fun getUserIdx() : Int {
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
+        return userSP.getInt("userIdx", 0)
+    }
+
     @SuppressLint("SimpleDateFormat")
     private fun setDate() : String {  // 오늘 날짜 불러오기
         val today = System.currentTimeMillis()  // 현재 날짜, 시각 불러오기
@@ -146,6 +154,28 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             3 -> binding.userMypageSessionTv.text = "드럼"
             else ->  binding.userMypageSessionTv.text = "키보드"
         }
+    }
+
+    private fun showPopup() {  // 내 댓글인 경우 삭제 가능
+        val themeWrapper = ContextThemeWrapper(applicationContext , R.style.MyPopupMenu)
+        val popupMenu = PopupMenu(themeWrapper, binding.userMypageMoreIv, Gravity.END, 0, R.style.MyPopupMenu)
+        popupMenu.menuInflater.inflate(R.menu.user_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            if (item!!.itemId == R.id.user_report) {
+                // 유저 신고하기
+                val reportDialog = ReportDialog(getJwt()!!, 0, secondIndex, getUserIdx())
+                reportDialog.isCancelable = false
+                reportDialog.show(supportFragmentManager, "report")
+            }
+            else {  // 댓글 신고하기
+                Log.d("BLOCK", "USER")
+            }
+
+            false
+        }
+
+        popupMenu.show() // 팝업 보여주기
     }
 
     @SuppressLint("SetTextI18n")

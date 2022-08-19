@@ -36,7 +36,7 @@ class UserPortfolioListRVAdapter(private val jwt : String, private val context: 
     interface MyItemListener {
         fun urlParse(url : String) : Uri
         fun onShowComment(pofolIdx : Int)
-        fun onShowPopup(portfolio: GetPofolResult, position: Int, view: View)
+        fun onShowPopup(portfolio: GetPofolResult, view: View)
         fun onShowInfoPage(userIdx: Int)
     }
 
@@ -95,7 +95,7 @@ class UserPortfolioListRVAdapter(private val jwt : String, private val context: 
 
         // 댓글 수정, 신고하기 popup menu 띄우기
         holder.binding.portfolioListListIv.setOnClickListener {
-            mItemListener.onShowPopup(portfolio[position], position, holder.binding.portfolioListListIv)
+            mItemListener.onShowPopup(portfolio[position], holder.binding.portfolioListListIv)
             holder.binding.portfolioListVideoPv.player?.stop()
         }
     }

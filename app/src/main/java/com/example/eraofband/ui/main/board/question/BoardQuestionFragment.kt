@@ -1,5 +1,6 @@
 package com.example.eraofband.ui.main.board.question
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,8 +13,7 @@ import com.example.eraofband.databinding.FragmentBoardQuestionBinding
 import com.example.eraofband.remote.board.getBoardList.GetBoardListResult
 import com.example.eraofband.remote.board.getBoardList.GetBoardListService
 import com.example.eraofband.remote.board.getBoardList.GetBoardListView
-import com.example.eraofband.ui.main.board.free.BoardFreeRVAdapter
-import com.example.eraofband.ui.main.board.publicize.BoardPublicizeRVAdapter
+import com.example.eraofband.ui.main.board.info.BoardPostActivity
 
 class BoardQuestionFragment : Fragment(), GetBoardListView {
     private var _binding: FragmentBoardQuestionBinding? = null
@@ -64,15 +64,15 @@ class BoardQuestionFragment : Fragment(), GetBoardListView {
         })
         mAdapter.setMyItemClickListener(object : BoardQuestionRVAdapter.MyItemClickListener {
             override fun onItemClick(boardIdx: Int) {
-//                val intent = Intent(activity, 게시물 상세보기 액티비티::class.java)
-//                intent.putExtra("boardIdx", boardIdx)
-//                startActivity(intent)
+                val intent = Intent(activity, BoardPostActivity::class.java)
+                intent.putExtra("boardIdx", boardIdx)
+                startActivity(intent)
             }
-
             override fun onLastIndex(boardIdx: Int) {
                 lastIdx = boardIdx
             }
         })
+        
         mAdapter.initBoardList(list)
     }
 

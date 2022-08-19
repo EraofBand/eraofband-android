@@ -1,5 +1,6 @@
 package com.example.eraofband.ui.main.home.session.band.info
 
+import android.annotation.SuppressLint
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
@@ -12,10 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.FragmentBandRecruitInfoBinding
-import com.example.eraofband.ui.main.mypage.MyPageActivity
-import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.example.eraofband.remote.band.getBand.GetBandResult
 import com.example.eraofband.remote.band.getBand.SessionMembers
+import com.example.eraofband.ui.main.mypage.MyPageActivity
+import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.google.gson.Gson
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -165,6 +166,7 @@ class BandRecruitInfoFragment: Fragment() {
 
     }
 
+    @SuppressLint("SimpleDateFormat")
     private fun checkLeftDay(performDate: String): String {
 
         val dateFormat = SimpleDateFormat("yyyyMMdd")

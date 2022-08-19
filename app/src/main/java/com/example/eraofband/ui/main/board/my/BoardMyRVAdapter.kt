@@ -2,14 +2,9 @@ package com.example.eraofband.ui.main.board.my
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.example.eraofband.databinding.ItemBoardBinding
 import com.example.eraofband.databinding.ItemBoardMyBinding
-import com.example.eraofband.remote.board.getBoardList.GetBoardListResult
 import com.example.eraofband.remote.board.getMyBoardList.GetMyBoardListResult
 
 class BoardMyRVAdapter : RecyclerView.Adapter<BoardMyRVAdapter.ViewHolder>() {
@@ -17,7 +12,7 @@ class BoardMyRVAdapter : RecyclerView.Adapter<BoardMyRVAdapter.ViewHolder>() {
     private lateinit var mItemClickListener: MyItemClickListener
 
     interface MyItemClickListener{ // RV 아이템 클릭 리스너 인터페이스
-        fun onItemClick(boardIdx : String)
+        fun onItemClick(boardIdx : Int)
     }
 
     fun setMyItemClickListener(itemClickListener: MyItemClickListener){ // 리스너 초기화
@@ -37,22 +32,21 @@ class BoardMyRVAdapter : RecyclerView.Adapter<BoardMyRVAdapter.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        val binding: ItemBoardMyBinding =
-            ItemBoardMyBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
-
+        val binding: ItemBoardMyBinding = ItemBoardMyBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(boardList[position])
+        holder.binding.boardMyLayout.setOnClickListener { mItemClickListener.onItemClick(boardList[position].boardIdx) }
     }
     override fun getItemCount(): Int = boardList.size
 
-    inner class ViewHolder(private val binding: ItemBoardMyBinding) :
+    inner class ViewHolder(val binding: ItemBoardMyBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(boardList: GetMyBoardListResult) {
-            var category: String = ""
-            category = when(boardList.category) {
+            val category = when(boardList.category) {
                 0 -> "자유게시판"
                 1 -> "질문게시판"
                 2 -> "홍보게시판"

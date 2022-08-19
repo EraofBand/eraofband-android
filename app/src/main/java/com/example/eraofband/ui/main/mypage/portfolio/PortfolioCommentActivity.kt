@@ -1,13 +1,14 @@
 package com.example.eraofband.ui.main.mypage.portfolio
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
@@ -23,6 +24,7 @@ import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentView
 import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentWriteResult
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
+import com.example.eraofband.ui.report.ReportDialog
 
 
 class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
@@ -39,10 +41,6 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
         setContentView(binding.root)
 
         binding.portfolioCommentBackIv.setOnClickListener { finish() }  // 뒤로 가기
-
-        binding.root.setOnClickListener {
-            if(binding.portfolioCommentWriteEt.isFocused) hideKeyboard()
-        }
 
         textWatcher()  // 댓글 창에 뭐가 있는지 확인하는 용도, 입력 색을 바꾸기 위해
 
@@ -139,8 +137,11 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
                 // 댓글 삭제
                 commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
             }
-            else {  // 댓글 신고하기
-                Log.d("REPORT", "COMMENT")
+            else {
+                // 댓글 신고하기
+                val reportDialog = ReportDialog(getJwt()!!, 2, commentIdx, getUserIdx())
+                reportDialog.isCancelable = false
+                reportDialog.show(supportFragmentManager, "report")
             }
 
             false
@@ -156,9 +157,22 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
         popupMenu.show() // 팝업 보여주기
     }
 
-    private fun hideKeyboard() {
-        val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        // EditText를 제외한 영역을 누르면 키보드를 내려줌
+        val focusView = currentFocus
+        if (focusView != null && ev != null) {
+            val rect = Rect()
+            focusView.getGlobalVisibleRect(rect)
+            val x = ev.x.toInt()
+            val y = ev.y.toInt()
+
+            if (!rect.contains(x, y)) {
+                val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(focusView.windowToken, 0)
+                focusView.clearFocus()
+            }
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     override fun onCommentSuccess(code: Int, result: List<PofolCommentResult>) {

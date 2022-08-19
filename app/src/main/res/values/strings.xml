@@ -8,6 +8,20 @@
     <string name="total">전체</string>
     <string name="more">더보기</string>
     <string name="complete">완료</string>
+    <string name="cancel">취소하기</string>
+
+    <!-- 온보딩 화면 관련 String -->
+    <string name="onboarding_band_title">밴드결성을 쉽고 간편하게</string>
+    <string name="onboarding_band_info">모집 중인 밴드에 가입하거나\n직접 밴드를 결성해 세션들을 모집할 수 있어요</string>
+
+    <string name="onboarding_lesson_title">레슨 정보도 빠르게!</string>
+    <string name="onboarding_lesson_info">복잡하고 알기 어려웠던 주변의 악기, 보컬 레슨에\n대한 정보를 한눈에 확인할 수 있어요</string>
+
+    <string name="onboarding_portfolio_title">나만의 음악 포트폴리오 만들기</string>
+    <string name="onboarding_portfolio_info">열심히 연습한 곡들을 나만의 음악 포트폴리오에\n추가해 모두에게 내 실력을 뽐낼 수 있어요</string>
+
+    <string name="onboarding_together_title">이제 음악은 함께 즐겨야지!</string>
+    <string name="onboarding_together_info">다양한 사람들과 포트폴리오를 공유하고 게시판, 채팅을\n통해 자유롭게 소통할 수 있어요</string>
 
     <!-- 회원가입 관련 String -->
     <string name="nickname">닉네임</string>
@@ -31,6 +45,8 @@
     <string name="signup_term_all_agree">모든 약관에 동의합니다.</string>
     <string name="signup_mola">미정(필수)</string>
     <string name="signup_mola2">미정(선택)</string>
+
+    <string name="signup_finish">밴드의 시대에 오신 것을\n진심으로 환영합니다!</string>
 
     <!-- 카카오 로그인 앱 키 -->
     <string name="kakao_app_key">ccf29d74d82be869acd9bcd90e665533</string>
@@ -78,6 +94,27 @@
     <string name="feed">피드</string>
     <string name="follow">팔로우</string>
 
+    <!-- 게시판 관련 String -->
+    <string name="board_edit">게시물 수정하기</string>
+    <string name="board_remove">게시물 삭제하기</string>
+    <string name="board_report">게시물 신고하기</string>
+
+    <!-- 게시글 자세히 보기 관련 String -->
+    <string name="free_board">자유게시판</string>
+    <string name="question_board">질문게시판</string>
+    <string name="promotion_board">홍보게시판</string>
+    <string name="sell_board">거래게시판</string>
+    <string name="my_board">MY게시판</string>
+
+    <string name="time">시간</string>
+    <string name="view_cnt">조회수</string>
+
+    <string name="write_reply">답글 달기</string>
+    <string name="write_reply_info">님에게 답글을 남기는 중</string>
+
+    <string name="enter_message">메세지를 입력해주세요.</string>
+    <string name="enter">입력</string>
+
     <!-- 마이페이지 관련 String -->
     <string name="mypage">마이페이지</string>
     <string name="look_more">더보기</string>
@@ -95,6 +132,9 @@
     <string name="introduce">소개</string>
     <string name="portfolio">포트폴리오</string>
     <string name="belong_band">소속밴드</string>
+
+    <string name="user_report">유저 신고하기</string>
+    <string name="user_block">유저 차단하기</string>
 
     <!-- 포트폴리오 등록 관련 String -->
     <string name="makePortfolio">포트폴리오 등록</string>
@@ -136,6 +176,10 @@
 
     <!--채팅 관련 String -->
     <string name="chat_exit">채팅방 나가기</string>
+
+    <!-- 신고 관련 String -->
+    <string name="report">신고하기</string>
+    <string name="report_info">신고 사유를 적어주세요.</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>

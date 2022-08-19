@@ -48,7 +48,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -74,11 +73,18 @@
             android:name="com.example.eraofband.ui.signup.SignUpTermActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.signup.SignUpFinishActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.eraofband.ui.login.LoginActivity"
             android:exported="false" />
         <activity
             android:name="com.example.eraofband.ui.main.MainActivity"
             android:exported="false" />
+        <activity
+            android:name="com.example.eraofband.ui.main.board.info.BoardPostActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustUnspecified|adjustPan"/>
         <activity
             android:name="com.example.eraofband.ui.main.home.session.band.BandListActivity"
             android:exported="false" />

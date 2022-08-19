@@ -37,21 +37,21 @@ class BoardPublicizeRVAdapter : RecyclerView.Adapter<BoardPublicizeRVAdapter.Vie
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        val binding: ItemBoardBinding =
-            ItemBoardBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
-
+        val binding: ItemBoardBinding = ItemBoardBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(boardList[position])
 
+        holder.binding.boardLayout.setOnClickListener { mItemClickListener.onItemClick(boardList[position].boardIdx) }
         if(boardList.size % 20 == 0)
             mItemClickListener.onLastIndex(boardList[boardList.size - 1].boardIdx)
     }
+    
     override fun getItemCount(): Int = boardList.size
 
-    inner class ViewHolder(private val binding: ItemBoardBinding) :
+    inner class ViewHolder(val binding: ItemBoardBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(boardList: GetBoardListResult) {
 
