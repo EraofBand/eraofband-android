@@ -12,13 +12,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.example.eraofband.R
-import com.example.eraofband.data.Band
 import com.example.eraofband.databinding.FragmentBandRecruitAlbumBinding
 import com.example.eraofband.remote.band.getAlbumAlbumBand.GetAlbumBandService
 import com.example.eraofband.remote.band.getAlbumBand.GetAlbumBandResult
 import com.example.eraofband.remote.band.getAlbumBand.GetAlbumBandView
-import com.example.eraofband.ui.main.community.CommunityFragment
-import com.example.eraofband.ui.main.home.session.band.BandRecruitActivity
 
 
 class BandRecruitAlbumFragment : Fragment(), GetAlbumBandView {

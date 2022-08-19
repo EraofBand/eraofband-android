@@ -21,6 +21,7 @@ import com.example.eraofband.remote.band.getBand.GetBandResult
 import com.example.eraofband.remote.band.getBand.GetBandService
 import com.example.eraofband.remote.band.getBand.GetBandView
 import com.example.eraofband.remote.band.getBand.SessionMembers
+import com.example.eraofband.ui.main.home.session.band.album.BandMakeAlbumActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 
@@ -65,6 +66,12 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
                 intent.getIntExtra("bandIdx", 0)
             )  // 좋아요 취소 처리
             else likeService.like(getJwt()!!, intent.getIntExtra("bandIdx", 0))  // 좋아요 처리
+        }
+
+        binding.bandRecruitFab.setOnClickListener{
+            val intent = Intent(this, BandMakeAlbumActivity::class.java)
+            intent.putExtra("bandIdx", bandIdx)
+            startActivity(intent)
         }
     }
 

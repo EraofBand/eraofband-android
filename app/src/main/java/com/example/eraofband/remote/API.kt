@@ -14,6 +14,7 @@ import com.example.eraofband.remote.band.getLikedBand.GetLikedBandResponse
 import com.example.eraofband.remote.band.getNewBand.GetNewBandResponse
 import com.example.eraofband.remote.band.getPopularBand.GetPopularBandResponse
 import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResponse
+import com.example.eraofband.remote.band.makeAlbumBand.MakeAlbumBandResponse
 import com.example.eraofband.remote.band.makeBand.MakeBandResponse
 import com.example.eraofband.remote.chat.activeChat.ActiveChatResponse
 import com.example.eraofband.remote.band.patchBand.PatchBandResponse
@@ -214,6 +215,10 @@ interface API {
     // 밴드 앨범 리스트 반환
     @GET("/sessions/album/info/{bandIdx}")
     fun getAlbumBand(@Header("X-ACCESS-TOKEN") jwt: String, @Path("bandIdx") bandIdx: Int) : Call<GetAlbumBandResponse>
+
+    // 앨범 생성
+    @POST("/sessions/album")
+    fun makeAlbum(@Header("X-ACCESS-TOKEN") jwt: String, @Body album: Album) : Call<MakeAlbumBandResponse>
 
     // 레슨 생성
     @POST("/lessons")

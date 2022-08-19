@@ -16,7 +16,8 @@ class BoardQuestionRVAdapter : RecyclerView.Adapter<BoardQuestionRVAdapter.ViewH
     private lateinit var mItemClickListener: MyItemClickListener
 
     interface MyItemClickListener{ // RV 아이템 클릭 리스너 인터페이스
-        fun onItemClick(boardIdx : String)
+        fun onItemClick(boardIdx : Int)
+        fun onLastIndex(boardIdx: Int)
     }
 
     fun setMyItemClickListener(itemClickListener: MyItemClickListener){ // 리스너 초기화
@@ -44,6 +45,9 @@ class BoardQuestionRVAdapter : RecyclerView.Adapter<BoardQuestionRVAdapter.ViewH
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(boardList[position])
+
+        if(boardList.size % 20 == 0)
+            mItemClickListener.onLastIndex(boardList[boardList.size - 1].boardIdx)
     }
     override fun getItemCount(): Int = boardList.size
 

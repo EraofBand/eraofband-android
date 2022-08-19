@@ -89,7 +89,7 @@ class BandRecruitInfoFragment: Fragment() {
         else binding.bandRecruitInfoShowTv.text = "확정"
         binding.bandRecruitInfoAreaTv.text = band.bandRegion  // 활동 지역
 
-        Glide.with(context!!).load(band.profileImgUrl)  // 글라이드를 이용한 프로필사진 연동
+        Glide.with(requireContext()).load(band.profileImgUrl)  // 글라이드를 이용한 프로필사진 연동
             .apply(RequestOptions.centerCropTransform()).apply(RequestOptions.circleCropTransform())
             .into(binding.bandRecruitInfoLeaderProfileIv)
         binding.bandRecruitInfoLeaderNicknameTv.text = band.nickName  // 리더 닉네임
@@ -109,7 +109,7 @@ class BandRecruitInfoFragment: Fragment() {
             initRecyclerView(band.sessionMembers)  // 세션 멤버
         }
 
-        if(!band.performTitle.isNullOrEmpty() && !band.performDate.isNullOrEmpty() && !band.performTime.isNullOrEmpty() && !band.performLocation.isNullOrEmpty()) {
+        if(!band.performTitle.isNullOrEmpty() && !band.performDate.isNullOrEmpty() && !band.performTime.isNullOrEmpty() && !band.performLocation.isNullOrEmpty() && band.performFee != null) {
             // 공연 정보가 하나라도 있는 경우
             binding.bandRecruitInfoShowCl.visibility = View.VISIBLE
 
@@ -142,7 +142,7 @@ class BandRecruitInfoFragment: Fragment() {
     }
 
     private fun initRecyclerView(item: List<SessionMembers>) {
-        bandMemberRVAdapter = BandMemberRVAdapter(context!!)
+        bandMemberRVAdapter = BandMemberRVAdapter(requireContext())
 
         binding.bandRecruitInfoMemberRv.adapter = bandMemberRVAdapter
         binding.bandRecruitInfoMemberRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
