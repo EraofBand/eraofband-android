@@ -165,7 +165,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         // 다른 유저 마이페이지에서 들어온 경우
         // 채팅방이 없는 상태면 파이어베이스에 올려주고 서버에도 채팅방 생성
         // 채팅방이 있는지 없는지 파악 여부는 comments가 1개인지로 파악
-        // 우선 나간 채팅은 0으로 할게요!! 0부터 다 보여주면 되니까!!
+        // 우선 나간 채팅은 -1로 할게요!! -1부터 다 보여주면 되니까!!
         Log.d("CHATIDX", chatIdx)
         sendChatRef.child(chatIdx).child("users").setValue(ChatUser(firstIndex, -1, secondIndex, -1))
             .addOnSuccessListener {
@@ -234,7 +234,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         val hashMap = HashMap<String, Boolean>()
         hashMap["readUser"] = true
 
-        for( i in 0 until chatRVAdapter.itemCount ) {
+        for( i in 0 until chatRVAdapter.returnLastIndex() ) {
             sendChatRef.child(chatIdx).child("comments").child("$i").updateChildren(hashMap as Map<String, Any>)
         }
     }

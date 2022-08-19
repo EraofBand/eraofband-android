@@ -17,6 +17,7 @@ class BoardTradeRVAdapter : RecyclerView.Adapter<BoardTradeRVAdapter.ViewHolder>
 
     interface MyItemClickListener{ // RV 아이템 클릭 리스너 인터페이스
         fun onItemClick(boardIdx : Int)
+        fun onLastIndex(boardIdx: Int)
     }
 
     fun setMyItemClickListener(itemClickListener: MyItemClickListener){ // 리스너 초기화
@@ -44,7 +45,10 @@ class BoardTradeRVAdapter : RecyclerView.Adapter<BoardTradeRVAdapter.ViewHolder>
         holder.bind(boardList[position])
 
         holder.binding.boardLayout.setOnClickListener { mItemClickListener.onItemClick(boardList[position].boardIdx) }
+        if(boardList.size % 20 == 0)
+            mItemClickListener.onLastIndex(boardList[boardList.size - 1].boardIdx)
     }
+    
     override fun getItemCount(): Int = boardList.size
 
     inner class ViewHolder(val binding: ItemBoardBinding) :

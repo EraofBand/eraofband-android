@@ -110,7 +110,7 @@ class BandRecruitInfoFragment: Fragment() {
             initRecyclerView(band.sessionMembers)  // 세션 멤버
         }
 
-        if(!band.performTitle.isNullOrEmpty() && !band.performDate.isNullOrEmpty() && !band.performTime.isNullOrEmpty() && !band.performLocation.isNullOrEmpty()) {
+        if(!band.performTitle.isNullOrEmpty() && !band.performDate.isNullOrEmpty() && !band.performTime.isNullOrEmpty() && !band.performLocation.isNullOrEmpty() && band.performFee != null) {
             // 공연 정보가 하나라도 있는 경우
             binding.bandRecruitInfoShowCl.visibility = View.VISIBLE
 

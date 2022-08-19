@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
@@ -60,7 +61,7 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
     private var initial = true
 
     private var band = Band("", "", "", "", "", 0, "", "", 0,
-        "", 0, "", 0, "", "", 0, "",  "", "",
+        "", 0, "", 0, "", null, null, null,  null, null,
         0, 0, "")
     private var bandIdx = 0
     private var profileImgUrl = ""
@@ -78,6 +79,7 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
     private var nowDrum = 0
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -201,7 +203,7 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         initBaseCnt()
         initKeyboardCnt()
         initDrumCnt()
-        initDatepicker()
+        initDatePicker()
         initTimepicker()
     }
 
@@ -240,22 +242,22 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         band.keyboardComment = binding.homeBandEditKeyboardEt.text.toString()
         band.drumComment = binding.homeBandEditDrumEt.text.toString()
 
-        band.performTitle = binding.homeBandShowNameEt.text.toString()
+        if (!binding.homeBandShowNameEt.text.isNullOrEmpty())
+            band.performTitle = binding.homeBandShowNameEt.text.toString()
+
         if(!binding.homeBandShowFeeEt.text.isNullOrEmpty()) {
             val performFee = binding.homeBandShowFeeEt.text.toString()
             band.performFee = performFee.toInt()
-        } else {
-            band.performFee = 0
         }
-        band.performLocation = binding.homeBandShowLocationEt.text.toString()
-        band.performTime = binding.homeBandShowTimeEt.text.toString()
+        if(!binding.homeBandShowLocationEt.text.isNullOrEmpty())
+            band.performLocation = binding.homeBandShowLocationEt.text.toString()
 
-        if(!binding.homeBandShowNameEt.text.isNullOrEmpty() &&
-                !binding.homeBandShowLocationEt.text.isNullOrEmpty()){
+        if(!binding.homeBandShowTimeEt.text.isNullOrEmpty())
+            band.performTime = binding.homeBandShowTimeEt.text.toString()
+
+        if(!binding.homeBandShowDateEt.text.isNullOrEmpty())
             band.performDate = binding.homeBandShowDateEt.text.toString()
-            } else {
-                band.performDate = ""
-        } //둘다 null일 경우 performdate에 널값 넣어서 보내고 싶은데...
+        //둘다 null일 경우 performdate에 널값 넣어서 보내고 싶은데...
 
         return band
     }
@@ -280,9 +282,10 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun initDatepicker() {
-        binding.homeBandShowDateEt.text = "2022-07-01"
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun initDatePicker() {
+        val onlyDate = LocalDate.now()
+        binding.homeBandShowDateEt.text = onlyDate.toString()
 
         binding.homeBandShowDateEt.setOnClickListener {
             // 현재 설정되어있는 날짜를 넘겨줌
@@ -603,8 +606,6 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         binding.editKeyboardCntTv.text = result.keyboard.toString()
         binding.editDrumCntTv.text = result.drum.toString()
 
-
-
         for (i in 0 until result.memberCount - 1) {
             when(result.sessionMembers[i].buSession) {
                 0 -> nowVocal++
@@ -626,13 +627,16 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         binding.editKeyboardCntTv.text = keyboardCnt.toString()
         binding.editDrumCntTv.text = drumCnt.toString()
 
-        if(!result.performTitle.isNullOrEmpty() || !result.performDate.isNullOrEmpty() || !result.performTime.isNullOrEmpty() || !result.performLocation.isNullOrEmpty()){
-            binding.homeBandShowTimeEt.text = result.performTime
-            binding.homeBandShowLocationEt.setText(result.performLocation)
+        if (!result.performTitle.isNullOrEmpty())
             binding.homeBandShowNameEt.setText(result.performTitle)
-            binding.homeBandShowFeeEt.setText(result.performFee.toString())
+        if (!result.performDate.isNullOrEmpty())
             binding.homeBandShowDateEt.text = result.performDate
-        }
+        if (!result.performTime.isNullOrEmpty())
+            binding.homeBandShowTimeEt.setText(result.performTime)
+        if (!result.performLocation.isNullOrEmpty())
+            binding.homeBandShowLocationEt.setText(result.performLocation)
+        if (result.performFee != null)
+            binding.homeBandShowFeeEt.setText(result.performFee.toString())
 
         if(result.performDate.isNullOrEmpty()){
             val current = LocalDate.now()

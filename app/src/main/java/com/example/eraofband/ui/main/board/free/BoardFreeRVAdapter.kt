@@ -16,6 +16,7 @@ class BoardFreeRVAdapter : RecyclerView.Adapter<BoardFreeRVAdapter.ViewHolder>()
 
     interface MyItemClickListener{ // RV 아이템 클릭 리스너 인터페이스
         fun onItemClick(boardIdx : Int)
+        fun onLastIndex(boardIdx: Int)
     }
 
     fun setMyItemClickListener(itemClickListener: MyItemClickListener){ // 리스너 초기화
@@ -23,7 +24,7 @@ class BoardFreeRVAdapter : RecyclerView.Adapter<BoardFreeRVAdapter.ViewHolder>()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun initBoardList(boardList : ArrayList<GetBoardListResult>) { // 리스트 초기화
+    fun initBoardList(boardList: ArrayList<GetBoardListResult>) { // 리스트 초기화
         this.boardList.addAll(boardList)
         notifyDataSetChanged()
     }
@@ -43,6 +44,8 @@ class BoardFreeRVAdapter : RecyclerView.Adapter<BoardFreeRVAdapter.ViewHolder>()
         holder.bind(boardList[position])
 
         holder.binding.boardLayout.setOnClickListener { mItemClickListener.onItemClick(boardList[position].boardIdx) }
+        if(boardList.size % 20 == 0)
+            mItemClickListener.onLastIndex(boardList[boardList.size - 1].boardIdx)
     }
     override fun getItemCount(): Int = boardList.size
 

@@ -31,7 +31,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView, GetSearchLessonView {
     private lateinit var binding: ActivitySearchBinding
-    private var nowPage = 0
+    private var bandInit = false // 밴드 프래그먼트 초기화 여부
+    private var lessonInit = false // 레슨 프래그먼트 초기화 여부
+
+    private var S: String? = null // 검색어
 
     private lateinit var searchUserInterface: SearchUserInterface
     private lateinit var searchUserFragment: SearchUserFragment
@@ -42,14 +45,14 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
     private lateinit var searchLessonInterface: SearchLessonInterface
     private lateinit var searchLessonFragment: SearchLessonFragment
 
+    private val userService = GetSearchUserService()  // 검색 관련 api
+    private val bandService = GetSearchBandService()
+    private val lessonService = GetSearchLessonService()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val userService = GetSearchUserService()  // 검색 관련 api
-        val bandService = GetSearchBandService()
-        val lessonService = GetSearchLessonService()
 
         userService.setUserView(this)
         bandService.setBandView(this)
@@ -69,14 +72,20 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
             }
             override fun afterTextChanged(s: Editable?) {
                 if (s.toString().isNotEmpty()) {
-                    when (nowPage) {
-                        0 -> userService.getSearchUser(s.toString())  //  s = 검색 문자열
-                        1 -> bandService.getSearchBand(s.toString())
-                        else -> lessonService.getSearchLesson(s.toString())
-                    }
+                    S = s.toString()
+
+                    userService.getSearchUser(s.toString()) //  s = 검색 문자열
+                    if (bandInit)  // 프래그먼트에 한번이라도 접근을 했는가?
+                        bandService.getSearchBand(s.toString())
+                    if (lessonInit)
+                       lessonService.getSearchLesson(s.toString())
                 }
-                if (s.toString() == ""){
+                if (s.toString() == ""){ // 문자열이 비어있을 때 리스트 초기화
                     searchUserInterface.initUserRV(arrayListOf())
+                    if (bandInit)
+                        searchBandInterface.initBandRV(arrayListOf())
+                    if (lessonInit)
+                        searchLessonInterface.initLessonRV(arrayListOf())
                 }
             }
         })
@@ -90,11 +99,17 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
     fun setBandView(bandFragment: SearchBandFragment) {
         searchBandFragment = bandFragment
         searchBandInterface = searchBandFragment
+        bandInit = true // 프래그먼트 접근 true
+        if (S != null)
+          bandService.getSearchBand(S!!)
     }
 
     fun setLessonView(lessonFragment: SearchLessonFragment) {
         searchLessonFragment = lessonFragment
         searchLessonInterface = searchLessonFragment
+        bandInit = true
+        if (S != null)
+            lessonService.getSearchLesson(S!!)
     }
 
     private fun initVPAdapter() {
@@ -102,7 +117,6 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
 
         val searchVPAdapter = SearchVPAdapter(this)
         binding.searchVp.adapter = searchVPAdapter
-
         TabLayoutMediator(binding.searchTb, binding.searchVp) { tab, position ->
             when (position) {
                 0 -> tab.text = "유저"
@@ -116,18 +130,6 @@ class SearchActivity : AppCompatActivity(), GetSearchUserView, GetSearchBandView
                 binding.searchVp.currentItem = 1
             }
         }
-
-        // 뷰페이저 리스너 (현재 뷰페이저가 어디를 띄어주고 있는지)
-        binding.searchVp.registerOnPageChangeCallback((object : ViewPager2.OnPageChangeCallback(){
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                nowPage = when(position) {
-                    0 -> 0    // userFragment
-                    1 -> 1    // bandFragment
-                    else -> 2 // lessonFragment
-                }
-            }
-        }))
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
