@@ -1,9 +1,11 @@
 package com.example.eraofband.ui.main.chat
 
 import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
@@ -80,10 +82,6 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         chatRoomService.isChatRoom(getJwt()!!, Users(firstIndex, secondIndex))
 
         binding.chatContentBackIb.setOnClickListener{ finish() }  // 뒤로가기
-
-        binding.root.setOnClickListener {
-            if(binding.chatContentTextEt.isFocused) hideKeyboard()
-        }
 
         val profileImg = intent.getStringExtra("profile")!!
         val nickname = intent.getStringExtra("nickname")!!
@@ -189,6 +187,24 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
     private fun hideKeyboard() {
         val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        // EditText를 제외한 영역을 누르면 키보드를 내려줌
+        val focusView = currentFocus
+        if (focusView != null && ev != null) {
+            val rect = Rect()
+            focusView.getGlobalVisibleRect(rect)
+            val x = ev.x.toInt()
+            val y = ev.y.toInt()
+
+            if (!rect.contains(x, y)) {
+                val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(focusView.windowToken, 0)
+                focusView.clearFocus()
+            }
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     private fun showPopup(view: View) {

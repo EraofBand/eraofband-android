@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.database.Cursor
 import android.graphics.Point
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -16,6 +17,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
@@ -63,17 +65,6 @@ class BandMakeActivity : AppCompatActivity(), MakeBandView, SendImgView {
 
         binding.homeBandMakeImgV.setOnClickListener {
             initImageViewBand()
-        }
-
-        binding.root.setOnClickListener {  // 화면 누르면 키보드 내리기
-            if(binding.homeBandMakeChatEt.isFocused) hideKeyboard()
-            else if(binding.homeBandMakeDrumEt.isFocused) hideKeyboard()
-            else if(binding.homeBandMakeBaseEt.isFocused) hideKeyboard()
-            else if(binding.homeBandMakeGuitarEt.isFocused) hideKeyboard()
-            else if(binding.homeBandMakeKeyboardEt.isFocused) hideKeyboard()
-            else if(binding.homeBandMakeInfoEt.isFocused) hideKeyboard()
-            else if(binding.homeBandMakeVocalEt.isFocused) hideKeyboard()
-            else if(binding.homeBandMakeNameEt.isFocused) hideKeyboard()
         }
 
         binding.homeBandMakeNameEt.addTextChangedListener(object : TextWatcher {
@@ -286,9 +277,22 @@ class BandMakeActivity : AppCompatActivity(), MakeBandView, SendImgView {
         })
     }
 
-    private fun hideKeyboard() {
-        val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        // EditText를 제외한 영역을 누르면 키보드를 내려줌
+        val focusView = currentFocus
+        if (focusView != null && ev != null) {
+            val rect = Rect()
+            focusView.getGlobalVisibleRect(rect)
+            val x = ev.x.toInt()
+            val y = ev.y.toInt()
+
+            if (!rect.contains(x, y)) {
+                val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(focusView.windowToken, 0)
+                focusView.clearFocus()
+            }
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     private fun initImageViewBand() {

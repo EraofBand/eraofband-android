@@ -50,6 +50,23 @@ class ReportDialog(private val jwt: String, private val location: Int, private v
 
     private fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 
+//    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+//        // EditText를 제외한 영역을 누르면 키보드를 내려줌
+//        val focusView = requireActivity().currentFocus
+//        if (focusView != null && ev != null) {
+//            val rect = Rect()
+//            focusView.getGlobalVisibleRect(rect)
+//            val x = ev.x.toInt()
+//            val y = ev.y.toInt()
+//
+//            if (!rect.contains(x, y)) {
+//                val inputMethodManager = getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+//                inputMethodManager.hideSoftInputFromWindow(focusView.windowToken, 0)
+//                focusView.clearFocus()
+//            }
+//        }
+//        return super.dispatchTouchEvent(ev)
+//    }
 
     override fun onReportSuccess(result: String) {
         Log.d("REPORT/SUC", result)

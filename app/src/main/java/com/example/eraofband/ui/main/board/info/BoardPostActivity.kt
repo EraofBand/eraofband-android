@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
@@ -60,10 +62,6 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
         textWatcher()
 
         binding.boardPostTopBackIv.setOnClickListener { finish() }  // 뒤로가기
-
-        binding.root.setOnClickListener {
-            if(binding.boardPostWriteCommentEt.isFocused) hideKeyboard()
-        }
 
         binding.boardPostProfileIv.setOnClickListener {
             val intent = Intent(this, UserMyPageActivity::class.java)
@@ -269,6 +267,24 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
         binding.boardPostWriteCommentEt.requestFocus()
         val inputManager : InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.showSoftInput(binding.boardPostWriteCommentEt, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        // EditText를 제외한 영역을 누르면 키보드를 내려줌
+        val focusView = currentFocus
+        if (focusView != null && ev != null) {
+            val rect = Rect()
+            focusView.getGlobalVisibleRect(rect)
+            val x = ev.x.toInt()
+            val y = ev.y.toInt()
+
+            if (!rect.contains(x, y)) {
+                val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(focusView.windowToken, 0)
+                focusView.clearFocus()
+            }
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     private fun getJwt() : String? {
