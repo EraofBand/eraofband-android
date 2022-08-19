@@ -15,7 +15,8 @@ class BoardFreeRVAdapter : RecyclerView.Adapter<BoardFreeRVAdapter.ViewHolder>()
     private lateinit var mItemClickListener: MyItemClickListener
 
     interface MyItemClickListener{ // RV 아이템 클릭 리스너 인터페이스
-        fun onItemClick(boardIdx : String)
+        fun onItemClick(boardIdx : Int)
+        fun onLastIndex(boardIdx: Int)
     }
 
     fun setMyItemClickListener(itemClickListener: MyItemClickListener){ // 리스너 초기화
@@ -23,7 +24,7 @@ class BoardFreeRVAdapter : RecyclerView.Adapter<BoardFreeRVAdapter.ViewHolder>()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun initBoardList(boardList : ArrayList<GetBoardListResult>) { // 리스트 초기화
+    fun initBoardList(boardList: ArrayList<GetBoardListResult>) { // 리스트 초기화
         this.boardList.addAll(boardList)
         notifyDataSetChanged()
     }
@@ -43,6 +44,9 @@ class BoardFreeRVAdapter : RecyclerView.Adapter<BoardFreeRVAdapter.ViewHolder>()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(boardList[position])
+
+        if(boardList.size % 20 == 0)
+            mItemClickListener.onLastIndex(boardList[boardList.size - 1].boardIdx)
     }
     override fun getItemCount(): Int = boardList.size
 
@@ -50,7 +54,7 @@ class BoardFreeRVAdapter : RecyclerView.Adapter<BoardFreeRVAdapter.ViewHolder>()
         RecyclerView.ViewHolder(binding.root) {
         fun bind(boardList: GetBoardListResult) {
 
-            if (boardList.imgUrl == null) { // 게시물 이미지가 없으면 invisible
+            if (boardList.imgUrl == "null") { // 게시물 이미지가 없으면 invisible
                 binding.itemBoardImageIv.visibility = View.INVISIBLE
             } else {
                 Glide.with(itemView).load(boardList.imgUrl)

@@ -1,9 +1,11 @@
 package com.example.eraofband.ui.main.chat
 
 import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
@@ -39,7 +41,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
 
     // 채팅방 인덱스
     private var chatIdx = ""
-    private var num = 0
+    private var num = -1
 
     private var firstIndex = -1
     private var secondIndex = -1
@@ -74,18 +76,12 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         firstIndex = intent.getIntExtra("firstIndex", -1)
         secondIndex = intent.getIntExtra("secondIndex", -1)
 
-        Log.d("FIRSTINDEX", firstIndex.toString())
-
         binding.chatContentNicknameTv.text = intent.getStringExtra("nickname")
 
         // 채팅방 존재 유무 확인
         chatRoomService.isChatRoom(getJwt()!!, Users(firstIndex, secondIndex))
 
         binding.chatContentBackIb.setOnClickListener{ finish() }  // 뒤로가기
-
-        binding.root.setOnClickListener {
-            if(binding.chatContentTextEt.isFocused) hideKeyboard()
-        }
 
         val profileImg = intent.getStringExtra("profile")!!
         val nickname = intent.getStringExtra("nickname")!!
@@ -102,7 +98,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
                 val message = binding.chatContentTextEt.text.toString()
                 val timeStamp = System.currentTimeMillis()
 
-                if(num == 0) createChatRoom()  // 그 전에 올린 채팅이 한 개도 없을 경우
+                if(num == -1) createChatRoom()  // 그 전에 올린 채팅이 한 개도 없을 경우
                 else writeChat(ChatComment(message, false, timeStamp, getUserIdx()))
             }
         }
@@ -132,21 +128,21 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
 
         getChatRef.child(chatIdx).child("comments").addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
             override fun onDataChange(snapshot: DataSnapshot) {
-                num = -1
-                chatRVAdapter.clearChat()  // 새로 불러오기 때문에 초기화 필요
                 if (snapshot.exists()){
+                    num = -1
+                    chatRVAdapter.clearChat()  // 새로 불러오기 때문에 초기화 필요
                     for (commentSnapShot in snapshot.children){  // 하나씩 불러옴
                         val getData = commentSnapShot.getValue(ChatComment::class.java)  // 리스폰스가 들어가겠죵
 
                         if (getData != null) {
                             if(getData.userIdx == getUserIdx()) {
-                                var chat : ChatComment = getData
+                                val chat : ChatComment = getData
                                 chat.type = 1
                                 chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
                                 num++
                                 Log.d("SUCCESS", getData.toString())  // 추가 확인
                             } else{
-                                var chat : ChatComment = getData
+                                val chat : ChatComment = getData
                                 chat.type = 0
                                 chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
                                 num++
@@ -171,7 +167,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         // 채팅방이 있는지 없는지 파악 여부는 comments가 1개인지로 파악
         // 우선 나간 채팅은 0으로 할게요!! 0부터 다 보여주면 되니까!!
         Log.d("CHATIDX", chatIdx)
-        sendChatRef.child(chatIdx).child("users").setValue(ChatUser(firstIndex, 0, secondIndex, 0))
+        sendChatRef.child(chatIdx).child("users").setValue(ChatUser(firstIndex, -1, secondIndex, -1))
             .addOnSuccessListener {
                 makeChatService.makeChat(MakeChatRoom(chatIdx, firstIndex, secondIndex))
             }  // 채팅방 users 입력, 채팅방 생성
@@ -191,6 +187,24 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
     private fun hideKeyboard() {
         val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        // EditText를 제외한 영역을 누르면 키보드를 내려줌
+        val focusView = currentFocus
+        if (focusView != null && ev != null) {
+            val rect = Rect()
+            focusView.getGlobalVisibleRect(rect)
+            val x = ev.x.toInt()
+            val y = ev.y.toInt()
+
+            if (!rect.contains(x, y)) {
+                val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(focusView.windowToken, 0)
+                focusView.clearFocus()
+            }
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     private fun showPopup(view: View) {
@@ -230,6 +244,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
 
         val message = binding.chatContentTextEt.text.toString()
         val timeStamp = System.currentTimeMillis()
+
         writeChat(ChatComment(message, false, timeStamp, getUserIdx()))
     }
 
@@ -248,11 +263,12 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         Log.d("GET/SUC", "$result")
 
         // 채팅룸 idx가 없으면 랜덤 uuid 생성, 아니면 불러오기
-        chatIdx = if(result.chatRoomIdx.isNullOrEmpty()) "${UUID.randomUUID()}"
-                  else result.chatRoomIdx!!
-
-        if(result.status == 0){
-            activeChatContent(chatIdx)
+        chatIdx = if(result.chatRoomIdx == "null") "${UUID.randomUUID()}"
+        else {
+            if(result.status == 0){
+                activeChatContent(chatIdx)
+            }
+            result.chatRoomIdx
         }
 
         getChats()

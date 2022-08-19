@@ -40,7 +40,7 @@ class HomeBandLikeFragment : Fragment(), GetLikedBandView {
     }
 
     private fun initRecyclerView(item: List<GetLikedBandResult>) {
-        val bandLikeRVAdapter = HomeBandLikeRVAdapter(context!!)
+        val bandLikeRVAdapter = HomeBandLikeRVAdapter()
 
         binding.homeBandLikeRv.adapter = bandLikeRVAdapter
         binding.homeBandLikeRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

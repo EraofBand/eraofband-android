@@ -31,9 +31,12 @@ class SearchUserFragment: Fragment(), SearchUserInterface {
 
         _binding = FragmentSearchUserBinding.inflate(inflater, container, false)
 
-        (activity as SearchActivity).setUserView(this)
-
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (activity as SearchActivity).setUserView(this)
     }
 
     private fun initRVAdapter(result: List<GetSearchUserResult>){
