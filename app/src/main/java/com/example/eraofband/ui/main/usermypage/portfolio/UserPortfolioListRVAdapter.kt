@@ -1,4 +1,4 @@
-package com.example.eraofband.ui.main.usermypage
+package com.example.eraofband.ui.main.usermypage.portfolio
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -44,7 +44,7 @@ class UserPortfolioListRVAdapter(private val jwt : String, private val context: 
         mItemListener = itemListener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserPortfolioListRVAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: ItemPortfolioListBinding = ItemPortfolioListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         videoPlayer = ExoPlayer.Builder(parent.context).build()
 
@@ -52,7 +52,7 @@ class UserPortfolioListRVAdapter(private val jwt : String, private val context: 
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onBindViewHolder(holder: UserPortfolioListRVAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(portfolio[position])
         pofolLikeService.setLikeView(this)
         videoPlayer = ExoPlayer.Builder(context).build() // 비디오플레이어 초기화

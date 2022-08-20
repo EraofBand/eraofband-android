@@ -14,7 +14,6 @@ import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolService
 import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolView
 import com.example.eraofband.remote.portfolio.getPofol.GetPofolResult
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
-import com.example.eraofband.ui.main.usermypage.UserPortfolioListActivity
 
 class UserMyPagePortfolioFragment : Fragment(), GetMyPofolView {
 

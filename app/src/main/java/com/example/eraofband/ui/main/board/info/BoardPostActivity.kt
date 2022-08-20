@@ -186,7 +186,7 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
                 deleteService.deleteBoard(getJwt()!!, boardIdx, getUserIdx())
             }
             else {  // 게시물 신고하기
-                val reportDialog = ReportDialog(getJwt()!!, 5, boardIdx, getUserIdx())
+                val reportDialog = ReportDialog(getJwt()!!, 5, boardIdx, userIdx)
                 reportDialog.isCancelable = false
                 reportDialog.show(supportFragmentManager, "report")
             }
@@ -216,7 +216,7 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
                 commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
             }
             else {  // 댓글 신고하기
-                val reportDialog = ReportDialog(getJwt()!!, 6, commentIdx, getUserIdx())
+                val reportDialog = ReportDialog(getJwt()!!, 6, commentIdx, userIdx)
                 reportDialog.isCancelable = false
                 reportDialog.show(supportFragmentManager, "report")
             }

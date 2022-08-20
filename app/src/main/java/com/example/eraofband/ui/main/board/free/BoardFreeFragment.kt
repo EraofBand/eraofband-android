@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.eraofband.databinding.FragmentBoardFreeBinding
 import com.example.eraofband.remote.board.getBoardList.GetBoardListResult
 import com.example.eraofband.remote.board.getBoardList.GetBoardListService
@@ -64,8 +63,8 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
             }
         })
 
-        mAdapter.setMyItemClickListener(object : BoardFreeRVAdapter.MyItemClickListener {
-            override fun onItemClick(boardIdx: Int) 
+        mAdapter.setMyItemClickListener(object : BoardFreeRVAdapter.MyItemClickListener{
+            override fun onItemClick(boardIdx: Int) {
                 val intent = Intent(activity, BoardPostActivity::class.java)
                 intent.putExtra("boardIdx", boardIdx)
                 startActivity(intent)

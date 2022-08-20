@@ -160,7 +160,7 @@ class LessonInfoActivity : AppCompatActivity(), GetLessonInfoView, LessonLikeVie
 
                 }
                 else -> {
-                    val reportDialog = ReportDialog(getJwt()!!, 4, lessonIdx!!, getUserIdx())
+                    val reportDialog = ReportDialog(getJwt()!!, 4, lessonIdx!!, teacherIdx!!)
                     reportDialog.isCancelable = false
                     reportDialog.show(supportFragmentManager, "report")
                 }

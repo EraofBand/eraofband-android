@@ -130,7 +130,7 @@
             android:name="com.example.eraofband.ui.main.usermypage.UserMyPageActivity"
             android:exported="false" />
         <activity
-            android:name="com.example.eraofband.ui.main.usermypage.UserPortfolioListActivity"
+            android:name="com.example.eraofband.ui.main.usermypage.portfolio.UserPortfolioListActivity"
             android:exported="false" />
         <activity
             android:name="com.example.eraofband.ui.main.home.session.band.BandMakeActivity"
