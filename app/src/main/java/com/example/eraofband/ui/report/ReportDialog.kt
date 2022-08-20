@@ -9,7 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import com.example.eraofband.R
 import com.example.eraofband.data.Report
 import com.example.eraofband.databinding.DialogReportBinding
 import com.example.eraofband.remote.report.ReportService
@@ -70,10 +72,12 @@ class ReportDialog(private val jwt: String, private val location: Int, private v
 
     override fun onReportSuccess(result: String) {
         Log.d("REPORT/SUC", result)
+        Toast.makeText(dialog?.context, getString(R.string.report_suc), Toast.LENGTH_SHORT).show()
         dismiss()
     }
 
     override fun onReportFailure(code: Int, message: String) {
         Log.d("REPORT/FAIL", "$code $message")
     }
+
 }
