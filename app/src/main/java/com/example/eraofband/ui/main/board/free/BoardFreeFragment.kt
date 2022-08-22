@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SimpleItemAnimator
 import com.example.eraofband.databinding.FragmentBoardFreeBinding
 import com.example.eraofband.remote.board.getBoardList.GetBoardListResult
 import com.example.eraofband.remote.board.getBoardList.GetBoardListService
@@ -35,9 +34,10 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        super.onResume()
+
         service.setBoardListView(this)
         service.getBoardList(0,0)
+        layoutRefresh()
     }
 
     private fun connectAdapter(list: ArrayList<GetBoardListResult>) {
@@ -65,7 +65,7 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
         })
 
         mAdapter.setMyItemClickListener(object : BoardFreeRVAdapter.MyItemClickListener {
-            override fun onItemClick(boardIdx: Int) 
+            override fun onItemClick(boardIdx: Int) {
                 val intent = Intent(activity, BoardPostActivity::class.java)
                 intent.putExtra("boardIdx", boardIdx)
                 startActivity(intent)
@@ -73,10 +73,17 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
             
             override fun onLastIndex(boardIdx: Int) {
                 lastIdx = boardIdx
+                Log.d("SCROLL LI", lastIdx.toString())
             }
         })
         
         mAdapter.initBoardList(list)
+    }
+
+    private fun layoutRefresh() {
+        binding.boardFreeRl.setOnRefreshListener {
+            binding.boardFreeRl.isRefreshing = false
+        }
     }
 
     override fun onDestroyView() {
@@ -86,6 +93,7 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
 
     override fun onGetListSuccess(result: ArrayList<GetBoardListResult>) {
         Log.d("GET BOARD LIST / SUCCESS", result.toString())
+        Log.d("SCROLL", lastIdx.toString())
 
         if (lastIdx == 0)
             connectAdapter(result)

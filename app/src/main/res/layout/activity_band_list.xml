@@ -149,6 +149,15 @@
             app:chipBackgroundColor="@color/session_chip_color" />
     </com.google.android.material.chip.ChipGroup>
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/home_band_rl"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_band_list_session_cg">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_band_list_list_rv"
         android:layout_width="match_parent"
@@ -158,6 +167,8 @@
         tools:listitem="@layout/item_band_list"
         app:layout_constraintTop_toBottomOf="@id/home_band_list_session_cg"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/home_band_list_fab"

@@ -32,6 +32,7 @@ class HomeLessonFragment: Fragment(), GetLessonListView {
 
         getLessonList.getLessonListView(this)
         initSpinner()
+        layoutRefresh()
 
         return binding.root
     }
@@ -101,6 +102,15 @@ class HomeLessonFragment: Fragment(), GetLessonListView {
                 startActivity(intent)
             }
         })
+    }
+
+    private fun layoutRefresh() {
+        binding.homeLessonRl.setOnRefreshListener {
+            binding.homeLessonCitySp.setSelection(0)
+            binding.homeLessonTotalCp.isChecked = true
+            getLessonList.getLessonList("전체", 5)
+            binding.homeLessonRl.isRefreshing = false
+        }
     }
 
     override fun onGetLessonListSuccess(code: Int, result: List<GetLessonListResult>) {
