@@ -2,6 +2,7 @@ package com.example.eraofband.ui.main.chat
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,15 +16,21 @@ import com.example.eraofband.data.ChatComment
 import com.example.eraofband.data.ChatUser
 import com.example.eraofband.databinding.ItemChatLeftBinding
 import com.example.eraofband.databinding.ItemChatRightBinding
+import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
+import java.util.HashMap
 
-class ChatContentRVAdapter(private val profileImg : String, private val nickname : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatContentRVAdapter(private val profileImg : String, private val nickname : String, private val chatIdx : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var chatContents = arrayListOf<ChatComment>()
 
     private var lastTime : Long = 0
     private var viewType = -1
     private var lastIndex = -1
+
+    // 파이어베이스로 값 올리기
+    private var mDatabase = FirebaseDatabase.getInstance().reference
+    private val sendChatRef = mDatabase.child("chat")
 
     @SuppressLint("NotifyDataSetChanged")
     fun addNewChat(chatComment: List<ChatComment>){
@@ -67,7 +74,16 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
                 binding.leftChatNameTv.text = nickname
                 binding.leftChatTimeTv.text = convertTimestampToDate(item.timeStamp)
             }
+
+            setRead(position)
         }
+    }
+
+    private fun setRead(position: Int) {
+        val hashMap = HashMap<String, Boolean>()
+        hashMap["readUser"] = true
+
+            sendChatRef.child(chatIdx).child("comments").child("$position").updateChildren(hashMap as Map<String, Any>)
     }
 
     // 오른쪽 뷰홀더
@@ -104,7 +120,7 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         lastTime = if(position > 0){
             chatContents[position - 1].timeStamp
         } else {
@@ -113,16 +129,16 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
 
         val currentItem = chatContents[position]
         viewType = currentItem.type
-        if(viewType == 0){
-            lastIndex = position
-        }
         when(currentItem.type){
-            0 -> (holder as LeftViewHolder).bind(currentItem)
+            0 -> {
+                (holder as LeftViewHolder).bind(currentItem)
+                 lastIndex = position
+                 Log.d("LAST INDEX 2", lastIndex.toString())}
             1 -> (holder as RightViewHolder).bind(currentItem)
         }
     }
 
-    fun returnLastIndex(): Int = lastIndex
+    fun returnLastIndex() : Int = lastIndex
 
     override fun getItemCount(): Int = chatContents.size
 

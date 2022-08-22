@@ -177,10 +177,19 @@
     <!--채팅 관련 String -->
     <string name="chat_exit">채팅방 나가기</string>
 
+    <!--게시물 생성 관련 String -->
+    <string name="board_btn">생성하기</string>
+    <string name="board_content">게시물의 내용을 입력해주세요.</string>
+    <string name="board_make">게시물 생성</string>
+
+    <!--게시물 수정 관련 String -->
+    <string name="board_edit_btn">수정하기</string>
+    <string name="board_edit">게시물 수정</string>
+
     <!-- 신고 관련 String -->
     <string name="report">신고하기</string>
     <string name="report_info">신고 사유를 적어주세요.</string>
-
+    
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
