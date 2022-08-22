@@ -24,7 +24,7 @@
         android:background="@drawable/blue_round_bg"
         android:fontFamily="@font/pretendard_medium"
         android:paddingVertical="12dp"
-        android:text="확인"
+        android:text="@string/check"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="15sp"

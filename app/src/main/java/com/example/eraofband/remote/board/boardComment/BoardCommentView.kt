@@ -7,6 +7,5 @@ interface BoardCommentView {
     fun onWriteCommentFailure(code: Int, message: String)
 
     fun onDeleteCommentSuccess(result: String)
-    fun onHaveReply(code: Int, message: String)
     fun onDeleteCommentFailure(code: Int, message: String)
 }

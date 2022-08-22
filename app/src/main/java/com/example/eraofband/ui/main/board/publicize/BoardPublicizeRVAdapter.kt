@@ -62,6 +62,7 @@ class BoardPublicizeRVAdapter : RecyclerView.Adapter<BoardPublicizeRVAdapter.Vie
                 Glide.with(itemView).load(boardList.imgUrl)
                     .apply(RequestOptions.centerCropTransform())
                     .into(binding.itemBoardImageIv)
+                binding.itemBoardImageIv.clipToOutline = true
             }
             binding.itemBoardTitleImageIv.visibility = View.VISIBLE
             binding.itemBoardTitleImageIv.setImageResource(R.drawable.ic_board_publicize)

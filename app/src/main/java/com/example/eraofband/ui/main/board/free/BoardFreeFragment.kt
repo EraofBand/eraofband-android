@@ -73,7 +73,6 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
             
             override fun onLastIndex(boardIdx: Int) {
                 lastIdx = boardIdx
-                Log.d("SCROLL LI", lastIdx.toString())
             }
         })
         

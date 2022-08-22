@@ -61,6 +61,7 @@ class BoardFreeRVAdapter : RecyclerView.Adapter<BoardFreeRVAdapter.ViewHolder>()
                 Glide.with(itemView).load(boardList.imgUrl)
                     .apply(RequestOptions.centerCropTransform())
                     .into(binding.itemBoardImageIv)
+                binding.itemBoardImageIv.clipToOutline = true
             }
 
             binding.itemBoardTitleImageIv.visibility = View.GONE // 타이틀 옆 이미지 없애기

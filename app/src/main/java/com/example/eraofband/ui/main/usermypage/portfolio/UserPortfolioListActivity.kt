@@ -1,4 +1,4 @@
-package com.example.eraofband.ui.main.usermypage
+package com.example.eraofband.ui.main.usermypage.portfolio
 
 import android.content.Intent
 import android.net.Uri
@@ -17,6 +17,7 @@ import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolService
 import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolView
 import com.example.eraofband.remote.portfolio.getPofol.GetPofolResult
 import com.example.eraofband.ui.main.mypage.portfolio.PortfolioCommentActivity
+import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.example.eraofband.ui.report.ReportDialog
 import android.view.View as View1
 
@@ -72,7 +73,8 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
         smoothScroller.targetPosition = intent.getIntExtra("position", 0)
         binding.userPortfolioListPortfolioRv.layoutManager?.startSmoothScroll(smoothScroller)
 
-        userPortfolioAdapter.setMyItemClickListener(object : UserPortfolioListRVAdapter.MyItemListener {
+        userPortfolioAdapter.setMyItemClickListener(object :
+            UserPortfolioListRVAdapter.MyItemListener {
             override fun urlParse(url: String): Uri {
                 return Uri.parse(url)
             }
@@ -105,7 +107,7 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
             when(item.itemId){
                 R.id.portfolio_report -> {
                     // 포트폴리오 신고하기
-                    val reportDialog = ReportDialog(getJwt()!!, 1, portfolio.pofolIdx, getUserIdx())
+                    val reportDialog = ReportDialog(getJwt()!!, 1, portfolio.pofolIdx, portfolio.userIdx)
                     reportDialog.isCancelable = false
                     reportDialog.show(supportFragmentManager, "report")
                 }

@@ -2,9 +2,11 @@ package com.example.eraofband.ui.main.chat
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -58,21 +60,46 @@ class ChatFragment : Fragment(), GetChatListView {
         chatRVAdapter.initChatList(result)
 
         chatRVAdapter.setMyItemClickListener(object : ChatRVAdapter.MyItemClickListener{
-            override fun onItemClick(chatIdx : String, profileImg: String, nickname : String) {
+            override fun onItemClick(chatIdx : String, profileImg: String, nickname : String, userIdx: Int) {
                 activity?.let {
                     val intent = Intent(activity, ChatContentActivity::class.java)
                     intent.putExtra("chatRoomIndex", chatIdx)
                     intent.putExtra("profile", profileImg)
                     intent.putExtra("nickname", nickname)
+                    intent.putExtra("firstIndex", getUserIdx())
+                    intent.putExtra("secondIndex", userIdx)
                     startActivity(intent)
                 }
             }
         })
     }
 
+    private fun getUserIdx() : Int {
+        val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        return userSP.getInt("userIdx", 0)
+    }
+
     private fun hideKeyboard() {
         val inputManager: InputMethodManager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(requireActivity().currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+    }
+
+    fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        // EditText를 제외한 영역을 누르면 키보드를 내려줌
+        val focusView = activity?.currentFocus
+        if (focusView != null && ev != null) {
+            val rect = Rect()
+            focusView.getGlobalVisibleRect(rect)
+            val x = ev.x.toInt()
+            val y = ev.y.toInt()
+
+            if (!rect.contains(x, y)) {
+                val inputMethodManager = activity?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(focusView.windowToken, 0)
+                focusView.clearFocus()
+            }
+        }
+        return super.requireActivity().dispatchTouchEvent(ev)
     }
 
     private fun getJwt() : String? {
@@ -85,8 +112,8 @@ class ChatFragment : Fragment(), GetChatListView {
 
         // 결과값에서 채팅룸 인덱스, 닉네임, 프로필사진만 먼저 가져옴
         for (i in 0 until result.size)
-            chatRooms.add(i, ChatRoom(result[i].chatRoomIdx, result[i].nickName, result[i].profileImgUrl,
-                "", "", true))
+            chatRooms.add(i, ChatRoom(result[i].chatRoomIdx, result[i].otherUserIdx, result[i].nickName, result[i].profileImgUrl,
+                "", "", true, result[i].status))
 
 
         initRVAdapter(chatRooms)

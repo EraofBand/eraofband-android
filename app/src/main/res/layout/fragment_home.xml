@@ -13,7 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/home_title_tv"
             android:layout_width="125dp"
             android:layout_height="35dp"
@@ -24,7 +24,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/home_notice_ib"
             android:layout_width="25dp"
             android:layout_height="25dp"
@@ -36,7 +36,7 @@
             app:layout_constraintEnd_toStartOf="@id/home_search_ib"
             app:layout_constraintTop_toTopOf="@id/home_title_tv" />
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/home_search_ib"
             android:layout_width="25dp"
             android:layout_height="25dp"

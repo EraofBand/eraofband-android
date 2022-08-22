@@ -17,15 +17,19 @@ import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResponse
 import com.example.eraofband.remote.band.makeAlbumBand.MakeAlbumBandResponse
 import com.example.eraofband.remote.band.makeBand.MakeBandResponse
 import com.example.eraofband.remote.band.patchBand.PatchBandResponse
+import com.example.eraofband.remote.board.deleteBoardImg.DeleteBoardImgResponse
+import com.example.eraofband.remote.board.getBoardList.GetBoardListResponse
+import com.example.eraofband.remote.board.getMyBoardList.GetMyBoardListResponse
+import com.example.eraofband.remote.board.getMyCommentList.GetMyCommentListResponse
+import com.example.eraofband.remote.board.patchBoard.PatchBoardResponse
+import com.example.eraofband.remote.board.postBoard.PostBoardResponse
+import com.example.eraofband.remote.board.postBoardImg.PostBoardImgResponse
 import com.example.eraofband.remote.board.boardComment.BoardDeleteCommentResponse
 import com.example.eraofband.remote.board.boardComment.BoardWriteCommentResponse
 import com.example.eraofband.remote.board.boardLike.BoardDeleteLikeResponse
 import com.example.eraofband.remote.board.boardLike.BoardLikeResponse
 import com.example.eraofband.remote.board.deleteBoard.DeleteBoardResponse
 import com.example.eraofband.remote.board.getBoard.GetBoardResponse
-import com.example.eraofband.remote.board.getBoardList.GetBoardListResponse
-import com.example.eraofband.remote.board.getMyBoardList.GetMyBoardListResponse
-import com.example.eraofband.remote.board.getMyCommentList.GetMyCommentListResponse
 import com.example.eraofband.remote.chat.activeChat.ActiveChatResponse
 import com.example.eraofband.remote.chat.getChatList.GetChatListResponse
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResponse
@@ -349,7 +353,23 @@ interface API {
 
     // 채팅방 활성화
     @PATCH("/chat/status/active")
-    fun activeChat(@Header("X_ACCESS-TOKEN") jwt : String, @Body makeChatRoom: MakeChatRoom) : Call<ActiveChatResponse>
+    fun activeChat(@Header("X-ACCESS-TOKEN") jwt : String, @Body makeChatRoom: MakeChatRoom) : Call<ActiveChatResponse>
+
+    // 게시물 생성
+    @POST("/board")
+    fun postBoard(@Header("X-ACCESS-TOKEN") jwt: String, @Body board : Board) : Call<PostBoardResponse>
+
+    // 게시물 사진 수정
+    @POST("/board/board-img/{boardIdx}")
+    fun postBoardImg(@Path("boardIdx") boardIdx: Int, @Body imgUrl : String) : Call<PostBoardImgResponse>
+
+    // 게시물 수정
+    @PATCH("/board/board-info/{boardIdx}")
+    fun patchBoard(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardIdx") boardIdx: Int, @Body boardContent : BoardContent) : Call<PatchBoardResponse>
+
+    //게시물 사진 삭제
+    @PATCH("/board/status-img/{boardImgIdx}")
+    fun deleteBoardImg(@Path("boardImgIdx") boardImgIdx : Int) : Call<DeleteBoardImgResponse>
 
     // 신고하기
     @POST("/notice/report")

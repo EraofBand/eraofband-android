@@ -49,8 +49,9 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         binding.userMypageBackIb.setOnClickListener {
             finish()
         }
-
+        
         binding.userMypageMoreIv.setOnClickListener { showPopup() }
+
 
         // 메세지 클릭하면 채팅방으로 이동
         binding.userMypageMessageTv.setOnClickListener {
@@ -58,7 +59,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             intent.putExtra("nickname", nickName)
             intent.putExtra("profile", profileImg)
             intent.putExtra("firstIndex", getUserIdx())
-            intent.putExtra("secondIndex", secondIndex)
+            intent.putExtra("secondIndex", otherUserIdx)
             startActivity(intent)
         }
 
@@ -164,7 +165,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         popupMenu.setOnMenuItemClickListener { item ->
             if (item!!.itemId == R.id.user_report) {
                 // 유저 신고하기
-                val reportDialog = ReportDialog(getJwt()!!, 0, secondIndex, getUserIdx())
+                val reportDialog = ReportDialog(getJwt()!!, 0, secondIndex, secondIndex)
                 reportDialog.isCancelable = false
                 reportDialog.show(supportFragmentManager, "report")
             }
