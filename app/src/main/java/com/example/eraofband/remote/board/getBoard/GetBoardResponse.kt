@@ -28,12 +28,15 @@ data class GetBoardComments(
     var boardCommentIdx: Int,
     var boardIdx: Int,
     var classNum: Int,
+    var commentStatus: String,
     var content: String,
     var groupNum: Int,
+    var hasReply: Int,
     var nickName: String,
     var profileImgUrl: String,
     var updatedAt: String,
-    var userIdx: Int
+    var userIdx: Int,
+    var userStatus: String
 )
 
 data class GetBoardImgs(

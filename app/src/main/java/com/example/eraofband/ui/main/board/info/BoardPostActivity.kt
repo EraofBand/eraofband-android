@@ -14,7 +14,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,9 +45,11 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
     private var likeCnt = 0
 
     private lateinit var commentRVAdapter: PostCommentRVAdapter
+    private var comment = arrayListOf<GetBoardComments>()
     private val commentService = BoardCommentService()
-    private var commentPosition = -1
-    private var groupNum = -1
+
+    private var currentPosition = -1
+    private var currentComment = GetBoardComments(0, 0, 0, "", "", 0, 0, "", "", "", 0, "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +88,7 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
             val userIdx = getUserIdx()
             if(comment.isNotEmpty()) {  // 댓글에 적은 내용이 있는 경우 댓글 업로드
                 // 답글 어쩌구가 있으면 답글, 아무것도 없으면 댓글
-                if(binding.boardPostWriteReplyInfoTv.visibility == View.VISIBLE) commentService.writeReply(getJwt()!!, boardIdx, Reply(comment, groupNum, userIdx))
+                if(binding.boardPostWriteReplyInfoTv.visibility == View.VISIBLE) commentService.writeReply(getJwt()!!, boardIdx, Reply(comment, currentComment.boardCommentIdx, userIdx))
                 else commentService.writeComment(getJwt()!!, boardIdx, Comment(comment, userIdx))
             }
         }
@@ -121,17 +122,13 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
     }
 
     private fun initCommentRV(item: List<GetBoardComments>) {
-        commentRVAdapter = PostCommentRVAdapter(this)
-        binding.boardPostCommentRv.adapter = commentRVAdapter
-        binding.boardPostCommentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-        val comment = arrayListOf<GetBoardComments>()
         comment.addAll(item)
         comment.sortByDescending { it.groupNum }
         comment.reverse()
-        Log.d("COMMENT", "$comment")
 
-        commentRVAdapter.initComment(comment)
+        commentRVAdapter = PostCommentRVAdapter(this, comment)
+        binding.boardPostCommentRv.adapter = commentRVAdapter
+        binding.boardPostCommentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         commentRVAdapter.setMyItemClickListener(object : PostCommentRVAdapter.MyItemClickListener {
             // 팝업 메뉴 띄우기
@@ -140,14 +137,15 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
             }
 
             @SuppressLint("SetTextI18n")
-            override fun onWriteReply(commentIdx: Int, name: String, position: Int) {
-                binding.boardPostWriteReplyInfoTv.text = "$name${getString(R.string.write_reply_info)}"
-                groupNum = commentIdx
-                commentPosition = position
+            override fun onWriteReply(comment: GetBoardComments, position: Int) {
+                binding.boardPostWriteReplyInfoTv.text = "${comment.nickName}${getString(R.string.write_reply_info)}"
 
                 binding.boardPostWriteReplyInfoTv.visibility = View.VISIBLE
                 binding.boardPostWriteReplyDeleteIv.visibility = View.VISIBLE
                 showKeyboard()
+
+                currentComment = comment
+                currentPosition = position
 
                 binding.boardPostWriteReplyDeleteIv.setOnClickListener {
                     binding.boardPostWriteCommentEt.setText("")
@@ -212,7 +210,8 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
 
         popupMenu.setOnMenuItemClickListener { item ->
             if (item!!.itemId == R.id.comment_delete) {  // 댓글 삭제하기
-                commentPosition = position
+                currentComment = comment[position]
+                currentPosition = position
                 commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
             }
             else {  // 댓글 신고하기
@@ -342,15 +341,26 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
 
     override fun onWriteCommentSuccess(result: GetBoardComments) {
         Log.d("WRITE/SUC", "$result")
-        if(binding.boardPostWriteReplyInfoTv.visibility == View.GONE) {
-            commentRVAdapter.addComment(result)
+        if(binding.boardPostWriteReplyInfoTv.visibility == View.GONE) {  // 댓글의 경우
+            comment.add(result)
+            commentRVAdapter.notifyItemInserted(this.comment.size - 1)
 
             binding.boardPostWriteCommentEt.setText("")
             hideKeyboard()
         }
-        else {
-            commentRVAdapter.addReply(commentPosition, result)
-            commentPosition = -1
+        else {  // 답글의 경우
+            val position = if(currentComment.hasReply == 0) currentPosition + 1
+                           else findIndex(currentPosition, currentComment.groupNum)
+
+            comment.add(position, result)
+            commentRVAdapter.notifyItemInserted(currentPosition)
+
+            if(comment[currentPosition].hasReply == 0) {
+                // 원래 답글이 0개였던 경우 hasReply를 1로 바꿔줌
+                comment[currentPosition].hasReply = 1
+                commentRVAdapter.notifyItemChanged(currentPosition)
+            }
+            currentPosition = -1
 
             binding.boardPostWriteCommentEt.setText("")
             hideKeyboard()
@@ -363,19 +373,69 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
         Log.d("WRITE/FAIL", "$code $message")
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onDeleteCommentSuccess(result: String) {
         Log.d("DELETE/SUC", result)
-        commentRVAdapter.deleteComment(commentPosition)
-        commentPosition = -1  // position 값 초기화 <- 엉뚱한 댓글이 삭제되지 않도록
-    }
+        if(currentComment.classNum == 0) {  // 댓글의 경우
+            if(currentComment.hasReply == 0) {  // 답글이 없는 경우 그냥 삭제
+                comment.removeAt(currentPosition)
+                commentRVAdapter.notifyDataSetChanged()
+                currentPosition = -1  // position 값 초기화 <- 엉뚱한 댓글이 삭제되지 않도록
+            }
+            else {  // 답글이 있는 경우 삭제된 댓글로 글 변경
+                comment[currentPosition].commentStatus = "INACTIVE"
+                comment[currentPosition].content = getString(R.string.delete_comment)
+                commentRVAdapter.notifyItemChanged(currentPosition)
+                currentPosition = -1
+            }
+        }
+        else {  // 답글의 경우
+            comment.removeAt(currentPosition)
+            commentRVAdapter.notifyDataSetChanged()
 
-    override fun onHaveReply(code: Int, message: String) {
-        Log.d("DELETE/FAIL", "$code $message")
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()  // 삭제 불가능하다는 토스트 메세지를 띄워줌
+            // 마지막 인덱스 체크 해주기
+            if(currentPosition != comment.size) {  // 마지막 인덱스가 아닌 경우
+                if ((comment[currentPosition].classNum == 0) && (comment[currentPosition - 1].classNum == 0)) {
+                    // 답글을 지운 후 앞 뒤가 다 댓글이면 해당 댓글의 답글이 모두 사라졌다고 판단
+                    if (comment[currentPosition - 1].commentStatus == "INACTIVE") {
+                        comment.removeAt(currentPosition - 1)
+                        commentRVAdapter.notifyDataSetChanged()
+                    } else {
+                        comment[currentPosition - 1].hasReply = 0
+                        commentRVAdapter.notifyItemChanged(currentPosition - 1)
+                    }
+                }
+            }
+            else {
+                if(comment[currentPosition - 1].classNum == 0) {
+                    // 답글을 지운 후 앞이 댓글이면 해당 댓글의 답글이 모두 사라졌다고 판단
+                    if(comment[currentPosition - 1].commentStatus == "INACTIVE") {
+                        comment.removeAt(currentPosition - 1)
+                        commentRVAdapter.notifyDataSetChanged()
+                    }
+                    else {
+                        comment[currentPosition - 1].hasReply = 0
+                        commentRVAdapter.notifyItemChanged(currentPosition - 1)
+                    }
+                }
+            }
+
+            currentPosition = -1  // position 값 초기화 <- 엉뚱한 댓글이 삭제되지 않도록
+        }
     }
 
     override fun onDeleteCommentFailure(code: Int, message: String) {
         Log.d("DELETE/FAIL", "$code $message")
+    }
+
+    private fun findIndex(position: Int, groupNum: Int): Int {
+        var index = position
+        while (index < comment.size){
+            if(comment[index].groupNum != groupNum) return index
+            index++
+        }
+        Log.d("INDEX", index.toString())
+        return index  // 그 댓글 밑에 아무것도 없는 경우
     }
 
     @SuppressLint("SetTextI18n")
