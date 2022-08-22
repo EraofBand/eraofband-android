@@ -107,6 +107,12 @@
     <string name="band_make_subtitle">밴드의 정보를 입력해주세요</string>
     <string name="band_title">밴드 이름</string>
     <string name="name">타이틀</string>
+    <string name="band_one_intro_info">밴드 한 줄 소개를 작성해주세요.</string>
+    <string name="band_intro_info">밴드를 소개해주세요!</string>
+    <string name="band_add_photo_info">밴드를 대표하는 사진 한장을 추가해 주세요.</string>
+    <string name="band_session_num_info">세션 모집 인원을 정해주세요</string>
+    <string name="band_session_num_sub_info">자신의 세션 제외</string>
+    <string name="band_make_session_info">희망하는 세션의 특징을 간단하게 적어주세요</string>
 
     <!-- 레슨 생성 관련 String -->
     <string name="lesson_make">레슨 생성</string>
@@ -152,7 +158,6 @@
     <string name="follow">팔로우</string>
 
     <!-- 게시판 관련 String -->
-    <string name="board_edit">게시물 수정하기</string>
     <string name="board_remove">게시물 삭제하기</string>
     <string name="board_report">게시물 신고하기</string>
 
