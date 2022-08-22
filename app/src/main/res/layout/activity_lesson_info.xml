@@ -76,11 +76,12 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/lesson_info_lesson_img_iv"
                     android:layout_width="match_parent"
-                    android:layout_height="260dp"
+                    android:layout_height="0dp"
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="15dp"
-                    android:background="@drawable/round_video_bg"
+                    android:background="@drawable/medium_gray_round_bg"
                     android:scaleType="fitCenter"
+                    app:layout_constraintDimensionRatio="5:3"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -91,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:fontFamily="@font/pretendard_medium"
-                    android:text="기타 레슨생 모집합니다"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -103,7 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendard_medium"
-                    android:text="레슨 한 줄 소개"
+                    android:text=""
                     android:textColor="@color/gray"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="@+id/lesson_info_lesson_title_tv"
@@ -116,7 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:fontFamily="@font/pretendard_medium"
-                    android:text="4 / 5명"
+                    android:text=""
                     android:textColor="@color/blue"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="@+id/lesson_info_lesson_intro_tv"
@@ -225,7 +226,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:fontFamily="@font/pretendard_medium"
-                    android:text="@string/guitar"
+                    android:text=""
                     android:textColor="@color/blue"
                     android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="@id/lesson_info_session_title_tv"
@@ -261,7 +262,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:fontFamily="@font/pretendard_medium"
-                    android:text="서울 강서구"
+                    android:text=""
                     android:textColor="@color/blue"
                     android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="@id/lesson_info_activity_area_tv"
@@ -298,7 +299,7 @@
                     android:layout_height="50dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="15dp"
-                    android:src="@drawable/ic_captain"
+                    android:background="@drawable/profile_round_bg"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/lesson_info_leader_info_tv" />
 
@@ -326,26 +327,26 @@
 
                     <TextView
                         android:id="@+id/lesson_info_teacher_nickname_tv"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
                         android:ellipsize="end"
                         android:fontFamily="@font/pretendard_medium"
-                        android:maxLines="1"
-                        android:text="승희는 해리야"
-                        android:textColor="@color/white"
-                        android:textSize="16sp" />
+                        android:maxLines="1" />
 
                     <TextView
                         android:id="@+id/lesson_info_teacher_intro_tv"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:text=""
+                        android:textColor="@color/gray"
+                        android:textSize="12sp"
                         android:ellipsize="end"
                         android:fontFamily="@font/pretendard_medium"
                         android:maxLines="1"
-                        android:text="나는 대장입니다"
-                        android:textColor="@color/gray"
-                        android:textSize="12sp" />
+                        android:layout_marginTop="5dp"/>
 
                 </LinearLayout>
 
@@ -375,15 +376,17 @@
 
                 <TextView
                     android:id="@+id/lesson_info_intro_tv"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="15dp"
-                    android:fontFamily="@font/pretendard_medium"
-                    android:lineSpacingExtra="5dp"
-                    android:text="안녕하세요 저 진짜 대박 잘칩니다 한 번만 저를 믿어보십시오 후회 안함"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="14sp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:maxLines="3"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="4dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="15dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/lesson_info_intro_title_tv" />
@@ -437,7 +440,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/pretendard_bold"
-                        android:text="아직 수강생이 존재하지 않습니다!"
+                        android:text="@string/no_student"
                         android:textColor="@color/white"
                         android:textSize="16sp"
                         android:visibility="gone"
@@ -504,7 +507,7 @@
                         android:autoLink="web"
                         android:fontFamily="@font/pretendard_medium"
                         android:linksClickable="true"
-                        android:text="수강생에게만 공개됩니다."
+                        android:text="@string/link_for_student"
                         android:textColor="@color/gray"
                         android:textSize="14sp"
                         app:layout_constraintEnd_toEndOf="parent"

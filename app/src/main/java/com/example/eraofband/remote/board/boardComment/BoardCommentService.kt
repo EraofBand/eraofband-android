@@ -49,7 +49,6 @@ class BoardCommentService {
 
                 when(resp.code) {
                     1000 -> boardView.onDeleteCommentSuccess(resp.result)  // 성공
-                    2107 -> boardView.onHaveReply(resp.code, resp.message)
                     else -> boardView.onDeleteCommentFailure(resp.code, resp.message)
                 }
             }

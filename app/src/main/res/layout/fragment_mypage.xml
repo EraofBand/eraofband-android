@@ -82,35 +82,37 @@
                     android:id="@+id/mypage_profileimg_iv"
                     android:layout_width="110dp"
                     android:layout_height="110dp"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="30dp"
                     android:elevation="10dp"
                     android:src="@drawable/ic_basic_profile"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="30dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/mypage_nickname_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginHorizontal="20dp"
                     android:fontFamily="@font/pretendard_bold"
-                    android:text="닉네임"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     app:layout_constraintStart_toEndOf="@+id/mypage_profileimg_iv"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/mypage_profileimg_iv" />
 
                 <TextView
                     android:id="@+id/mypage_detail_info_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/pretendard_medium"
-                    android:text="성남시 | 25세 | 남성"
+                    android:text=""
                     android:textColor="@color/blue"
                     android:textSize="13sp"
                     app:layout_constraintStart_toStartOf="@+id/mypage_nickname_tv"
+                    app:layout_constraintEnd_toEndOf="@+id/mypage_nickname_tv"
                     app:layout_constraintTop_toBottomOf="@+id/mypage_nickname_tv" />
                 
                 <TextView
@@ -123,11 +125,10 @@
                     android:textSize="12sp"
                     android:fontFamily="@font/pretendard_light"
                     android:maxLines="3"
-                    android:layout_marginEnd="30dp"
                     android:layout_marginTop="5dp"
                     app:layout_constraintTop_toBottomOf="@id/mypage_detail_info_tv"
-                    app:layout_constraintStart_toStartOf="@id/mypage_detail_info_tv"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    app:layout_constraintStart_toStartOf="@id/mypage_nickname_tv"
+                    app:layout_constraintEnd_toEndOf="@id/mypage_nickname_tv"/>
 
                 <TextView
                     android:id="@+id/mypage_look_more_tv"
@@ -176,7 +177,7 @@
                             android:id="@+id/mypage_following_cnt_tv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text=""
                             android:textColor="@color/blue"
                             android:textSize="20sp"
                             android:textAlignment="center"
@@ -219,7 +220,7 @@
                             android:id="@+id/mypage_follower_cnt_tv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text=""
                             android:textColor="@color/blue"
                             android:textSize="20sp"
                             android:textAlignment="center"
@@ -262,7 +263,7 @@
                             android:id="@+id/mypage_portfolio_cnt_tv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text=""
                             android:textColor="@color/blue"
                             android:textSize="20sp"
                             android:textAlignment="center"
@@ -305,7 +306,6 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="10dp"
-                    android:src="@drawable/ic_mypage_session_vocal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -316,7 +316,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/pretendard_medium"
-                    android:text="@string/guitar"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"

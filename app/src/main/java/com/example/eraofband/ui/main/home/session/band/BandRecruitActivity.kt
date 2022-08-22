@@ -21,8 +21,8 @@ import com.example.eraofband.remote.band.getBand.GetBandResult
 import com.example.eraofband.remote.band.getBand.GetBandService
 import com.example.eraofband.remote.band.getBand.GetBandView
 import com.example.eraofband.remote.band.getBand.SessionMembers
-import com.example.eraofband.ui.report.ReportDialog
 import com.example.eraofband.ui.main.home.session.band.album.BandMakeAlbumActivity
+import com.example.eraofband.ui.report.ReportDialog
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 
@@ -209,7 +209,7 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
                     deleteDialog.show(supportFragmentManager, "resignBand")
                 }
                 else -> {  // 밴드 신고하기
-                    val reportDialog = ReportDialog(getJwt()!!, 3, bandIdx, getUserIdx())
+                    val reportDialog = ReportDialog(getJwt()!!, 3, bandIdx, leaderIdx)
                     reportDialog.isCancelable = false
                     reportDialog.show(supportFragmentManager, "report")
                 }

@@ -139,7 +139,7 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
             }
             else {
                 // 댓글 신고하기
-                val reportDialog = ReportDialog(getJwt()!!, 2, commentIdx, getUserIdx())
+                val reportDialog = ReportDialog(getJwt()!!, 2, commentIdx, userIdx)
                 reportDialog.isCancelable = false
                 reportDialog.show(supportFragmentManager, "report")
             }

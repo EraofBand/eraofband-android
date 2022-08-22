@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:fontFamily="@font/pretendard_medium"
-            android:text="채팅"
+            android:text="@string/chat"
             android:textColor="@color/white"
             android:textSize="25sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -28,7 +28,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/chat_list_nsv"
@@ -59,7 +58,7 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
 
 
-            <ImageButton
+            <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/chat_search_ib"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -78,12 +77,13 @@
                 android:textColor="@color/white"
                 android:textSize="17sp"
                 android:fontFamily="@font/pretendard_regular"
-                android:hint="여기는 검색창입니다"
+                android:inputType="text"
                 android:textColorHint="@color/gray"
                 android:background="@color/transparent"
                 android:layout_marginStart="10dp"
                 app:layout_constraintTop_toTopOf="@id/chat_search_v"
-                app:layout_constraintStart_toEndOf="@id/chat_search_ib"/>
+                app:layout_constraintStart_toEndOf="@id/chat_search_ib"
+                tools:ignore="LabelFor" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/chat_list_rv"

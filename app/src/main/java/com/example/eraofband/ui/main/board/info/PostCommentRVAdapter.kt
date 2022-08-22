@@ -1,6 +1,5 @@
 package com.example.eraofband.ui.main.board.info
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -8,49 +7,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.eraofband.R
 import com.example.eraofband.databinding.ItemPostCommentBinding
 import com.example.eraofband.databinding.ItemPostReplyBinding
 import com.example.eraofband.remote.board.getBoard.GetBoardComments
 
-class PostCommentRVAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private val COMMENT = 0
-    private val REPLY = 1
-    private var comment = arrayListOf<GetBoardComments>()
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun initComment(comment: List<GetBoardComments>) {
-        this.comment.addAll(comment)
-        notifyDataSetChanged()
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun addComment(comment: GetBoardComments) {
-        this.comment.add(comment)
-        notifyDataSetChanged()
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun addReply(position: Int, comment: GetBoardComments) {
-        this.comment.add(position, comment)
-        notifyDataSetChanged()
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun deleteComment(position: Int) {
-        this.comment.removeAt(position)
-        notifyDataSetChanged()
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun clearComment() {
-        this.comment.clear()
-        notifyDataSetChanged()
+class PostCommentRVAdapter(private val context: Context, private var comment: ArrayList<GetBoardComments>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    companion object {
+        private const val COMMENT = 0
+        private const val REPLY = 1
     }
 
     interface MyItemClickListener {
         fun onItemClick(comment: GetBoardComments)
         fun onShowPopUp(commentIdx: Int, position: Int, userIdx: Int, view: View)
-        fun onWriteReply(commentIdx: Int, name: String, position: Int)
+        fun onWriteReply(comment: GetBoardComments, position: Int)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -78,16 +49,21 @@ class PostCommentRVAdapter(private val context: Context) : RecyclerView.Adapter<
         if(holder is CommentViewHolder) {
             holder.bind(comment[position])
 
-            // 구분선 제거
-            if(position != comment.size - 1) {
-                if(comment[position].groupNum == comment[position + 1].groupNum) holder.binding.postCommentLine.visibility = View.GONE
+            // 답글이 있는 경우 구분선 제거
+            if(comment[position].hasReply == 1 || comment[position].commentStatus == "INACTIVE") {
+                holder.binding.postCommentLine.visibility = View.GONE
+            }
+
+            // 답글이 없는데 삭제된 댓글일 경우 보여주지 않음
+            if(comment[position].commentStatus == "INACTIVE") {
+                if(comment[position].hasReply == 0) holder.binding.root.visibility = View.GONE
             }
 
             // 댓글 팝업 메뉴 띄우기
             holder.binding.postCommentMoreIv.setOnClickListener { mItemClickListener.onShowPopUp(comment[position].boardCommentIdx, position, comment[position].userIdx, holder.binding.postCommentMoreIv) }
 
             // 답글 달기
-            holder.binding.postCommentTimeReplyTv.setOnClickListener { mItemClickListener.onWriteReply(comment[position].boardCommentIdx, comment[position].nickName, findIndex(position, comment[position].groupNum)) }
+            holder.binding.postCommentTimeReplyTv.setOnClickListener { mItemClickListener.onWriteReply(comment[position], position) }
 
             // 유저 페이지로 이동
             holder.binding.postCommentProfileIv.setOnClickListener { mItemClickListener.onItemClick(comment[position]) }
@@ -96,9 +72,9 @@ class PostCommentRVAdapter(private val context: Context) : RecyclerView.Adapter<
         else if(holder is ReplyViewHolder) {
             holder.bind(comment[position])
 
-            // 구분선 제거
+            // 다음에 오는 게 댓글이 아니면 구분선 제거
             if(position != comment.size - 1) {
-                if(comment[position].groupNum == comment[position + 1].groupNum) holder.binding.postReplyLine.visibility = View.GONE
+                if(comment[position + 1].classNum == 1) holder.binding.postReplyLine.visibility = View.GONE
             }
 
             // 답글 팝업 메뉴 띄우기
@@ -119,34 +95,49 @@ class PostCommentRVAdapter(private val context: Context) : RecyclerView.Adapter<
 
     inner class CommentViewHolder(val binding: ItemPostCommentBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: GetBoardComments) {
-            Glide.with(context).load(comment.profileImgUrl)  // 프로필 사진
-                .apply(RequestOptions.centerCropTransform()).apply(RequestOptions.circleCropTransform())
-                .into(binding.postCommentProfileIv)
+            if(comment.userStatus == "DELETE") {  // 탈퇴한 유저일 경우
+                binding.postCommentProfileIv.setImageResource(R.drawable.ic_basic_profile)
+                binding.postCommentNicknameTv.text = context.getString(R.string.delete_user)
 
-            binding.postCommentNicknameTv.text = comment.nickName  // 닉네임
-            binding.postCommentCommentTv.text = comment.content  // 댓글 내용
+                binding.postCommentProfileIv.isClickable = false
+                binding.postCommentNicknameTv.isClickable = false
+            }
+            else {
+                Glide.with(context).load(comment.profileImgUrl)  // 프로필 사진
+                    .apply(RequestOptions.centerCropTransform()).apply(RequestOptions.circleCropTransform())
+                    .into(binding.postCommentProfileIv)
+                binding.postCommentNicknameTv.text = comment.nickName  // 닉네임
+
+            }
+
+            if(comment.commentStatus == "INACTIVE") {
+                binding.postCommentCommentTv.text = context.getString(R.string.delete_comment)
+            } else {
+                binding.postCommentCommentTv.text = comment.content  // 댓글 내용
+            }
+
             binding.postCommentTimeTv.text = comment.updatedAt  // 댓글 단 시간
        }
     }
 
     inner class ReplyViewHolder(val binding: ItemPostReplyBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: GetBoardComments) {
-            Glide.with(context).load(comment.profileImgUrl)  // 프로필 사진
-                .apply(RequestOptions.centerCropTransform()).apply(RequestOptions.circleCropTransform())
-                .into(binding.postReplyProfileIv)
+            if(comment.userStatus == "DELETE") {  // 탈퇴한 유저일 경우
+                binding.postReplyProfileIv.setImageResource(R.drawable.ic_basic_profile)
+                binding.postReplyNicknameTv.text = context.getString(R.string.delete_user)
 
-            binding.postReplyNicknameTv.text = comment.nickName  // 닉네임
+                binding.postReplyProfileIv.isClickable = false
+                binding.postReplyNicknameTv.isClickable = false
+            }
+            else {
+                Glide.with(context).load(comment.profileImgUrl)  // 프로필 사진
+                    .apply(RequestOptions.centerCropTransform()).apply(RequestOptions.circleCropTransform())
+                    .into(binding.postReplyProfileIv)
+                binding.postReplyNicknameTv.text = comment.nickName  // 닉네임
+
+            }
             binding.postReplyCommentTv.text = comment.content  // 댓글 내용
             binding.postReplyTimeTv.text = comment.updatedAt  // 댓글 단 시간
         }
-    }
-
-    private fun findIndex(position: Int, groupNum: Int): Int {
-        var index = position
-        while (index < comment.size){
-           if(comment[index].groupNum != groupNum) return index
-            index++
-        }
-        return index  // 그 댓글 밑에 아무것도 없는 경우
     }
 }

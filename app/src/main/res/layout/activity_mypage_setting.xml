@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -12,7 +12,7 @@
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/setting_back_ib"
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -29,7 +29,7 @@
             android:id="@+id/setting_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="설정"
+            android:text="@string/setting"
             android:textSize="20sp"
             android:fontFamily="@font/pretendard_medium"
             android:textColor="@color/white"
@@ -51,7 +51,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/setting_notice_iv"
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -66,7 +66,7 @@
             android:id="@+id/setting_notice_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="공지사항"
+            android:text="@string/setting_notice"
             android:textColor="@color/blue"
             android:textSize="17sp"
             android:fontFamily="@font/pretendard_medium"
@@ -74,7 +74,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/setting_notice_iv"/>
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/setting_notice_move_iv"
             android:layout_width="15dp"
             android:layout_height="15dp"
@@ -96,7 +96,7 @@
         app:layout_constraintStart_toStartOf="@id/setting_notice_cl"
         app:layout_constraintEnd_toEndOf="@id/setting_notice_cl">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/setting_information_iv"
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -111,7 +111,7 @@
             android:id="@+id/setting_information_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="버전 정보"
+            android:text="@string/version_info"
             android:textColor="@color/white"
             android:textSize="17sp"
             android:fontFamily="@font/pretendard_medium"
@@ -119,7 +119,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/setting_information_iv"/>
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/setting_information_move_iv"
             android:layout_width="15dp"
             android:layout_height="15dp"
@@ -141,7 +141,7 @@
         app:layout_constraintStart_toStartOf="@id/setting_notice_cl"
         app:layout_constraintEnd_toEndOf="@id/setting_notice_cl">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/setting_mail_iv"
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -156,7 +156,7 @@
             android:id="@+id/setting_mail_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="문의 메일 작성"
+            android:text="@string/mail"
             android:textColor="@color/white"
             android:textSize="17sp"
             android:fontFamily="@font/pretendard_medium"
@@ -164,7 +164,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/setting_mail_iv"/>
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/setting_mail_move_iv"
             android:layout_width="15dp"
             android:layout_height="15dp"
@@ -186,7 +186,7 @@
         app:layout_constraintStart_toStartOf="@id/setting_notice_cl"
         app:layout_constraintEnd_toEndOf="@id/setting_notice_cl">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/setting_notification_iv"
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -201,7 +201,7 @@
             android:id="@+id/setting_notification_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="알림 설정"
+            android:text="@string/notice_setting"
             android:textColor="@color/white"
             android:textSize="17sp"
             android:fontFamily="@font/pretendard_medium"
@@ -209,7 +209,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/setting_notification_iv"/>
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/setting_notification_move_iv"
             android:layout_width="15dp"
             android:layout_height="15dp"
@@ -231,7 +231,7 @@
         app:layout_constraintStart_toStartOf="@id/setting_notice_cl"
         app:layout_constraintEnd_toEndOf="@id/setting_notice_cl">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/setting_logout_iv"
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -246,7 +246,7 @@
             android:id="@+id/setting_logout_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="로그아웃"
+            android:text="@string/logout"
             android:textColor="@color/white"
             android:textSize="17sp"
             android:fontFamily="@font/pretendard_medium"
@@ -254,7 +254,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/setting_logout_iv"/>
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/setting_logout_move_iv"
             android:layout_width="15dp"
             android:layout_height="15dp"
@@ -276,7 +276,7 @@
         app:layout_constraintStart_toStartOf="@id/setting_notice_cl"
         app:layout_constraintEnd_toEndOf="@id/setting_notice_cl">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/setting_remove_iv"
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -291,7 +291,7 @@
             android:id="@+id/setting_remove_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="회원 탈퇴"
+            android:text="@string/sign_out"
             android:textColor="@color/white"
             android:textSize="17sp"
             android:fontFamily="@font/pretendard_medium"
@@ -299,7 +299,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toEndOf="@id/setting_remove_iv"/>
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/setting_logout_remove_iv"
             android:layout_width="15dp"
             android:layout_height="15dp"

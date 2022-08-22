@@ -181,7 +181,7 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
                 }
                 else -> {
                     // 포트폴리오 신고하기
-                    val reportDialog = ReportDialog(getJwt()!!, 1, portfolio.pofolIdx, getUserIdx())
+                    val reportDialog = ReportDialog(getJwt()!!, 1, portfolio.pofolIdx, portfolio.userIdx)
                     reportDialog.isCancelable = false
                     reportDialog.show(requireActivity().supportFragmentManager, "report")
                 }

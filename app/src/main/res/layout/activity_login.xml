@@ -7,7 +7,7 @@
     android:background="@drawable/bg_login"
     tools:context=".ui.login.LoginActivity">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/login_title_iv"
         android:layout_width="200dp"
         android:layout_height="60dp"
@@ -23,7 +23,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/pretendard_regular"
-        android:text="지금 당신은 밴드의 시대를\n열 준비가 되셨나요?"
+        android:text="@string/login_title"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,12 +40,14 @@
         android:drawableStart="@drawable/ic_login_kakao_resize"
         android:drawablePadding="-50dp"
         android:fontFamily="@font/pretendard_bold"
-        android:paddingLeft="35dp"
-        android:text="Kakao로 시작하기"
+        android:paddingStart="35dp"
+        android:text="@string/kakao_login"
         android:textAllCaps="false"
         android:textColor="#391E1E"
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="RtlSymmetry" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

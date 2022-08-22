@@ -165,7 +165,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         popupMenu.setOnMenuItemClickListener { item ->
             if (item!!.itemId == R.id.user_report) {
                 // 유저 신고하기
-                val reportDialog = ReportDialog(getJwt()!!, 0, secondIndex, getUserIdx())
+                val reportDialog = ReportDialog(getJwt()!!, 0, secondIndex, secondIndex)
                 reportDialog.isCancelable = false
                 reportDialog.show(supportFragmentManager, "report")
             }
