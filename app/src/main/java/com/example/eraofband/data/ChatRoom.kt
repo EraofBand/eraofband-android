@@ -7,7 +7,8 @@ data class ChatRoom(
     var profileImgUrl: String,
     var lastMessage: String,
     var updateAt: String,
-    var isChecked: Boolean
+    var isChecked: Boolean,
+    var status : Int
 )
 
 data class MakeChatRoom(

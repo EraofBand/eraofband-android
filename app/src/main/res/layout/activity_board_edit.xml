@@ -29,7 +29,7 @@
             android:id="@+id/board_edit_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/board_edit"
+            android:text="@string/board_edit_"
             android:textSize="20sp"
             android:fontFamily="@font/pretendard_medium"
             android:textColor="@color/white"

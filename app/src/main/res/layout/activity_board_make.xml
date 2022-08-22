@@ -127,7 +127,7 @@
         android:id="@+id/board_make_register_btn"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:text="@string/community_btn"
+        android:text="@string/board_btn"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:fontFamily="@font/pretendard_medium"
