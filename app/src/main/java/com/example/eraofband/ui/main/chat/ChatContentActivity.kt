@@ -88,7 +88,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         val profileImg = intent.getStringExtra("profile")!!
         val nickname = intent.getStringExtra("nickname")!!
 
-        chatRVAdapter = ChatContentRVAdapter(profileImg, nickname)
+        chatRVAdapter = ChatContentRVAdapter(profileImg, nickname, chatIdx)
         binding.chatContentRv.adapter = chatRVAdapter
         binding.chatContentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
@@ -199,9 +199,22 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
 
         popupMenu.setOnMenuItemClickListener{item->
             if (item!!.itemId== R.id.chat_delete) {
+                val index = chatRVAdapter.itemCount //나간 시점의 마지막 인덱스
+                val hashMap = HashMap<String, Int>() //전송을 위해 선언
+
+                //파베의 firstIdx가 나인지 secondIdx가 나인지 구분
+                if(getChatRef.child(chatIdx).child("users").equals(getUserIdx())) {
+                    hashMap["firstOutIdx"] = index
+                } else {
+                    hashMap["secondOutIdx"] = index
+                }
+
+                //인덱스 업데이트
+                sendChatRef.child(chatIdx).child("users").updateChildren(hashMap as Map<String, Any>)
+
                 val patchChatService = PatchChatService() // 채팅방 나가기 api
                 patchChatService.setChatView(this)
-                patchChatService.patchChat(getJwt()!!, "")
+                patchChatService.patchChat(getJwt()!!, chatIdx)
             }
             false
         }
@@ -215,7 +228,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
 
     }
 
-    private fun readCheck(){
+    private fun readCheck(){/*
         val hashMap = HashMap<String, Boolean>()
         hashMap["readUser"] = true
 
@@ -223,7 +236,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
 
         for( i in 0 until chatRVAdapter.returnLastIndex() ) {
             sendChatRef.child(chatIdx).child("comments").child("$i").updateChildren(hashMap as Map<String, Any>)
-        }
+        }*/
     }
 
     override fun onMakeSuccess(result: String) {

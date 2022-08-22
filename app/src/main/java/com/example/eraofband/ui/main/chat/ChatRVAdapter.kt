@@ -15,7 +15,7 @@ class ChatRVAdapter : RecyclerView.Adapter<ChatRVAdapter.ViewHolder>() {
     private val chatRoomList = arrayListOf<ChatRoom>()
 
     interface MyItemClickListener{
-        fun onItemClick(chatIdx : String, profileImg : String, nickname : String)
+        fun onItemClick(chatIdx : String, profileImg : String, nickname : String, userIdx : Int)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -61,7 +61,7 @@ class ChatRVAdapter : RecyclerView.Adapter<ChatRVAdapter.ViewHolder>() {
             binding.chatListMessageTv.text = "마지막으로 보낸 메세지"
 
             binding.itemChatListRv.setOnClickListener {
-                mItemClickListener.onItemClick(chatRoom.chatRoomIdx, chatRoom.profileImgUrl, chatRoom.nickname)
+                mItemClickListener.onItemClick(chatRoom.chatRoomIdx, chatRoom.profileImgUrl, chatRoom.nickname, chatRoom.otherUserIdx)
             }
         }
     }

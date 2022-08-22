@@ -2,6 +2,7 @@ package com.example.eraofband.data
 
 data class ChatRoom(
     var chatRoomIdx: String,
+    var otherUserIdx: Int,
     var nickname: String,
     var profileImgUrl: String,
     var lastMessage: String,

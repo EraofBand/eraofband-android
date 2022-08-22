@@ -58,16 +58,23 @@ class ChatFragment : Fragment(), GetChatListView {
         chatRVAdapter.initChatList(result)
 
         chatRVAdapter.setMyItemClickListener(object : ChatRVAdapter.MyItemClickListener{
-            override fun onItemClick(chatIdx : String, profileImg: String, nickname : String) {
+            override fun onItemClick(chatIdx : String, profileImg: String, nickname : String, userIdx: Int) {
                 activity?.let {
                     val intent = Intent(activity, ChatContentActivity::class.java)
                     intent.putExtra("chatRoomIndex", chatIdx)
                     intent.putExtra("profile", profileImg)
                     intent.putExtra("nickname", nickname)
+                    intent.putExtra("firstIndex", getUserIdx())
+                    intent.putExtra("secondIndex", userIdx)
                     startActivity(intent)
                 }
             }
         })
+    }
+
+    private fun getUserIdx() : Int {
+        val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        return userSP.getInt("userIdx", 0)
     }
 
     private fun hideKeyboard() {
@@ -85,7 +92,7 @@ class ChatFragment : Fragment(), GetChatListView {
 
         // 결과값에서 채팅룸 인덱스, 닉네임, 프로필사진만 먼저 가져옴
         for (i in 0 until result.size)
-            chatRooms.add(i, ChatRoom(result[i].chatRoomIdx, result[i].nickName, result[i].profileImgUrl,
+            chatRooms.add(i, ChatRoom(result[i].chatRoomIdx, result[i].otherUserIdx, result[i].nickName, result[i].profileImgUrl,
                 "", "", true))
 
 

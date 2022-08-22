@@ -80,4 +80,11 @@
         <item>드럼</item>
     </string-array>
 
+    <string-array name="board">
+        <item>자유</item>
+        <item>질문</item>
+        <item>홍보</item>
+        <item>거래</item>
+    </string-array>
+
 </resources>
