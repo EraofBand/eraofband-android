@@ -30,9 +30,6 @@ import com.example.eraofband.remote.board.boardLike.BoardDeleteLikeResponse
 import com.example.eraofband.remote.board.boardLike.BoardLikeResponse
 import com.example.eraofband.remote.board.deleteBoard.DeleteBoardResponse
 import com.example.eraofband.remote.board.getBoard.GetBoardResponse
-import com.example.eraofband.remote.board.getBoardList.GetBoardListResponse
-import com.example.eraofband.remote.board.getMyBoardList.GetMyBoardListResponse
-import com.example.eraofband.remote.board.getMyCommentList.GetMyCommentListResponse
 import com.example.eraofband.remote.chat.activeChat.ActiveChatResponse
 import com.example.eraofband.remote.chat.getChatList.GetChatListResponse
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResponse
