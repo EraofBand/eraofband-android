@@ -346,7 +346,7 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
             commentRVAdapter.notifyItemInserted(this.comment.size - 1)
 
             binding.boardPostWriteCommentEt.setText("")
-            hideKeyboard()
+            if(binding.boardPostWriteCommentEt.isFocused) hideKeyboard()
         }
         else {  // 답글의 경우
             val position = if(currentComment.hasReply == 0) currentPosition + 1
@@ -363,7 +363,7 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
             currentPosition = -1
 
             binding.boardPostWriteCommentEt.setText("")
-            hideKeyboard()
+            if(binding.boardPostWriteCommentEt.isFocused) hideKeyboard()
             binding.boardPostWriteReplyInfoTv.visibility = View.GONE
             binding.boardPostWriteReplyDeleteIv.visibility = View.GONE
         }

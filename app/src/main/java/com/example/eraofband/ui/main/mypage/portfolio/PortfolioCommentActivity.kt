@@ -193,8 +193,7 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
         binding.portfolioCommentUploadTv.setTextColor(Color.parseColor("#7FA8FF"))
 
         // 키보드 내리기
-        val inputManager : InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(currentFocus!!.windowToken!!, InputMethodManager.HIDE_NOT_ALWAYS)
+        if(binding.portfolioCommentWriteEt.isFocused) hideKeyboard()
     }
 
     override fun onCommentWriteFailure(code: Int, message: String) {
@@ -216,5 +215,10 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
 
     override fun onCommentDeleteFailure(code: Int, message: String) {
         Log.d("DELETECOMMENT/FAIL", message)
-        }
     }
+
+    private fun hideKeyboard() {
+        val inputManager : InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(currentFocus!!.windowToken!!, InputMethodManager.HIDE_NOT_ALWAYS)
+    }
+}
