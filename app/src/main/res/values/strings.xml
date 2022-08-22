@@ -265,7 +265,7 @@
 
     <!--게시물 수정 관련 String -->
     <string name="board_edit_btn">수정하기</string>
-    <string name="board_edit">게시물 수정</string>
+    <string name="board_edit_">게시물 수정</string>
 
     <!-- 신고 관련 String -->
     <string name="report">신고하기</string>
