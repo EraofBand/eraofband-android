@@ -10,6 +10,7 @@ data class GetChatListResponse (
 data class GetChatListResult (
     var chatRoomIdx: String,
     var nickName: String,
+    var otherUserIdx: Int,
     var profileImgUrl: String,
     var status : Int
 )
