@@ -113,7 +113,7 @@ class ChatFragment : Fragment(), GetChatListView {
         // 결과값에서 채팅룸 인덱스, 닉네임, 프로필사진만 먼저 가져옴
         for (i in 0 until result.size)
             chatRooms.add(i, ChatRoom(result[i].chatRoomIdx, result[i].otherUserIdx, result[i].nickName, result[i].profileImgUrl,
-                "", "", true))
+                "", "", true, result[i].status))
 
 
         initRVAdapter(chatRooms)
