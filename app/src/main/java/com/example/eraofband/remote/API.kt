@@ -8,13 +8,14 @@ import com.example.eraofband.remote.band.bandLike.BandLikeDeleteResponse
 import com.example.eraofband.remote.band.bandLike.BandLikeResponse
 import com.example.eraofband.remote.band.deleteBand.DeleteBandResponse
 import com.example.eraofband.remote.band.deleteUserBand.DeleteUserBandResponse
+import com.example.eraofband.remote.band.getAlbumBand.GetAlbumBandResponse
 import com.example.eraofband.remote.band.getBand.GetBandResponse
 import com.example.eraofband.remote.band.getLikedBand.GetLikedBandResponse
 import com.example.eraofband.remote.band.getNewBand.GetNewBandResponse
 import com.example.eraofband.remote.band.getPopularBand.GetPopularBandResponse
 import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResponse
+import com.example.eraofband.remote.band.makeAlbumBand.MakeAlbumBandResponse
 import com.example.eraofband.remote.band.makeBand.MakeBandResponse
-import com.example.eraofband.remote.chat.activeChat.ActiveChatResponse
 import com.example.eraofband.remote.band.patchBand.PatchBandResponse
 import com.example.eraofband.remote.board.deleteBoardImg.DeleteBoardImgResponse
 import com.example.eraofband.remote.board.getBoardList.GetBoardListResponse
@@ -23,6 +24,16 @@ import com.example.eraofband.remote.board.getMyCommentList.GetMyCommentListRespo
 import com.example.eraofband.remote.board.patchBoard.PatchBoardResponse
 import com.example.eraofband.remote.board.postBoard.PostBoardResponse
 import com.example.eraofband.remote.board.postBoardImg.PostBoardImgResponse
+import com.example.eraofband.remote.board.boardComment.BoardDeleteCommentResponse
+import com.example.eraofband.remote.board.boardComment.BoardWriteCommentResponse
+import com.example.eraofband.remote.board.boardLike.BoardDeleteLikeResponse
+import com.example.eraofband.remote.board.boardLike.BoardLikeResponse
+import com.example.eraofband.remote.board.deleteBoard.DeleteBoardResponse
+import com.example.eraofband.remote.board.getBoard.GetBoardResponse
+import com.example.eraofband.remote.board.getBoardList.GetBoardListResponse
+import com.example.eraofband.remote.board.getMyBoardList.GetMyBoardListResponse
+import com.example.eraofband.remote.board.getMyCommentList.GetMyCommentListResponse
+import com.example.eraofband.remote.chat.activeChat.ActiveChatResponse
 import com.example.eraofband.remote.chat.getChatList.GetChatListResponse
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResponse
 import com.example.eraofband.remote.chat.makeChat.MakeChatResponse
@@ -49,6 +60,7 @@ import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentResponse
 import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentWriteResponse
 import com.example.eraofband.remote.portfolio.pofolLike.PofolDeleteLikeResponse
 import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeResponse
+import com.example.eraofband.remote.report.ReportResponse
 import com.example.eraofband.remote.search.getBand.GetSearchBandResponse
 import com.example.eraofband.remote.search.getLesson.GetSearchLessonResponse
 import com.example.eraofband.remote.search.getUser.GetSearchUserResponse
@@ -142,6 +154,46 @@ interface API {
     @GET("/pofols/info/follow/{pofolIdx}")
     fun getFollowPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("pofolIdx") pofolIdx: Int) : Call<GetPofolResponse>
 
+    // 게시물 리스트 조회
+    @GET("/board/list/info/{category}/{boardIdx}")
+    fun getBoardList(@Path("category") category: Int, @Path("boardIdx") boardIdx: Int) : Call<GetBoardListResponse>
+
+    // 작성 게시물 리스트 조회
+    @GET("/board/my")
+    fun getMyBoardList(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetMyBoardListResponse>
+
+    // 댓글 단 게시물 리스트 조회
+    @GET("/board/my-comment")
+    fun getMyCommentList(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetMyCommentListResponse>
+
+    // 게시물 정보 조회
+    @GET("/board/info/{boardIdx}")
+    fun getBoard(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardIdx") boardIdx: Int) : Call<GetBoardResponse>
+
+    // 게시물 댓글 등록
+    @POST("/board/comment/{boardIdx}")
+    fun writeBoardComment(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardIdx") boardIdx: Int, @Body comment: Comment) : Call<BoardWriteCommentResponse>
+
+    // 게시물 댓글 삭제
+    @PATCH("/board/comment/status/{boardCommentIdx}")
+    fun deleteBoardComment(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardCommentIdx") boardCommentIdx: Int, @Body userIdx: Int) : Call<BoardDeleteCommentResponse>
+
+    // 게시물 답글 등록
+    @POST("/board/re-comment/{boardIdx}")
+    fun writeBoardReply(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardIdx") boardIdx: Int, @Body reply: Reply) : Call<BoardWriteCommentResponse>
+
+    // 게시물 좋아요
+    @POST("/board/likes/{boardIdx}")
+    fun likeBoard(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardIdx") boardIdx: Int) : Call<BoardLikeResponse>
+
+    // 게시물 좋아요 취소
+    @DELETE("/board/unlikes/{boardIdx}")
+    fun deleteBoardLike(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardIdx") boardIdx: Int) : Call<BoardDeleteLikeResponse>
+
+    // 게시물 삭제
+    @PATCH("/board/status/{boardIdx}")
+    fun deleteBoard(@Header("X-ACCESS-TOKEN") jwt: String, @Path("boardIdx") boardIdx: Int, @Body userIdx: Int) : Call<DeleteBoardResponse>
+
     // 내 포트폴리오 리스트 조회
     @GET("/pofols/info/{userIdx}")
     fun getMyPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<GetPofolResponse>
@@ -206,13 +258,21 @@ interface API {
     @GET("/sessions/info/list/{band-region}/{band-session}")
     fun getRegionBand(@Path("band-region") bandRegion : String, @Path("band-session") bandSession : Int) : Call<GetRegionBandResponse>
 
-    //밴드 삭제
+    // 밴드 삭제
     @PATCH("/sessions/status/{bandIdx}")
     fun deleteBand(@Header("X-ACCESS-TOKEN") jwt: String, @Path("bandIdx") bandIdx: Int, @Body userIdx: Int) : Call<DeleteBandResponse>
 
-    //밴드 탈퇴
+    // 밴드 탈퇴
     @DELETE("/sessions/out/{bandIdx}")
     fun deleteUserBand(@Header("X-ACCESS-TOKEN") jwt: String, @Path("bandIdx") bandIdx: Int) : Call<DeleteUserBandResponse>
+
+    // 밴드 앨범 리스트 반환
+    @GET("/sessions/album/info/{bandIdx}")
+    fun getAlbumBand(@Header("X-ACCESS-TOKEN") jwt: String, @Path("bandIdx") bandIdx: Int) : Call<GetAlbumBandResponse>
+
+    // 앨범 생성
+    @POST("/sessions/album")
+    fun makeAlbum(@Header("X-ACCESS-TOKEN") jwt: String, @Body album: Album) : Call<MakeAlbumBandResponse>
 
     // 레슨 생성
     @POST("/lessons")
@@ -230,11 +290,11 @@ interface API {
     @PATCH("/lessons/lesson-info/{lessonIdx}")
     fun patchLesson(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int, @Body lesson: Lesson) : Call<PatchLessonResponse>
 
-    //레슨 삭제
+    // 레슨 삭제
     @PATCH("/lessons/status/{lessonIdx}")
     fun deleteLesson(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int, @Body userIdx: Int) : Call<DeleteLessonResponse>
 
-    //레슨 탈퇴
+    // 레슨 탈퇴
     @DELETE("/lessons/out/{lessonIdx}")
     fun deleteUserLesson(@Header("X-ACCESS-TOKEN") jwt: String, @Path("lessonIdx") lessonIdx: Int) : Call<DeleteUserLessonResponse>
 
@@ -314,15 +374,8 @@ interface API {
     @PATCH("/board/status-img/{boardImgIdx}")
     fun deleteBoardImg(@Path("boardImgIdx") boardImgIdx : Int) : Call<DeleteBoardImgResponse>
 
-    // 게시물 리스트 조회
-    @GET("/board/list/info/{category}/{boardIdx}")
-    fun getBoardList(@Path("category") category: Int, @Path("boardIdx") boardIdx: Int) : Call<GetBoardListResponse>
+    // 신고하기
+    @POST("/notice/report")
+    fun report(@Header("X-ACCESS-TOKEN") jwt: String, @Body report: Report) : Call<ReportResponse>
 
-    // 작성 게시물 리스트 조회
-    @GET("/board/my")
-    fun getMyBoardList(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetMyBoardListResponse>
-
-    // 댓글 단 게시물 리스트 조회
-    @GET("/board/my-comment")
-    fun getMyCommentList(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetMyCommentListResponse>
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/board_edit_gr">
+        <item
+            android:id="@+id/board_edit"
+            android:title="@string/board_edit" />
+    </group>
+    <group android:id="@+id/board_delete_gr">
+        <item
+            android:id="@+id/board_delete"
+            android:title="@string/board_remove" />
+    </group>
+    <group android:id="@+id/board_report_gr">
+        <item
+            android:id="@+id/board_report"
+            android:title="@string/board_report" />
+    </group>
+</menu>

@@ -17,6 +17,7 @@ import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolService
 import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolView
 import com.example.eraofband.remote.portfolio.getPofol.GetPofolResult
 import com.example.eraofband.ui.main.mypage.portfolio.PortfolioCommentActivity
+import com.example.eraofband.ui.report.ReportDialog
 import android.view.View as View1
 
 class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
@@ -82,8 +83,8 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
                 startActivity(intent)
             }
 
-            override fun onShowPopup(portfolio: GetPofolResult, position: Int, view: View1) {
-                 showPopup(portfolio, position, view)  // 다른 사람이 단 댓글
+            override fun onShowPopup(portfolio: GetPofolResult, view: View1) {
+                 showPopup(portfolio, view)  // 다른 사람이 단 댓글
             }
 
             override fun onShowInfoPage(userIdx: Int) {
@@ -95,16 +96,20 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
         })
     }
 
-    private fun showPopup(portfolio: GetPofolResult, position: Int, view: android.view.View) {  // 내 댓글인 경우 삭제, 신고 둘 다 가능
+    private fun showPopup(portfolio: GetPofolResult, view: android.view.View) {  // 내 댓글인 경우 삭제, 신고 둘 다 가능
         val themeWrapper = ContextThemeWrapper(applicationContext , R.style.MyPopupMenu)
         val popupMenu = PopupMenu(themeWrapper, view, Gravity.END, 0, R.style.MyPopupMenu)
         popupMenu.menuInflater.inflate(R.menu.portfolio_menu, popupMenu.menu) // 메뉴 레이아웃 inflate
 
         popupMenu.setOnMenuItemClickListener { item ->
-            if(item.itemId == R.id.portfolio_report_gr) {  // 포트폴리오 신고하기
-                Log.d("REPORT", "PORTFOLIO")
+            when(item.itemId){
+                R.id.portfolio_report -> {
+                    // 포트폴리오 신고하기
+                    val reportDialog = ReportDialog(getJwt()!!, 1, portfolio.pofolIdx, getUserIdx())
+                    reportDialog.isCancelable = false
+                    reportDialog.show(supportFragmentManager, "report")
+                }
             }
-
             false
         }
 

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.Rect
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.os.Bundle
@@ -14,6 +15,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -57,11 +59,6 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
 
         binding.portfolioMakeBackIb.setOnClickListener { finish() }  // 뒤로가기
 
-        binding.root.setOnClickListener {
-            if(binding.portfolioMakeTitleEt.isFocused) hideKeyboard()
-            else if(binding.portfolioMakeVideoIntroEt.isFocused) hideKeyboard()
-        }
-
         // 비디오 올리기 혹은 올린 썸네일을 누르면 갤러리에 들어갈 수 있도록 해줌 (조은아 내가 그냥 레이아웃 클릭하면 갤러리로 바꿨어)
         binding.portfolioMakeVideoCl.setOnClickListener { initImageViewProfile() }
 
@@ -93,9 +90,22 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
         return userSP.getInt("userIdx", 0)
     }
 
-    private fun hideKeyboard() {
-        val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        // EditText를 제외한 영역을 누르면 키보드를 내려줌
+        val focusView = currentFocus
+        if (focusView != null && ev != null) {
+            val rect = Rect()
+            focusView.getGlobalVisibleRect(rect)
+            val x = ev.x.toInt()
+            val y = ev.y.toInt()
+
+            if (!rect.contains(x, y)) {
+                val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(focusView.windowToken, 0)
+                focusView.clearFocus()
+            }
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     private fun initImageViewProfile() {

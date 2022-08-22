@@ -1,5 +1,6 @@
 package com.example.eraofband.ui.main.board.my
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import com.example.eraofband.remote.board.getMyBoardList.GetMyBoardListView
 import com.example.eraofband.remote.board.getMyCommentList.GetMyCommentListService
 import com.example.eraofband.remote.board.getMyCommentList.GetMyCommentListView
 import com.example.eraofband.remote.board.getMyMyBoardList.GetMyBoardListService
+import com.example.eraofband.ui.main.board.info.BoardPostActivity
 
 class BoardMyFragment : Fragment(), GetMyBoardListView, GetMyCommentListView {
     private var _binding: FragmentBoardMyBinding? = null
@@ -65,13 +67,13 @@ class BoardMyFragment : Fragment(), GetMyBoardListView, GetMyCommentListView {
 
         mAdapter.initBoardList(list)
 
-//        mAdapter.setMyItemClickListener(object : BoardFreeRVAdapter.MyItemClickListener {
-//            override fun onItemClick(boardIdx: String) {
-//                val intent = Intent(activity, 게시물 상세보기 액티비티::class.java)
-//                intent.putExtra("boardIdx", boardIdx)
-//                startActivity(intent)
-//            }
-//        })
+        mAdapter.setMyItemClickListener(object : BoardMyRVAdapter.MyItemClickListener {
+            override fun onItemClick(boardIdx: Int) {
+                val intent = Intent(activity, BoardPostActivity::class.java)
+                intent.putExtra("boardIdx", boardIdx)
+                startActivity(intent)
+            }
+        })
     }
 
     private fun getJwt() : String? {

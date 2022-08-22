@@ -24,7 +24,8 @@
             android:exported="false" />
         <activity
             android:name=".CommunityMakeActivity"
-            android:exported="false" /> <!-- 카카오 로그인 AuthCodeHandler -->
+            android:exported="false" />
+        <!-- 카카오 로그인 AuthCodeHandler -->
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
@@ -53,7 +54,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -79,11 +79,18 @@
             android:name="com.example.eraofband.ui.signup.SignUpTermActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.signup.SignUpFinishActivity"
+            android:exported="false" />
+        <activity
             android:name="com.example.eraofband.ui.login.LoginActivity"
             android:exported="false" />
         <activity
             android:name="com.example.eraofband.ui.main.MainActivity"
             android:exported="false" />
+        <activity
+            android:name="com.example.eraofband.ui.main.board.info.BoardPostActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustUnspecified|adjustPan"/>
         <activity
             android:name="com.example.eraofband.ui.main.home.session.band.BandListActivity"
             android:exported="false" />
@@ -136,6 +143,9 @@
             android:exported="false" />
         <activity
             android:name="com.example.eraofband.ui.main.home.session.band.BandEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.home.session.band.album.BandMakeAlbumActivity"
             android:exported="false" />
         <activity
             android:name="com.example.eraofband.ui.main.home.lesson.LessonMakeActivity"
