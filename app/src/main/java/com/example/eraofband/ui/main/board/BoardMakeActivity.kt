@@ -27,12 +27,13 @@ import com.example.eraofband.remote.board.postBoard.PostBoardResult
 import com.example.eraofband.remote.board.postBoard.PostBoardService
 import com.example.eraofband.remote.board.postBoard.PostBoardView
 import com.example.eraofband.remote.sendimg.SendImgService
+import com.example.eraofband.remote.sendimg.SendImgView
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
 
-class BoardMakeActivity : AppCompatActivity(), PostBoardView {
+class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
 
     private lateinit var binding: ActivityBoardMakeBinding
     private var postImgUrl = PostImgUrl("")
@@ -49,7 +50,7 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView {
         binding.boardMakeBackIb.setOnClickListener { finish() }
 
         binding.boardMakeRegisterBtn.setOnClickListener {
-            val postBoardService : PostBoardService
+            val postBoardService = PostBoardService()
             postBoardService.setBoardView(this)
             postBoardService.postBoard(getJwt()!!, postBoard())
 
@@ -162,7 +163,7 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView {
                     Glide.with(this)
                         .load(selectedImageUri)
                         .transform(CenterCrop(), RoundedCorners(15))
-                        .into(binding.homeBandMakeImgV)
+                        //.into(binding.)
 
                     val imgPath = absolutelyPath(selectedImageUri, this)
                     val file = File(imgPath)
@@ -173,9 +174,6 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView {
                     sendImgService.setImageView(this)
                     sendImgService.sendImg(body)
 
-                    binding.homeBandMakeAddImgTv.visibility = View.INVISIBLE
-                    binding.homeBandMakeAddInfoImgTv.visibility = View.INVISIBLE
-                    binding.homeBandMakeImgIv.visibility = View.INVISIBLE
                 } else {
                     Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
                 }
@@ -226,5 +224,13 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView {
 
     override fun onPostFailure(code: Int, message: String) {
         Log.d("POST BOARD / FAIL", "$code $message")
+    }
+
+    override fun onSendSuccess(result: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSendFailure(code: Int, message: String) {
+        TODO("Not yet implemented")
     }
 }
