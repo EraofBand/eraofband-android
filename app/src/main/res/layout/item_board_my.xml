@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/board_my_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginHorizontal="20dp"
     android:layout_marginTop="12dp">
 
     <TextView
         android:id="@+id/item_board_title_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/pretendard_medium"
-        android:text="게시판 타이틀"
+        android:text=""
         android:textColor="@color/white"
         android:textSize="17sp"
+        android:maxLines="1"
+        android:ellipsize="end"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -24,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/pretendard_medium"
-        android:text="게시판   |   1분 전   |   조회수 0"
+        android:text=""
         android:textColor="@color/gray"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/item_board_title_tv"
@@ -35,14 +38,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/pretendard_medium"
-        android:text="0"
+        android:text=""
         android:textColor="@color/blue"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/item_board_info_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/item_board_info_tv" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/item_board_comment_iv"
         android:layout_width="15dp"
         android:layout_height="15dp"
@@ -59,14 +62,14 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/pretendard_medium"
-        android:text="0"
+        android:text=""
         android:textColor="@color/red"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/item_board_info_tv"
         app:layout_constraintEnd_toStartOf="@+id/item_board_comment_iv"
         app:layout_constraintTop_toTopOf="@+id/item_board_info_tv" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/item_board_like_iv"
         android:layout_width="15dp"
         android:layout_height="16dp"

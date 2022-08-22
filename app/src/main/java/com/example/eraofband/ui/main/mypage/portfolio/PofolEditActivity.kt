@@ -1,8 +1,9 @@
 package com.example.eraofband.ui.main.mypage.portfolio
 
-import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.data.Portfolio
@@ -22,11 +23,6 @@ class PofolEditActivity : AppCompatActivity(), PatchPofolView {
         setContentView(binding.root)
 
         binding.portfolioEditBackIb.setOnClickListener { finish() }
-
-        binding.root.setOnClickListener {
-            if(binding.portfolioEditTitleEt.isFocused) hideKeyboard()
-            else if(binding.portfolioEditVideoIntroEt.isFocused) hideKeyboard()
-        }
 
         // 내용 불러오기
         binding.portfolioEditTitleEt.setText(intent.getStringExtra("title").toString())
@@ -54,9 +50,22 @@ class PofolEditActivity : AppCompatActivity(), PatchPofolView {
         return userSP.getString("jwt", "")
     }
 
-    private fun hideKeyboard() {
-        val inputManager: InputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(this.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        // EditText를 제외한 영역을 누르면 키보드를 내려줌
+        val focusView = currentFocus
+        if (focusView != null && ev != null) {
+            val rect = Rect()
+            focusView.getGlobalVisibleRect(rect)
+            val x = ev.x.toInt()
+            val y = ev.y.toInt()
+
+            if (!rect.contains(x, y)) {
+                val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(focusView.windowToken, 0)
+                focusView.clearFocus()
+            }
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     override fun onPatchSuccess(code: Int, result: String) {

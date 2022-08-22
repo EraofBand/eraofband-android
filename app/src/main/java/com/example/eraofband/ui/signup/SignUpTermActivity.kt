@@ -10,18 +10,15 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.util.Log
 import android.widget.CompoundButton
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.data.User
 import com.example.eraofband.databinding.ActivitySignupTermBinding
-import com.example.eraofband.ui.main.MainActivity
 import com.example.eraofband.remote.user.kakaologin.KakaoLoginService
 import com.example.eraofband.remote.user.kakaologin.KakaoLoginView
 import com.example.eraofband.remote.user.kakaologin.LoginResult
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.FirebaseMessagingService
 
 class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
@@ -34,20 +31,16 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
         binding = ActivitySignupTermBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var intent = intent
+        val intent = intent
         user = intent.extras?.getSerializable("user") as User
 
         binding.signupTermNextBtn.setOnClickListener {
-
             val tokenSP = getSharedPreferences("user", MODE_PRIVATE)
 
             val loginService = KakaoLoginService()
             loginService.setLoginView(this)
             loginService.login(user, tokenSP.getString("token", ""))
-
-            intent = Intent(this@SignUpTermActivity, MainActivity::class.java)
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-            finishAffinity()
+            startActivity(Intent(this, SignUpFinishActivity::class.java))
         }
 
         binding.signupTermBackIv.setOnClickListener {

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/signup_finish_back_iv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:padding="5dp"
+        android:layout_marginStart="15dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_back"
+        android:layout_marginTop="55dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/signup_finish_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/blue"
+        android:textSize="25sp"
+        android:fontFamily="@font/pretendard_regular"
+        android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="100dp"
+        app:layout_constraintTop_toBottomOf="@id/signup_finish_back_iv"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="님"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:fontFamily="@font/pretendard_regular"
+        android:layout_marginStart="5dp"
+        app:layout_constraintTop_toTopOf="@id/signup_finish_name_tv"
+        app:layout_constraintStart_toEndOf="@id/signup_finish_name_tv"/>
+
+    <TextView
+        android:id="@+id/signup_finish_welcome_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/signup_finish"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        android:fontFamily="@font/pretendard_regular"
+        android:layout_marginStart="20dp"
+        app:layout_constraintTop_toBottomOf="@id/signup_finish_name_tv"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/signup_finish_character_iv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_character"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.6"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintEnd_toEndOf="@id/signup_finish_next_btn"
+        app:layout_constraintBottom_toTopOf="@id/signup_finish_next_btn"/>
+
+    <Button
+        android:id="@+id/signup_finish_next_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/start"
+        android:textSize="17sp"
+        android:fontFamily="@font/pretendard_regular"
+        android:background="@drawable/blue_round_bg"
+        android:paddingVertical="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="80dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

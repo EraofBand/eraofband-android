@@ -25,8 +25,8 @@ import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.mypage.portfolio.PofolEditActivity
 import com.example.eraofband.ui.main.mypage.portfolio.PortfolioCommentActivity
 import com.example.eraofband.ui.main.mypage.portfolio.PortfolioMakeActivity
-import com.example.eraofband.ui.main.search.SearchActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
+import com.example.eraofband.ui.report.ReportDialog
 
 class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
 
@@ -179,8 +179,11 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
                         }
                     })
                 }
-                else -> {  // 포트폴리오 신고하기
-                    Log.d("REPORT", "PORTFOLIO")
+                else -> {
+                    // 포트폴리오 신고하기
+                    val reportDialog = ReportDialog(getJwt()!!, 1, portfolio.pofolIdx, portfolio.userIdx)
+                    reportDialog.isCancelable = false
+                    reportDialog.show(requireActivity().supportFragmentManager, "report")
                 }
             }
             false

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/album_make_cl"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/album_make_back_ib"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/ic_back"
+            android:background="@color/transparent"
+            android:scaleType="fitCenter"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/album_make_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_album_title"
+            android:textSize="20sp"
+            android:fontFamily="@font/pretendard_medium"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <EditText
+        android:id="@+id/album_make_title_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/medium_gray_round_bg"
+        android:hint="@string/title"
+        android:inputType="textMultiLine"
+        android:lineSpacingExtra="5dp"
+        android:maxLength="20"
+        android:maxLines="2"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="12dp"
+        android:textColor="@color/white"
+        android:textColorHint="#E2E2E2"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/album_make_cl"
+        tools:ignore="Autofill" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/album_make_video_cl"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/medium_gray_round_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/album_make_title_et">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/album_make_video_iv"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/ic_add_picture"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/album_make_video_title_tv"/>
+
+        <TextView
+            android:id="@+id/album_make_video_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="@string/add_album"
+            android:textColor="@color/blue"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/album_make_video_iv"
+            app:layout_constraintStart_toStartOf="@+id/album_make_video_iv"
+            app:layout_constraintTop_toBottomOf="@+id/album_make_video_iv"
+            app:layout_constraintBottom_toTopOf="@id/album_make_video_explain_tv"/>
+
+        <TextView
+            android:id="@+id/album_make_video_explain_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="@string/add_album_info"
+            android:textAlignment="center"
+            android:textColor="#E2E2E2"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/album_make_video_title_tv"
+            app:layout_constraintStart_toStartOf="@+id/album_make_video_title_tv"
+            app:layout_constraintTop_toBottomOf="@+id/album_make_video_title_tv"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/album_thumbnail_iv"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:scaleType="centerCrop"
+        android:background="@drawable/medium_gray_round_bg"
+        android:visibility="gone"
+        android:layout_margin="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/album_make_title_et"/>
+
+    <TextView
+        android:id="@+id/album_show_date_et"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="@drawable/darkgray_stroke_round_bg"
+        android:text=""
+        android:textColor="@color/light_gray"
+        android:fontFamily="@font/pretendard_regular"
+        android:textSize="18sp"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="50dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/album_make_video_cl"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/album_show_date_iv"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/ic_calendar"
+        android:scaleType="fitCenter"
+        android:layout_marginStart="20dp"
+        app:layout_constraintTop_toTopOf="@id/album_show_date_et"
+        app:layout_constraintStart_toStartOf="@id/album_show_date_et"
+        app:layout_constraintBottom_toBottomOf="@id/album_show_date_et"/>
+
+    <Button
+        android:id="@+id/album_make_save_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/make"
+        android:textSize="17sp"
+        android:fontFamily="@font/pretendard_medium"
+        android:background="@drawable/blue_round_bg"
+        android:paddingVertical="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="80dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

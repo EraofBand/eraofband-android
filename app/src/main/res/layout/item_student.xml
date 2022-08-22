@@ -11,7 +11,7 @@
         android:id="@+id/student_profile_iv"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_basic_profile"
+        android:src="@drawable/profile_round_bg"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -29,9 +29,9 @@
 
         <TextView
             android:id="@+id/student_nickname_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="해리"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="15sp"
             android:fontFamily="@font/pretendard_medium"
@@ -40,9 +40,9 @@
 
         <TextView
             android:id="@+id/student_intro_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="나는 해리다"
+            android:text=""
             android:textColor="@color/gray"
             android:textSize="12sp"
             android:fontFamily="@font/pretendard_medium"
@@ -54,15 +54,17 @@
 
     <com.google.android.material.chip.Chip
         android:id="@+id/student_session_tv"
-        android:layout_width="60dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/drum"
+        app:chipMinTouchTargetSize="0dp"
+        android:minWidth="70dp"
+        android:text=""
         android:textColor="@color/white"
         android:textSize="13sp"
         android:textAlignment="center"
         android:fontFamily="@font/pretendard_medium"
-        app:chipBackgroundColor="@color/blue"
         android:clickable="false"
+        app:chipBackgroundColor="@color/blue"
         android:paddingVertical="5dp"
         app:layout_constraintTop_toTopOf="@id/student_profile_iv"
         app:layout_constraintEnd_toEndOf="parent"

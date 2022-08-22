@@ -21,21 +21,19 @@ import com.example.eraofband.remote.band.getBand.GetBandResult
 import com.example.eraofband.remote.band.getBand.GetBandService
 import com.example.eraofband.remote.band.getBand.GetBandView
 import com.example.eraofband.remote.band.getBand.SessionMembers
+import com.example.eraofband.ui.main.home.session.band.album.BandMakeAlbumActivity
+import com.example.eraofband.ui.report.ReportDialog
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 
 class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
 
     private lateinit var binding: ActivityBandRecruitBinding
-
     private val gson = Gson()
-
-    private var like = false
-
     private var bandIdx = 0
     private var leaderIdx = 0
-
     private var bandMember = false
+    private var like = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +67,12 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
                 intent.getIntExtra("bandIdx", 0)
             )  // 좋아요 취소 처리
             else likeService.like(getJwt()!!, intent.getIntExtra("bandIdx", 0))  // 좋아요 처리
+        }
+
+        binding.bandRecruitFab.setOnClickListener{
+            val intent = Intent(this, BandMakeAlbumActivity::class.java)
+            intent.putExtra("bandIdx", bandIdx)
+            startActivity(intent)
         }
     }
 
@@ -146,6 +150,7 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
 
         val bandJson = gson.toJson(result)
         bandEdit.putString("bandInfo", bandJson)
+        bandEdit.putInt("bandIdx", bandIdx)
         bandEdit.apply()
 
         initViewPager()  // 뷰페이저 연결
@@ -199,9 +204,14 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
                     val deleteDialog = BandDeleteDialog(getJwt()!!, getUserIdx(), bandIdx)
                     deleteDialog.show(supportFragmentManager, "deleteBand")
                 }
-                else -> {  // 밴드 탈퇴하기
+                R.id.band_leave -> {  // 밴드 탈퇴하기
                     val deleteDialog = BandDeleteDialog(getJwt()!!, getUserIdx(), bandIdx)
                     deleteDialog.show(supportFragmentManager, "resignBand")
+                }
+                else -> {  // 밴드 신고하기
+                    val reportDialog = ReportDialog(getJwt()!!, 3, bandIdx, leaderIdx)
+                    reportDialog.isCancelable = false
+                    reportDialog.show(supportFragmentManager, "report")
                 }
             }
             false
@@ -210,11 +220,13 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
         if(getUserIdx() == leaderIdx){
             popupMenu.menu.setGroupVisible(R.id.band_report_gr, false)
             popupMenu.menu.setGroupVisible(R.id.band_leave_gr, false)
-        } else if(bandMember) {
+        }
+        else if(bandMember) {
             popupMenu.menu.setGroupVisible(R.id.band_report_gr, false)
             popupMenu.menu.setGroupVisible(R.id.band_edit_gr, false)
             popupMenu.menu.setGroupVisible(R.id.band_delete_gr, false)
-        } else{
+        }
+        else{
             popupMenu.menu.setGroupVisible(R.id.band_leave_gr, false)
             popupMenu.menu.setGroupVisible(R.id.band_edit_gr, false)
             popupMenu.menu.setGroupVisible(R.id.band_delete_gr, false)

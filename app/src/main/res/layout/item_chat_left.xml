@@ -5,11 +5,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="10dp">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/left_chat_profile_iv"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:src="@drawable/ic_captain"
+        android:src="@drawable/profile_round_bg"
         android:background="@color/transparent"
         android:scaleType="fitCenter"
         android:layout_marginStart="10dp"
@@ -20,7 +20,7 @@
         android:id="@+id/left_chat_name_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="이름"
+        android:text=""
         android:textColor="@color/white"
         android:textSize="14sp"
         android:fontFamily="@font/pretendard_medium"
@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:maxWidth="200dp"
-        android:text="블라블라"
+        android:text=""
         android:background="@drawable/left_bubble"
         android:textColor="@color/white"
         android:textSize="16sp"
@@ -49,7 +49,8 @@
         android:id="@+id/left_chat_time_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="17:13"
+        android:minWidth="30dp"
+        android:text=""
         android:textColor="@color/indicator_dark"
         android:textSize="10sp"
         android:fontFamily="@font/pretendard_medium"

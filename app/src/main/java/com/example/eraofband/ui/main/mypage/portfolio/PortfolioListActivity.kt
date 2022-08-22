@@ -132,9 +132,6 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
                         }
                     })
                 }
-                else -> {  // 포트폴리오 신고하기
-                    Log.d("REPORT", "PORTFOLIO")
-                }
             }
             false
         }

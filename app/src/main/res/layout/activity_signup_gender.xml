@@ -207,7 +207,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/gray_stroke_round_bg"
-        android:text="대충 오늘 날짜가 들어갈 거임"
+        android:text=""
         android:textColor="@color/white"
         android:textSize="20sp"
         android:paddingHorizontal="20dp"

@@ -14,7 +14,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityLessonInfoBinding
-import com.example.eraofband.remote.band.getBand.GetBandService
 import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoResult
 import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoService
 import com.example.eraofband.remote.lesson.getLessonInfo.GetLessonInfoView
@@ -25,6 +24,7 @@ import com.example.eraofband.remote.lesson.lessonLike.LessonLikeView
 import com.example.eraofband.ui.main.home.session.band.BandDeleteDialog
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
+import com.example.eraofband.ui.report.ReportDialog
 
 
 class LessonInfoActivity : AppCompatActivity(), GetLessonInfoView, LessonLikeView {
@@ -154,9 +154,15 @@ class LessonInfoActivity : AppCompatActivity(), GetLessonInfoView, LessonLikeVie
                     val deleteDialog = BandDeleteDialog(getJwt()!!, getUserIdx(), lessonIdx!!)
                     deleteDialog.show(supportFragmentManager, "deleteLesson")
                 }
-                else -> {  // 레슨 탈퇴
+                R.id.lesson_leave -> {  // 레슨 탈퇴
                     val deleteDialog = BandDeleteDialog(getJwt()!!, getUserIdx(), lessonIdx!!)
                     deleteDialog.show(supportFragmentManager, "resignLesson")
+
+                }
+                else -> {
+                    val reportDialog = ReportDialog(getJwt()!!, 4, lessonIdx!!, teacherIdx!!)
+                    reportDialog.isCancelable = false
+                    reportDialog.show(supportFragmentManager, "report")
                 }
             }
             false
