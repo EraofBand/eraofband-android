@@ -11,7 +11,7 @@
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/home_band_edit_back_ib"
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -28,7 +28,7 @@
             android:id="@+id/home_band_edit_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="밴드 수정"
+            android:text="@string/band_edit_title"
             android:textSize="20sp"
             android:fontFamily="@font/pretendard_medium"
             android:textColor="@color/white"
@@ -57,7 +57,7 @@
                 android:id="@+id/home_band_edit_notification_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="밴드의 정보를 수정해주세요"
+                android:text="@string/band_edit_sub_title"
                 android:fontFamily="@font/pretendard_bold"
                 android:textSize="22sp"
                 android:textColor="@color/white"
@@ -69,7 +69,7 @@
                 android:id="@+id/home_band_edit_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="밴드 이름"
+                android:text="@string/band_title"
                 android:textSize="18sp"
                 android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/white"
@@ -82,7 +82,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:background="@drawable/gray_round_bg"
-                android:hint="타이틀"
+                android:inputType="text"
+                android:hint="@string/name"
                 android:textColorHint="@color/content"
                 android:textColor="@color/white"
                 android:fontFamily="@font/pretendard_regular"
@@ -97,7 +98,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_regular"
-                android:text="0 / 20"
+                android:text=""
                 android:textColor="@color/light_gray"
                 android:textSize="15sp"
                 android:layout_marginBottom="5dp"
@@ -108,7 +109,7 @@
                 android:id="@+id/home_band_edit_info_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="한 줄 소개"
+                android:text="@string/lesson_intro_one"
                 android:textSize="18sp"
                 android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/white"
@@ -121,7 +122,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:background="@drawable/gray_round_bg"
-                android:hint="밴드 한 줄 소개를 작성해주세요."
+                android:inputType="text"
+                android:hint="@string/band_one_intro_info"
                 android:textColorHint="@color/content"
                 android:textColor="@color/white"
                 android:fontFamily="@font/pretendard_regular"
@@ -136,7 +138,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_regular"
-                android:text="0 / 20"
+                android:text=""
                 android:textColor="@color/light_gray"
                 android:textSize="15sp"
                 android:layout_marginBottom="5dp"
@@ -147,7 +149,7 @@
                 android:id="@+id/home_band_edit_location_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="활동 지역"
+                android:text="@string/activity_area"
                 android:textSize="18sp"
                 android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/white"
@@ -182,7 +184,7 @@
                 android:id="@+id/home_band_edit_img_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="대표 사진"
+                android:text="@string/first_photo"
                 android:textSize="18sp"
                 android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/white"
@@ -190,7 +192,7 @@
                 app:layout_constraintTop_toBottomOf="@id/home_band_edit_area_sp"
                 app:layout_constraintStart_toStartOf="parent"/>
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/home_band_edit_img_v"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
@@ -198,7 +200,7 @@
                 android:layout_marginTop="20dp"
                 app:layout_constraintTop_toBottomOf="@id/home_band_edit_img_tv"/>
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/home_band_edit_img_iv"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
@@ -212,7 +214,7 @@
                 android:id="@+id/home_band_edit_add_img_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="사진 추가하기"
+                android:text="@string/lesson_add_photo"
                 android:textSize="20sp"
                 android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/blue"
@@ -225,7 +227,7 @@
                 android:id="@+id/home_band_edit_add_info_img_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="밴드를 대표하는 사진 한장을 추가해 주세요."
+                android:text="@string/band_add_photo_info"
                 android:textSize="15sp"
                 android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/content"
@@ -238,7 +240,7 @@
                 android:id="@+id/home_band_edit_detail_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="밴드 소개"
+                android:text="@string/band_intro"
                 android:textSize="18sp"
                 android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/white"
@@ -252,7 +254,8 @@
                 android:layout_height="wrap_content"
                 android:minHeight="100dp"
                 android:background="@drawable/gray_round_bg"
-                android:hint="밴드를 소개해주세요!"
+                android:inputType="text"
+                android:hint="@string/band_intro_info"
                 android:textColorHint="@color/light_gray"
                 android:textColor="@color/white"
                 android:fontFamily="@font/pretendard_regular"
@@ -269,7 +272,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_regular"
-                android:text="0 / 500"
+                android:text=""
                 android:textColor="@color/light_gray"
                 android:textSize="15sp"
                 android:layout_marginBottom="5dp"
@@ -280,7 +283,7 @@
                 android:id="@+id/home_band_edit_chat_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="채팅방 링크"
+                android:text="@string/chat_link"
                 android:textSize="18sp"
                 android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/white"
@@ -293,7 +296,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:background="@drawable/gray_round_bg"
-                android:hint="채팅방 링크를 등록해주세요"
+                android:inputType="text"
+                android:hint="@string/add_chat_link"
                 android:textColorHint="@color/light_gray"
                 android:textColor="@color/content"
                 android:fontFamily="@font/pretendard_regular"
@@ -320,7 +324,7 @@
                 android:id="@+id/home_band_edit_session_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="세션 모집 인원을 정해주세요"
+                android:text="@string/band_session_num_info"
                 android:fontFamily="@font/pretendard_bold"
                 android:textSize="20sp"
                 android:textColor="@color/white"
@@ -332,7 +336,7 @@
                 android:id="@+id/home_band_edit_except_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="자신의 세션 제외"
+                android:text="@string/band_session_num_sub_info"
                 android:fontFamily="@font/pretendard_medium"
                 android:textSize="12sp"
                 android:textColor="#BBBBBB"
@@ -343,7 +347,7 @@
                 android:id="@+id/home_band_edit_vocal_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="보컬"
+                android:text="@string/vocal"
                 android:textColor="@color/white"
                 android:textSize="22sp"
                 android:fontFamily="@font/pretendard_medium"
@@ -357,7 +361,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:background="@drawable/gray_round_bg"
-                android:hint="희망하는 세션의 특징을 간단하게 적어주세요"
+                android:inputType="text"
+                android:hint="@string/band_make_session_info"
                 android:textColorHint="@color/light_gray"
                 android:textColor="@color/white"
                 android:fontFamily="@font/pretendard_regular"
@@ -385,8 +390,7 @@
                 app:layout_constraintEnd_toEndOf="@id/home_band_edit_vocal_cnt_v"
                 app:layout_constraintBottom_toBottomOf="@id/home_band_edit_vocal_cnt_v">
 
-
-                <ImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/edit_vocal_minus_ib"
                     android:layout_width="29dp"
                     android:layout_height="29dp"
@@ -403,7 +407,7 @@
                     android:id="@+id/edit_vocal_cnt_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
+                    android:text=""
                     android:textSize="20sp"
                     android:textColor="@color/white"
                     android:fontFamily="@font/pretendard_medium"
@@ -412,7 +416,7 @@
                     app:layout_constraintEnd_toStartOf="@id/edit_vocal_plus_ib"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
-                <ImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/edit_vocal_plus_ib"
                     android:layout_width="29dp"
                     android:layout_height="29dp"
@@ -431,7 +435,7 @@
                 android:id="@+id/home_band_edit_guitar_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="기타"
+                android:text="@string/guitar"
                 android:textColor="@color/white"
                 android:textSize="22sp"
                 android:fontFamily="@font/pretendard_medium"
@@ -445,7 +449,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:background="@drawable/gray_round_bg"
-                android:hint="희망하는 세션의 특징을 간단하게 적어주세요"
+                android:inputType="text"
+                android:hint="@string/band_make_session_info"
                 android:textColorHint="@color/light_gray"
                 android:textColor="@color/white"
                 android:fontFamily="@font/pretendard_regular"
@@ -473,8 +478,7 @@
                 app:layout_constraintEnd_toEndOf="@id/home_band_edit_guitar_cnt_v"
                 app:layout_constraintBottom_toBottomOf="@id/home_band_edit_guitar_cnt_v">
 
-
-                <ImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/edit_guitar_minus_ib"
                     android:layout_width="29dp"
                     android:layout_height="29dp"
@@ -491,7 +495,7 @@
                     android:id="@+id/edit_guitar_cnt_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
+                    android:text=""
                     android:textSize="20sp"
                     android:textColor="@color/white"
                     android:fontFamily="@font/pretendard_medium"
@@ -500,7 +504,7 @@
                     app:layout_constraintEnd_toStartOf="@id/edit_guitar_plus_ib"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
-                <ImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/edit_guitar_plus_ib"
                     android:layout_width="29dp"
                     android:layout_height="29dp"
@@ -519,7 +523,7 @@
                 android:id="@+id/home_band_edit_base_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="베이스"
+                android:text="@string/base"
                 android:textColor="@color/white"
                 android:textSize="22sp"
                 android:fontFamily="@font/pretendard_medium"
@@ -533,7 +537,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:background="@drawable/gray_round_bg"
-                android:hint="희망하는 세션의 특징을 간단하게 적어주세요"
+                android:inputType="text"
+                android:hint="@string/band_make_session_info"
                 android:textColorHint="@color/light_gray"
                 android:textColor="@color/white"
                 android:fontFamily="@font/pretendard_regular"
@@ -561,8 +566,7 @@
                 app:layout_constraintEnd_toEndOf="@id/home_band_edit_base_cnt_v"
                 app:layout_constraintBottom_toBottomOf="@id/home_band_edit_base_cnt_v">
 
-
-                <ImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/edit_base_minus_ib"
                     android:layout_width="29dp"
                     android:layout_height="29dp"
@@ -579,7 +583,7 @@
                     android:id="@+id/edit_base_cnt_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
+                    android:text=""
                     android:textSize="20sp"
                     android:textColor="@color/white"
                     android:fontFamily="@font/pretendard_medium"
@@ -588,7 +592,7 @@
                     app:layout_constraintEnd_toStartOf="@id/edit_base_plus_ib"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
-                <ImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/edit_base_plus_ib"
                     android:layout_width="29dp"
                     android:layout_height="29dp"
@@ -607,7 +611,7 @@
                 android:id="@+id/home_band_edit_keyboard_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="키보드"
+                android:text="@string/keyboard"
                 android:textColor="@color/white"
                 android:textSize="22sp"
                 android:fontFamily="@font/pretendard_medium"
@@ -621,7 +625,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:background="@drawable/gray_round_bg"
-                android:hint="희망하는 세션의 특징을 간단하게 적어주세요"
+                android:inputType="text"
+                android:hint="@string/band_make_session_info"
                 android:textColorHint="@color/light_gray"
                 android:textColor="@color/white"
                 android:fontFamily="@font/pretendard_regular"
@@ -649,8 +654,7 @@
                 app:layout_constraintEnd_toEndOf="@id/home_band_edit_keyboard_cnt_v"
                 app:layout_constraintBottom_toBottomOf="@id/home_band_edit_keyboard_cnt_v">
 
-
-                <ImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/edit_keyboard_minus_ib"
                     android:layout_width="29dp"
                     android:layout_height="29dp"
@@ -667,7 +671,7 @@
                     android:id="@+id/edit_keyboard_cnt_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
+                    android:text=""
                     android:textSize="20sp"
                     android:textColor="@color/white"
                     android:fontFamily="@font/pretendard_medium"
@@ -676,7 +680,7 @@
                     app:layout_constraintEnd_toStartOf="@id/edit_keyboard_plus_ib"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
-                <ImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/edit_keyboard_plus_ib"
                     android:layout_width="29dp"
                     android:layout_height="29dp"
@@ -695,7 +699,7 @@
                 android:id="@+id/home_band_edit_drum_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="드럼"
+                android:text="@string/drum"
                 android:textColor="@color/white"
                 android:textSize="22sp"
                 android:fontFamily="@font/pretendard_medium"
@@ -709,7 +713,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:background="@drawable/gray_round_bg"
-                android:hint="희망하는 세션의 특징을 간단하게 적어주세요"
+                android:inputType="text"
+                android:hint="@string/band_make_session_info"
                 android:textColorHint="@color/light_gray"
                 android:textColor="@color/white"
                 android:fontFamily="@font/pretendard_regular"
@@ -737,8 +742,7 @@
                 app:layout_constraintEnd_toEndOf="@id/home_band_edit_drum_cnt_v"
                 app:layout_constraintBottom_toBottomOf="@id/home_band_edit_drum_cnt_v">
 
-
-                <ImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/edit_drum_minus_ib"
                     android:layout_width="29dp"
                     android:layout_height="29dp"
@@ -755,7 +759,7 @@
                     android:id="@+id/edit_drum_cnt_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
+                    android:text=""
                     android:textSize="20sp"
                     android:textColor="@color/white"
                     android:fontFamily="@font/pretendard_medium"
@@ -764,7 +768,7 @@
                     app:layout_constraintEnd_toStartOf="@id/edit_drum_plus_ib"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
-                <ImageButton
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/edit_drum_plus_ib"
                     android:layout_width="29dp"
                     android:layout_height="29dp"
@@ -791,7 +795,7 @@
                 android:id="@+id/home_band_edit_title_show_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="공연 정보"
+                android:text="@string/band_perform_info"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:fontFamily="@font/pretendard_medium"
@@ -803,7 +807,7 @@
                 android:id="@+id/home_band_show_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="공연 이름"
+                android:text="@string/perform_title"
                 android:textSize="18sp"
                 android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/white"
@@ -816,7 +820,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:background="@drawable/gray_round_bg"
-                android:hint="타이틀"
+                android:inputType="text"
+                android:hint="@string/name"
                 android:textColorHint="@color/content"
                 android:textColor="@color/content"
                 android:fontFamily="@font/pretendard_regular"
@@ -831,7 +836,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_regular"
-                android:text="0 / 20"
+                android:text=""
                 android:textColor="@color/light_gray"
                 android:textSize="15sp"
                 android:layout_marginBottom="5dp"
@@ -842,7 +847,7 @@
                 android:id="@+id/home_band_show_date_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="날짜"
+                android:text="@string/date"
                 android:textSize="18sp"
                 android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/white"
@@ -855,7 +860,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:background="@drawable/darkgray_stroke_round_bg"
-                android:text="2022.07.22"
+                android:text=""
                 android:textColor="@color/light_gray"
                 android:fontFamily="@font/pretendard_regular"
                 android:textSize="18sp"
@@ -864,7 +869,7 @@
                 android:layout_marginTop="20dp"
                 app:layout_constraintTop_toBottomOf="@id/home_band_show_date_tv"/>
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/home_band_show_date_iv"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
@@ -879,7 +884,7 @@
                 android:id="@+id/home_band_show_time_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="시간"
+                android:text="@string/time"
                 android:textSize="18sp"
                 android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/white"
@@ -892,7 +897,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:background="@drawable/darkgray_stroke_round_bg"
-                android:text="AM 11:00"
+                android:text=""
                 android:textColor="@color/light_gray"
                 android:fontFamily="@font/pretendard_regular"
                 android:textSize="18sp"
@@ -901,7 +906,7 @@
                 android:layout_marginTop="20dp"
                 app:layout_constraintTop_toBottomOf="@id/home_band_show_time_tv"/>
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/home_band_show_time_iv"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
@@ -916,7 +921,7 @@
                 android:id="@+id/home_band_show_location_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="장소"
+                android:text="@string/location"
                 android:textSize="18sp"
                 android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/white"
@@ -929,7 +934,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:background="@drawable/gray_round_bg"
-                android:hint="장소를 입력해주세요."
+                android:inputType="text"
+                android:hint="@string/perform_location_info"
                 android:textColorHint="@color/content"
                 android:textColor="@color/white"
                 android:fontFamily="@font/pretendard_regular"
@@ -944,7 +950,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_regular"
-                android:text="0 / 20"
+                android:text=""
                 android:textColor="@color/light_gray"
                 android:textSize="15sp"
                 android:layout_marginBottom="5dp"
@@ -955,7 +961,7 @@
                 android:id="@+id/home_band_show_fee_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="요금"
+                android:text="@string/perform_fee"
                 android:textSize="18sp"
                 android:fontFamily="@font/pretendard_medium"
                 android:textColor="@color/white"
@@ -969,7 +975,7 @@
                 android:layout_height="42dp"
                 android:background="@drawable/gray_round_bg"
                 android:inputType="number"
-                android:hint="공연의 입장료를 입력해주세요."
+                android:hint="@string/perform_fee_info"
                 android:textColorHint="@color/content"
                 android:textColor="@color/white"
                 android:fontFamily="@font/pretendard_regular"
@@ -984,7 +990,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_regular"
-                android:text="0 / 10"
+                android:text=""
                 android:textColor="@color/light_gray"
                 android:textSize="15sp"
                 android:layout_marginBottom="5dp"
@@ -995,7 +1001,7 @@
                 android:id="@+id/home_band_edit_register_btn"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:text="등록하기"
+                android:text="@string/make"
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:fontFamily="@font/pretendard_medium"

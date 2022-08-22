@@ -141,6 +141,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
                                 num++
                                 readCheck()
                                 Log.d("SUCCESS", getData.toString())  // 추가 확인
+                                Log.d("SUCCESS", num.toString())  // 추가 확인
                             } else{
                                 val chat : ChatComment = getData
                                 chat.type = 0
@@ -148,6 +149,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
                                 num++
                                 readCheck()
                                 Log.d("SUCCESS", getData.toString())  // 추가 확인
+                                Log.d("SUCCESS", num.toString())  // 추가 확인
                             }
                         }
 
@@ -175,10 +177,11 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
     }
 
     private fun writeChat(chatComment: ChatComment) {
+        Log.d("SUCCESS", num.toString())  // 추가 확인
         sendChatRef.child(chatIdx).child("comments").child("${num + 1}").setValue(chatComment)
             .addOnSuccessListener {
+                binding.chatContentTextEt.setText("")
                 if(binding.chatContentTextEt.isFocused) {  // 다 올라갔으면 내용 초기화 후 키보드 내려주기
-                    binding.chatContentTextEt.setText("")
                     hideKeyboard()
                 }
             }
