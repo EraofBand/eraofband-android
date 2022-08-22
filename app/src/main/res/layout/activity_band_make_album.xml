@@ -12,7 +12,7 @@
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/album_make_back_ib"
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -29,7 +29,7 @@
             android:id="@+id/album_make_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="앨범 등록"
+            android:text="@string/add_album_title"
             android:textSize="20sp"
             android:fontFamily="@font/pretendard_medium"
             android:textColor="@color/white"
@@ -72,7 +72,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/album_make_title_et">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/album_make_video_iv"
             android:layout_width="80dp"
             android:layout_height="80dp"
@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/pretendard_medium"
-            android:text="앨범 추가하기"
+            android:text="@string/add_album"
             android:textColor="@color/blue"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@+id/album_make_video_iv"
@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/pretendard_medium"
-            android:text="밴드와 관련된 사진 한 장을 추가해 주세요."
+            android:text="@string/add_album_info"
             android:textAlignment="center"
             android:textColor="#E2E2E2"
             android:textSize="12sp"
@@ -131,7 +131,7 @@
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:background="@drawable/darkgray_stroke_round_bg"
-        android:text="2022.07.22"
+        android:text=""
         android:textColor="@color/light_gray"
         android:fontFamily="@font/pretendard_regular"
         android:textSize="18sp"
@@ -141,7 +141,7 @@
         android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@id/album_make_video_cl"/>
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/album_show_date_iv"
         android:layout_width="15dp"
         android:layout_height="15dp"
@@ -166,6 +166,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

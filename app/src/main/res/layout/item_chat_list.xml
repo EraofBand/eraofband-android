@@ -7,11 +7,11 @@
     android:paddingBottom="15dp"
     android:id="@+id/item_chat_list_rv">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/chat_list_profile_iv"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_captain"
+        android:src="@drawable/profile_round_bg"
         android:layout_marginStart="20dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -20,7 +20,7 @@
         android:id="@+id/chat_list_nickname_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="대장님"
+        android:text=""
         android:fontFamily="@font/pretendard_medium"
         android:textColor="@color/white"
         android:textSize="16sp"
@@ -36,7 +36,7 @@
         android:id="@+id/chat_list_message_tv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="노예가"
+        android:text=""
         android:fontFamily="@font/pretendard_medium"
         android:textColor="@color/light_gray"
         android:textSize="14sp"
@@ -52,7 +52,8 @@
         android:id="@+id/chat_list_time_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1분 전"
+        android:minWidth="30dp"
+        android:text=""
         android:fontFamily="@font/pretendard_medium"
         android:textColor="@color/light_gray"
         android:textSize="10sp"

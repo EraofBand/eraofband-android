@@ -57,9 +57,8 @@ class BoardFreeRVAdapter : RecyclerView.Adapter<BoardFreeRVAdapter.ViewHolder>()
             if (boardList.imgUrl == "null") { // 게시물 이미지가 없으면 invisible
                 binding.itemBoardImageIv.visibility = View.INVISIBLE
             } else {
-                Glide.with(itemView).load(boardList.imgUrl)
-                    .apply(RequestOptions.centerCropTransform())
-                    .into(binding.itemBoardImageIv)
+                Glide.with(itemView).load(boardList.imgUrl).apply(RequestOptions.centerCropTransform()).into(binding.itemBoardImageIv)
+                binding.itemBoardImageIv.clipToOutline = true
             }
 
             binding.itemBoardTitleImageIv.visibility = View.GONE // 타이틀 옆 이미지 없애기
