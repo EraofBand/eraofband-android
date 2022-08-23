@@ -95,13 +95,10 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
             }
         }
 
-    }
-
-    override fun onResume() {
-        super.onResume()
         val boardService = GetBoardService()
         boardService.setBoardView(this)
         boardService.getBoard(getJwt()!!, boardIdx)
+
     }
 
     private fun initVP(img: List<GetBoardImgs>) {
@@ -347,19 +344,20 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
 
     override fun onWriteCommentSuccess(result: GetBoardComments) {
         Log.d("WRITE/SUC", "$result")
-        if(binding.boardPostWriteReplyInfoTv.visibility == View.GONE) {  // 댓글의 경우
+        if(result.classNum == 0) {  // 댓글의 경우
             comment.add(result)
             commentRVAdapter.notifyItemInserted(this.comment.size - 1)
 
             binding.boardPostWriteCommentEt.setText("")
-            hideKeyboard()
+            if(binding.boardPostWriteCommentEt.isFocused) hideKeyboard()
         }
         else {  // 답글의 경우
             val position = if(currentComment.hasReply == 0) currentPosition + 1
                            else findIndex(currentPosition, currentComment.groupNum)
 
+            Log.d("COMMENT", "$position $result")
             comment.add(position, result)
-            commentRVAdapter.notifyItemInserted(currentPosition)
+            commentRVAdapter.notifyItemRangeChanged(position - 1, 2)
 
             if(comment[currentPosition].hasReply == 0) {
                 // 원래 답글이 0개였던 경우 hasReply를 1로 바꿔줌
@@ -369,7 +367,7 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
             currentPosition = -1
 
             binding.boardPostWriteCommentEt.setText("")
-            hideKeyboard()
+            if(binding.boardPostWriteCommentEt.isFocused) hideKeyboard()
             binding.boardPostWriteReplyInfoTv.visibility = View.GONE
             binding.boardPostWriteReplyDeleteIv.visibility = View.GONE
         }
@@ -391,7 +389,7 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
             else {  // 답글이 있는 경우 삭제된 댓글로 글 변경
                 comment[currentPosition].commentStatus = "INACTIVE"
                 comment[currentPosition].content = getString(R.string.delete_comment)
-                commentRVAdapter.notifyItemChanged(currentPosition)
+                commentRVAdapter.notifyDataSetChanged()
                 currentPosition = -1
             }
         }
@@ -440,7 +438,6 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
             if(comment[index].groupNum != groupNum) return index
             index++
         }
-        Log.d("INDEX", index.toString())
         return index  // 그 댓글 밑에 아무것도 없는 경우
     }
 

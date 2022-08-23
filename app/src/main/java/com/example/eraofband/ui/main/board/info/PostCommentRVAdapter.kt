@@ -53,6 +53,7 @@ class PostCommentRVAdapter(private val context: Context, private var comment: Ar
             if(comment[position].hasReply == 1 || comment[position].commentStatus == "INACTIVE") {
                 holder.binding.postCommentLine.visibility = View.GONE
             }
+            else holder.binding.postCommentLine.visibility = View.VISIBLE
 
             // 답글이 없는데 삭제된 댓글일 경우 보여주지 않음
             if(comment[position].commentStatus == "INACTIVE") {
@@ -75,7 +76,7 @@ class PostCommentRVAdapter(private val context: Context, private var comment: Ar
             // 다음에 오는 게 댓글이 아니면 구분선 제거
             if(position != comment.size - 1) {
                 if(comment[position + 1].classNum == 1) holder.binding.postReplyLine.visibility = View.GONE
-            }
+            }else holder.binding.postReplyLine.visibility = View.VISIBLE
 
             // 답글 팝업 메뉴 띄우기
             holder.binding.postReplyMoreIv.setOnClickListener { mItemClickListener.onShowPopUp(comment[position].boardCommentIdx, position, comment[position].userIdx, holder.binding.postReplyMoreIv) }
