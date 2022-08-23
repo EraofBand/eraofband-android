@@ -270,7 +270,7 @@
                     app:layout_constraintEnd_toStartOf="@id/edit_cnt_plus_ib"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
-                <androidx.appcompat.widget.AppCompatButton
+                <ImageButton
                     android:id="@+id/edit_cnt_plus_ib"
                     android:layout_width="29dp"
                     android:layout_height="29dp"

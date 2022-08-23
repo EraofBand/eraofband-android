@@ -193,9 +193,6 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
 
             patchBandService.patchBand(getJwt()!!, bandIdx, band)
 
-            Handler(Looper.getMainLooper()).postDelayed({
-                finish()
-            }, 100)
         }
 
         initVocalCnt()
@@ -521,10 +518,6 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
                 // 이미지 가져오기 성공하면 원래 이미지를 없애고 가져온 사진을 넣어줌
                 // 이미지 동그랗게 + CenterCrop
                 if (selectedImageUri != null) {
-                    Glide.with(this)
-                        .load(selectedImageUri)
-                        .transform(CenterCrop(), RoundedCorners(15))
-                        .into(binding.homeBandEditImgV)
 
                     val imgPath = absolutelyPath(selectedImageUri, this)
                     val file = File(imgPath)
@@ -538,6 +531,7 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
                     binding.homeBandEditAddImgTv.visibility = View.INVISIBLE
                     binding.homeBandEditAddInfoImgTv.visibility = View.INVISIBLE
                     binding.homeBandEditImgIv.visibility = View.INVISIBLE
+
                 } else {
                     Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
                 }
@@ -694,6 +688,9 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
 
     override fun onPatchSuccess(code: Int, result: String) {
         Log.d("PATCH BAND / SUCCESS", result)
+        Handler(Looper.getMainLooper()).postDelayed({
+            finish()
+        }, 100)
     }
 
     override fun onPatchFailure(code: Int, message: String) {
@@ -704,6 +701,10 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
     override fun onSendSuccess(result: String) {
         Log.d("SEND IMG / SUCCESS", result)
         profileImgUrl = result
+        Glide.with(this)
+            .load(result)
+            .transform(CenterCrop(), RoundedCorners(15))
+            .into(binding.homeBandEditImgV)
     }
 
     override fun onSendFailure(code: Int, message: String) {
