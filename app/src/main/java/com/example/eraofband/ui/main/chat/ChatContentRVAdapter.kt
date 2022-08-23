@@ -1,24 +1,18 @@
 package com.example.eraofband.ui.main.chat
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.eraofband.R
-import com.example.eraofband.data.Chat
 import com.example.eraofband.data.ChatComment
-import com.example.eraofband.data.ChatUser
 import com.example.eraofband.databinding.ItemChatLeftBinding
 import com.example.eraofband.databinding.ItemChatRightBinding
 import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
-import java.util.HashMap
 
 class ChatContentRVAdapter(private val profileImg : String, private val nickname : String, private val chatIdx : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -61,7 +55,7 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
 
     //채팅 왼쪽 뷰홀더
     inner class LeftViewHolder(private val binding : ItemChatLeftBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(item : ChatComment){
+        fun bind(item : ChatComment, position: Int){
             binding.apply {
                 binding.leftChatContentTv.text = item.message // 보내는 사람
 
@@ -76,15 +70,16 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
             }
 
             setRead(position)
+
+        }
+
+        fun setRead(position: Int) {
+            sendChatRef.child(chatIdx).child("comments").child("$position").child("readUser").setValue(true).addOnSuccessListener {
+                Log.d("EXECUTE", "SUCCESS")
+            }
         }
     }
 
-    private fun setRead(position: Int) {
-        val hashMap = HashMap<String, Boolean>()
-        hashMap["readUser"] = true
-
-            sendChatRef.child(chatIdx).child("comments").child("$position").updateChildren(hashMap as Map<String, Any>)
-    }
 
     // 오른쪽 뷰홀더
     inner class RightViewHolder(private val binding : ItemChatRightBinding) : RecyclerView.ViewHolder(binding.root){
@@ -131,16 +126,18 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
         viewType = currentItem.type
         when(currentItem.type){
             0 -> {
-                (holder as LeftViewHolder).bind(currentItem)
-                 lastIndex = position
-                 Log.d("LAST INDEX 2", lastIndex.toString())}
+                lastIndex = position
+                (holder as LeftViewHolder).bind(currentItem, lastIndex) }
             1 -> (holder as RightViewHolder).bind(currentItem)
         }
     }
 
-    fun returnLastIndex() : Int = lastIndex
-
     override fun getItemCount(): Int = chatContents.size
 
+    //마지막 채팅 내용이랑 시간 뺴오기
+    private fun getLastIndex(): ChatComment {
+        val size = chatContents.size
 
+        return chatContents[size]
+    }
 }

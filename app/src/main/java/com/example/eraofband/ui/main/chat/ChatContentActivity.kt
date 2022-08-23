@@ -41,6 +41,8 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
 
     // 채팅방 인덱스
     private var chatIdx = ""
+    private lateinit var profileImg : String
+    private lateinit var nickname : String
     private var num = -1
 
     private var firstIndex = -1
@@ -83,12 +85,8 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
 
         binding.chatContentBackIb.setOnClickListener{ finish() }  // 뒤로가기
 
-        val profileImg = intent.getStringExtra("profile")!!
-        val nickname = intent.getStringExtra("nickname")!!
-
-        chatRVAdapter = ChatContentRVAdapter(profileImg, nickname, chatIdx)
-        binding.chatContentRv.adapter = chatRVAdapter
-        binding.chatContentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        profileImg = intent.getStringExtra("profile")!!
+        nickname = intent.getStringExtra("nickname")!!
 
         patchChatService.setChatView(this)
 
@@ -105,6 +103,18 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         binding.chatContentMenuIv.setOnClickListener {
             showPopup(binding.chatContentMenuIv)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+    }
+
+    private fun initAdapter(chatIdx : String){
+
+        chatRVAdapter = ChatContentRVAdapter(profileImg, nickname, chatIdx)
+        binding.chatContentRv.adapter = chatRVAdapter
+        binding.chatContentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
 
     private fun getUserIdx() : Int {
@@ -286,6 +296,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
                       }
                       result.chatRoomIdx
                   }
+        initAdapter(chatIdx)
         getChats()
     }
 
