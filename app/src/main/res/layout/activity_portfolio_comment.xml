@@ -63,22 +63,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
+        <View
+            android:id="@+id/portfolio_comment_write"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@drawable/round_comment_bg"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
         <EditText
             android:id="@+id/portfolio_comment_write_et"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:hint="@string/comment_hint"
             android:inputType="text"
             android:textColorHint="@color/indicator_dark"
             android:textSize="15sp"
-            android:background="@drawable/round_comment_bg"
-            android:paddingStart="25dp"
-            android:paddingEnd="60dp"
+            android:background="@null"
+            android:paddingHorizontal="20dp"
             android:paddingVertical="12dp"
-            android:layout_marginHorizontal="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:cursorVisible="false"
+            app:layout_constraintTop_toTopOf="@id/portfolio_comment_write"
+            app:layout_constraintStart_toStartOf="@id/portfolio_comment_write"
+            app:layout_constraintEnd_toStartOf="@id/portfolio_comment_upload_tv"
+            app:layout_constraintBottom_toBottomOf="@id/portfolio_comment_write">
+            <requestFocus/>
+        </EditText>
 
         <TextView
             android:id="@+id/portfolio_comment_upload_tv"
@@ -89,9 +102,9 @@
             android:textSize="15sp"
             android:fontFamily="@font/pretendard_bold"
             android:layout_marginEnd="25dp"
-            app:layout_constraintTop_toTopOf="@id/portfolio_comment_write_et"
-            app:layout_constraintEnd_toEndOf="@id/portfolio_comment_write_et"
-            app:layout_constraintBottom_toBottomOf="@id/portfolio_comment_write_et"/>
+            app:layout_constraintTop_toTopOf="@id/portfolio_comment_write"
+            app:layout_constraintEnd_toEndOf="@id/portfolio_comment_write"
+            app:layout_constraintBottom_toBottomOf="@id/portfolio_comment_write"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

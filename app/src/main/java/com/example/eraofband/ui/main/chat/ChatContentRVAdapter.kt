@@ -1,24 +1,18 @@
 package com.example.eraofband.ui.main.chat
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.eraofband.R
-import com.example.eraofband.data.Chat
 import com.example.eraofband.data.ChatComment
-import com.example.eraofband.data.ChatUser
 import com.example.eraofband.databinding.ItemChatLeftBinding
 import com.example.eraofband.databinding.ItemChatRightBinding
 import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
-import java.util.HashMap
 
 class ChatContentRVAdapter(private val profileImg : String, private val nickname : String, private val chatIdx : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -83,7 +77,7 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
         val hashMap = HashMap<String, Boolean>()
         hashMap["readUser"] = true
 
-            sendChatRef.child(chatIdx).child("comments").child("$position").updateChildren(hashMap as Map<String, Any>)
+        sendChatRef.child(chatIdx).child("comments").child("$position").updateChildren(hashMap as Map<String, Any>)
     }
 
     // 오른쪽 뷰홀더
