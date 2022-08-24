@@ -21,6 +21,10 @@
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/spinner_popup_bg.xml" value="0.1545" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/tab_home_underline.xml" value="0.1505" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/white_checkbox.xml" value="0.1545" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_band_edit.xml" value="0.12132725430597771" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_band_list.xml" value="0.12132725430597771" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_band_make.xml" value="0.12132725430597771" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_band_make_album.xml" value="0.1" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_band_recruit.xml" value="0.264" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_chat_content.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_login.xml" value="0.24947916666666667" />
@@ -35,6 +39,7 @@
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_user_mypage.xml" value="0.12132725430597771" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/bottom_navigation_home.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/dialog_datepicker.xml" value="0.1569078947368421" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/dialog_report.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/fragment_band_recruit_info.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/fragment_band_recruit_session.xml" value="0.12132725430597771" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/fragment_board.xml" value="0.24947916666666667" />
@@ -45,6 +50,7 @@
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/fragment_home_lesson_like.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/fragment_mypage.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/fragment_mypage_band.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/item_band_album.xml" value="0.2" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/item_band_member.xml" value="0.12132725430597771" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/item_chat_list.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/item_session_volunteer.xml" value="0.264" />
@@ -60,8 +66,6 @@
         <entry key="..\:/Users/lsh92/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/bottom_navigation_board.xml" value="0.172" />
         <entry key="..\:/Users/lsh92/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/bottom_navigation_chat.xml" value="0.172" />
         <entry key="..\:/Users/lsh92/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2025" />
-        <entry key="..\:/Users/lsh92/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/splash.xml" value="0.2025" />
-        <entry key="..\:/Users/lsh92/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/theme_splash.xml" value="0.10400000000000001" />
         <entry key="..\:/Users/lsh92/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/ic_new_notice.xml" value="0.174" />
         <entry key="..\:/Users/lsh92/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/indicator_circle_nonselected1.xml" value="0.172" />
         <entry key="..\:/Users/lsh92/AndroidStudioProjects/eraofband-android/app/src/main/res/drawable/indicator_circle_nonselected2.xml" value="0.172" />
