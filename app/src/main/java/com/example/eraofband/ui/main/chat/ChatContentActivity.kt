@@ -137,43 +137,36 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     num = -1
-                    initAdapter(chatIdx)  // 새로 불러오기 때문에 초기화 필요
-                    getChatRef.child(chatIdx).child("users").get().addOnSuccessListener {
-                        val getValue = it.getValue(ChatUser::class.java)
-                        val outIdx = if (getValue!!.firstUserIdx == getUserIdx()) getValue!!.firstOutIdx
-                        else getValue!!.secondOutIdx
+                    chatRVAdapter.clearChat()  // 새로 불러오기 때문에 초기화 필요
 
                         for (commentSnapShot in snapshot.children) {  // 하나씩 불러옴
                             val getData =
                                 commentSnapShot.getValue(ChatComment::class.java)  // 리스폰스가 들어가겠죵
 
                             if (getData != null) {
-                                Log.d("OUTIDXXXXXXXXXXXXXX", outIdx.toString())
-                                if (num >= outIdx) {
                                     if (getData.userIdx == getUserIdx()) {
                                         val chat: ChatComment = getData
                                         chat.type = 1
+                                        num++
                                         chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
                                         Log.d("SUCCESS", getData.toString())  // 추가 확인
                                         Log.d("SUCCESS", num.toString())  // 추가 확인
                                     } else {
                                         val chat: ChatComment = getData
                                         chat.type = 0
+                                        num++
                                         chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
                                         Log.d("SUCCESS", getData.toString())  // 추가 확인
                                         Log.d("SUCCESS", num.toString())  // 추가 확인
                                     }
                                 }
                                 binding.chatContentRv.scrollToPosition(chatRVAdapter.itemCount - 1)
-                                num++
                             }
                         }
                     }
-                }
-            }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.d("FAIL", "데이터를 불러오지 못했습니다")
+                TODO("Not yet implemented")
             }
         })
     }
@@ -301,6 +294,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
                       }
                       result.chatRoomIdx
                   }
+        initAdapter(chatIdx)
         getChats()
     }
 
