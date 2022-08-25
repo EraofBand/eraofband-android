@@ -133,60 +133,49 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         // 처음 화면을 열면 무조건 한 번 실행돼서 초기 값 받아올 수 있음
         // 데이터를 받아오는 것은 비동기적으로 진행되기 때문에 return 값은 무조건 null, size를 세는 것도 안됨
         // 자세한 기능은 리사이클러뷰에서 진행해야할 것 같습니다
-        getChatRef.child(chatIdx).child("comments")
-            .addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        num = -1
-                        chatRVAdapter.clearChat()  // 새로 불러오기 때문에 초기화 필요
-                        getChatRef.child(chatIdx).child("users")
-                            .addValueEventListener(object : ValueEventListener {
-                                override fun onDataChange(index: DataSnapshot) {
-                                    val getValue = index.getValue(ChatUser::class.java)
-                                    var outIdx = 0
-                                    outIdx = if (getChatRef.child(chatIdx).child("users")
-                                            .equals(getUserIdx()))
-                                    { getValue!!.firstOutIdx }
-                                    else { getValue!!.secondOutIdx }
+        getChatRef.child(chatIdx).child("comments").addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    num = -1
+                    initAdapter(chatIdx)  // 새로 불러오기 때문에 초기화 필요
+                    getChatRef.child(chatIdx).child("users").get().addOnSuccessListener {
+                        val getValue = it.getValue(ChatUser::class.java)
+                        val outIdx = if (getValue!!.firstUserIdx == getUserIdx()) getValue!!.firstOutIdx
+                        else getValue!!.secondOutIdx
 
-                                    for (commentSnapShot in snapshot.children) {  // 하나씩 불러옴
-                                        val getData =
-                                            commentSnapShot.getValue(ChatComment::class.java)  // 리스폰스가 들어가겠죵
+                        for (commentSnapShot in snapshot.children) {  // 하나씩 불러옴
+                            val getData =
+                                commentSnapShot.getValue(ChatComment::class.java)  // 리스폰스가 들어가겠죵
 
-                                        if (getData != null) {
-                                            Log.d("OUTIDXXXXXXXXXXXXXX", outIdx.toString())
-                                            if (num >= outIdx) {
-                                                if (getData.userIdx == getUserIdx()) {
-                                                    val chat: ChatComment = getData
-                                                    chat.type = 1
-                                                    chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
-                                                    Log.d("SUCCESS", getData.toString())  // 추가 확인
-                                                    Log.d("SUCCESS", num.toString())  // 추가 확인
-                                                } else {
-                                                    val chat: ChatComment = getData
-                                                    chat.type = 0
-                                                    chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
-                                                    Log.d("SUCCESS", getData.toString())  // 추가 확인
-                                                    Log.d("SUCCESS", num.toString())  // 추가 확인
-                                                }
-                                            }
-                                                binding.chatContentRv.scrollToPosition(chatRVAdapter.itemCount - 1)
-                                                num++
-                                        }
+                            if (getData != null) {
+                                Log.d("OUTIDXXXXXXXXXXXXXX", outIdx.toString())
+                                if (num >= outIdx) {
+                                    if (getData.userIdx == getUserIdx()) {
+                                        val chat: ChatComment = getData
+                                        chat.type = 1
+                                        chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
+                                        Log.d("SUCCESS", getData.toString())  // 추가 확인
+                                        Log.d("SUCCESS", num.toString())  // 추가 확인
+                                    } else {
+                                        val chat: ChatComment = getData
+                                        chat.type = 0
+                                        chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
+                                        Log.d("SUCCESS", getData.toString())  // 추가 확인
+                                        Log.d("SUCCESS", num.toString())  // 추가 확인
                                     }
                                 }
-
-                                override fun onCancelled(error: DatabaseError) {
-                                    TODO("Not yet implemented")
-                                }
-                            })
+                                binding.chatContentRv.scrollToPosition(chatRVAdapter.itemCount - 1)
+                                num++
+                            }
+                        }
                     }
                 }
+            }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Log.d("FAIL", "데이터를 불러오지 못했습니다")
-                }
-            })
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("FAIL", "데이터를 불러오지 못했습니다")
+            }
+        })
     }
 
 
@@ -245,18 +234,23 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
 
         popupMenu.setOnMenuItemClickListener{item->
             if (item!!.itemId== R.id.chat_delete) {
-                val index = chatRVAdapter.itemCount  //나간 시점의 마지막 인덱스
+                val index = chatRVAdapter.itemCount - 1  //나간 시점의 마지막 인덱스
                 val hashMap = HashMap<String, Int>() //전송을 위해 선언
 
                 //파베의 firstIdx가 나인지 secondIdx가 나인지 구분
-                if(getChatRef.child(chatIdx).child("users").equals(getUserIdx())) {
-                    hashMap["firstOutIdx"] = index
-                } else {
-                    hashMap["secondOutIdx"] = index
-                }
+                getChatRef.child(chatIdx).child("users").get().addOnSuccessListener {
+                    val getValue = it.getValue(ChatUser::class.java)
+                    if (getValue!!.firstUserIdx == getUserIdx()) {
+                        hashMap["firstOutIdx"] = index
+                    } else {
+                        hashMap["secondOutIdx"] = index
+                    }
 
-                //인덱스 업데이트
-                sendChatRef.child(chatIdx).child("users").updateChildren(hashMap as Map<String, Any>)
+
+                    //인덱스 업데이트
+                    sendChatRef.child(chatIdx).child("users")
+                        .updateChildren(hashMap as Map<String, Any>)
+                }
 
                 val patchChatService = PatchChatService() // 채팅방 나가기 api
                 patchChatService.setChatView(this)
@@ -272,7 +266,6 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         val activeChatService = ActiveChatService()
         activeChatService.setActiveView(this)
         activeChatService.activeChat(getJwt()!!, MakeChatRoom(chatIdx, firstIndex, secondIndex))
-
     }
 
 
@@ -302,12 +295,12 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         // 채팅룸 idx가 없으면 랜덤 uuid 생성, 아니면 불러오기
         chatIdx = if(result.chatRoomIdx == "null") "${UUID.randomUUID()}"
                   else {
+                      Log.d("STATUSSSSSSSS", result.status.toString())
                       if(result.status == 0){
                           activeChatContent(chatIdx)
                       }
                       result.chatRoomIdx
                   }
-        initAdapter(chatIdx)
         getChats()
     }
 
