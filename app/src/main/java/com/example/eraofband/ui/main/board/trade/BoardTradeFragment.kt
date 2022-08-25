@@ -14,14 +14,18 @@ import com.example.eraofband.remote.board.getBoardList.GetBoardListResult
 import com.example.eraofband.remote.board.getBoardList.GetBoardListService
 import com.example.eraofband.remote.board.getBoardList.GetBoardListView
 import com.example.eraofband.ui.main.board.info.BoardPostActivity
-import com.example.eraofband.ui.main.board.free.BoardFreeRVAdapter
 
 class BoardTradeFragment : Fragment(), GetBoardListView {
     private var _binding: FragmentBoardTradeBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
+
     private lateinit var mAdapter: BoardTradeRVAdapter
+
     private val service = GetBoardListService()
     private var lastIdx: Int = 0
+
+    private var add = false
+    private var loading = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,12 +34,15 @@ class BoardTradeFragment : Fragment(), GetBoardListView {
     ): View? {
         _binding = FragmentBoardTradeBinding.inflate(inflater, container, false)
 
+        layoutRefresh()
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         super.onResume()
+
         service.setBoardListView(this)
         service.getBoardList(3,0)
     }
@@ -53,9 +60,14 @@ class BoardTradeFragment : Fragment(), GetBoardListView {
                 else if (binding.boardTradeRv.canScrollVertically(-1)) {  // 맨 아래
                     Log.d("SCROLL", "BOTTOM")
                     Log.d("SCROLL / SUCCESS", "${mAdapter.itemCount}")
-                    
+
                     if(mAdapter.itemCount % 20 == 0) {
-                        service.getBoardList(0, lastIdx)
+                        if(!loading) {
+                            add = true
+                            service.getBoardList(3, lastIdx)
+
+                            loading = true
+                        }
                     }
                 }
                 else {
@@ -63,6 +75,7 @@ class BoardTradeFragment : Fragment(), GetBoardListView {
                 }
             }
         })
+
         mAdapter.setMyItemClickListener(object : BoardTradeRVAdapter.MyItemClickListener {
             override fun onItemClick(boardIdx: Int) {
                 val intent = Intent(activity, BoardPostActivity::class.java)
@@ -77,12 +90,21 @@ class BoardTradeFragment : Fragment(), GetBoardListView {
         mAdapter.initBoardList(list)
     }
 
+    private fun layoutRefresh() {
+        binding.boardPublicizeRl.setOnRefreshListener {
+            add = false
+            service.getBoardList(3, 0)
+
+            binding.boardPublicizeRl.isRefreshing = false
+        }
+    }
+
     override fun onGetListSuccess(result: ArrayList<GetBoardListResult>) {
         Log.d("GET BOARD LIST / SUCCESS", result.toString())
-        if (lastIdx == 0)
-            connectAdapter(result)
-        else
-            mAdapter.initBoardList(result)
+        if (!add) connectAdapter(result)
+        else mAdapter.initBoardList(result)
+
+        loading = false
     }
 
     override fun onGetListFailure(code: Int, message: String) {

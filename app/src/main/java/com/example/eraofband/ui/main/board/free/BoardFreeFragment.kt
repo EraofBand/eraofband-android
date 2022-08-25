@@ -18,9 +18,14 @@ import com.example.eraofband.ui.main.board.info.BoardPostActivity
 class BoardFreeFragment : Fragment(), GetBoardListView {
     private var _binding: FragmentBoardFreeBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
+
     private lateinit var mAdapter: BoardFreeRVAdapter
     private val service = GetBoardListService()
+
     private var lastIdx: Int = 0
+
+    private var add = false
+    private var loading = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,7 +63,12 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
                     Log.d("SCROLL / SUCCESS", "${mAdapter.itemCount}")
 
                     if(mAdapter.itemCount % 20 == 0) {
-                        service.getBoardList(0, lastIdx)
+                        if(!loading) {
+                            add = true
+                            service.getBoardList(0, lastIdx)
+
+                            loading = true
+                        }
                     }
                 }
                 else {
@@ -84,6 +94,9 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
 
     private fun layoutRefresh() {
         binding.boardFreeRl.setOnRefreshListener {
+            add = false
+            service.getBoardList(0, 0)
+            
             binding.boardFreeRl.isRefreshing = false
         }
     }
@@ -97,10 +110,10 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
         Log.d("GET BOARD LIST / SUCCESS", result.toString())
         Log.d("SCROLL", lastIdx.toString())
 
-        if (lastIdx == 0)
-            connectAdapter(result)
-        else
-            mAdapter.initBoardList(result)
+        if (!add) connectAdapter(result)
+        else mAdapter.initBoardList(result)
+
+        loading = false
     }
 
     override fun onGetListFailure(code: Int, message: String) {

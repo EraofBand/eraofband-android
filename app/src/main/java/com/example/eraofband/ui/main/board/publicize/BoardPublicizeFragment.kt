@@ -14,14 +14,18 @@ import com.example.eraofband.remote.board.getBoardList.GetBoardListResult
 import com.example.eraofband.remote.board.getBoardList.GetBoardListService
 import com.example.eraofband.remote.board.getBoardList.GetBoardListView
 import com.example.eraofband.ui.main.board.info.BoardPostActivity
-import com.example.eraofband.ui.main.board.free.BoardFreeRVAdapter
 
 class BoardPublicizeFragment : Fragment(), GetBoardListView {
     private var _binding: FragmentBoardPublicizeBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
+
     private lateinit var mAdapter: BoardPublicizeRVAdapter
+
     private val service = GetBoardListService()
     private var lastIdx: Int = 0
+
+    private var add = false
+    private var loading = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,12 +34,15 @@ class BoardPublicizeFragment : Fragment(), GetBoardListView {
     ): View? {
         _binding = FragmentBoardPublicizeBinding.inflate(inflater, container, false)
 
+        layoutRefresh()
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         super.onResume()
+
         service.setBoardListView(this)
         service.getBoardList(2,0)
     }
@@ -55,7 +62,12 @@ class BoardPublicizeFragment : Fragment(), GetBoardListView {
                     Log.d("SCROLL / SUCCESS", "${mAdapter.itemCount}")
 
                     if(mAdapter.itemCount % 20 == 0) {
-                        service.getBoardList(0, lastIdx)
+                        if(!loading) {
+                            add = true
+                            service.getBoardList(2, lastIdx)
+
+                            loading = true
+                        }
                     }
                 }
                 else {
@@ -79,12 +91,21 @@ class BoardPublicizeFragment : Fragment(), GetBoardListView {
         mAdapter.initBoardList(list)
     }
 
+    private fun layoutRefresh() {
+        binding.boardPublicizeRl.setOnRefreshListener {
+            add = false
+            service.getBoardList(2, 0)
+
+            binding.boardPublicizeRl.isRefreshing = false
+        }
+    }
+
     override fun onGetListSuccess(result: ArrayList<GetBoardListResult>) {
         Log.d("GET BOARD LIST / SUCCESS", result.toString())
-        if (lastIdx == 0)
-            connectAdapter(result)
-        else
-            mAdapter.initBoardList(result)
+        if (!add) connectAdapter(result)
+        else mAdapter.initBoardList(result)
+
+        loading = false
     }
 
     override fun onGetListFailure(code: Int, message: String) {
