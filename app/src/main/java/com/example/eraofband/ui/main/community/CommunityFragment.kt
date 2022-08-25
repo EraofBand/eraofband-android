@@ -53,8 +53,6 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
         (activity as MainActivity).setUserView(this)
 
         add = false
-        pofolService.setPofolView(this)
-        pofolService.getTotalPortfolio(getJwt()!!, 0)
 
         binding.communityTopEditIv.setOnClickListener { startActivity(Intent(activity, PortfolioMakeActivity::class.java)) }
 
@@ -87,6 +85,12 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
         layoutRefresh()
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        pofolService.setPofolView(this)
+        pofolService.getTotalPortfolio(getJwt()!!, 0)
     }
 
     private fun initFeedRV(item: List<GetPofolResult>) {

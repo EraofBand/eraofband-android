@@ -9,6 +9,8 @@ import android.database.Cursor
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -36,8 +38,8 @@ import java.io.File
 class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
 
     private lateinit var binding: ActivityBoardMakeBinding
-    private var postImgUrl = PostImgUrl("")
-    private var board = Board(0, "", postImgUrl, "", 0)
+    private var postImgsUrl = arrayListOf<PostImgUrl>()
+    private var board = Board(0, "", postImgsUrl, "", 0)
 
     private var category = -1
 
@@ -46,28 +48,27 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
 
         binding = ActivityBoardMakeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        postImgsUrl.add(PostImgUrl(""))
         binding.boardMakeBackIb.setOnClickListener { finish() }
 
         binding.boardMakeRegisterBtn.setOnClickListener {
+            postBoard()
             val postBoardService = PostBoardService()
             postBoardService.setBoardView(this)
-            postBoardService.postBoard(getJwt()!!, postBoard())
-
+            postBoardService.postBoard(getJwt()!!, board)
+            Log.d("board",board.toString())
         }
         initTopicSpinner()
     }
 
-    private fun postBoard(): Board{
-
+    private fun postBoard() {
         board.category = category
-        board.title = binding.boardMakeTitleEt.toString()
-        board.content = binding.boardMakeContentEt.toString()
+        board.title = binding.boardMakeTitleEt.text.toString()
+        board.content = binding.boardMakeContentEt.text.toString()
         board.userIdx = getUserIdx()
-
-
-        return board
+        board.postImgsUrl = postImgsUrl
     }
+
 
     private fun initTopicSpinner() {
         //  게시판 주제 스피너
@@ -220,6 +221,9 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
 
     override fun onPostSuccess(code: Int, result: PostBoardResult) {
         Log.d("POST BOARD / SUC", result.toString())
+        Handler(Looper.getMainLooper()).postDelayed({
+            finish()
+        }, 100)
     }
 
     override fun onPostFailure(code: Int, message: String) {

@@ -152,8 +152,8 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             0 -> binding.userMypageSessionTv.text = "보컬"
             1 -> binding.userMypageSessionTv.text = "기타"
             2 -> binding.userMypageSessionTv.text = "베이스"
-            3 -> binding.userMypageSessionTv.text = "드럼"
-            else ->  binding.userMypageSessionTv.text = "키보드"
+            3 -> binding.userMypageSessionTv.text = "키보드"
+            else ->  binding.userMypageSessionTv.text = "드럼"
         }
     }
 
