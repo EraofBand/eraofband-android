@@ -1,6 +1,7 @@
 package com.example.eraofband.ui.main.chat
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
@@ -83,7 +84,8 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         // 채팅방 존재 유무 확인
         chatRoomService.isChatRoom(getJwt()!!, Users(firstIndex, secondIndex))
 
-        binding.chatContentBackIb.setOnClickListener{ finish() }  // 뒤로가기
+        binding.chatContentBackIb.setOnClickListener{
+            finish() }  // 뒤로가기
 
         profileImg = intent.getStringExtra("profile")!!
         nickname = intent.getStringExtra("nickname")!!
@@ -105,16 +107,13 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         }
     }
 
-    override fun onResume() {
-        super.onResume()
 
-    }
-
-    private fun initAdapter(chatIdx : String){
-
-        chatRVAdapter = ChatContentRVAdapter(profileImg, nickname, chatIdx)
+    private fun initAdapter(chatIdx : String) {
+        chatRVAdapter = ChatContentRVAdapter(profileImg, nickname, chatIdx, getUserIdx())
+        binding.chatContentRv.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.chatContentRv.adapter = chatRVAdapter
-        binding.chatContentRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
     }
 
     private fun getUserIdx() : Int {
@@ -135,41 +134,64 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         // 데이터를 받아오는 것은 비동기적으로 진행되기 때문에 return 값은 무조건 null, size를 세는 것도 안됨
         // 자세한 기능은 리사이클러뷰에서 진행해야할 것 같습니다
 
-        getChatRef.child(chatIdx).child("comments").addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()){
-                    num = -1
-                    chatRVAdapter.clearChat()  // 새로 불러오기 때문에 초기화 필요
-                    for (commentSnapShot in snapshot.children){  // 하나씩 불러옴
-                        val getData = commentSnapShot.getValue(ChatComment::class.java)  // 리스폰스가 들어가겠죵
+        getChatRef.child(chatIdx).child("comments")
+            .addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        num = -1
+                        chatRVAdapter.clearChat()  // 새로 불러오기 때문에 초기화 필요
+                        getChatRef.child(chatIdx).child("users")
+                            .addValueEventListener(object : ValueEventListener {
+                                override fun onDataChange(snapshotIDx: DataSnapshot) {
+                                    val getValue = snapshotIDx.getValue(ChatUser::class.java)
+                                    var outIdx = 0
+                                    if (getChatRef.child(chatIdx).child("users")
+                                            .equals(getUserIdx())
+                                    ) {
+                                        outIdx = getValue!!.firstOutIdx
+                                    } else {
+                                        outIdx = getValue!!.secondOutIdx
+                                    }
+                                    for (commentSnapShot in snapshot.children) {  // 하나씩 불러옴
+                                        val getData =
+                                            commentSnapShot.getValue(ChatComment::class.java)  // 리스폰스가 들어가겠죵
 
-                        if (getData != null) {
-                            if(getData.userIdx == getUserIdx()) {
-                                val chat : ChatComment = getData
-                                chat.type = 1
-                                chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
-                                num++
-                                readCheck()
-                                Log.d("SUCCESS", getData.toString())  // 추가 확인
-                            } else{
-                                val chat : ChatComment = getData
-                                chat.type = 0
-                                chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
-                                num++
-                                readCheck()
-                                Log.d("SUCCESS", getData.toString())  // 추가 확인
-                            }
-                        }
+                                        if (getData != null) {
+                                            Log.d("OUTIDXXXXXXXXXXXXXX", outIdx.toString())
+                                            if (num >= outIdx) {
+                                                if (getData.userIdx == getUserIdx()) {
+                                                    val chat: ChatComment = getData
+                                                    chat.type = 1
+                                                    chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
+                                                    Log.d("SUCCESS", getData.toString())  // 추가 확인
+                                                    Log.d("SUCCESS", num.toString())  // 추가 확인
+                                                } else {
+                                                    val chat: ChatComment = getData
+                                                    chat.type = 0
+                                                    chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
+                                                    Log.d("SUCCESS", getData.toString())  // 추가 확인
+                                                    Log.d("SUCCESS", num.toString())  // 추가 확인
+                                                }
+                                            }
+                                        }
+                                        binding.chatContentRv.scrollToPosition(chatRVAdapter.itemCount - 1)
+                                        num++
+                                    }
+                                }
 
+                                override fun onCancelled(error: DatabaseError) {
+                                    TODO("Not yet implemented")
+                                }
+                            })
                     }
                 }
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.d("FAIL", "데이터를 불러오지 못했습니다")
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("FAIL", "데이터를 불러오지 못했습니다")
+                }
+            })
     }
+
 
     // 데이터를 올리는 부분
     private fun createChatRoom() {
@@ -185,10 +207,11 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
     }
 
     private fun writeChat(chatComment: ChatComment) {
+        Log.d("SUCCESS", num.toString())  // 추가 확인
         sendChatRef.child(chatIdx).child("comments").child("${num + 1}").setValue(chatComment)
             .addOnSuccessListener {
+                binding.chatContentTextEt.setText("")
                 if(binding.chatContentTextEt.isFocused) {  // 다 올라갔으면 내용 초기화 후 키보드 내려주기
-                    binding.chatContentTextEt.setText("")
                     hideKeyboard()
                 }
             }
@@ -225,7 +248,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
 
         popupMenu.setOnMenuItemClickListener{item->
             if (item!!.itemId== R.id.chat_delete) {
-                val index = chatRVAdapter.itemCount //나간 시점의 마지막 인덱스
+                val index = chatRVAdapter.itemCount  //나간 시점의 마지막 인덱스
                 val hashMap = HashMap<String, Int>() //전송을 위해 선언
 
                 //파베의 firstIdx가 나인지 secondIdx가 나인지 구분
@@ -241,6 +264,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
                 val patchChatService = PatchChatService() // 채팅방 나가기 api
                 patchChatService.setChatView(this)
                 patchChatService.patchChat(getJwt()!!, chatIdx)
+                finish()
             }
             false
         }
@@ -254,16 +278,6 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
 
     }
 
-    private fun readCheck(){/*
-        val hashMap = HashMap<String, Boolean>()
-        hashMap["readUser"] = true
-
-        Log.d("LAST INDEX", chatRVAdapter.returnLastIndex().toString())
-
-        for( i in 0 until chatRVAdapter.returnLastIndex() ) {
-            sendChatRef.child(chatIdx).child("comments").child("$i").updateChildren(hashMap as Map<String, Any>)
-        }*/
-    }
 
     override fun onMakeSuccess(result: String) {
         Log.d("MAKE/SUC", result)
