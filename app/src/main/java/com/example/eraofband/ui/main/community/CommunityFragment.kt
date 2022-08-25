@@ -3,8 +3,6 @@ package com.example.eraofband.ui.main.community
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -37,10 +35,12 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
 
     private lateinit var feedRVAdapter: CommunityFeedRVAdapter
     private val pofolService = GetOtherPofolService()
-    private var nowPosition = 0
+
     private var total = true
     private var lastPofolIdx = 0
     private var add = false
+
+    private var loading = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,7 +67,6 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
                 pofolService.getTotalPortfolio(getJwt()!!, 0)
 
                 total = true
-                nowPosition = 0
             }
             binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
         }
@@ -81,7 +80,6 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
                 pofolService.getFollowPortfolio(getJwt()!!, 0)
 
                 total = false
-                nowPosition = 1
             }
             binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
         }
@@ -111,9 +109,11 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
                     if(feedRVAdapter.itemCount % 10 == 0) {
                         add = true
 
-                        val handler = Handler(Looper.getMainLooper())
-                        if(total) pofolService.getTotalPortfolio(getJwt()!!, lastPofolIdx)
-                        else pofolService.getFollowPortfolio(getJwt()!!, lastPofolIdx)
+                        if(!loading) {
+                            if(total) pofolService.getTotalPortfolio(getJwt()!!, lastPofolIdx)
+                            else pofolService.getFollowPortfolio(getJwt()!!, lastPofolIdx)
+                            loading = true
+                        }
                     }
                 }
                 else {
@@ -205,9 +205,8 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
     }
 
     private fun layoutRefresh() {
-        add = false
         binding.communityRl.setOnRefreshListener {
-            feedRVAdapter.clear()
+            add = false
 
             if(total) pofolService.getTotalPortfolio(getJwt()!!, 0)
             else pofolService.getFollowPortfolio(getJwt()!!, 0)
@@ -230,6 +229,8 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
         Log.d("GET/SUC", "$result")
         if(add) feedRVAdapter.addFeed(result)
         else initFeedRV(result)
+
+        loading = false
     }
 
     override fun onGetTotalFailure(code: Int, message: String) {
@@ -240,6 +241,8 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
         Log.d("GET/SUC", "$result")
         if(add) feedRVAdapter.addFeed(result)
         else initFeedRV(result)
+
+        loading = false
     }
 
     override fun onGetFollowFailure(code: Int, message: String) {
