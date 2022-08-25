@@ -196,9 +196,6 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
 
             patchBandService.patchBand(getJwt()!!, bandIdx, band)
 
-            Handler(Looper.getMainLooper()).postDelayed({
-                finish()
-            }, 100)
         }
 
         initVocalCnt()
@@ -649,6 +646,9 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
 
     override fun onPatchSuccess(code: Int, result: String) {
         Log.d("PATCH BAND / SUCCESS", result)
+        Handler(Looper.getMainLooper()).postDelayed({
+            finish()
+        }, 100)
     }
 
     override fun onPatchFailure(code: Int, message: String) {

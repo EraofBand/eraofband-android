@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if(System.currentTimeMillis() - waitTime >= 1000 ) {
             waitTime = System.currentTimeMillis()
-            Toast.makeText(this,"앱을 종료하시겠습니까?",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this,"뒤로가기 버튼을 한번 더 누르시면 종료됩니다.",Toast.LENGTH_SHORT).show()
         } else {
             finish() // 액티비티 종료
         }

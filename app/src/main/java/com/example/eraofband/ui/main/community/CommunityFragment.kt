@@ -205,6 +205,7 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
     }
 
     private fun layoutRefresh() {
+        add = false
         binding.communityRl.setOnRefreshListener {
             feedRVAdapter.clear()
 
