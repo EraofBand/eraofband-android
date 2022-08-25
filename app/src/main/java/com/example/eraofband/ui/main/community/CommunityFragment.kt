@@ -3,6 +3,8 @@ package com.example.eraofband.ui.main.community
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -63,11 +65,11 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
 
                 add = false
                 pofolService.getTotalPortfolio(getJwt()!!, 0)
-                binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
 
                 total = true
                 nowPosition = 0
             }
+            binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
         }
 
         binding.communityFollowTv.setOnClickListener {
@@ -77,11 +79,11 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
 
                 add = false
                 pofolService.getFollowPortfolio(getJwt()!!, 0)
-                binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
 
                 total = false
                 nowPosition = 1
             }
+            binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
         }
 
         layoutRefresh()
@@ -108,6 +110,8 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
 
                     if(feedRVAdapter.itemCount % 10 == 0) {
                         add = true
+
+                        val handler = Handler(Looper.getMainLooper())
                         if(total) pofolService.getTotalPortfolio(getJwt()!!, lastPofolIdx)
                         else pofolService.getFollowPortfolio(getJwt()!!, lastPofolIdx)
                     }
@@ -202,13 +206,11 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
 
     private fun layoutRefresh() {
         binding.communityRl.setOnRefreshListener {
-            if (nowPosition == 0) {
-                pofolService.getTotalPortfolio(getJwt()!!, 0)
-                binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
-            } else {
-                pofolService.getFollowPortfolio(getJwt()!!, 0)
-                binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
-            }
+            feedRVAdapter.clear()
+
+            if(total) pofolService.getTotalPortfolio(getJwt()!!, 0)
+            else pofolService.getFollowPortfolio(getJwt()!!, 0)
+
             binding.communityRl.isRefreshing = false
         }
     }
