@@ -9,4 +9,4 @@ data class ChatComment(
     var timeStamp: Long = 0,
     var userIdx: Int = 0,
     @SerializedName("type") @Expose var type : Int = 0
-    )
+)

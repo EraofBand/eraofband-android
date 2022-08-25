@@ -5,16 +5,24 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.data.ChatComment
+import com.example.eraofband.data.ChatUser
 import com.example.eraofband.databinding.ItemChatLeftBinding
 import com.example.eraofband.databinding.ItemChatRightBinding
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 
-class ChatContentRVAdapter(private val profileImg : String, private val nickname : String, private val chatIdx : String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatContentRVAdapter(private val profileImg : String, private val nickname : String, private val chatIdx : String, private val userIdx : Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var chatContents = arrayListOf<ChatComment>()
 
@@ -26,11 +34,12 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
     private var mDatabase = FirebaseDatabase.getInstance().reference
     private val sendChatRef = mDatabase.child("chat")
 
+
     @SuppressLint("NotifyDataSetChanged")
     fun addNewChat(chatComment: List<ChatComment>){
-        this.chatContents.addAll(chatComment)
-        notifyDataSetChanged()
-    }
+        chatContents.addAll(chatComment)
+            notifyDataSetChanged()
+        }
 
     @SuppressLint("NotifyDataSetChanged")
     fun clearChat(){
@@ -55,7 +64,7 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
 
     //채팅 왼쪽 뷰홀더
     inner class LeftViewHolder(private val binding : ItemChatLeftBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(item : ChatComment){
+        fun bind(item : ChatComment, position: Int){
             binding.apply {
                 binding.leftChatContentTv.text = item.message // 보내는 사람
 
@@ -70,14 +79,14 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
             }
 
             setRead(position)
+
         }
-    }
 
-    private fun setRead(position: Int) {
-        val hashMap = HashMap<String, Boolean>()
-        hashMap["readUser"] = true
-
-        sendChatRef.child(chatIdx).child("comments").child("$position").updateChildren(hashMap as Map<String, Any>)
+        fun setRead(position: Int) {
+            sendChatRef.child(chatIdx).child("comments").child("$position").child("readUser").setValue(true).addOnSuccessListener {
+                Log.d("EXECUTE", "SUCCESS")
+            }
+        }
     }
 
     // 오른쪽 뷰홀더
@@ -123,18 +132,24 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
 
         val currentItem = chatContents[position]
         viewType = currentItem.type
-        when(currentItem.type){
+
+        when (currentItem.type) {
             0 -> {
-                (holder as LeftViewHolder).bind(currentItem)
-                 lastIndex = position
-                 Log.d("LAST INDEX 2", lastIndex.toString())}
+                lastIndex = position
+                (holder as LeftViewHolder).bind(currentItem, lastIndex)
+            }
             1 -> (holder as RightViewHolder).bind(currentItem)
         }
-    }
 
-    fun returnLastIndex() : Int = lastIndex
+    }
 
     override fun getItemCount(): Int = chatContents.size
 
+    //마지막 채팅 내용이랑 시간 뺴오기
+    fun getLastIndex(): ChatComment {
+        val size = chatContents.size
 
+        return chatContents[size - 1]
+    }
 }
+

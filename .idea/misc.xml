@@ -146,6 +146,9 @@
         <entry key="..\:/eraofband-android/app/src/main/res/layout/activity_band_edit.xml" value="0.20989583333333334" />
         <entry key="..\:/eraofband-android/app/src/main/res/layout/activity_band_make.xml" value="0.13541666666666666" />
         <entry key="..\:/eraofband-android/app/src/main/res/layout/activity_band_recruit.xml" value="0.1895910780669145" />
+        <entry key="..\:/eraofband-android/app/src/main/res/layout/activity_board_edit.xml" value="0.13269927536231885" />
+        <entry key="..\:/eraofband-android/app/src/main/res/layout/activity_board_make.xml" value="0.13269927536231885" />
+        <entry key="..\:/eraofband-android/app/src/main/res/layout/activity_chat_content.xml" value="0.15217391304347827" />
         <entry key="..\:/eraofband-android/app/src/main/res/layout/activity_lesson_edit.xml" value="0.20989583333333334" />
         <entry key="..\:/eraofband-android/app/src/main/res/layout/activity_lesson_make.xml" value="0.20989583333333334" />
         <entry key="..\:/eraofband-android/app/src/main/res/layout/activity_main.xml" value="0.24947916666666667" />
@@ -164,6 +167,8 @@
         <entry key="..\:/eraofband-android/app/src/main/res/layout/fragment_on_lesson.xml" value="0.24947916666666667" />
         <entry key="..\:/eraofband-android/app/src/main/res/layout/fragment_on_portfolio.xml" value="0.2484375" />
         <entry key="..\:/eraofband-android/app/src/main/res/layout/fragment_on_together.xml" value="0.24947916666666667" />
+        <entry key="..\:/eraofband-android/app/src/main/res/layout/item_chat_left.xml" value="0.15217391304347827" />
+        <entry key="..\:/eraofband-android/app/src/main/res/layout/item_chat_right.xml" value="0.1" />
         <entry key="..\:/eraofband-android/app/src/main/res/layout/item_lesson.xml" value="0.24947916666666667" />
         <entry key="..\:/eraofband-android/app/src/main/res/layout/item_popular_band.xml" value="0.24947916666666667" />
         <entry key="..\:/eraofband-android/app/src/main/res/layout/item_session_list.xml" value="0.24947916666666667" />
