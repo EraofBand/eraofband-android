@@ -145,11 +145,5 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
 
     override fun getItemCount(): Int = chatContents.size
 
-    //마지막 채팅 내용이랑 시간 뺴오기
-    fun getLastIndex(): ChatComment {
-        val size = chatContents.size
-
-        return chatContents[size - 1]
-    }
 }
 
