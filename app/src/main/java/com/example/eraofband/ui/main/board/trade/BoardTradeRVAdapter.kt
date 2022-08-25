@@ -59,7 +59,10 @@ class BoardTradeRVAdapter : RecyclerView.Adapter<BoardTradeRVAdapter.ViewHolder>
             if (boardList.imgUrl == "null") { // 게시물 이미지가 없으면 invisible
                 binding.itemBoardImageIv.visibility = View.INVISIBLE
             } else {
-                Glide.with(itemView).load(boardList.imgUrl).apply(RequestOptions.centerCropTransform()).into(binding.itemBoardImageIv)
+                binding.itemBoardImageIv.visibility = View.VISIBLE
+                Glide.with(itemView).load(boardList.imgUrl)
+                    .apply(RequestOptions.centerCropTransform())
+                    .into(binding.itemBoardImageIv)
                 binding.itemBoardImageIv.clipToOutline = true
             }
             binding.itemBoardTitleImageIv.visibility = View.VISIBLE

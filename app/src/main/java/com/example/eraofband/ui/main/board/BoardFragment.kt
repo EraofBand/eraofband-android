@@ -1,5 +1,6 @@
 package com.example.eraofband.ui.main.board
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,9 @@ class BoardFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         connectVP()
+        binding.boardFab.setOnClickListener {
+            startActivity(Intent(context, BoardMakeActivity::class.java))
+        }
     }
 
     private fun connectVP() {

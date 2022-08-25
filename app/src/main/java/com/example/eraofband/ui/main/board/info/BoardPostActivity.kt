@@ -17,6 +17,8 @@ import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.data.Comment
 import com.example.eraofband.data.Reply
@@ -296,6 +298,10 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
     @SuppressLint("SetTextI18n")
     override fun onGetSuccess(result: GetBoardResult) {
         Log.d("GET/SUC", "$result")
+        Glide.with(this).load(result.profileImgUrl)  // 프로필 사진
+            .apply(RequestOptions.centerCropTransform()).apply(RequestOptions.circleCropTransform())
+            .into(binding.boardPostProfileIv)
+
         userIdx = result.userIdx
 
         binding.boardPostTopTitleTv.text = getCategory(result.category)  // 게시판 설정

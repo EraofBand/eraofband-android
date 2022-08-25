@@ -47,6 +47,7 @@ class UserMyPagePortfolioRVAdapter : RecyclerView.Adapter<UserMyPagePortfolioRVA
             Glide.with(itemView).load(portfolio.videoUrl) // 썸네일
                 .apply(RequestOptions.centerCropTransform())
                 .into(binding.itemPortfolioIv)
+            binding.itemPortfolioIv.clipToOutline = true
         }
     }
 }

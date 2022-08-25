@@ -46,6 +46,12 @@ class CommunityFeedRVAdapter(private val jwt: String, private val context: Conte
         notifyDataSetChanged()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun clear(){
+        this.feed.clear()
+        notifyDataSetChanged()
+    }
+
     interface MyItemListener {
         fun urlParse(url : String) : Uri
         fun onShowComment(pofolIdx : Int)

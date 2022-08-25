@@ -201,14 +201,14 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
     }
 
     private fun layoutRefresh() {
+        add = false
         binding.communityRl.setOnRefreshListener {
-            if (nowPosition == 0) {
-                pofolService.getTotalPortfolio(getJwt()!!, 0)
-                binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
-            } else {
-                pofolService.getFollowPortfolio(getJwt()!!, 0)
-                binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
-            }
+//            feedRVAdapter.clear()
+//            if (nowPosition == 0) {
+//                pofolService.getTotalPortfolio(getJwt()!!, 0)
+//            } else {
+//                pofolService.getFollowPortfolio(getJwt()!!, 0)
+//            }
             binding.communityRl.isRefreshing = false
         }
     }

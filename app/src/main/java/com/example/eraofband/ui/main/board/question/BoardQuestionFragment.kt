@@ -36,7 +36,7 @@ class BoardQuestionFragment : Fragment(), GetBoardListView {
         super.onViewCreated(view, savedInstanceState)
         super.onResume()
         service.setBoardListView(this)
-        service.getBoardList(3,0)
+        service.getBoardList(1,0)
     }
 
     private fun connectAdapter(list: ArrayList<GetBoardListResult>) {
