@@ -39,7 +39,7 @@ class HomeFragment : Fragment(), GetNewNoticeView {
 
         binding.homeFab.setOnClickListener{
             val fabDialog = HomeFabDialog()
-            fabDialog.show(requireFragmentManager(), "homeFAB")
+            fabDialog.show(childFragmentManager, "homeFAB")
         }
 
         binding.homeSearchIb.setOnClickListener {

@@ -18,9 +18,14 @@ import com.example.eraofband.ui.main.board.info.BoardPostActivity
 class BoardFreeFragment : Fragment(), GetBoardListView {
     private var _binding: FragmentBoardFreeBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
+
     private lateinit var mAdapter: BoardFreeRVAdapter
     private val service = GetBoardListService()
+
     private var lastIdx: Int = 0
+
+    private var add = false
+    private var loading = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,11 +37,15 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
         super.onResume()
         service.setBoardListView(this)
         service.getBoardList(0,0)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        layoutRefresh()
     }
 
     private fun connectAdapter(list: ArrayList<GetBoardListResult>) {
@@ -54,7 +63,12 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
                     Log.d("SCROLL / SUCCESS", "${mAdapter.itemCount}")
 
                     if(mAdapter.itemCount % 20 == 0) {
-                        service.getBoardList(0, lastIdx)
+                        if(!loading) {
+                            add = true
+                            service.getBoardList(0, lastIdx)
+
+                            loading = true
+                        }
                     }
                 }
                 else {
@@ -63,7 +77,7 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
             }
         })
 
-        mAdapter.setMyItemClickListener(object : BoardFreeRVAdapter.MyItemClickListener{
+        mAdapter.setMyItemClickListener(object : BoardFreeRVAdapter.MyItemClickListener {
             override fun onItemClick(boardIdx: Int) {
                 val intent = Intent(activity, BoardPostActivity::class.java)
                 intent.putExtra("boardIdx", boardIdx)
@@ -78,6 +92,15 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
         mAdapter.initBoardList(list)
     }
 
+    private fun layoutRefresh() {
+        binding.boardFreeRl.setOnRefreshListener {
+            add = false
+            service.getBoardList(0, 0)
+            
+            binding.boardFreeRl.isRefreshing = false
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -85,11 +108,12 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
 
     override fun onGetListSuccess(result: ArrayList<GetBoardListResult>) {
         Log.d("GET BOARD LIST / SUCCESS", result.toString())
+        Log.d("SCROLL", lastIdx.toString())
 
-        if (lastIdx == 0)
-            connectAdapter(result)
-        else
-            mAdapter.initBoardList(result)
+        if (!add) connectAdapter(result)
+        else mAdapter.initBoardList(result)
+
+        loading = false
     }
 
     override fun onGetListFailure(code: Int, message: String) {

@@ -47,7 +47,7 @@
     <string name="signup_profile_title">다른 뮤지션들이\n회원님을 더 잘 알 수 있도록\n프로필 사진을 선택해주세요</string>
 
     <string name="signup_location_title">활동 지역을 선택해주세요</string>
-    <string name="signup_location_subtitle">서울, 경기를 제외한 지역은 조금만 기다려주세요 ?</string>
+    <string name="signup_location_subtitle">서울, 경기를 제외한 지역은 조금만 기다려주세요!</string>
 
     <string name="signup_session_title">희망하는 세션을 선택해주세요</string>
 

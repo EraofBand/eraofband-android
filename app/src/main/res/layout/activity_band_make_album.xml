@@ -12,7 +12,7 @@
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/album_make_back_ib"
             android:layout_width="30dp"
             android:layout_height="30dp"
