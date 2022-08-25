@@ -76,7 +76,7 @@ class ChatRVAdapter : RecyclerView.Adapter<ChatRVAdapter.ViewHolder>() {
 
 
             binding.chatListNicknameTv.text = chatRoom.nickname // 닉네임
-            binding.chatListTimeTv.text = "1분 전"
+            binding.chatListTimeTv.text = "2시간 전"
 
 
             val ref = getChatRef.child(chatIdx).child("comments").orderByKey().limitToLast(1)

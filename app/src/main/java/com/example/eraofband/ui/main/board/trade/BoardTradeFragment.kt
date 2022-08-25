@@ -39,10 +39,8 @@ class BoardTradeFragment : Fragment(), GetBoardListView {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
         super.onResume()
-
         service.setBoardListView(this)
         service.getBoardList(3,0)
     }

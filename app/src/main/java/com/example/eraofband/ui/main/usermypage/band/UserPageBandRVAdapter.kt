@@ -54,6 +54,7 @@ class UserPageBandRVAdapter(private val context: Context) : RecyclerView.Adapter
             binding.bandListRegionTv.text = band.bandRegion
             binding.bandListTitleTv.text = band.bandTitle
             binding.bandListIntroduceTv.text = band.bandIntroduction
+            binding.bandListMemberCntTv.text = band.memberCount.toString() + " / " + band.capacity.toString()
         }
     }
 }
