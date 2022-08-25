@@ -23,7 +23,8 @@ class HomeSessionFragment : Fragment(), GetNewBandView, GetPopularBandView {
 
     private var _binding: FragmentHomeSessionBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
-
+    private val getNewService =  GetNewBandService()
+    private val getPopularService = GetPopularBandService()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,19 +64,16 @@ class HomeSessionFragment : Fragment(), GetNewBandView, GetPopularBandView {
         binding.homeSessionDrumIv.setOnClickListener {
             moveSession(4)
         }
-
+        layoutRefresh()
     }
 
     override fun onResume() {
         super.onResume()
-
-        // 새로 생성된 밴드 리스트
-        val getNewService =  GetNewBandService()
+        // 새로운 밴드 리스트
         getNewService.setBandView(this)
         getNewService.getNewBand()
 
         // TOP3 밴드 리스트
-        val getPopularService = GetPopularBandService()
         getPopularService.setBandView(this)
         getPopularService.getPopularBand()
     }
@@ -87,7 +85,7 @@ class HomeSessionFragment : Fragment(), GetNewBandView, GetPopularBandView {
     }
 
     private fun initNewBandRV(item: List<GetNewBandResult>) {
-        val homeNewBandRVAdapter = HomeSessionNewBandRVAdapter(context!!)
+        val homeNewBandRVAdapter = HomeSessionNewBandRVAdapter(requireContext())
 
         binding.homeNewBandRv.adapter = homeNewBandRVAdapter
 
@@ -105,7 +103,7 @@ class HomeSessionFragment : Fragment(), GetNewBandView, GetPopularBandView {
     }
 
     private fun initPopularBandRV(item: List<GetPopularBandResult>) {
-        val popularBandRVAdapter = HomeSessionPopularBandRVAdapter(context!!)
+        val popularBandRVAdapter = HomeSessionPopularBandRVAdapter(requireContext())
 
         binding.homePopularBandRv.adapter = popularBandRVAdapter
         binding.homePopularBandRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -120,6 +118,14 @@ class HomeSessionFragment : Fragment(), GetNewBandView, GetPopularBandView {
                 startActivity(intent)
             }
         })
+    }
+
+    private fun layoutRefresh() {
+        binding.homeSessionRl.setOnRefreshListener {
+            getNewService.getNewBand()
+            getPopularService.getPopularBand()
+            binding.homeSessionRl.isRefreshing = false
+        }
     }
 
     override fun onDestroyView() {

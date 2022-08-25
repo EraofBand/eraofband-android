@@ -31,6 +31,7 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
 
         initSpinner()
         sessionSelector()
+        layoutRefresh()
 
         binding.homeBandListSearchIv.setOnClickListener {
             val intent = Intent(this, SearchActivity::class.java)
@@ -139,6 +140,15 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
                 startActivity(intent)
             }
         })
+    }
+
+    private fun layoutRefresh() {
+        binding.homeBandRl.setOnRefreshListener {
+            binding.homeBandListCitySp.setSelection(0)
+            binding.homeBandListTotalCp.isChecked = true
+            getRegionBandService.getRegionBand("전체", 5)
+            binding.homeBandRl.isRefreshing = false
+        }
     }
 
     override fun onGetSuccess(code: Int, result: List<GetRegionBandResult>) {

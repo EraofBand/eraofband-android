@@ -19,12 +19,7 @@
         android:theme="@style/Theme.EraofBand"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
-            android:name=".CommunityEditActivity"
-            android:exported="false" />
-        <activity
-            android:name=".CommunityMakeActivity"
-            android:exported="false" />
+
         <!-- 카카오 로그인 AuthCodeHandler -->
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
@@ -229,6 +224,12 @@
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".ui.main.board.BoardEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.board.BoardMakeActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -35,10 +35,12 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
 
     private lateinit var feedRVAdapter: CommunityFeedRVAdapter
     private val pofolService = GetOtherPofolService()
-    private var nowPosition = 0
+
     private var total = true
     private var lastPofolIdx = 0
     private var add = false
+
+    private var loading = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,11 +65,10 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
 
                 add = false
                 pofolService.getTotalPortfolio(getJwt()!!, 0)
-                binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
 
                 total = true
-                nowPosition = 0
             }
+            binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
         }
 
         binding.communityFollowTv.setOnClickListener {
@@ -77,11 +78,10 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
 
                 add = false
                 pofolService.getFollowPortfolio(getJwt()!!, 0)
-                binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
 
                 total = false
-                nowPosition = 1
             }
+            binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
         }
 
         layoutRefresh()
@@ -108,8 +108,12 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
 
                     if(feedRVAdapter.itemCount % 10 == 0) {
                         add = true
-                        if(total) pofolService.getTotalPortfolio(getJwt()!!, lastPofolIdx)
-                        else pofolService.getFollowPortfolio(getJwt()!!, lastPofolIdx)
+
+                        if(!loading) {
+                            if(total) pofolService.getTotalPortfolio(getJwt()!!, lastPofolIdx)
+                            else pofolService.getFollowPortfolio(getJwt()!!, lastPofolIdx)
+                            loading = true
+                        }
                     }
                 }
                 else {
@@ -202,13 +206,11 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
 
     private fun layoutRefresh() {
         binding.communityRl.setOnRefreshListener {
-            if (nowPosition == 0) {
-                pofolService.getTotalPortfolio(getJwt()!!, 0)
-                binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
-            } else {
-                pofolService.getFollowPortfolio(getJwt()!!, 0)
-                binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
-            }
+            add = false
+
+            if(total) pofolService.getTotalPortfolio(getJwt()!!, 0)
+            else pofolService.getFollowPortfolio(getJwt()!!, 0)
+
             binding.communityRl.isRefreshing = false
         }
     }
@@ -227,6 +229,8 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
         Log.d("GET/SUC", "$result")
         if(add) feedRVAdapter.addFeed(result)
         else initFeedRV(result)
+
+        loading = false
     }
 
     override fun onGetTotalFailure(code: Int, message: String) {
@@ -237,6 +241,8 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
         Log.d("GET/SUC", "$result")
         if(add) feedRVAdapter.addFeed(result)
         else initFeedRV(result)
+
+        loading = false
     }
 
     override fun onGetFollowFailure(code: Int, message: String) {

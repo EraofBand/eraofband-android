@@ -44,7 +44,10 @@
         android:layout_height="0dp"
         android:layout_marginTop="5dp"
         android:clipToPadding="false"
-        tools:listitem="@layout/item_board_my"
-        app:layout_constraintTop_toBottomOf="@id/board_writing_tv" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/board_writing_tv"
+        tools:listitem="@layout/item_board_my" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

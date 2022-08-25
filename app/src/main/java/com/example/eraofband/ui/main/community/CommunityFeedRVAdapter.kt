@@ -33,7 +33,6 @@ class CommunityFeedRVAdapter(private val jwt: String, private val context: Conte
         notifyDataSetChanged()
     }
 
-    // 나중에 포트폴리오 추가, 삭제를 위해서 이렇게 함수로 추가, 삭제하도록 만들었습니다 변경 값이 바로바로 화면에 나타나야하니까!
     @SuppressLint("NotifyDataSetChanged")
     fun addFeed(feed : List<GetPofolResult>) {
         this.feed.addAll(feed)
@@ -43,6 +42,12 @@ class CommunityFeedRVAdapter(private val jwt: String, private val context: Conte
     @SuppressLint("NotifyDataSetChanged")
     fun deleteFeed(position: Int) {
         this.feed.removeAt(position)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun clear() {
+        this.feed.clear()
         notifyDataSetChanged()
     }
 

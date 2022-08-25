@@ -18,9 +18,14 @@ import com.example.eraofband.ui.main.board.info.BoardPostActivity
 class BoardQuestionFragment : Fragment(), GetBoardListView {
     private var _binding: FragmentBoardQuestionBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
+
     private lateinit var mAdapter: BoardQuestionRVAdapter
+
     private val service = GetBoardListService()
     private var lastIdx: Int = 0
+
+    private var add = false
+    private var loading = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,14 +34,17 @@ class BoardQuestionFragment : Fragment(), GetBoardListView {
     ): View? {
         _binding = FragmentBoardQuestionBinding.inflate(inflater, container, false)
 
+        layoutRefresh()
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         super.onResume()
+
         service.setBoardListView(this)
-        service.getBoardList(3,0)
+        service.getBoardList(1,0)
     }
 
     private fun connectAdapter(list: ArrayList<GetBoardListResult>) {
@@ -54,7 +62,12 @@ class BoardQuestionFragment : Fragment(), GetBoardListView {
                     Log.d("SCROLL / SUCCESS", "${mAdapter.itemCount}")
 
                     if(mAdapter.itemCount % 20 == 0) {
-                        service.getBoardList(0, lastIdx)
+                        if(!loading) {
+                            add = true
+                            service.getBoardList(1, lastIdx)
+
+                            loading = true
+                        }
                     }
                 }
                 else {
@@ -76,12 +89,21 @@ class BoardQuestionFragment : Fragment(), GetBoardListView {
         mAdapter.initBoardList(list)
     }
 
+    private fun layoutRefresh() {
+        binding.boardQuestionRl.setOnRefreshListener {
+            add = false
+            service.getBoardList(1, 0)
+
+            binding.boardQuestionRl.isRefreshing = false
+        }
+    }
+
     override fun onGetListSuccess(result: ArrayList<GetBoardListResult>) {
         Log.d("GET BOARD LIST / SUCCESS", result.toString())
-        if (lastIdx == 0)
-            connectAdapter(result)
-        else
-            mAdapter.initBoardList(result)
+        if (!add) connectAdapter(result)
+        else mAdapter.initBoardList(result)
+
+        loading = false
     }
 
     override fun onGetListFailure(code: Int, message: String) {
