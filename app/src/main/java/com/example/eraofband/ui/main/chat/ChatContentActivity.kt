@@ -133,7 +133,6 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         // 처음 화면을 열면 무조건 한 번 실행돼서 초기 값 받아올 수 있음
         // 데이터를 받아오는 것은 비동기적으로 진행되기 때문에 return 값은 무조건 null, size를 세는 것도 안됨
         // 자세한 기능은 리사이클러뷰에서 진행해야할 것 같습니다
-
         getChatRef.child(chatIdx).child("comments")
             .addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -142,16 +141,14 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
                         chatRVAdapter.clearChat()  // 새로 불러오기 때문에 초기화 필요
                         getChatRef.child(chatIdx).child("users")
                             .addValueEventListener(object : ValueEventListener {
-                                override fun onDataChange(snapshotIDx: DataSnapshot) {
-                                    val getValue = snapshotIDx.getValue(ChatUser::class.java)
+                                override fun onDataChange(index: DataSnapshot) {
+                                    val getValue = index.getValue(ChatUser::class.java)
                                     var outIdx = 0
-                                    if (getChatRef.child(chatIdx).child("users")
-                                            .equals(getUserIdx())
-                                    ) {
-                                        outIdx = getValue!!.firstOutIdx
-                                    } else {
-                                        outIdx = getValue!!.secondOutIdx
-                                    }
+                                    outIdx = if (getChatRef.child(chatIdx).child("users")
+                                            .equals(getUserIdx()))
+                                    { getValue!!.firstOutIdx }
+                                    else { getValue!!.secondOutIdx }
+
                                     for (commentSnapShot in snapshot.children) {  // 하나씩 불러옴
                                         val getData =
                                             commentSnapShot.getValue(ChatComment::class.java)  // 리스폰스가 들어가겠죵
@@ -173,9 +170,9 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
                                                     Log.d("SUCCESS", num.toString())  // 추가 확인
                                                 }
                                             }
+                                                binding.chatContentRv.scrollToPosition(chatRVAdapter.itemCount - 1)
+                                                num++
                                         }
-                                        binding.chatContentRv.scrollToPosition(chatRVAdapter.itemCount - 1)
-                                        num++
                                     }
                                 }
 
