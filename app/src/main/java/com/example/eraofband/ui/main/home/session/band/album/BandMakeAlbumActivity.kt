@@ -61,6 +61,9 @@ class BandMakeAlbumActivity : AppCompatActivity(), SendImgView, MakeAlbumBandVie
             finish()
         }
 
+        val makeService = MakeAlbumBandService()
+        makeService.setAlbumBandView(this)
+
         getImage()
 
         binding.albumMakeVideoCl.setOnClickListener {
@@ -71,10 +74,9 @@ class BandMakeAlbumActivity : AppCompatActivity(), SendImgView, MakeAlbumBandVie
         }
         binding.albumMakeSaveBt.setOnClickListener {
             initAlbum()
-            val makeService = MakeAlbumBandService()
-            makeService.setAlbumBandView(this)
             makeService.makeAlbumBand(getJwt()!!, album)
         }
+
         initDatePicker()
     }
 
@@ -171,7 +173,6 @@ class BandMakeAlbumActivity : AppCompatActivity(), SendImgView, MakeAlbumBandVie
         }
     }
 
-
     private fun setToast(msg : String) {
         val view : View = layoutInflater.inflate(R.layout.toast_signup, findViewById(R.id.toast_signup))
         val toast = Toast(this)
@@ -192,8 +193,8 @@ class BandMakeAlbumActivity : AppCompatActivity(), SendImgView, MakeAlbumBandVie
 
     private fun initAlbum() {
         album.albumImgUrl = imgUrl
-        album.albumTitle = binding.albumMakeTitleEt.text.toString()
-        album.albumDate = binding.albumShowDateEt.text.toString()
+        album.albumTitle = "${binding.albumMakeTitleEt.text.trim()}"
+        album.albumDate = "${binding.albumShowDateEt.text.trim()}"
         album.userIdx = getUserIdx()
         album.bandIdx = bandIdx!!
     }

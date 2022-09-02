@@ -220,12 +220,12 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
     }
 
     private fun updateBand(): Band {
-        band.bandTitle = binding.homeBandEditNameEt.text.toString()
-        band.bandIntroduction = binding.homeBandEditInfoEt.text.toString()
-        band.bandContent = binding.homeBandEditDetailEt.text.toString()
+        band.bandTitle = "${binding.homeBandEditNameEt.text.trim()}"
+        band.bandIntroduction = "${binding.homeBandEditInfoEt.text.trim()}"
+        band.bandContent = "${binding.homeBandEditDetailEt.text.trim()}"
 
-        band.chatRoomLink = binding.homeBandEditChatEt.text.toString()
-        band.bandRegion = binding.homeBandEditCitySp.selectedItem.toString() + " " + binding.homeBandEditAreaSp.selectedItem.toString()
+        band.chatRoomLink = "${binding.homeBandEditChatEt.text.trim()}"
+        band.bandRegion = "${binding.homeBandEditCitySp.selectedItem}" + " " + "${binding.homeBandEditAreaSp.selectedItem}"
 
         band.bandImgUrl = profileImgUrl
         band.userIdx = getUserIdx()
@@ -236,27 +236,28 @@ class BandEditActivity : AppCompatActivity(), GetBandView, PatchBandView, SendIm
         band.keyboard = keyboardCnt
         band.drum = drumCnt
 
-        band.vocalComment = binding.homeBandEditVocalEt.text.toString()
-        band.guitarComment = binding.homeBandEditGuitarEt.text.toString()
-        band.baseComment = binding.homeBandEditBaseEt.text.toString()
-        band.keyboardComment = binding.homeBandEditKeyboardEt.text.toString()
-        band.drumComment = binding.homeBandEditDrumEt.text.toString()
+        band.vocalComment = "${binding.homeBandEditVocalEt.text.trim()}"
+        band.guitarComment = "${binding.homeBandEditGuitarEt.text.trim()}"
+        band.baseComment = "${binding.homeBandEditBaseEt.text.trim()}"
+        band.keyboardComment = "${binding.homeBandEditKeyboardEt.text.trim()}"
+        band.drumComment = "${binding.homeBandEditDrumEt.text.trim()}"
 
         if (!binding.homeBandShowNameEt.text.isNullOrEmpty())
-            band.performTitle = binding.homeBandShowNameEt.text.toString()
+            band.performTitle = "${binding.homeBandShowNameEt.text.trim()}"
 
         if(!binding.homeBandShowFeeEt.text.isNullOrEmpty()) {
-            val performFee = binding.homeBandShowFeeEt.text.toString()
+            val performFee = "${binding.homeBandShowFeeEt.text.trim()}"
             band.performFee = performFee.toInt()
         }
+
         if(!binding.homeBandShowLocationEt.text.isNullOrEmpty())
-            band.performLocation = binding.homeBandShowLocationEt.text.toString()
+            band.performLocation = "${binding.homeBandShowLocationEt.text.trim()}"
 
         if(!binding.homeBandShowTimeEt.text.isNullOrEmpty())
-            band.performTime = binding.homeBandShowTimeEt.text.toString()
+            band.performTime = "${binding.homeBandShowTimeEt.text.trim()}"
 
         if(!binding.homeBandShowDateEt.text.isNullOrEmpty())
-            band.performDate = binding.homeBandShowDateEt.text.toString()
+            band.performDate = "${binding.homeBandShowDateEt.text.trim()}"
         //둘다 null일 경우 performdate에 널값 넣어서 보내고 싶은데...
 
         return band
