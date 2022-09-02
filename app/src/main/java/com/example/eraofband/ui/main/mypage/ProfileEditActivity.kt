@@ -124,11 +124,11 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
     }
 
     private fun updateUser(): EditUser {
-        editUser.birth = binding.profileEditRealBirthdayTv.text.toString()
-        editUser.nickName = binding.profileEditNicknameEt.text.toString()
+        editUser.birth = "${binding.profileEditRealBirthdayTv.text.trim()}"
+        editUser.nickName = "${binding.profileEditNicknameEt.text.trim()}"
         editUser.profileImgUrl = profileUrl
         editUser.userIdx = getUserIdx()
-        editUser.region = binding.profileEditCitySp.selectedItem.toString() + " " + binding.profileEditAreaSp.selectedItem.toString()
+        editUser.region = "${binding.profileEditCitySp.selectedItem}" + " " + "${binding.profileEditAreaSp.selectedItem}"
 
         return editUser
     }
