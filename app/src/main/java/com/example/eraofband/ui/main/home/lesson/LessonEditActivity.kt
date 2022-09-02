@@ -303,13 +303,13 @@ class LessonEditActivity : AppCompatActivity(), GetLessonInfoView, PatchLessonVi
 
     private fun updateUser() {
         lesson.lessonSession = session
-        lesson.lessonTitle = binding.homeLessonEditNameEt.text.toString()
-        lesson.lessonIntroduction = binding.homeLessonEditInfoEt.text.toString()
-        lesson.lessonRegion = binding.homeLessonEditCitySp.selectedItem.toString() + " " + binding.homeLessonEditAreaSp.selectedItem.toString()
+        lesson.lessonTitle = "${binding.homeLessonEditNameEt.text.trim()}"
+        lesson.lessonIntroduction = "${binding.homeLessonEditInfoEt.text.trim()}"
+        lesson.lessonRegion = "${binding.homeLessonEditCitySp.selectedItem}" + " " + "${binding.homeLessonEditAreaSp.selectedItem}"
         lesson.capacity = cnt
         lesson.lessonImgUrl = profileUrl
-        lesson.lessonContent = binding.homeLessonEditDetailEt.text.toString()
-        lesson.chatRoomLink = binding.homeLessonEditChatEt.text.toString()
+        lesson.lessonContent = "${binding.homeLessonEditDetailEt.text.trim()}"
+        lesson.chatRoomLink = "${binding.homeLessonEditChatEt.text.trim()}"
         lesson.userIdx = getUserIdx()
     }
 
