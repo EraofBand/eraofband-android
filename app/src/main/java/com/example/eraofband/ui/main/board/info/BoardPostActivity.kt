@@ -86,7 +86,7 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
         }
 
         binding.boardPostWriteCommentUploadTv.setOnClickListener {
-            val comment = binding.boardPostWriteCommentEt.text.toString()
+            val comment = "${binding.boardPostWriteCommentEt.text.trim()}"
             val userIdx = getUserIdx()
             if(comment.isNotEmpty()) {  // 댓글에 적은 내용이 있는 경우 댓글 업로드
                 // 답글 어쩌구가 있으면 답글, 아무것도 없으면 댓글

@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -15,6 +14,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -59,12 +59,10 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
     }
 
     private fun postBoard(): Board{
-
         board.category = category
-        board.title = binding.boardMakeTitleEt.toString()
-        board.content = binding.boardMakeContentEt.toString()
+        board.title = "${binding.boardMakeTitleEt.text.trim()}"
+        board.content = "${binding.boardMakeContentEt.text.trim()}"
         board.userIdx = getUserIdx()
-
 
         return board
     }

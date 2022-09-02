@@ -58,6 +58,9 @@ class BandMakeActivity : AppCompatActivity(), MakeBandView, SendImgView {
         binding = ActivityBandMakeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val makeService = MakeBandService()
+        makeService.setMakeView(this)
+
         getImage()
 
         binding.homeBandMakeImgIv.setOnClickListener {
@@ -109,8 +112,6 @@ class BandMakeActivity : AppCompatActivity(), MakeBandView, SendImgView {
         binding.homeBandMakeBackIb.setOnClickListener { finish() }
 
         binding.homeBandMakeRegisterBtn.setOnClickListener {
-            val makeService = MakeBandService()
-            makeService.setMakeView(this)
             Log.d("BAND MAKE", postBand().toString())
             makeService.makeBand(getJwt()!!, postBand())
         }
@@ -123,26 +124,23 @@ class BandMakeActivity : AppCompatActivity(), MakeBandView, SendImgView {
         initDrumCnt()
 
         //채팅방, 세션 et는 빼놨습니다
-
     }
 
     private fun postBand() : Band{
-
-        band.bandTitle = binding.homeBandMakeNameEt.text.toString()
-        band.bandIntroduction = binding.homeBandMakeInfoEt.text.toString()
-        band.bandContent = binding.homeBandMakeDetailEt.text.toString()
-        band.chatRoomLink = binding.homeBandMakeChatEt.text.toString()
-        band.bandRegion =  binding.homeBandMakeCitySp.selectedItem.toString() + " " + binding.homeBandMakeAreaSp.selectedItem.toString()
+        band.bandTitle = "${binding.homeBandMakeNameEt.text.trim()}"
+        band.bandIntroduction = "${binding.homeBandMakeInfoEt.text.trim()}"
+        band.bandContent = "${binding.homeBandMakeDetailEt.text.trim()}"
+        band.chatRoomLink = "${binding.homeBandMakeChatEt.text.trim()}"
+        band.bandRegion =  "${binding.homeBandMakeCitySp.selectedItem}" + " " + "${binding.homeBandMakeAreaSp.selectedItem}"
         band.bandImgUrl = imgUrl
 
-        band.vocalComment = binding.homeBandMakeVocalEt.text.toString()
-        band.guitarComment = binding.homeBandMakeGuitarEt.text.toString()
-        band.baseComment = binding.homeBandMakeBaseEt.text.toString()
-        band.keyboardComment = binding.homeBandMakeKeyboardEt.text.toString()
-        band.drumComment = binding.homeBandMakeDrumEt.text.toString()
+        band.vocalComment = "${binding.homeBandMakeVocalEt.text.trim()}"
+        band.guitarComment = "${binding.homeBandMakeGuitarEt.text.trim()}"
+        band.baseComment = "${binding.homeBandMakeBaseEt.text.trim()}"
+        band.keyboardComment = "${binding.homeBandMakeKeyboardEt.text.trim()}"
+        band.drumComment = "${binding.homeBandMakeDrumEt.text.trim()}"
 
         band.userIdx = getUserIdx()
-
 
         return band
     }

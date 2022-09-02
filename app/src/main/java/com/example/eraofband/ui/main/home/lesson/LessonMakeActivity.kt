@@ -288,13 +288,13 @@ class LessonMakeActivity : AppCompatActivity(), MakeLessonView, SendImgView {
 
     private fun updateUser() {
         lesson.lessonSession = session
-        lesson.lessonTitle = binding.homeLessonMakeNameEt.text.toString()
-        lesson.lessonIntroduction = binding.homeLessonMakeInfoEt.text.toString()
-        lesson.lessonRegion = binding.homeLessonMakeCitySp.selectedItem.toString() + " " + binding.homeLessonMakeAreaSp.selectedItem.toString()
+        lesson.lessonTitle = "${binding.homeLessonMakeNameEt.text.trim()}"
+        lesson.lessonIntroduction = "${binding.homeLessonMakeInfoEt.text.trim()}"
+        lesson.lessonRegion = "${binding.homeLessonMakeCitySp.selectedItem}" + " " + "${binding.homeLessonMakeAreaSp.selectedItem}"
         lesson.capacity = cnt
         lesson.lessonImgUrl = profileUrl
-        lesson.lessonContent = binding.homeLessonMakeDetailEt.text.toString()
-        lesson.chatRoomLink = binding.homeLessonMakeChatEt.text.toString()
+        lesson.lessonContent = "${binding.homeLessonMakeDetailEt.text.trim()}"
+        lesson.chatRoomLink = "${binding.homeLessonMakeChatEt.text.trim()}"
         lesson.userIdx = getUserIdx()
     }
 

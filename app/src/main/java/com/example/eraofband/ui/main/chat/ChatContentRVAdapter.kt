@@ -5,21 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.data.ChatComment
-import com.example.eraofband.data.ChatUser
 import com.example.eraofband.databinding.ItemChatLeftBinding
 import com.example.eraofband.databinding.ItemChatRightBinding
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
-import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 
 class ChatContentRVAdapter(private val profileImg : String, private val nickname : String, private val chatIdx : String, private val userIdx : Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -38,8 +30,8 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
     @SuppressLint("NotifyDataSetChanged")
     fun addNewChat(chatComment: List<ChatComment>){
         chatContents.addAll(chatComment)
-            notifyDataSetChanged()
-        }
+        notifyDataSetChanged()
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     fun clearChat(){
