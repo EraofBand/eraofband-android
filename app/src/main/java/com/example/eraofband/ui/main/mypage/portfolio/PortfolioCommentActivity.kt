@@ -50,7 +50,6 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
 
     override fun onStart() {
         super.onStart()
-
         commentRVAdapter.clearComment()
 
         commentService.setCommentView(this)
@@ -104,8 +103,10 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
         })
 
         binding.portfolioCommentUploadTv.setOnClickListener {
-            if(binding.portfolioCommentWriteEt.text.isNotEmpty()) {  // 댓글에 적은 내용이 있는 경우 댓글 업로드
-                commentService.writeComment(getJwt()!!, intent.getIntExtra("pofolIdx", 0), Comment(binding.portfolioCommentWriteEt.text.toString(), getUserIdx()))
+            val comment = "${binding.portfolioCommentWriteEt.text.trim()}"
+
+            if(comment.isNotEmpty()) {  // 댓글에 적은 내용이 있는 경우 댓글 업로드
+                commentService.writeComment(getJwt()!!, intent.getIntExtra("pofolIdx", 0), Comment(comment, getUserIdx()))
             }
         }
     }

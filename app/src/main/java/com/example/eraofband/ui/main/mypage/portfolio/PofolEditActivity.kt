@@ -22,6 +22,9 @@ class PofolEditActivity : AppCompatActivity(), PatchPofolView {
         binding = ActivityPofolEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val patchService = PatchPofolService()
+        patchService.setPatchView(this)
+
         binding.portfolioEditBackIb.setOnClickListener { finish() }
 
         // 내용 불러오기
@@ -30,11 +33,9 @@ class PofolEditActivity : AppCompatActivity(), PatchPofolView {
 
         binding.portfolioEditSaveBt.setOnClickListener {
             if(binding.portfolioEditTitleEt.text.isNotEmpty() && binding.portfolioEditVideoIntroEt.text.isNotEmpty()) {
-                val title = binding.portfolioEditTitleEt.text.toString()
-                val intro = binding.portfolioEditVideoIntroEt.text.toString()
+                val title = "${binding.portfolioEditTitleEt.text.trim()}"
+                val intro = "${binding.portfolioEditVideoIntroEt.text.trim()}"
 
-                val patchService = PatchPofolService()
-                patchService.setPatchView(this)
                 patchService.patchPortfolio(getJwt()!!, intent.getIntExtra("pofolIdx", 0), Portfolio(intro, "", title, getUserIdx(), ""))
             }
         }

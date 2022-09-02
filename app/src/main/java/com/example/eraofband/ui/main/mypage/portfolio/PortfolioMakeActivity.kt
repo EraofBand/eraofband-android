@@ -58,6 +58,9 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
 
         sendImgService.setImageView(this)
 
+        val makeService = MakePofolService()
+        makeService.setMakeView(this)
+
         binding.portfolioMakeBackIb.setOnClickListener { finish() }  // 뒤로가기
 
         // 비디오 올리기 혹은 올린 썸네일을 누르면 갤러리에 들어갈 수 있도록 해줌 (조은아 내가 그냥 레이아웃 클릭하면 갤러리로 바꿨어)
@@ -65,14 +68,11 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
         binding.portfolioMakeVideoCl.setOnClickListener { initImageViewProfile() }
 
         binding.portfolioMakeSaveBt.setOnClickListener {  // 포트폴리오 올리기
-            if(binding.portfolioMakeTitleEt.text.isNotEmpty() && binding.portfolioMakeVideoIntroEt.text.isNotEmpty()
-                && videoUrl != "" && thumbnailUrl != "") {
-                // 제목, 소개, 비디오를 모두 올린 경우 정보 저장 후 포트폴리오 올려줌
-                val title = binding.portfolioMakeTitleEt.text.toString()
-                val content = binding.portfolioMakeVideoIntroEt.text.toString()
+            val title = "${binding.portfolioMakeTitleEt.text.trim()}"
+            val content = "${binding.portfolioMakeVideoIntroEt.text.trim()}"
 
-                val makeService = MakePofolService()
-                makeService.setMakeView(this)
+            if(title.isNotEmpty() && content.isNotEmpty() && videoUrl != "" && thumbnailUrl != "") {
+                // 제목, 소개, 비디오를 모두 올린 경우 정보 저장 후 포트폴리오 올려줌
                 makeService.makePortfolio(getJwt()!!, Portfolio(content, thumbnailUrl, title, getUserIdx(), videoUrl))
 
                 Handler(Looper.getMainLooper()).postDelayed({
