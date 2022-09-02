@@ -37,7 +37,7 @@ class ReportDialog(private val jwt: String, private val location: Int, private v
         reportService.setReportView(this)
 
         binding.reportAcceptTv.setOnClickListener {
-            val message = binding.reportEt.text.toString()
+            val message = "${binding.reportEt.text.trim()}"
             reportService.report(jwt, Report(message, location, locationIdx, userIdx))
         }
 
