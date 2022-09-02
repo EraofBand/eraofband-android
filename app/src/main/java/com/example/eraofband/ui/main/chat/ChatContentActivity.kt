@@ -1,7 +1,6 @@
 package com.example.eraofband.ui.main.chat
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
@@ -84,8 +83,7 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         // 채팅방 존재 유무 확인
         chatRoomService.isChatRoom(getJwt()!!, Users(firstIndex, secondIndex))
 
-        binding.chatContentBackIb.setOnClickListener{
-            finish() }  // 뒤로가기
+        binding.chatContentBackIb.setOnClickListener{ finish() }  // 뒤로가기
 
         profileImg = intent.getStringExtra("profile")!!
         nickname = intent.getStringExtra("nickname")!!
@@ -93,12 +91,12 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         patchChatService.setChatView(this)
 
         binding.chatContentSendTv.setOnClickListener {  // 메세지 보내기
-            if(binding.chatContentTextEt.text.isNotEmpty()) {
-                val message = binding.chatContentTextEt.text.toString()
+            val chat = "${binding.chatContentTextEt.text.trim()}"
+            if(chat.isNotEmpty()) {
                 val timeStamp = System.currentTimeMillis()
 
                 if(num == -1) createChatRoom()  // 그 전에 올린 채팅이 한 개도 없을 경우
-                else writeChat(ChatComment(message, false, timeStamp, getUserIdx()))
+                else writeChat(ChatComment(chat, false, timeStamp, getUserIdx()))
             }
         }
 
@@ -189,7 +187,6 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
             })
     }
 
-
     // 데이터를 올리는 부분
     private fun createChatRoom() {
         // 다른 유저 마이페이지에서 들어온 경우
@@ -274,7 +271,6 @@ class ChatContentActivity : AppCompatActivity(), MakeChatView, IsChatRoomView, P
         activeChatService.activeChat(getJwt()!!, MakeChatRoom(chatIdx, firstIndex, secondIndex))
 
     }
-
 
     override fun onMakeSuccess(result: String) {
         Log.d("MAKE/SUC", result)
