@@ -46,12 +46,28 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         binding = ActivityUserMypageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val intent = intent
+        otherUserIdx = intent.extras?.getInt("userIdx")!!
+        Log.d("USER INDEX", otherUserIdx.toString())
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val getOtherUserService = GetOtherUserService()
+        getOtherUserService.setOtherUserView(this)
+        getOtherUserService.getOtherUser(getJwt()!!, otherUserIdx!!)
+
+        clickListener()
+    }
+
+    private fun clickListener() {
+
         binding.userMypageBackIb.setOnClickListener {
             finish()
         }
-        
         binding.userMypageMoreIv.setOnClickListener { showPopup() }
-
 
         // 메세지 클릭하면 채팅방으로 이동
         binding.userMypageMessageTv.setOnClickListener {
@@ -63,10 +79,6 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             startActivity(intent)
         }
 
-        val intent = intent
-        otherUserIdx = intent.extras?.getInt("userIdx")!!
-        Log.d("USER INDEX", otherUserIdx.toString())
-
         val userMyPageAdapter = UserMyPageVPAdapter(this)
         binding.userMypageVp.adapter = userMyPageAdapter
 
@@ -77,15 +89,12 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             }
         }.attach()
 
-        binding.userMypageBackIb.setOnClickListener{
-            finish()
-        }
-
         binding.userMypageFollowTv.setOnClickListener {  // 팔로우 리스트에서 언팔 및 팔로우 시 visibility 변경
             binding.userMypageFollowTv.visibility = View.INVISIBLE
             binding.userMypageUnfollowTv.visibility = View.VISIBLE
-            binding.userMypageFollowerCntTv.text = "${followerCnt + 1}"
+            binding.userMypageFollowerCntTv.text = "${followerCnt++}"
             followerCnt += 1
+
             val userFollowService = UserFollowService() // 팔로우
             userFollowService.setUserFollowView(this)
             userFollowService.userFollow(getJwt()!!, otherUserIdx!!)
@@ -100,14 +109,8 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             userUnfollowService.setUserUnfollowView(this)
             userUnfollowService.userUnfollow(getJwt()!!, otherUserIdx!!)
         }
-        moveFollowActivity()
-    }
 
-    override fun onStart() {
-        super.onStart()
-        val getOtherUserService = GetOtherUserService()
-        getOtherUserService.setOtherUserView(this)
-        getOtherUserService.getOtherUser(getJwt()!!, otherUserIdx!!)
+        moveFollowActivity()
     }
 
     private fun moveFollowActivity() {
@@ -181,64 +184,66 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
 
     @SuppressLint("SetTextI18n")
     override fun onGetSuccess(code: Int, result: GetOtherUserResult) {
-        Glide.with(this).load(result.getUser.profileImgUrl)
-            .apply(RequestOptions.centerCropTransform()).apply(RequestOptions.circleCropTransform())
-            .into(binding.userMypageProfileimgIv)
-        profileImg = result.getUser.profileImgUrl
+        synchronized(this) {
+            Log.d("MYPAGE", result.toString())
 
+            Glide.with(this).load(result.getUser.profileImgUrl)
+                .apply(RequestOptions.centerCropTransform()).apply(RequestOptions.circleCropTransform())
+                .into(binding.userMypageProfileimgIv)
+            profileImg = result.getUser.profileImgUrl
 
-        Log.d("MYPAGE", result.toString())
-        nickName = result.getUser.nickName
-        secondIndex = result.getUser.userIdx
+            nickName = result.getUser.nickName
+            secondIndex = result.getUser.userIdx
 
-        binding.userMypageNicknameTv.text = nickName
-        binding.userMypageInfoNicknameTv.text = nickName // 닉네임 연동
+            binding.userMypageNicknameTv.text = nickName
+            binding.userMypageInfoNicknameTv.text = nickName // 닉네임 연동
 
-        // 디테일한 소개 연동
+            // 디테일한 소개 연동
 
-        val index = result.getUser.region.split(" ")
-        val city = index[1]
+            val index = result.getUser.region.split(" ")
+            val city = index[1]
 
-        val age = setDate().substring(0, 4).toInt() - result.getUser.birth.substring(0, 4).toInt() + 1
+            val age = setDate().substring(0, 4).toInt() - result.getUser.birth.substring(0, 4).toInt() + 1
 
-        val gender =
-            if(result.getUser.gender == "MALE") "남성"
-            else "여성"
+            val gender =
+                if(result.getUser.gender == "MALE") "남성"
+                else "여성"
 
-        binding.userMypageDetailInfoTv.text = "$city | ${age}세 | $gender"
+            binding.userMypageDetailInfoTv.text = "$city | ${age}세 | $gender"
 
-        binding.userMypageIntroductionTv.text = result.getUser.introduction  // 내 소개 연동
+            binding.userMypageIntroductionTv.text = result.getUser.introduction  // 내 소개 연동
 
-        if (binding.userMypageIntroductionTv.lineCount > 3) {
-            binding.userMypageLookMoreTv.visibility = View.VISIBLE  // 더보기 표시
+            if (binding.userMypageIntroductionTv.lineCount > 3) {
+                binding.userMypageLookMoreTv.visibility = View.VISIBLE  // 더보기 표시
 
-            // 더보기 클릭 이벤트
-            binding.userMypageLookMoreTv.setOnClickListener {
-                if (binding.userMypageLookMoreTv.text == "더보기") {
-                    binding.userMypageLookMoreTv.text = "접기"
-                    binding.userMypageIntroductionTv.maxLines = 100
-                }
-                else {
-                    binding.userMypageLookMoreTv.text = "더보기"
-                    binding.userMypageIntroductionTv.maxLines = 3
+                // 더보기 클릭 이벤트
+                binding.userMypageLookMoreTv.setOnClickListener {
+                    if (binding.userMypageLookMoreTv.text == "더보기") {
+                        binding.userMypageLookMoreTv.text = "접기"
+                        binding.userMypageIntroductionTv.maxLines = 100
+                    }
+                    else {
+                        binding.userMypageLookMoreTv.text = "더보기"
+                        binding.userMypageIntroductionTv.maxLines = 3
+                    }
                 }
             }
-        }
 
-        // 숫자 연동
-        binding.userMypageFollowingCntTv.text = result.getUser.followerCount.toString()
-        binding.userMypageFollowerCntTv.text = result.getUser.followeeCount.toString()
-        followerCnt = result.getUser.followeeCount
-        binding.userMypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
+            // 숫자 연동
+            binding.userMypageFollowingCntTv.text = result.getUser.followerCount.toString()
+            binding.userMypageFollowerCntTv.text = result.getUser.followeeCount.toString()
+            followerCnt = result.getUser.followeeCount
+            binding.userMypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
-        setSession(result.getUser.userSession)  // 세션 연동
+            setSession(result.getUser.userSession)  // 세션 연동
 
-        if (result.getUser.follow == 0){
-            binding.userMypageFollowTv.visibility = View.VISIBLE
-            binding.userMypageUnfollowTv.visibility = View.INVISIBLE
-        } else {
-            binding.userMypageFollowTv.visibility = View.INVISIBLE
-            binding.userMypageUnfollowTv.visibility = View.VISIBLE
+            if (result.getUser.follow == 0){
+                binding.userMypageFollowTv.visibility = View.VISIBLE
+                binding.userMypageUnfollowTv.visibility = View.INVISIBLE
+            } else {
+                binding.userMypageFollowTv.visibility = View.INVISIBLE
+                binding.userMypageUnfollowTv.visibility = View.VISIBLE
+            }
         }
     }
 
