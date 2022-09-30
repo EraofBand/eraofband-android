@@ -1,5 +1,6 @@
 package com.example.eraofband.ui.main.mypage
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -7,8 +8,11 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.databinding.ActivityMypageSettingBinding
-import com.example.eraofband.remote.user.signout.*
+import com.example.eraofband.remote.user.signout.ResignResponse
+import com.example.eraofband.remote.user.signout.ResignService
+import com.example.eraofband.remote.user.signout.ResignView
 import com.example.eraofband.ui.login.LoginActivity
+import com.example.eraofband.ui.main.block.UserBlockActivity
 import com.kakao.sdk.user.UserApiClient
 
 
@@ -16,6 +20,7 @@ class MyPageSettingActivity : AppCompatActivity(), ResignView {
 
     private lateinit var binding: ActivityMypageSettingBinding
 
+    @SuppressLint("IntentReset")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -25,11 +30,15 @@ class MyPageSettingActivity : AppCompatActivity(), ResignView {
         binding.settingMailCl.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.type = "text/plain"
-            intent.setData(Uri.parse("mailto:lsh929500@gmail.com"))
+            intent.data = Uri.parse("mailto:lsh929500@gmail.com")
             startActivity(intent)
         }
 
         binding.settingBackIb.setOnClickListener{ finish() }  // 뒤로가기
+
+        binding.settingBlockCl.setOnClickListener {
+            startActivity(Intent(this, UserBlockActivity::class.java))
+        }
 
         binding.settingLogoutCl.setOnClickListener {  // 로그아웃 프로세스
             val resignDialog = ResignDialog(0)

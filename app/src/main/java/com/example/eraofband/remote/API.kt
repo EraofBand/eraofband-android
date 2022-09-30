@@ -17,6 +17,7 @@ import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResponse
 import com.example.eraofband.remote.band.makeAlbumBand.MakeAlbumBandResponse
 import com.example.eraofband.remote.band.makeBand.MakeBandResponse
 import com.example.eraofband.remote.band.patchBand.PatchBandResponse
+import com.example.eraofband.remote.block.getBlock.GetBlockResponse
 import com.example.eraofband.remote.board.boardComment.BoardDeleteCommentResponse
 import com.example.eraofband.remote.board.boardComment.BoardWriteCommentResponse
 import com.example.eraofband.remote.board.boardLike.BoardDeleteLikeResponse
@@ -374,6 +375,10 @@ interface API {
     // 신고하기
     @POST("/notice/report")
     fun report(@Header("X-ACCESS-TOKEN") jwt: String, @Body report: Report) : Call<ReportResponse>
+
+    // 차단 리스트
+    @GET("/users/info/block")
+    fun getBlock(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetBlockResponse>
 
     // 유저 차단하기
     @POST("/users/block/{userIdx}")
