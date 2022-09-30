@@ -24,7 +24,7 @@ import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentView
 import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentWriteResult
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
-import com.example.eraofband.ui.report.ReportDialog
+import com.example.eraofband.ui.main.report.ReportDialog
 
 
 class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {

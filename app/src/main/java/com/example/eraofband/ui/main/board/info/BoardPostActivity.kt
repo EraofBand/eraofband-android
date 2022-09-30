@@ -33,7 +33,7 @@ import com.example.eraofband.remote.board.deleteBoard.DeleteBoardView
 import com.example.eraofband.remote.board.getBoard.*
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
-import com.example.eraofband.ui.report.ReportDialog
+import com.example.eraofband.ui.main.report.ReportDialog
 
 class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, BoardLikeView, DeleteBoardView {
 

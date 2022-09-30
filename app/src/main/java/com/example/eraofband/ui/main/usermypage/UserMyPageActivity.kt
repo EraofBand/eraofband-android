@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityUserMypageBinding
+import com.example.eraofband.remote.block.block.BlockService
+import com.example.eraofband.remote.block.block.BlockView
 import com.example.eraofband.remote.user.getOtherUser.GetOtherUserResult
 import com.example.eraofband.remote.user.getOtherUser.GetOtherUserService
 import com.example.eraofband.remote.user.getOtherUser.GetOtherUserView
@@ -24,12 +26,12 @@ import com.example.eraofband.remote.user.userUnfollow.UserUnfollowService
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowView
 import com.example.eraofband.ui.main.chat.ChatContentActivity
 import com.example.eraofband.ui.main.mypage.follow.FollowActivity
-import com.example.eraofband.ui.report.ReportDialog
+import com.example.eraofband.ui.main.report.ReportDialog
 import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 import java.util.*
 
-class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView, UserUnfollowView {
+class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView, UserUnfollowView, BlockView {
 
     private lateinit var binding: ActivityUserMypageBinding
     internal var otherUserIdx: Int? = null
@@ -38,6 +40,11 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     private lateinit var nickName: String
     private lateinit var profileImg: String
     private var secondIndex = -1
+
+    private val getOtherUserService = GetOtherUserService()
+    private val blockService = BlockService()
+    private val userUnfollowService = UserUnfollowService() // 언팔로우
+    private val userFollowService = UserFollowService() // 팔로우
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,23 +57,25 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         otherUserIdx = intent.extras?.getInt("userIdx")!!
         Log.d("USER INDEX", otherUserIdx.toString())
 
+        blockService.setBlockView(this)
+        getOtherUserService.setOtherUserView(this)
+        userUnfollowService.setUserUnfollowView(this)
+        userFollowService.setUserFollowView(this)
+
     }
 
     override fun onResume() {
         super.onResume()
 
-        val getOtherUserService = GetOtherUserService()
-        getOtherUserService.setOtherUserView(this)
         getOtherUserService.getOtherUser(getJwt()!!, otherUserIdx!!)
-
         clickListener()
     }
 
     private fun clickListener() {
-
         binding.userMypageBackIb.setOnClickListener {
             finish()
         }
+
         binding.userMypageMoreIv.setOnClickListener { showPopup() }
 
         // 메세지 클릭하면 채팅방으로 이동
@@ -95,8 +104,6 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             binding.userMypageFollowerCntTv.text = "${followerCnt++}"
             followerCnt += 1
 
-            val userFollowService = UserFollowService() // 팔로우
-            userFollowService.setUserFollowView(this)
             userFollowService.userFollow(getJwt()!!, otherUserIdx!!)
         }
 
@@ -105,8 +112,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             binding.userMypageUnfollowTv.visibility = View.INVISIBLE
             binding.userMypageFollowerCntTv.text = (followerCnt - 1).toString()
             followerCnt -= 1
-            val userUnfollowService = UserUnfollowService() // 언팔로우
-            userUnfollowService.setUserUnfollowView(this)
+
             userUnfollowService.userUnfollow(getJwt()!!, otherUserIdx!!)
         }
 
@@ -172,8 +178,9 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
                 reportDialog.isCancelable = false
                 reportDialog.show(supportFragmentManager, "report")
             }
-            else {  // 댓글 신고하기
+            else {  // 유저 차단하기
                 Log.d("BLOCK", "USER")
+                blockService.block(getJwt()!!, otherUserIdx!!)
             }
 
             false
@@ -267,6 +274,14 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
 
     override fun onUserUnfollowFailure(code: Int, message: String) {
         Log.d("USER UNLLOW / FAIL", "$code $message")
+    }
+
+    override fun onBlockSuccess(result: String) {
+        Log.d("BLOCK/SUC", result)
+    }
+
+    override fun onBlockFailure(code: Int, message: String) {
+        Log.d("BLOCK/FAIL", "$code $message")
     }
 
 }

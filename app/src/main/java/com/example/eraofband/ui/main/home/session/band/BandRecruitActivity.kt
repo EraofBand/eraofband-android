@@ -22,7 +22,7 @@ import com.example.eraofband.remote.band.getBand.GetBandService
 import com.example.eraofband.remote.band.getBand.GetBandView
 import com.example.eraofband.remote.band.getBand.SessionMembers
 import com.example.eraofband.ui.main.home.session.band.album.BandMakeAlbumActivity
-import com.example.eraofband.ui.report.ReportDialog
+import com.example.eraofband.ui.main.report.ReportDialog
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
 

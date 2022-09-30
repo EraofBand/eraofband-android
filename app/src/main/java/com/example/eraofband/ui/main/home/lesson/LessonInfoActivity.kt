@@ -24,7 +24,7 @@ import com.example.eraofband.remote.lesson.lessonLike.LessonLikeView
 import com.example.eraofband.ui.main.home.session.band.BandDeleteDialog
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
-import com.example.eraofband.ui.report.ReportDialog
+import com.example.eraofband.ui.main.report.ReportDialog
 
 
 class LessonInfoActivity : AppCompatActivity(), GetLessonInfoView, LessonLikeView {

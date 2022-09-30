@@ -26,7 +26,7 @@ import com.example.eraofband.ui.main.mypage.portfolio.PofolEditActivity
 import com.example.eraofband.ui.main.mypage.portfolio.PortfolioCommentActivity
 import com.example.eraofband.ui.main.mypage.portfolio.PortfolioMakeActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
-import com.example.eraofband.ui.report.ReportDialog
+import com.example.eraofband.ui.main.report.ReportDialog
 
 class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
 

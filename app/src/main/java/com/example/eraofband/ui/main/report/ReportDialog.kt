@@ -1,4 +1,4 @@
-package com.example.eraofband.ui.report
+package com.example.eraofband.ui.main.report
 
 import android.content.Context
 import android.content.res.Resources

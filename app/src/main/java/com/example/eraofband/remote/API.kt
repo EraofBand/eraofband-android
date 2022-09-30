@@ -17,19 +17,19 @@ import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResponse
 import com.example.eraofband.remote.band.makeAlbumBand.MakeAlbumBandResponse
 import com.example.eraofband.remote.band.makeBand.MakeBandResponse
 import com.example.eraofband.remote.band.patchBand.PatchBandResponse
+import com.example.eraofband.remote.board.boardComment.BoardDeleteCommentResponse
+import com.example.eraofband.remote.board.boardComment.BoardWriteCommentResponse
+import com.example.eraofband.remote.board.boardLike.BoardDeleteLikeResponse
+import com.example.eraofband.remote.board.boardLike.BoardLikeResponse
+import com.example.eraofband.remote.board.deleteBoard.DeleteBoardResponse
 import com.example.eraofband.remote.board.deleteBoardImg.DeleteBoardImgResponse
+import com.example.eraofband.remote.board.getBoard.GetBoardResponse
 import com.example.eraofband.remote.board.getBoardList.GetBoardListResponse
 import com.example.eraofband.remote.board.getMyBoardList.GetMyBoardListResponse
 import com.example.eraofband.remote.board.getMyCommentList.GetMyCommentListResponse
 import com.example.eraofband.remote.board.patchBoard.PatchBoardResponse
 import com.example.eraofband.remote.board.postBoard.PostBoardResponse
 import com.example.eraofband.remote.board.postBoardImg.PostBoardImgResponse
-import com.example.eraofband.remote.board.boardComment.BoardDeleteCommentResponse
-import com.example.eraofband.remote.board.boardComment.BoardWriteCommentResponse
-import com.example.eraofband.remote.board.boardLike.BoardDeleteLikeResponse
-import com.example.eraofband.remote.board.boardLike.BoardLikeResponse
-import com.example.eraofband.remote.board.deleteBoard.DeleteBoardResponse
-import com.example.eraofband.remote.board.getBoard.GetBoardResponse
 import com.example.eraofband.remote.chat.activeChat.ActiveChatResponse
 import com.example.eraofband.remote.chat.getChatList.GetChatListResponse
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResponse
@@ -374,5 +374,9 @@ interface API {
     // 신고하기
     @POST("/notice/report")
     fun report(@Header("X-ACCESS-TOKEN") jwt: String, @Body report: Report) : Call<ReportResponse>
+
+    // 유저 차단하기
+    @POST("/users/block/{userIdx}")
+    fun block(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<BasicResponse>
 
 }
