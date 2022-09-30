@@ -15,7 +15,7 @@ class BlockRVAdapter(private val blockList: ArrayList<GetBlockResult>, private v
 
     interface MyItemClickListener {
         // 클릭 이벤트
-        fun onCancelBlock(position: Int)
+        fun onBlock(position: Int)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -32,7 +32,7 @@ class BlockRVAdapter(private val blockList: ArrayList<GetBlockResult>, private v
         holder.bind(blockList[position])
 
         // 차단 해제하기
-        holder.binding.blockDecisionTv.setOnClickListener{ mItemClickListener.onCancelBlock(position) }
+        holder.binding.blockDecisionTv.setOnClickListener{ mItemClickListener.onBlock(position) }
 
     }
     override fun getItemCount(): Int = blockList.size

@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.databinding.ActivityUserBlockBinding
+import com.example.eraofband.remote.block.block.BlockService
+import com.example.eraofband.remote.block.block.BlockView
 import com.example.eraofband.remote.block.cancelBlock.CancelBlockService
 import com.example.eraofband.remote.block.cancelBlock.CancelBlockView
 import com.example.eraofband.remote.block.getBlock.GetBlockResult
@@ -13,14 +15,15 @@ import com.example.eraofband.remote.block.getBlock.GetBlockService
 import com.example.eraofband.remote.block.getBlock.GetBlockView
 import kotlinx.coroutines.launch
 
-class UserBlockActivity: AppCompatActivity(), GetBlockView, CancelBlockView {
+class UserBlockActivity: AppCompatActivity(), GetBlockView, CancelBlockView, BlockView {
     private lateinit var binding: ActivityUserBlockBinding
 
     private lateinit var blockRVAdapter: BlockRVAdapter
     private val userList = arrayListOf<GetBlockResult>()
 
     private val cancelBlockService = CancelBlockService()
-    private var cancelPosition = -1
+    private val blockService = BlockService()
+    private var blockPosition = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +37,7 @@ class UserBlockActivity: AppCompatActivity(), GetBlockView, CancelBlockView {
         getBlockService.setBlockView(this)
 
         cancelBlockService.setBlockView(this)
-
+        blockService.setBlockView(this)
 
         lifecycleScope.launch {
             getBlockService.getBlockList(getJwt()!!)
@@ -54,31 +57,50 @@ class UserBlockActivity: AppCompatActivity(), GetBlockView, CancelBlockView {
         binding.userBlockRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         blockRVAdapter.setMyItemClickListener(object : BlockRVAdapter.MyItemClickListener {
-            override fun onCancelBlock(position: Int) {
-                cancelBlockService.cancelBlock(getJwt()!!, userList[position].userIdx)
-                cancelPosition = position
+            override fun onBlock(position: Int) {
+                if(userList[position].blockChecked == 1) {
+                    cancelBlockService.cancelBlock(getJwt()!!, userList[position].userIdx)
+                    blockPosition = position
+                } else {
+                    blockService.block(getJwt()!!, userList[position].userIdx)
+                    blockPosition = position
+                }
+
             }
 
         })
     }
 
-    override fun onBlockSuccess(result: List<GetBlockResult>) {
+    override fun onGetSuccess(result: List<GetBlockResult>) {
         Log.d("GET/SUC", "$result")
 
         initRV(result)
     }
 
-    override fun onBlockFailure(code: Int, message: String) {
+    override fun onGetFailure(code: Int, message: String) {
         Log.d("GET/SUC", "$code $message")
+    }
+
+    override fun onBlockSuccess(result: String) {
+        Log.d("BLOCK/SUC", result)
+
+        userList[blockPosition].blockChecked = 1
+        blockRVAdapter.notifyItemChanged(blockPosition)
+
+        blockPosition = -1
+    }
+
+    override fun onBlockFailure(code: Int, message: String) {
+        Log.d("BLOCK/SUC", "$code $message")
     }
 
     override fun onCancelSuccess(result: String) {
         Log.d("CANCEL/SUC", result)
 
-        userList[cancelPosition].blockChecked = 0
-        blockRVAdapter.notifyItemChanged(cancelPosition)
+        userList[blockPosition].blockChecked = 0
+        blockRVAdapter.notifyItemChanged(blockPosition)
 
-        cancelPosition = -1
+        blockPosition = -1
     }
 
     override fun onCancelFailure(code: Int, message: String) {

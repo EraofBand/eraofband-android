@@ -24,8 +24,8 @@ class GetBlockService {
                 val resp : GetBlockResponse = response.body()!!
 
                 when(resp.code) {
-                    1000 -> blockView.onBlockSuccess(resp.result)  // 성공
-                    else -> blockView.onBlockFailure(resp.code, resp.message)
+                    1000 -> blockView.onGetSuccess(resp.result)  // 성공
+                    else -> blockView.onGetFailure(resp.code, resp.message)
                 }
             }
 
