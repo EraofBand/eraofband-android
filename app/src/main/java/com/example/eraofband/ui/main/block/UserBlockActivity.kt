@@ -59,11 +59,15 @@ class UserBlockActivity: AppCompatActivity(), GetBlockView, CancelBlockView, Blo
         blockRVAdapter.setMyItemClickListener(object : BlockRVAdapter.MyItemClickListener {
             override fun onBlock(position: Int) {
                 if(userList[position].blockChecked == 1) {
-                    cancelBlockService.cancelBlock(getJwt()!!, userList[position].userIdx)
-                    blockPosition = position
+                    lifecycleScope.launch {
+                        cancelBlockService.cancelBlock(getJwt()!!, userList[position].userIdx)
+                        blockPosition = position
+                    }
                 } else {
-                    blockService.block(getJwt()!!, userList[position].userIdx)
-                    blockPosition = position
+                    lifecycleScope.launch {
+                        blockService.block(getJwt()!!, userList[position].userIdx)
+                        blockPosition = position
+                    }
                 }
 
             }
