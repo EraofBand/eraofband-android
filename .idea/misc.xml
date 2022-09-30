@@ -55,6 +55,7 @@
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_signup_session.xml" value="0.15756578947368421" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_signup_term.xml" value="0.2" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_splash.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_user_block.xml" value="0.212890625" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_user_mypage.xml" value="0.12132725430597771" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/activity_user_portfolio_list.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/bottom_navigation_home.xml" value="0.24947916666666667" />
@@ -80,9 +81,13 @@
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/fragment_mypage_band.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/item_band_album.xml" value="0.2" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/item_band_member.xml" value="0.12132725430597771" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/item_block.xml" value="0.264" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/item_chat_list.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/item_search_user.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/item_session_new_band.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/item_session_volunteer.xml" value="0.264" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/item_spinner.xml" value="0.1569078947368421" />
+        <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/item_student.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/layout/spinner_item.xml" value="0.15756578947368421" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/menu/board_menu.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/jjy02/AndroidStudioProjects/eraofband-android/app/src/main/res/menu/bottom_menu.xml" value="0.2484375" />
