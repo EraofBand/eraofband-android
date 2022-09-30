@@ -2,11 +2,15 @@ package com.example.eraofband.ui.main.usermypage
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.Resources
+import android.graphics.Point
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.PopupMenu
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import com.bumptech.glide.Glide
@@ -189,6 +193,26 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         popupMenu.show() // 팝업 보여주기
     }
 
+    private fun setToast(str : String) {
+        val view : View = layoutInflater.inflate(R.layout.toast_signup, findViewById(R.id.toast_signup))
+        val toast = Toast(this)
+
+        val text = view.findViewById<TextView>(R.id.toast_signup_text_tv)
+        text.text = str
+
+        val display = windowManager.defaultDisplay // in case of Activity
+        val size = Point()
+        display.getSize(size)  // 상단바 등을 제외한 스크린 전체 크기 구하기
+        val height = size.y / 2  // 토스트 메세지가 중간에 고정되어있기 때문에 높이 / 2
+
+        // 중간부터 marginBottom, 버튼 높이 / 2 만큼 빼줌
+        toast.view = view
+        toast.setGravity(Gravity.FILL_HORIZONTAL, 0, height - 80.toPx())
+        toast.show()
+    }
+
+    private fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
+
     @SuppressLint("SetTextI18n")
     override fun onGetSuccess(code: Int, result: GetOtherUserResult) {
         synchronized(this) {
@@ -278,6 +302,8 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
 
     override fun onBlockSuccess(result: String) {
         Log.d("BLOCK/SUC", result)
+
+        setToast("차단이 완료되었습니다.")
     }
 
     override fun onBlockFailure(code: Int, message: String) {
