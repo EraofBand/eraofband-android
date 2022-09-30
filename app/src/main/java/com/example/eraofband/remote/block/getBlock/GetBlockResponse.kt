@@ -8,7 +8,7 @@ data class GetBlockResponse(
 )
 
 data class GetBlockResult(
-    val blockChecked: Int,
+    var blockChecked: Int,
     val nickName: String,
     val profileImgUrl: String,
     val userIdx: Int

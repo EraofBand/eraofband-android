@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.eraofband.R
 import com.example.eraofband.databinding.ItemBlockBinding
 import com.example.eraofband.remote.block.getBlock.GetBlockResult
 
@@ -14,6 +15,7 @@ class BlockRVAdapter(private val blockList: ArrayList<GetBlockResult>, private v
 
     interface MyItemClickListener {
         // 클릭 이벤트
+        fun onCancelBlock(position: Int)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -29,6 +31,9 @@ class BlockRVAdapter(private val blockList: ArrayList<GetBlockResult>, private v
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(blockList[position])
 
+        // 차단 해제하기
+        holder.binding.blockDecisionTv.setOnClickListener{ mItemClickListener.onCancelBlock(position) }
+
     }
     override fun getItemCount(): Int = blockList.size
 
@@ -38,6 +43,15 @@ class BlockRVAdapter(private val blockList: ArrayList<GetBlockResult>, private v
             binding.blockProfileIv.clipToOutline = true  // 모서리 깎기
 
             binding.blockNicknameTv.text = user.nickName
+
+            if(user.blockChecked == 1) {  // 차단 상태인 경우
+                binding.blockDecisionTv.setChipBackgroundColorResource(R.color.background_gray)
+                binding.blockDecisionTv.text = "차단 해제"
+            }
+            else {  // 차단 해제한 경우
+                binding.blockDecisionTv.setChipBackgroundColorResource(R.color.blue)
+                binding.blockDecisionTv.text = "차단하기"
+            }
         }
     }
 }

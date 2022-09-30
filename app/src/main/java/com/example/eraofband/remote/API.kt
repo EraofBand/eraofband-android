@@ -384,4 +384,7 @@ interface API {
     @POST("/users/block/{userIdx}")
     fun block(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<BasicResponse>
 
+    // 유저 차단 해제하기
+    @DELETE("/users/unblock/{userIdx}")
+    fun cancelBlock(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<BasicResponse>
 }

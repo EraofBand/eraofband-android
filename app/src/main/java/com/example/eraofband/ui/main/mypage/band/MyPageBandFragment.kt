@@ -59,7 +59,7 @@ class MyPageBandFragment : Fragment(), GetMyPageView {
         binding.mypageNoBandTv.visibility = View.GONE
         binding.mypageBandRv.visibility = View.VISIBLE
 
-        val bandRVAdapter = MyPageBandRVAdapter(context!!)
+        val bandRVAdapter = MyPageBandRVAdapter(requireContext())
         binding.mypageBandRv.adapter = bandRVAdapter
         binding.mypageBandRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 

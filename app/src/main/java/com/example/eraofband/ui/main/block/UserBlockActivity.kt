@@ -6,15 +6,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.databinding.ActivityUserBlockBinding
+import com.example.eraofband.remote.block.cancelBlock.CancelBlockService
+import com.example.eraofband.remote.block.cancelBlock.CancelBlockView
 import com.example.eraofband.remote.block.getBlock.GetBlockResult
 import com.example.eraofband.remote.block.getBlock.GetBlockService
 import com.example.eraofband.remote.block.getBlock.GetBlockView
 import kotlinx.coroutines.launch
 
-class UserBlockActivity: AppCompatActivity(), GetBlockView {
+class UserBlockActivity: AppCompatActivity(), GetBlockView, CancelBlockView {
     private lateinit var binding: ActivityUserBlockBinding
 
+    private lateinit var blockRVAdapter: BlockRVAdapter
     private val userList = arrayListOf<GetBlockResult>()
+
+    private val cancelBlockService = CancelBlockService()
+    private var cancelPosition = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +32,9 @@ class UserBlockActivity: AppCompatActivity(), GetBlockView {
 
         val getBlockService = GetBlockService()
         getBlockService.setBlockView(this)
+
+        cancelBlockService.setBlockView(this)
+
 
         lifecycleScope.launch {
             getBlockService.getBlockList(getJwt()!!)
@@ -40,10 +49,17 @@ class UserBlockActivity: AppCompatActivity(), GetBlockView {
     private fun initRV(item: List<GetBlockResult>) {
         userList.addAll(item)
 
-        val blockRVAdapter = BlockRVAdapter(userList, this)
+        blockRVAdapter = BlockRVAdapter(userList, this)
         binding.userBlockRv.adapter = blockRVAdapter
         binding.userBlockRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
+        blockRVAdapter.setMyItemClickListener(object : BlockRVAdapter.MyItemClickListener {
+            override fun onCancelBlock(position: Int) {
+                cancelBlockService.cancelBlock(getJwt()!!, userList[position].userIdx)
+                cancelPosition = position
+            }
+
+        })
     }
 
     override fun onBlockSuccess(result: List<GetBlockResult>) {
@@ -54,5 +70,18 @@ class UserBlockActivity: AppCompatActivity(), GetBlockView {
 
     override fun onBlockFailure(code: Int, message: String) {
         Log.d("GET/SUC", "$code $message")
+    }
+
+    override fun onCancelSuccess(result: String) {
+        Log.d("CANCEL/SUC", result)
+
+        userList[cancelPosition].blockChecked = 0
+        blockRVAdapter.notifyItemChanged(cancelPosition)
+
+        cancelPosition = -1
+    }
+
+    override fun onCancelFailure(code: Int, message: String) {
+        Log.d("CANCEL/SUC", "$code $message")
     }
 }
