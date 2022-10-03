@@ -25,8 +25,9 @@ import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.mypage.portfolio.PofolEditActivity
 import com.example.eraofband.ui.main.mypage.portfolio.PortfolioCommentActivity
 import com.example.eraofband.ui.main.mypage.portfolio.PortfolioMakeActivity
-import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.example.eraofband.ui.main.report.ReportDialog
+import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
+import com.example.eraofband.ui.setOnSingleClickListener
 
 class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
 
@@ -58,7 +59,7 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
 
         binding.communityTopEditIv.setOnClickListener { startActivity(Intent(activity, PortfolioMakeActivity::class.java)) }
 
-        binding.communityTotalTv.setOnClickListener {
+        binding.communityTotalTv.setOnSingleClickListener {
             if(!total) {
                 binding.communityTotalTv.setBackgroundResource(R.drawable.blue_round_bg2)  // 파란색
                 binding.communityFollowTv.setBackgroundResource(R.drawable.gray_round_bg)  // 회색
@@ -71,7 +72,7 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
             binding.communityFeedRv.smoothScrollToPosition(0)  // 상단으로 이동
         }
 
-        binding.communityFollowTv.setOnClickListener {
+        binding.communityFollowTv.setOnSingleClickListener{
             if(total) {
                 binding.communityTotalTv.setBackgroundResource(R.drawable.gray_round_bg)  // 회색
                 binding.communityFollowTv.setBackgroundResource(R.drawable.blue_round_bg2)  // 파란색

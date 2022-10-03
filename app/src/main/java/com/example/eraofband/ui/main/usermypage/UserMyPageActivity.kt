@@ -31,6 +31,7 @@ import com.example.eraofband.remote.user.userUnfollow.UserUnfollowView
 import com.example.eraofband.ui.main.chat.ChatContentActivity
 import com.example.eraofband.ui.main.mypage.follow.FollowActivity
 import com.example.eraofband.ui.main.report.ReportDialog
+import com.example.eraofband.ui.setOnSingleClickListener
 import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 import java.util.*
@@ -83,7 +84,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         binding.userMypageMoreIv.setOnClickListener { showPopup() }
 
         // 메세지 클릭하면 채팅방으로 이동
-        binding.userMypageMessageTv.setOnClickListener {
+        binding.userMypageMessageTv.setOnSingleClickListener {
             val intent = Intent(this, ChatContentActivity::class.java)
             intent.putExtra("nickname", nickName)
             intent.putExtra("profile", profileImg)
@@ -102,7 +103,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             }
         }.attach()
 
-        binding.userMypageFollowTv.setOnClickListener {  // 팔로우 리스트에서 언팔 및 팔로우 시 visibility 변경
+        binding.userMypageFollowTv.setOnSingleClickListener {  // 팔로우 리스트에서 언팔 및 팔로우 시 visibility 변경
             binding.userMypageFollowTv.visibility = View.INVISIBLE
             binding.userMypageUnfollowTv.visibility = View.VISIBLE
             binding.userMypageFollowerCntTv.text = "${followerCnt++}"
@@ -111,7 +112,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             userFollowService.userFollow(getJwt()!!, otherUserIdx!!)
         }
 
-        binding.userMypageUnfollowTv.setOnClickListener {
+        binding.userMypageUnfollowTv.setOnSingleClickListener {
             binding.userMypageFollowTv.visibility = View.VISIBLE
             binding.userMypageUnfollowTv.visibility = View.INVISIBLE
             binding.userMypageFollowerCntTv.text = (followerCnt - 1).toString()

@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -18,6 +19,7 @@ import com.example.eraofband.remote.band.getBand.SessionMembers
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.google.gson.Gson
+import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -144,9 +146,10 @@ class BandRecruitInfoFragment: Fragment() {
         }
 
         // 채팅방 링크
-        if(checkUserIdx(band.userIdx, band.sessionMembers)) binding.bandRecruitInfoChatTv.text = band.chatRoomLink  // 내가 밴드 멤버라면
-        else binding.bandRecruitInfoChatTv.text = "밴드 멤버에게만 공개됩니다"  // 밴드 멤버가 아니라면
-
+        lifecycleScope.launch {
+            if(checkUserIdx(band.userIdx, band.sessionMembers)) binding.bandRecruitInfoChatTv.text = band.chatRoomLink  // 내가 밴드 멤버라면
+            else binding.bandRecruitInfoChatTv.text = "밴드 멤버에게만 공개됩니다"  // 밴드 멤버가 아니라면
+        }
     }
 
     private fun initRecyclerView(item: List<SessionMembers>) {
@@ -175,7 +178,6 @@ class BandRecruitInfoFragment: Fragment() {
 
     @SuppressLint("SimpleDateFormat")
     private fun checkLeftDay(performDate: String): String {
-
         val dateFormat = SimpleDateFormat("yyyyMMdd")
 
         val endDate = dateFormat.parse(performDate.replace("-", ""))!!.time

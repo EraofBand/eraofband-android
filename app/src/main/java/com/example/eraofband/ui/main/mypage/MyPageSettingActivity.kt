@@ -13,6 +13,7 @@ import com.example.eraofband.remote.user.signout.ResignService
 import com.example.eraofband.remote.user.signout.ResignView
 import com.example.eraofband.ui.login.LoginActivity
 import com.example.eraofband.ui.main.block.UserBlockActivity
+import com.example.eraofband.ui.setOnSingleClickListener
 import com.kakao.sdk.user.UserApiClient
 
 
@@ -40,7 +41,7 @@ class MyPageSettingActivity : AppCompatActivity(), ResignView {
             startActivity(Intent(this, UserBlockActivity::class.java))
         }
 
-        binding.settingLogoutCl.setOnClickListener {  // 로그아웃 프로세스
+        binding.settingLogoutCl.setOnSingleClickListener {  // 로그아웃 프로세스
             val resignDialog = ResignDialog(0)
             resignDialog.show(this.supportFragmentManager, "logout")
 

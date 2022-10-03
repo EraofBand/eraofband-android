@@ -38,6 +38,7 @@ import com.example.eraofband.remote.board.getBoard.*
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.report.ReportDialog
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
+import com.example.eraofband.ui.setOnSingleClickListener
 
 class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, BoardLikeView, DeleteBoardView {
 
@@ -84,12 +85,12 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
 
         binding.boardPostTopMoreIv.setOnClickListener { showPopup(binding.boardPostTopMoreIv) }
 
-        binding.boardPostLikeIv.setOnClickListener {
+        binding.boardPostLikeIv.setOnSingleClickListener {
             if(like) likeService.deleteLike(getJwt()!!, boardIdx)
             else likeService.like(getJwt()!!, boardIdx)
         }
 
-        binding.boardPostWriteCommentUploadTv.setOnClickListener {
+        binding.boardPostWriteCommentUploadTv.setOnSingleClickListener {
             val comment = "${binding.boardPostWriteCommentEt.text.trim()}"
             val userIdx = getUserIdx()
             if(comment.isNotEmpty()) {  // 댓글에 적은 내용이 있는 경우 댓글 업로드

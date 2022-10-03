@@ -30,6 +30,7 @@ import com.example.eraofband.remote.portfolio.makePofol.MakePofolService
 import com.example.eraofband.remote.portfolio.makePofol.MakePofolView
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
+import com.example.eraofband.ui.setOnSingleClickListener
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -65,9 +66,9 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
 
         // 비디오 올리기 혹은 올린 썸네일을 누르면 갤러리에 들어갈 수 있도록 해줌 (조은아 내가 그냥 레이아웃 클릭하면 갤러리로 바꿨어)
         getVideo()
-        binding.portfolioMakeVideoCl.setOnClickListener { initImageViewProfile() }
+        binding.portfolioMakeVideoCl.setOnSingleClickListener { initImageViewProfile() }
 
-        binding.portfolioMakeSaveBt.setOnClickListener {  // 포트폴리오 올리기
+        binding.portfolioMakeSaveBt.setOnSingleClickListener {  // 포트폴리오 올리기
             val title = "${binding.portfolioMakeTitleEt.text.trim()}"
             val content = "${binding.portfolioMakeVideoIntroEt.text.trim()}"
 

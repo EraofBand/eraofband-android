@@ -19,6 +19,7 @@ import com.example.eraofband.databinding.DialogReportBinding
 import com.example.eraofband.remote.report.ReportService
 import com.example.eraofband.remote.report.ReportView
 import com.example.eraofband.ui.login.GlobalApplication
+import com.example.eraofband.ui.setOnSingleClickListener
 
 class ReportDialog(private val jwt: String, private val location: Int, private val locationIdx: Int, private val userIdx: Int): DialogFragment(), ReportView {
     private lateinit var binding: DialogReportBinding
@@ -36,7 +37,7 @@ class ReportDialog(private val jwt: String, private val location: Int, private v
         val reportService = ReportService()
         reportService.setReportView(this)
 
-        binding.reportAcceptTv.setOnClickListener {
+        binding.reportAcceptTv.setOnSingleClickListener {
             val message = "${binding.reportEt.text.trim()}"
             reportService.report(jwt, Report(message, location, locationIdx, userIdx))
         }

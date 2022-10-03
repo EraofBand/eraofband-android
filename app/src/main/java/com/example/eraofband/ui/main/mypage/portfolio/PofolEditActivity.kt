@@ -11,6 +11,7 @@ import com.example.eraofband.databinding.ActivityPofolEditBinding
 import com.example.eraofband.remote.portfolio.patchPofol.PatchPofolResponse
 import com.example.eraofband.remote.portfolio.patchPofol.PatchPofolService
 import com.example.eraofband.remote.portfolio.patchPofol.PatchPofolView
+import com.example.eraofband.ui.setOnSingleClickListener
 
 class PofolEditActivity : AppCompatActivity(), PatchPofolView {
 
@@ -31,7 +32,7 @@ class PofolEditActivity : AppCompatActivity(), PatchPofolView {
         binding.portfolioEditTitleEt.setText(intent.getStringExtra("title").toString())
         binding.portfolioEditVideoIntroEt.setText(intent.getStringExtra("content").toString())
 
-        binding.portfolioEditSaveBt.setOnClickListener {
+        binding.portfolioEditSaveBt.setOnSingleClickListener {
             if(binding.portfolioEditTitleEt.text.isNotEmpty() && binding.portfolioEditVideoIntroEt.text.isNotEmpty()) {
                 val title = "${binding.portfolioEditTitleEt.text.trim()}"
                 val intro = "${binding.portfolioEditVideoIntroEt.text.trim()}"

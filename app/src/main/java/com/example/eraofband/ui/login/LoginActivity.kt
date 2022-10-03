@@ -6,10 +6,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityLoginBinding
-import com.example.eraofband.ui.main.MainActivity
 import com.example.eraofband.remote.user.checkUser.CheckUserResult
 import com.example.eraofband.remote.user.checkUser.CheckUserService
 import com.example.eraofband.remote.user.checkUser.CheckUserView
+import com.example.eraofband.ui.main.MainActivity
+import com.example.eraofband.ui.setOnSingleClickListener
 import com.example.eraofband.ui.signup.SignUpNicknameActivity
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause
@@ -82,7 +83,7 @@ class LoginActivity : AppCompatActivity(), CheckUserView {
             }
         }
 
-        binding.loginKakaoBt.setOnClickListener {
+        binding.loginKakaoBt.setOnSingleClickListener {
             // 카카오톡이 설치되어 있으면 카카오톡으로 로그인, 아니면 카카오계정으로 로그인
             if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
                 UserApiClient.instance.loginWithKakaoTalk(this, callback = callback)

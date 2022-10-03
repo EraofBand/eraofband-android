@@ -9,6 +9,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ItemBlockBinding
 import com.example.eraofband.remote.block.getBlock.GetBlockResult
+import com.example.eraofband.ui.setOnSingleClickListener
 
 
 class BlockRVAdapter(private val blockList: ArrayList<GetBlockResult>, private val context: Context) : RecyclerView.Adapter<BlockRVAdapter.ViewHolder>() {
@@ -32,7 +33,7 @@ class BlockRVAdapter(private val blockList: ArrayList<GetBlockResult>, private v
         holder.bind(blockList[position])
 
         // 차단 해제하기
-        holder.binding.blockDecisionTv.setOnClickListener{ mItemClickListener.onBlock(position) }
+        holder.binding.blockDecisionTv.setOnSingleClickListener{ mItemClickListener.onBlock(position) }
 
     }
     override fun getItemCount(): Int = blockList.size

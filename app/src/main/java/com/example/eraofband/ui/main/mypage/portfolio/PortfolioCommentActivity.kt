@@ -29,6 +29,7 @@ import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentWriteResu
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.report.ReportDialog
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
+import com.example.eraofband.ui.setOnSingleClickListener
 
 
 class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
@@ -106,7 +107,7 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
             }
         })
 
-        binding.portfolioCommentUploadTv.setOnClickListener {
+        binding.portfolioCommentUploadTv.setOnSingleClickListener {
             val comment = "${binding.portfolioCommentWriteEt.text.trim()}"
 
             if(comment.isNotEmpty()) {  // 댓글에 적은 내용이 있는 경우 댓글 업로드

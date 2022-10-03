@@ -15,6 +15,7 @@ import com.example.eraofband.databinding.FragmentHomeLessonBinding
 import com.example.eraofband.remote.lesson.getLessonList.GetLessonListResult
 import com.example.eraofband.remote.lesson.getLessonList.GetLessonListService
 import com.example.eraofband.remote.lesson.getLessonList.GetLessonListView
+import com.example.eraofband.ui.setOnSingleClickListener
 
 class HomeLessonFragment: Fragment(), GetLessonListView {
 
@@ -79,12 +80,12 @@ class HomeLessonFragment: Fragment(), GetLessonListView {
 
         binding.homeLessonTotalCp.isChecked = true
         getLessonList.getLessonList(region, 5) // 자동 전체 세션 초기화
-        binding.homeLessonTotalCp.setOnClickListener { getLessonList.getLessonList(region, 5)}
-        binding.homeLessonVocalCp.setOnClickListener { getLessonList.getLessonList(region, 0)}
-        binding.homeLessonGuitarCp.setOnClickListener { getLessonList.getLessonList(region, 1)}
-        binding.homeLessonBaseCp.setOnClickListener { getLessonList.getLessonList(region, 2)}
-        binding.homeLessonKeyboardCp.setOnClickListener { getLessonList.getLessonList(region, 3)}
-        binding.homeLessonDrumCp.setOnClickListener { getLessonList.getLessonList(region, 4)}
+        binding.homeLessonTotalCp.setOnSingleClickListener { getLessonList.getLessonList(region, 5)}
+        binding.homeLessonVocalCp.setOnSingleClickListener { getLessonList.getLessonList(region, 0)}
+        binding.homeLessonGuitarCp.setOnSingleClickListener { getLessonList.getLessonList(region, 1)}
+        binding.homeLessonBaseCp.setOnSingleClickListener { getLessonList.getLessonList(region, 2)}
+        binding.homeLessonKeyboardCp.setOnSingleClickListener { getLessonList.getLessonList(region, 3)}
+        binding.homeLessonDrumCp.setOnSingleClickListener { getLessonList.getLessonList(region, 4)}
     }
 
     private fun initRecyclerView(lessonList: List<GetLessonListResult>) {
@@ -97,7 +98,7 @@ class HomeLessonFragment: Fragment(), GetLessonListView {
 
         lessonListRVAdapter.setMyItemClickListener(object : LessonListRVAdapter.MyItemClickListener {
             override fun onShowDetail(lessonIdx: Int) {  // 레슨 모집 페이지로 전환
-                var intent = Intent(context, LessonInfoActivity::class.java)
+                val intent = Intent(context, LessonInfoActivity::class.java)
                 intent.putExtra("lessonIdx", lessonIdx)
                 startActivity(intent)
             }

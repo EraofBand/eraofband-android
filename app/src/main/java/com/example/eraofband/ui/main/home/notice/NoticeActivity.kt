@@ -1,12 +1,11 @@
 package com.example.eraofband.ui.main.home.notice
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.PopupMenu
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
@@ -16,8 +15,6 @@ import com.example.eraofband.remote.notice.deleteNotice.DeleteNoticeView
 import com.example.eraofband.remote.notice.getNotice.GetNoticeResult
 import com.example.eraofband.remote.notice.getNotice.GetNoticeService
 import com.example.eraofband.remote.notice.getNotice.GetNoticeView
-import com.example.eraofband.ui.main.home.lessonlike.HomeLessonLikeRVAdapter
-import com.google.firebase.messaging.FcmBroadcastProcessor.reset
 
 class NoticeActivity : AppCompatActivity(), GetNoticeView, DeleteNoticeView {
     private lateinit var binding : ActivityNoticeBinding
@@ -86,7 +83,7 @@ class NoticeActivity : AppCompatActivity(), GetNoticeView, DeleteNoticeView {
     }
 
     override fun onDeleteSuccess(result: String) {
-        Log.d("DELETE/SUCCESS", "$result")
+        Log.d("DELETE/SUCCESS", result)
     }
 
     override fun onDeleteFailure(code: Int, message: String) {
