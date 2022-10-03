@@ -1,7 +1,9 @@
 package com.example.eraofband.ui.main.mypage.portfolio
 
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
@@ -12,6 +14,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,8 +27,8 @@ import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentService
 import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentView
 import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentWriteResult
 import com.example.eraofband.ui.main.mypage.MyPageActivity
-import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.example.eraofband.ui.main.report.ReportDialog
+import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 
 
 class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
@@ -176,6 +180,26 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
         return super.dispatchTouchEvent(ev)
     }
 
+    private fun setToast(str : String) {
+        val view : View = layoutInflater.inflate(R.layout.toast_signup, findViewById(R.id.toast_signup))
+        val toast = Toast(this)
+
+        val text = view.findViewById<TextView>(R.id.toast_signup_text_tv)
+        text.text = str
+
+        val display = windowManager.defaultDisplay // in case of Activity
+        val size = Point()
+        display.getSize(size)  // 상단바 등을 제외한 스크린 전체 크기 구하기
+        val height = size.y / 2  // 토스트 메세지가 중간에 고정되어있기 때문에 높이 / 2
+
+        // 중간부터 marginBottom, 버튼 높이 / 2 만큼 빼줌
+        toast.view = view
+        toast.setGravity(Gravity.FILL_HORIZONTAL, 0, height - 80.toPx())
+        toast.show()
+    }
+
+    private fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
+
     override fun onCommentSuccess(code: Int, result: List<PofolCommentResult>) {
         Log.d("GETCOMMENT/SUC", result.toString())
         initRecyclerView(result)  // 댓글 목록을 불러옴
@@ -199,6 +223,11 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
 
     override fun onCommentWriteFailure(code: Int, message: String) {
         Log.d("WRITECOMMENT/FAIL", message)
+
+        if(code == 2006) {
+            setToast(message)
+            binding.portfolioCommentWriteEt.setText("")
+        }
     }
 
     override fun onCommentDeleteSuccess(code: Int, result: String) {
