@@ -41,6 +41,27 @@ class BandRecruitInfoFragment: Fragment() {
 
         _binding = FragmentBandRecruitInfoBinding.inflate(inflater, container, false)
 
+
+        return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val bandSP = requireActivity().getSharedPreferences("band", MODE_PRIVATE)
+        val bandJson = bandSP.getString("bandInfo", "")
+
+        val bandInfo = gson.fromJson(bandJson, GetBandResult::class.java)
+
+        synchronized(this) {
+            initInfo(bandInfo)
+        }
+
+        clickListener()
+
+        Log.d("BANDINFO", bandInfo.toString())
+    }
+
+    private fun clickListener() {
         // 리더 정보 보기
         binding.bandRecruitInfoLeaderProfileIv.setOnClickListener {
             if(leaderIdx == getUserIdx()) {
@@ -64,20 +85,6 @@ class BandRecruitInfoFragment: Fragment() {
                 startActivity(intent)
             }  // 다른 유저일 경우
         }
-
-        return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val bandSP = requireActivity().getSharedPreferences("band", MODE_PRIVATE)
-        val bandJson = bandSP.getString("bandInfo", "")
-
-        val bandInfo = gson.fromJson(bandJson, GetBandResult::class.java)
-
-        initInfo(bandInfo)
-
-        Log.d("BANDINFO", bandInfo.toString())
     }
 
     private fun getUserIdx() : Int {

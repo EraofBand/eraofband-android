@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
@@ -16,6 +17,7 @@ import com.example.eraofband.databinding.FragmentBandRecruitAlbumBinding
 import com.example.eraofband.remote.band.getAlbumAlbumBand.GetAlbumBandService
 import com.example.eraofband.remote.band.getAlbumBand.GetAlbumBandResult
 import com.example.eraofband.remote.band.getAlbumBand.GetAlbumBandView
+import kotlinx.coroutines.launch
 
 
 class BandRecruitAlbumFragment : Fragment(), GetAlbumBandView {
@@ -28,14 +30,22 @@ class BandRecruitAlbumFragment : Fragment(), GetAlbumBandView {
     ): View? {
         binding = FragmentBandRecruitAlbumBinding.inflate(inflater, container, false)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         val sp = requireActivity().getSharedPreferences("band", AppCompatActivity.MODE_PRIVATE)
         val bandIdx = sp.getInt("bandIdx",0)
 
         val albumService = GetAlbumBandService()
         albumService.setAlbumBandView(this)
-        albumService.getAlbumBand(getJwt()!!, bandIdx)
 
-        return binding.root
+        lifecycleScope.launch{
+            albumService.getAlbumBand(getJwt()!!, bandIdx)
+        }
+
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -59,6 +69,7 @@ class BandRecruitAlbumFragment : Fragment(), GetAlbumBandView {
 
     override fun onGetSuccess(result: List<GetAlbumBandResult>) {
         Log.d("GET ALBUM / SUCCESS", result.toString())
+
         initRV(result)
     }
 

@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -25,15 +26,20 @@ import com.example.eraofband.ui.main.home.session.band.album.BandMakeAlbumActivi
 import com.example.eraofband.ui.main.report.ReportDialog
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
+import kotlinx.coroutines.launch
 
 class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
 
     private lateinit var binding: ActivityBandRecruitBinding
     private val gson = Gson()
+
     private var bandIdx = 0
     private var leaderIdx = 0
     private var bandMember = false
     private var like = false
+
+    private val bandService = GetBandService()
+    private val likeService = BandLikeService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +49,22 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
 
         bandIdx = intent.getIntExtra("bandIdx", 0)
 
+        bandService.setBandView(this)
+        likeService.setLikeView(this)
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        lifecycleScope.launch {
+            bandService.getBand(getJwt()!!, intent.getIntExtra("bandIdx", 0))
+            clickListener()
+        }
+    }
+
+    private fun clickListener() {
         binding.homeBandRecruitBackIv.setOnClickListener { finish() }  // 뒤로가기
 
         binding.homeBandRecruitListIv.setOnClickListener {
@@ -50,23 +72,18 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
         }
 
         binding.homeBandRecruitRl.setOnRefreshListener {
-            val bandService = GetBandService()
-            bandService.setBandView(this)
-            bandService.getBand(getJwt()!!, intent.getIntExtra("bandIdx", 0))
-
-            binding.homeBandRecruitRl.isRefreshing = false
+            lifecycleScope.launch {
+                bandService.getBand(getJwt()!!, intent.getIntExtra("bandIdx", 0))
+                binding.homeBandRecruitRl.isRefreshing = false
+            }
         }
-
-        val likeService = BandLikeService()
-        likeService.setLikeView(this)
 
         binding.homeBandRecruitLikeIv.setOnClickListener {
             Log.d("LIKETEST", like.toString())
-            if (like) likeService.deleteLike(
-                getJwt()!!,
-                intent.getIntExtra("bandIdx", 0)
-            )  // 좋아요 취소 처리
-            else likeService.like(getJwt()!!, intent.getIntExtra("bandIdx", 0))  // 좋아요 처리
+            lifecycleScope.launch {
+                if (like) likeService.deleteLike(getJwt()!!, intent.getIntExtra("bandIdx", 0))  // 좋아요 취소 처리
+                else likeService.like(getJwt()!!, intent.getIntExtra("bandIdx", 0))  // 좋아요 처리
+            }
         }
 
         binding.bandRecruitFab.setOnClickListener{
@@ -74,14 +91,6 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
             intent.putExtra("bandIdx", bandIdx)
             startActivity(intent)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        val bandService = GetBandService()
-        bandService.setBandView(this)
-        bandService.getBand(getJwt()!!, intent.getIntExtra("bandIdx", 0))
     }
 
     private fun initViewPager() {
@@ -119,41 +128,46 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
     @SuppressLint("SetTextI18n")
     override fun onGetSuccess(result: GetBandResult) {
         Log.d("GETBAND/SUC", result.toString())
-        // 밴드 정보 연동
-        binding.homeBandRecruitBandTitleTv.text = result.bandTitle  // 밴드 이름 연동
 
-        Glide.with(this).load(result.bandImgUrl)
-            .apply(RequestOptions.centerCropTransform())
-            .into(binding.homeBandRecruitBandImgIv)  // 밴드 이미지 연동
-        binding.homeBandRecruitBandImgIv.clipToOutline = true  // 모서리 깎기
+        synchronized(this) {
+            // 밴드 정보 연동
+            binding.homeBandRecruitBandTitleTv.text = result.bandTitle  // 밴드 이름 연동
 
-        binding.homeBandRecruitBandNameTv.text = result.bandTitle  // 밴드 이름 연동
-        binding.homeBandRecruitBandIntroTv.text = result.bandIntroduction  // 한줄 소개 연동
-        binding.homeBandRecruitCntTv.text = "${result.memberCount} / ${result.capacity}"  // 멤버 수
+            Glide.with(this).load(result.bandImgUrl)
+                .apply(RequestOptions.centerCropTransform())
+                .into(binding.homeBandRecruitBandImgIv)  // 밴드 이미지 연동
+            binding.homeBandRecruitBandImgIv.clipToOutline = true  // 모서리 깎기
 
-        leaderIdx = result.userIdx
-        bandMember = checkUserIdx(result.sessionMembers)
+            binding.homeBandRecruitBandNameTv.text = result.bandTitle  // 밴드 이름 연동
+            binding.homeBandRecruitBandIntroTv.text = result.bandIntroduction  // 한줄 소개 연동
+            binding.homeBandRecruitCntTv.text = "${result.memberCount} / ${result.capacity}"  // 멤버 수
 
-        // 좋아요 여부 연동
-        if (result.likeOrNot == "Y") {
-            like = true
-            binding.homeBandRecruitLikeIv.setImageResource(R.drawable.ic_heart_on)
-        } else {
-            like = false
-            binding.homeBandRecruitLikeIv.setImageResource(R.drawable.ic_heart_off)
+            leaderIdx = result.userIdx
+            lifecycleScope.launch{  // 계산하는 거니까 다른 코루틴으로 넘겨줌
+                bandMember = checkUserIdx(result.sessionMembers)
+            }
+
+            // 좋아요 여부 연동
+            if (result.likeOrNot == "Y") {
+                like = true
+                binding.homeBandRecruitLikeIv.setImageResource(R.drawable.ic_heart_on)
+            } else {
+                like = false
+                binding.homeBandRecruitLikeIv.setImageResource(R.drawable.ic_heart_off)
+            }
+
+            // viewPager로 데이터를 넘기기 위해 저장
+            val bandSP = getSharedPreferences("band", MODE_PRIVATE)
+            val bandEdit = bandSP.edit()
+
+            val bandJson = gson.toJson(result)
+            bandEdit.putString("bandInfo", bandJson)
+            bandEdit.putInt("bandIdx", bandIdx)
+            bandEdit.apply()
+
+            initViewPager()  // 뷰페이저 연결
         }
 
-        // viewPager로 데이터를 넘기기 위해 저장
-
-        val bandSP = getSharedPreferences("band", MODE_PRIVATE)
-        val bandEdit = bandSP.edit()
-
-        val bandJson = gson.toJson(result)
-        bandEdit.putString("bandInfo", bandJson)
-        bandEdit.putInt("bandIdx", bandIdx)
-        bandEdit.apply()
-
-        initViewPager()  // 뷰페이저 연결
     }
 
     override fun onGetFailure(code: Int, message: String) {
