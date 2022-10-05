@@ -2,8 +2,8 @@ package com.example.eraofband.remote.chat.patchChat
 
 import android.util.Log
 import com.example.eraofband.remote.API
+import com.example.eraofband.remote.BasicResponse
 import com.example.eraofband.remote.NetworkModule
-import com.example.eraofband.ui.main.chat.ChatContentActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,12 +19,12 @@ class PatchChatService {
 
         val patchChatService = NetworkModule().getRetrofit()?.create(API::class.java)
 
-        patchChatService?.patchChat(jwt, chatRoomIdx)?.enqueue(object : Callback<PatchChatResponse> {
-            override fun onResponse(call: Call<PatchChatResponse>, response: Response<PatchChatResponse>) {
+        patchChatService?.patchChat(jwt, chatRoomIdx)?.enqueue(object : Callback<BasicResponse> {
+            override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                 // 응답이 왔을 때 처리
                 Log.d("PATCH CHAT / SUCCESS", response.toString())
 
-                val resp : PatchChatResponse = response.body()!!
+                val resp : BasicResponse = response.body()!!
 
                 when(val code = resp.code) {
                     1000 -> patchChatView.onPatchSuccess(resp.result)  // 성공
@@ -32,7 +32,7 @@ class PatchChatService {
                 }
             }
 
-            override fun onFailure(call: Call<PatchChatResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
                 // 네트워크 연결이 실패했을 때 실행
                 Log.d("PATCH CHAT / FAILURE", t.message.toString())
             }
