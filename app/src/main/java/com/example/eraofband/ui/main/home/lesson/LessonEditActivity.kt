@@ -42,6 +42,7 @@ import com.example.eraofband.remote.lesson.patchLesson.PatchLessonService
 import com.example.eraofband.remote.lesson.patchLesson.PatchLessonView
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
+import com.example.eraofband.ui.setOnSingleClickListener
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -81,11 +82,11 @@ class LessonEditActivity : AppCompatActivity(), GetLessonInfoView, PatchLessonVi
         binding.homeLessonEditBackIb.setOnClickListener { finish() }
 
         getImage()
-        binding.homeLessonEditImgV.setOnClickListener {  // 이미지 등록 클릭 리스너
+        binding.homeLessonEditImgV.setOnSingleClickListener {  // 이미지 등록 클릭 리스너
             initImageViewLesson()
         }
 
-        binding.homeLessonEditRegisterBtn.setOnClickListener {
+        binding.homeLessonEditRegisterBtn.setOnSingleClickListener {
             updateUser()
 
             val patchLessonService = PatchLessonService()

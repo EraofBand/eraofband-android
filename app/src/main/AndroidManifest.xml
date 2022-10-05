@@ -226,10 +226,19 @@
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".ui.main.board.BoardEditActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
         <activity
             android:name=".ui.main.board.BoardMakeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name=".ui.main.block.UserBlockActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
     </application>
 
 </manifest>

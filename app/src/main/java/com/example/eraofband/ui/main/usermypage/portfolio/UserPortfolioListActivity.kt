@@ -18,7 +18,7 @@ import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolView
 import com.example.eraofband.remote.portfolio.getPofol.GetPofolResult
 import com.example.eraofband.ui.main.mypage.portfolio.PortfolioCommentActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
-import com.example.eraofband.ui.report.ReportDialog
+import com.example.eraofband.ui.main.report.ReportDialog
 import android.view.View as View1
 
 class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {

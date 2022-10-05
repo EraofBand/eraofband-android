@@ -28,6 +28,7 @@ import com.example.eraofband.remote.board.postBoard.PostBoardService
 import com.example.eraofband.remote.board.postBoard.PostBoardView
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
+import com.example.eraofband.ui.setOnSingleClickListener
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -49,12 +50,13 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
 
         binding.boardMakeBackIb.setOnClickListener { finish() }
 
-        binding.boardMakeRegisterBtn.setOnClickListener {
+        binding.boardMakeRegisterBtn.setOnSingleClickListener {
             val postBoardService = PostBoardService()
             postBoardService.setBoardView(this)
             postBoardService.postBoard(getJwt()!!, postBoard())
 
         }
+
         initTopicSpinner()
     }
 

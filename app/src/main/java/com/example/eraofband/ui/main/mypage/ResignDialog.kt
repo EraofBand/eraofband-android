@@ -4,14 +4,14 @@ import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
 import androidx.fragment.app.DialogFragment
 import com.example.eraofband.databinding.DialogSessionApplyBinding
 import com.example.eraofband.ui.login.GlobalApplication
-import com.example.eraofband.remote.band.applyBand.ApplyBandResult
-import com.example.eraofband.remote.band.applyBand.ApplyBandService
-import com.example.eraofband.remote.band.applyBand.ApplyBandView
+import com.example.eraofband.ui.setOnSingleClickListener
 
 class ResignDialog(private val code: Int): DialogFragment(){
 
@@ -46,12 +46,10 @@ class ResignDialog(private val code: Int): DialogFragment(){
             binding.sessionApplyCancelTv.text = "취소하기"
             binding.sessionApplyAcceptTv.text = "탈퇴하기"
 
-            binding.sessionApplyAcceptTv.setOnClickListener {  // 탈퇴하기
+            binding.sessionApplyAcceptTv.setOnSingleClickListener {  // 탈퇴하기
                 resignListener.resign()
             }
         }
-
-
 
         binding.sessionApplyCancelTv.setOnClickListener { dismiss() }  // 취소하기를 누르면 다이얼로그 종료
 

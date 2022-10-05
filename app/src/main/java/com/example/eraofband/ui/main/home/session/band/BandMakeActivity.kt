@@ -37,6 +37,7 @@ import com.example.eraofband.remote.band.makeBand.MakeBandService
 import com.example.eraofband.remote.band.makeBand.MakeBandView
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
+import com.example.eraofband.ui.setOnSingleClickListener
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -111,7 +112,7 @@ class BandMakeActivity : AppCompatActivity(), MakeBandView, SendImgView {
 
         binding.homeBandMakeBackIb.setOnClickListener { finish() }
 
-        binding.homeBandMakeRegisterBtn.setOnClickListener {
+        binding.homeBandMakeRegisterBtn.setOnSingleClickListener {
             Log.d("BAND MAKE", postBand().toString())
             makeService.makeBand(getJwt()!!, postBand())
         }

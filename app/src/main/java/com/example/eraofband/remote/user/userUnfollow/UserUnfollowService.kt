@@ -2,6 +2,7 @@ package com.example.eraofband.remote.user.userUnfollow
 
 import android.util.Log
 import com.example.eraofband.remote.API
+import com.example.eraofband.remote.BasicResponse
 import com.example.eraofband.remote.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,16 +19,12 @@ class UserUnfollowService {
 
         val userUnfollowService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
-        userUnfollowService?.userUnfollow(jwt, userIdx)?.enqueue(object :
-            Callback<UserUnfollowResponse> {
+        userUnfollowService?.userUnfollow(jwt, userIdx)?.enqueue(object : Callback<BasicResponse> {
 
-            override fun onResponse(
-                call: Call<UserUnfollowResponse>,
-                response: Response<UserUnfollowResponse>
-            ) {
+            override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                 Log.d("UNFOLLOW / SUCCESS", response.toString())
 
-                val resp: UserUnfollowResponse = response.body()!!
+                val resp: BasicResponse = response.body()!!
 
                 when (val code = resp.code) {
                     1000 -> userUnfollowView.onUserUnfollowSuccess(code, resp)
@@ -35,7 +32,7 @@ class UserUnfollowService {
                 }
             }
 
-            override fun onFailure(call: Call<UserUnfollowResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
                 Log.d("UNFOLLOW / FAILURE", t.message.toString())
             }
         })

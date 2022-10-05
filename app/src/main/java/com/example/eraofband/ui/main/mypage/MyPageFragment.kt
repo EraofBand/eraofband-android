@@ -43,9 +43,15 @@ class MyPageFragment : Fragment(), GetMyPageView {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onResume() {
+        super.onResume()
+        getMyPageService.setUserView(this)
+        getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
 
+        clickListener()
+    }
+//----------------------------------------------------------------------------------------------------
+    private fun clickListener() {
         binding.mypageProfileEditIv.setOnClickListener {
             startActivity(Intent(activity, ProfileEditActivity::class.java))
         }
@@ -73,16 +79,10 @@ class MyPageFragment : Fragment(), GetMyPageView {
         binding.mypageFab.setOnClickListener{
             startActivity(Intent(activity, PortfolioMakeActivity::class.java))
         }
+
         connectVP()
         moveFollowActivity()
     }
-
-    override fun onResume() {
-        super.onResume()
-        getMyPageService.setUserView(this)
-        getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
-    }
-//----------------------------------------------------------------------------------------------------
 
     private fun moveFollowActivity() {
         binding.mypageFollowing.setOnClickListener {
@@ -127,65 +127,68 @@ class MyPageFragment : Fragment(), GetMyPageView {
 
     @SuppressLint("SetTextI18n")
     override fun onGetSuccess(code: Int, result: GetMyPageResult) {
-        Log.d("MYPAGE", result.toString())
-        // 닉네임 연동
-        nickName = result.getUser.nickName
-        binding.mypageNicknameTv.text = nickName
+        synchronized(this) {
+            Log.d("MYPAGE", result.toString())
 
-        // 글라이드를 이용한 프로필사진 연동
-        Glide.with(this).load(result.getUser.profileImgUrl)
-            .apply(RequestOptions.centerCropTransform())
-            .apply(RequestOptions.circleCropTransform())
-            .into(binding.mypageProfileimgIv)
+            // 닉네임 연동
+            nickName = result.getUser.nickName
+            binding.mypageNicknameTv.text = nickName
 
-        // 프사 url 저장
-        val profileSP = requireActivity().getSharedPreferences("profile", MODE_PRIVATE)
-        val editor = profileSP.edit()
-        editor.putString("url", result.getUser.profileImgUrl)
-        editor.apply()
+            // 글라이드를 이용한 프로필사진 연동
+            Glide.with(this).load(result.getUser.profileImgUrl)
+                .apply(RequestOptions.centerCropTransform())
+                .apply(RequestOptions.circleCropTransform())
+                .into(binding.mypageProfileimgIv)
 
-        // 디테일한 소개 연동
-        val index = result.getUser.region.split(" ")
-        val city = index[1]
+            // 프사 url 저장
+            val profileSP = requireActivity().getSharedPreferences("profile", MODE_PRIVATE)
+            val editor = profileSP.edit()
+            editor.putString("url", result.getUser.profileImgUrl)
+            editor.apply()
 
-        val age = setDate().substring(0, 4).toInt() - result.getUser.birth.substring(0, 4).toInt() + 1
+            // 디테일한 소개 연동
+            val index = result.getUser.region.split(" ")
+            val city = index[1]
 
-        val gender =
-            if(result.getUser.gender == "MALE") "남성"
-            else "여성"
+            val age = setDate().substring(0, 4).toInt() - result.getUser.birth.substring(0, 4).toInt() + 1
 
-        binding.mypageDetailInfoTv.text = "$city | ${age}세 | $gender"
-        binding.mypageIntroductionTv.text = result.getUser.introduction  // 내 소개 연동
+            val gender =
+                if(result.getUser.gender == "MALE") "남성"
+                else "여성"
 
-        if(binding.mypageIntroductionTv.lineCount > 3) {
-            binding.mypageLookMoreTv.visibility = View.VISIBLE  // 더보기 표시
+            binding.mypageDetailInfoTv.text = "$city | ${age}세 | $gender"
+            binding.mypageIntroductionTv.text = result.getUser.introduction  // 내 소개 연동
 
-            // 더보기 클릭 이벤트
-            binding.mypageLookMoreTv.setOnClickListener {
-                if (binding.mypageLookMoreTv.text == "더보기") {
-                    binding.mypageLookMoreTv.text = "접기"
-                    binding.mypageIntroductionTv.maxLines = 100
-                }
-                else {
-                    binding.mypageLookMoreTv.text = "더보기"
-                    binding.mypageIntroductionTv.maxLines = 3
+            if(binding.mypageIntroductionTv.lineCount > 3) {
+                binding.mypageLookMoreTv.visibility = View.VISIBLE  // 더보기 표시
+
+                // 더보기 클릭 이벤트
+                binding.mypageLookMoreTv.setOnClickListener {
+                    if (binding.mypageLookMoreTv.text == "더보기") {
+                        binding.mypageLookMoreTv.text = "접기"
+                        binding.mypageIntroductionTv.maxLines = 100
+                    }
+                    else {
+                        binding.mypageLookMoreTv.text = "더보기"
+                        binding.mypageIntroductionTv.maxLines = 3
+                    }
                 }
             }
-        }
 
-        // 숫자 연동
-        binding.mypageFollowingCntTv.text = result.getUser.followerCount.toString()
-        binding.mypageFollowerCntTv.text = result.getUser.followeeCount.toString()
-        binding.mypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
+            // 숫자 연동
+            binding.mypageFollowingCntTv.text = result.getUser.followerCount.toString()
+            binding.mypageFollowerCntTv.text = result.getUser.followeeCount.toString()
+            binding.mypagePortfolioCntTv.text = result.getUser.pofolCount.toString()
 
-        setSession(result.getUser.userSession)  // 세션 연동
-        mySession = result.getUser.userSession
-        when(result.getUser.userSession) {
-            0 -> binding.mypageSessionIv.setImageResource(R.drawable.ic_mypage_session_vocal)
-            1 -> binding.mypageSessionIv.setImageResource(R.drawable.ic_mypage_session_guitar)
-            2 -> binding.mypageSessionIv.setImageResource(R.drawable.ic_mypage_session_base)
-            3 -> binding.mypageSessionIv.setImageResource(R.drawable.ic_mypage_session_keyboard)
-            4 -> binding.mypageSessionIv.setImageResource(R.drawable.ic_mypage_session_drum)
+            setSession(result.getUser.userSession)  // 세션 연동
+            mySession = result.getUser.userSession
+            when(result.getUser.userSession) {
+                0 -> binding.mypageSessionIv.setImageResource(R.drawable.ic_mypage_session_vocal)
+                1 -> binding.mypageSessionIv.setImageResource(R.drawable.ic_mypage_session_guitar)
+                2 -> binding.mypageSessionIv.setImageResource(R.drawable.ic_mypage_session_base)
+                3 -> binding.mypageSessionIv.setImageResource(R.drawable.ic_mypage_session_keyboard)
+                4 -> binding.mypageSessionIv.setImageResource(R.drawable.ic_mypage_session_drum)
+            }
         }
     }
 

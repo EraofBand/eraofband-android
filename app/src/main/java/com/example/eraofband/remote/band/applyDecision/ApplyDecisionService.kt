@@ -2,6 +2,7 @@ package com.example.eraofband.remote.band.applyDecision
 
 import android.util.Log
 import com.example.eraofband.remote.API
+import com.example.eraofband.remote.BasicResponse
 import com.example.eraofband.remote.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,12 +17,12 @@ class ApplyDecisionService {
     }
 
     fun acceptApply(bandIdx: Int, userIdx: Int) {  // 밴드 지원 수락하기
-        decisionService?.acceptApply(bandIdx, userIdx)?.enqueue(object : Callback<AcceptApplyResponse> {
-            override fun onResponse(call: Call<AcceptApplyResponse>, response: Response<AcceptApplyResponse>) {
+        decisionService?.acceptApply(bandIdx, userIdx)?.enqueue(object : Callback<BasicResponse> {
+            override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                 // 응답이 왔을 때 처리
                 Log.d("ACCEPT / SUCCESS", response.toString())
 
-                val resp : AcceptApplyResponse = response.body()!!
+                val resp : BasicResponse = response.body()!!
 
                 when(val code = resp.code) {
                     1000 -> decisionView.onAcceptSuccess(resp.result)  // 성공
@@ -29,7 +30,7 @@ class ApplyDecisionService {
                 }
             }
 
-            override fun onFailure(call: Call<AcceptApplyResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
                 // 네트워크 연결이 실패했을 때 실행
                 Log.d("ACCEPT / FAILURE", t.message.toString())
             }
@@ -38,12 +39,12 @@ class ApplyDecisionService {
     }
 
     fun rejectApply(bandIdx: Int, userIdx: Int) {  // 밴드 지원 수락하기
-        decisionService?.rejectApply(bandIdx, userIdx)?.enqueue(object : Callback<RejectApplyResponse> {
-            override fun onResponse(call: Call<RejectApplyResponse>, response: Response<RejectApplyResponse>) {
+        decisionService?.rejectApply(bandIdx, userIdx)?.enqueue(object : Callback<BasicResponse> {
+            override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                 // 응답이 왔을 때 처리
                 Log.d("REJECT / SUCCESS", response.toString())
 
-                val resp : RejectApplyResponse = response.body()!!
+                val resp : BasicResponse = response.body()!!
 
                 when(val code = resp.code) {
                     1000 -> decisionView.onRejectSuccess(resp.result)  // 성공
@@ -51,7 +52,7 @@ class ApplyDecisionService {
                 }
             }
 
-            override fun onFailure(call: Call<RejectApplyResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
                 // 네트워크 연결이 실패했을 때 실행
                 Log.d("REJECT / FAILURE", t.message.toString())
             }

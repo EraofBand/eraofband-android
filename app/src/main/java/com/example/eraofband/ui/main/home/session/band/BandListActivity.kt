@@ -14,6 +14,7 @@ import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResult
 import com.example.eraofband.remote.band.getRegionBand.GetRegionBandService
 import com.example.eraofband.remote.band.getRegionBand.GetRegionBandView
 import com.example.eraofband.ui.main.search.SearchActivity
+import com.example.eraofband.ui.setOnSingleClickListener
 
 class BandListActivity: AppCompatActivity(), GetRegionBandView {
 
@@ -100,27 +101,27 @@ class BandListActivity: AppCompatActivity(), GetRegionBandView {
     private fun sessionSelector() {
         binding.homeBandListSessionCg.isSelectionRequired = true
 
-        binding.homeBandListVocalCp.setOnClickListener {
+        binding.homeBandListVocalCp.setOnSingleClickListener {
             sessionValue = 0
             getRegionBandService.getRegionBand(regionValue, sessionValue)
         }
-        binding.homeBandListGuitarCp.setOnClickListener {
+        binding.homeBandListGuitarCp.setOnSingleClickListener {
             sessionValue = 1
             getRegionBandService.getRegionBand(regionValue, sessionValue)
         }
-        binding.homeBandListBaseCp.setOnClickListener {
+        binding.homeBandListBaseCp.setOnSingleClickListener {
             sessionValue = 2
             getRegionBandService.getRegionBand(regionValue, sessionValue)
         }
-        binding.homeBandListKeyboardCp.setOnClickListener {
+        binding.homeBandListKeyboardCp.setOnSingleClickListener {
             sessionValue = 3
             getRegionBandService.getRegionBand(regionValue, sessionValue)
         }
-        binding.homeBandListDrumCp.setOnClickListener {
+        binding.homeBandListDrumCp.setOnSingleClickListener {
             sessionValue = 4
             getRegionBandService.getRegionBand(regionValue, sessionValue)
         }
-        binding.homeBandListTotalCp.setOnClickListener {
+        binding.homeBandListTotalCp.setOnSingleClickListener {
             sessionValue = 5
             getRegionBandService.getRegionBand(regionValue, sessionValue)
         }

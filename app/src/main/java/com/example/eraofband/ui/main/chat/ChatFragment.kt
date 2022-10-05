@@ -1,6 +1,5 @@
 package com.example.eraofband.ui.main.chat
 
-import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
@@ -19,8 +18,6 @@ import com.example.eraofband.databinding.FragmentChatBinding
 import com.example.eraofband.remote.chat.getChatList.GetChatListResult
 import com.example.eraofband.remote.chat.getChatList.GetChatListService
 import com.example.eraofband.remote.chat.getChatList.GetChatListView
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
 class ChatFragment : Fragment(), GetChatListView {
 
@@ -51,9 +48,7 @@ class ChatFragment : Fragment(), GetChatListView {
         val getChatListService = GetChatListService()
         getChatListService.setChatListView(this)
         getChatListService.getChatList(getJwt()!!)
-
     }
-
 
     private fun initRVAdapter(result: ArrayList<ChatRoom>) {
         chatRVAdapter = ChatRVAdapter()

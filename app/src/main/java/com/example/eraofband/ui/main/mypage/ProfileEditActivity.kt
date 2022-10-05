@@ -36,6 +36,7 @@ import com.example.eraofband.remote.user.getMyPage.GetMyPageService
 import com.example.eraofband.remote.user.getMyPage.GetMyPageView
 import com.example.eraofband.remote.user.patchUser.PatchUserService
 import com.example.eraofband.remote.user.patchUser.PatchUserView
+import com.example.eraofband.ui.setOnSingleClickListener
 import com.example.eraofband.ui.signup.DialogDatePicker
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -73,10 +74,10 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
 
         getImage()
 
-        binding.profileEditCameraIv.setOnClickListener {  // 프사 변경을 원하면 갤러리 접근하도록
+        binding.profileEditCameraIv.setOnSingleClickListener {  // 프사 변경을 원하면 갤러리 접근하도록
             initImageViewProfile()
         }
-        binding.profileEditProfileIv.setOnClickListener {
+        binding.profileEditProfileIv.setOnSingleClickListener {
             initImageViewProfile()
         }
 
@@ -108,7 +109,7 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
 
         initDatePicker()
 
-        binding.signupSaveBtn.setOnClickListener {
+        binding.signupSaveBtn.setOnSingleClickListener {
             val patchUserService = PatchUserService()
             patchUserService.setPatchUserView(this)
 

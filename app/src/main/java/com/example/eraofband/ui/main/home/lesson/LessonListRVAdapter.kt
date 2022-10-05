@@ -43,6 +43,7 @@ class LessonListRVAdapter : RecyclerView.Adapter<LessonListRVAdapter.ViewHolder>
     override fun getItemCount(): Int = lessonList.size
 
     inner class ViewHolder(val binding: ItemLessonBinding) : RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(lessonList: GetLessonListResult) {
             Glide.with(itemView).load(lessonList.lessonImgUrl)
                 .apply(RequestOptions.centerCropTransform())

@@ -2,6 +2,7 @@ package com.example.eraofband.remote.sendimg
 
 import android.util.Log
 import com.example.eraofband.remote.API
+import com.example.eraofband.remote.BasicResponse
 import com.example.eraofband.remote.NetworkModule
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -19,12 +20,12 @@ class SendImgService {
 
         val sendImgService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
-        sendImgService?.sendImg(url)?.enqueue(object : Callback<SendImgResponse> {
-            override fun onResponse(call: Call<SendImgResponse>, response: Response<SendImgResponse>) {
+        sendImgService?.sendImg(url)?.enqueue(object : Callback<BasicResponse> {
+            override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                 // 응답이 왔을 때 처리
                 Log.d("SEND / SUCCESS", response.toString())
 
-                val resp : SendImgResponse = response.body()!!
+                val resp : BasicResponse = response.body()!!
 
                 when(val code = resp.code) {
                     1000 -> imageView.onSendSuccess(resp.result)  // 성공
@@ -32,7 +33,7 @@ class SendImgService {
                 }
             }
 
-            override fun onFailure(call: Call<SendImgResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
                 // 네트워크 연결이 실패했을 때 실행
                 Log.d("SEND / FAILURE", t.message.toString())
             }
