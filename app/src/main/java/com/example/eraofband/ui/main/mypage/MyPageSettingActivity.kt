@@ -21,6 +21,13 @@ class MyPageSettingActivity : AppCompatActivity(), ResignView {
 
         binding = ActivityMypageSettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.settingNoticeCl.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://eraofband.tistory.com/"))
+            startActivity(intent)
+        }
+        binding.settingInformationCl.setOnClickListener {
+            Toast.makeText(this, "버전 : 1.0.0", Toast.LENGTH_SHORT).show()
+        }
 
         binding.settingMailCl.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO)

@@ -1,8 +1,11 @@
 package com.example.eraofband.ui.main.home.session.band
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -25,10 +28,14 @@ import com.example.eraofband.ui.main.home.session.band.album.BandMakeAlbumActivi
 import com.example.eraofband.ui.report.ReportDialog
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.gson.Gson
+import com.kakao.sdk.common.util.KakaoCustomTabsClient
+import com.kakao.sdk.share.ShareClient
+import com.kakao.sdk.share.WebSharerClient
+import com.kakao.sdk.template.model.*
 
 class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
-
     private lateinit var binding: ActivityBandRecruitBinding
+    private lateinit var defaultFeed: FeedTemplate
     private val gson = Gson()
     private var bandIdx = 0
     private var leaderIdx = 0
@@ -73,6 +80,54 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
             val intent = Intent(this, BandMakeAlbumActivity::class.java)
             intent.putExtra("bandIdx", bandIdx)
             startActivity(intent)
+        }
+
+        binding.homeBandRecruitShareTv.setOnClickListener {
+
+            binding.bandRecruitPb.visibility = View.VISIBLE
+            // 피드 메시지 보내기
+            // 카카오톡 설치여부 확인
+            if (ShareClient.instance.isKakaoTalkSharingAvailable(this)) {
+                // 카카오톡으로 카카오톡 공유 가능
+                ShareClient.instance.shareDefault(this, defaultFeed) { sharingResult, error ->
+                    if (error != null) {
+                        Log.e("SHARE", "카카오톡 공유 실패", error)
+                    }
+                    else if (sharingResult != null) {
+                        Log.d("SHARE", "카카오톡 공유 성공 ${sharingResult.intent}")
+                        startActivity(sharingResult.intent)
+
+                        // 카카오톡 공유에 성공했지만 아래 경고 메시지가 존재할 경우 일부 컨텐츠가 정상 동작하지 않을 수 있습니다.
+                        Log.w("SHARE", "Warning Msg: ${sharingResult.warningMsg}")
+                        Log.w("SHARE", "Argument Msg: ${sharingResult.argumentMsg}")
+                    }
+                }
+            } else {
+                // 카카오톡 미설치: 웹 공유 사용 권장
+                // 웹 공유 예시 코드
+                val sharerUrl = WebSharerClient.instance.makeDefaultUrl(defaultFeed)
+
+                // CustomTabs으로 웹 브라우저 열기
+
+                // 1. CustomTabsServiceConnection 지원 브라우저 열기
+                // ex) Chrome, 삼성 인터넷, FireFox, 웨일 등
+                try {
+                    KakaoCustomTabsClient.openWithDefault(this, sharerUrl)
+                } catch(e: UnsupportedOperationException) {
+                    // CustomTabsServiceConnection 지원 브라우저가 없을 때 예외처리
+                }
+
+                // 2. CustomTabsServiceConnection 미지원 브라우저 열기
+                // ex) 다음, 네이버 등
+                try {
+                    KakaoCustomTabsClient.open(this, sharerUrl)
+                } catch (e: ActivityNotFoundException) {
+                    // 디바이스에 설치된 인터넷 브라우저가 없을 때 예외처리
+                }
+            }
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.bandRecruitPb.visibility = View.GONE
+            }, 3000)
         }
     }
 
@@ -143,8 +198,28 @@ class BandRecruitActivity: AppCompatActivity(), GetBandView, BandLikeView {
             binding.homeBandRecruitLikeIv.setImageResource(R.drawable.ic_heart_off)
         }
 
-        // viewPager로 데이터를 넘기기 위해 저장
+        // 카카오링크 공유
+        defaultFeed = FeedTemplate(
+            content = Content(
+                title = result.bandTitle,
+                description = result.bandIntroduction,
+                imageUrl = result.bandImgUrl,
+                link = Link(
+                    mobileWebUrl = "https://play.google.com"
+                )
+            ),
+            buttons = listOf(
+                Button(
+                    "앱으로 보기",
+                    Link(
+                        androidExecutionParams = mapOf("test" to "test"),
+                        iosExecutionParams = mapOf("test" to "test")
+                    )
+                )
+            )
+        )
 
+        // viewPager로 데이터를 넘기기 위해 저장
         val bandSP = getSharedPreferences("band", MODE_PRIVATE)
         val bandEdit = bandSP.edit()
 

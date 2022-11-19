@@ -1,5 +1,7 @@
 package com.example.eraofband.remote.portfolio.getPofol
 
+import com.example.eraofband.data.PostImgUrl
+
 data class GetPofolResponse (
     var code : Int,
     var isSuccess : Boolean,
@@ -10,6 +12,7 @@ data class GetPofolResponse (
 data class GetPofolResult (
     var commentCount : Int,
     var content : String,
+    var imgUrl: String,
     var likeOrNot : String,
     var nickName : String,
     var pofolIdx : Int,

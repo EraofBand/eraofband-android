@@ -361,11 +361,11 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
     }
 
     override fun onSendSuccess(result: String) {
-        Log.d("SENDIMGss", result)
+        Log.d("SENDING / FAIL", result)
         profileUrl = result
     }
 
     override fun onSendFailure(code: Int, message: String) {
-        Log.d("SENDIMGss", "$code $message")
+        Log.d("SENDIBGss / FAIL", "$code $message")
     }
 }

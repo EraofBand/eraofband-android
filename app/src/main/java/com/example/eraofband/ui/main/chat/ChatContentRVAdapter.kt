@@ -98,6 +98,8 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
 
                 if(item.readUser){
                     binding.rightChatIndicator.visibility = View.INVISIBLE
+                } else {
+                    binding.rightChatIndicator.visibility = View.VISIBLE
                 }
             }
         }
