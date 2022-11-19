@@ -1,6 +1,7 @@
 package com.example.eraofband.ui.main.board
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.data.PostImgUrl
 import com.example.eraofband.databinding.ItemPictureBinding
+import com.example.eraofband.remote.band.getPopularBand.GetPopularBandResult
 
 class BoardImgRVAdapter : RecyclerView.Adapter<BoardImgRVAdapter.ViewHolder>() {
 
@@ -19,14 +21,20 @@ class BoardImgRVAdapter : RecyclerView.Adapter<BoardImgRVAdapter.ViewHolder>() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
+    fun initImg(item: List<PostImgUrl>) {
+        this.postImgUrl.addAll(item)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
     fun onDelete(position: Int){
         this.postImgUrl.removeAt(position)
         notifyDataSetChanged()
     }
 
-    private lateinit var mItemClickListener: BoardImgRVAdapter.MyItemClickListener
+    private lateinit var mItemClickListener: MyItemClickListener
 
-    fun setMyItemClickListener(itemClickListener: BoardImgRVAdapter.MyItemClickListener) {
+    fun setMyItemClickListener(itemClickListener: MyItemClickListener) {
         mItemClickListener = itemClickListener
     }
 
@@ -51,6 +59,7 @@ class BoardImgRVAdapter : RecyclerView.Adapter<BoardImgRVAdapter.ViewHolder>() {
                 .apply(RequestOptions.centerCropTransform())
                 .into(binding.itemPictureIv)
             binding.itemPictureIv.clipToOutline = true  // 모서리 깎기
+
         }
     }
 }

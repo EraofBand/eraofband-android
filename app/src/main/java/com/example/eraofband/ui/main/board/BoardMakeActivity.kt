@@ -17,7 +17,9 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -25,11 +27,14 @@ import com.example.eraofband.R
 import com.example.eraofband.data.Board
 import com.example.eraofband.data.PostImgUrl
 import com.example.eraofband.databinding.ActivityBoardMakeBinding
+import com.example.eraofband.remote.band.getNewBand.GetNewBandResult
 import com.example.eraofband.remote.board.postBoard.PostBoardResult
 import com.example.eraofband.remote.board.postBoard.PostBoardService
 import com.example.eraofband.remote.board.postBoard.PostBoardView
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
+import com.example.eraofband.ui.main.home.session.HomeSessionNewBandRVAdapter
+import com.example.eraofband.ui.main.home.session.band.BandRecruitActivity
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -40,7 +45,6 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
     private lateinit var binding: ActivityBoardMakeBinding
     private var postImgsUrl = arrayListOf<PostImgUrl>()
     private var board = Board(0, "", postImgsUrl, "", 0)
-
     private var category = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +52,6 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
 
         binding = ActivityBoardMakeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        postImgsUrl.add(PostImgUrl(""))
         binding.boardMakeBackIb.setOnClickListener { finish() }
 
         binding.boardMakeRegisterBtn.setOnClickListener {
@@ -58,7 +61,19 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
             postBoardService.postBoard(getJwt()!!, board)
             Log.d("board",board.toString())
         }
+        binding.boardMakePictureIv.setOnClickListener {
+            initImageViewBand()
+        }
+        if (postImgsUrl.size >= 5) {
+            binding.boardMakePictureIv.visibility = View.GONE
+        }
         initTopicSpinner()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initRVAdapter(postImgsUrl)
+        Log.d("BOARD / TEST", "onResume")
     }
 
     private fun postBoard() {
@@ -67,6 +82,22 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
         board.content = binding.boardMakeContentEt.text.toString()
         board.userIdx = getUserIdx()
         board.postImgsUrl = postImgsUrl
+    }
+
+    private fun initRVAdapter(item: List<PostImgUrl>) {
+        val boardImgRVAdapter = BoardImgRVAdapter()
+
+        binding.boardMakePictureRv.adapter = boardImgRVAdapter
+        binding.boardMakePictureRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        boardImgRVAdapter.initImg(item)
+        boardImgRVAdapter.setMyItemClickListener(object : BoardImgRVAdapter.MyItemClickListener{
+
+            override fun onDelete(position: Int) {
+                postImgsUrl.removeAt(position)
+                initRVAdapter(postImgsUrl)
+            }
+        })
     }
 
 
@@ -161,11 +192,6 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
                 // 이미지 가져오기 성공하면 원래 이미지를 없애고 가져온 사진을 넣어줌
                 // 이미지 동그랗게 + CenterCrop
                 if (selectedImageUri != null) {
-                    Glide.with(this)
-                        .load(selectedImageUri)
-                        .transform(CenterCrop(), RoundedCorners(15))
-                        //.into(binding.)
-
                     val imgPath = absolutelyPath(selectedImageUri, this)
                     val file = File(imgPath)
                     val requestBody = RequestBody.create(MediaType.parse("image/*"), file)
@@ -231,10 +257,11 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
     }
 
     override fun onSendSuccess(result: String) {
-        TODO("Not yet implemented")
+        postImgsUrl.add(PostImgUrl(result))
+        initRVAdapter(postImgsUrl)
     }
 
     override fun onSendFailure(code: Int, message: String) {
-        TODO("Not yet implemented")
+        Log.d("SENDING / FAIL", "$code $message")
     }
 }
