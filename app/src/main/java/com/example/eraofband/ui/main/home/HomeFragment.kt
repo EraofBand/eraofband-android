@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import com.example.eraofband.R
 import com.example.eraofband.databinding.FragmentHomeBinding
 import com.example.eraofband.remote.notice.getNewNotice.GetNewNoticeResult
+import com.example.eraofband.remote.notice.getNewNotice.GetNewNoticeService
 import com.example.eraofband.remote.notice.getNewNotice.GetNewNoticeView
 import com.example.eraofband.ui.login.GlobalApplication
 import com.example.eraofband.ui.main.home.notice.NoticeActivity
@@ -54,9 +55,9 @@ class HomeFragment : Fragment(), GetNewNoticeView {
 
     override fun onResume() {
         super.onResume()
-//        val getNewNotice = GetNewNoticeService()
-//        getNewNotice.setNewNoticeView(this)
-//        getNewNotice.getNewNotice(getJwt()!!)
+        val getNewNotice = GetNewNoticeService()
+        getNewNotice.setNewNoticeView(this)
+        getNewNotice.getNewNotice(getJwt()!!)
     }
 
     private fun connectVP() {

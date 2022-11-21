@@ -1,5 +1,6 @@
 package com.example.eraofband.ui.main.home.session.band.session
 
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -15,12 +16,14 @@ import com.example.eraofband.remote.band.applyDecision.ApplyDecisionService
 import com.example.eraofband.remote.band.applyDecision.ApplyDecisionView
 import com.example.eraofband.remote.band.getBand.Applicants
 import com.example.eraofband.ui.login.GlobalApplication
+import com.example.eraofband.ui.setOnSingleClickListener
 
 class SessionDecisionDialog(private val bandIdx: Int, private val applicant: Applicants): DialogFragment(),
     ApplyDecisionView {
 
     private lateinit var binding: DialogSessionApplyBinding
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,11 +45,11 @@ class SessionDecisionDialog(private val bandIdx: Int, private val applicant: App
         val decisionService = ApplyDecisionService()
         decisionService.setDecisionView(this)
 
-        binding.sessionApplyAcceptTv.setOnClickListener {  // 수락하기를 누르면 다음 다이얼로그로 넘어감
+        binding.sessionApplyAcceptTv.setOnSingleClickListener {  // 수락하기를 누르면 다음 다이얼로그로 넘어감
             decisionService.acceptApply(bandIdx, applicant.userIdx)
         }
 
-        binding.sessionApplyCancelTv.setOnClickListener {  // 거절하기를 누르면 다음 다이얼로그로 넘어감
+        binding.sessionApplyCancelTv.setOnSingleClickListener {  // 거절하기를 누르면 다음 다이얼로그로 넘어감
             decisionService.rejectApply(bandIdx, applicant.userIdx)
         }
 

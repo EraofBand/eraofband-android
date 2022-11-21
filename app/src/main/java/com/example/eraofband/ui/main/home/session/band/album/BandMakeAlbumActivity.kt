@@ -34,6 +34,7 @@ import com.example.eraofband.remote.band.makeAlbumBand.MakeAlbumBandView
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
 import com.example.eraofband.ui.main.home.session.band.DialogDatePickerDark
+import com.example.eraofband.ui.setOnSingleClickListener
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -61,20 +62,22 @@ class BandMakeAlbumActivity : AppCompatActivity(), SendImgView, MakeAlbumBandVie
             finish()
         }
 
+        val makeService = MakeAlbumBandService()
+        makeService.setAlbumBandView(this)
+
         getImage()
 
-        binding.albumMakeVideoCl.setOnClickListener {
+        binding.albumMakeVideoCl.setOnSingleClickListener {
             initImageViewBand()
         }
-        binding.albumThumbnailIv.setOnClickListener {
+        binding.albumThumbnailIv.setOnSingleClickListener {
             initImageViewBand()
         }
-        binding.albumMakeSaveBt.setOnClickListener {
+        binding.albumMakeSaveBt.setOnSingleClickListener {
             initAlbum()
-            val makeService = MakeAlbumBandService()
-            makeService.setAlbumBandView(this)
             makeService.makeAlbumBand(getJwt()!!, album)
         }
+
         initDatePicker()
     }
 
@@ -171,7 +174,6 @@ class BandMakeAlbumActivity : AppCompatActivity(), SendImgView, MakeAlbumBandVie
         }
     }
 
-
     private fun setToast(msg : String) {
         val view : View = layoutInflater.inflate(R.layout.toast_signup, findViewById(R.id.toast_signup))
         val toast = Toast(this)
@@ -192,8 +194,8 @@ class BandMakeAlbumActivity : AppCompatActivity(), SendImgView, MakeAlbumBandVie
 
     private fun initAlbum() {
         album.albumImgUrl = imgUrl
-        album.albumTitle = binding.albumMakeTitleEt.text.toString()
-        album.albumDate = binding.albumShowDateEt.text.toString()
+        album.albumTitle = "${binding.albumMakeTitleEt.text.trim()}"
+        album.albumDate = "${binding.albumShowDateEt.text.trim()}"
         album.userIdx = getUserIdx()
         album.bandIdx = bandIdx!!
     }

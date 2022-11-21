@@ -1,15 +1,16 @@
 package com.example.eraofband.ui.main.mypage
 
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.data.Session
 import com.example.eraofband.databinding.ActivityMyPageSessionBinding
 import com.example.eraofband.remote.user.patchSession.PatchSessionService
 import com.example.eraofband.remote.user.patchSession.PatchSessionView
+import com.example.eraofband.ui.setOnSingleClickListener
 
 class MyPageSessionActivity : AppCompatActivity(), PatchSessionView{
 
@@ -24,7 +25,7 @@ class MyPageSessionActivity : AppCompatActivity(), PatchSessionView{
         setContentView(binding.root)
 
         // 원래 나의 세션이 뭐였는지 체크
-        var editSession = intent.getIntExtra("session", -1)
+        val editSession = intent.getIntExtra("session", -1)
 
         when(editSession){
             0 -> binding.mypageSessionVocalCb.isChecked = true
@@ -38,7 +39,7 @@ class MyPageSessionActivity : AppCompatActivity(), PatchSessionView{
             finish()
         }
 
-        binding.mypageSessionNextBtn.setOnClickListener{ // 변경버튼 api 연동
+        binding.mypageSessionNextBtn.setOnSingleClickListener{ // 변경버튼 api 연동
             val patchSessionService = PatchSessionService()
             patchSessionService.setPatchSessionView(this)
             patchSessionService.patchSession(getJwt()!!, session)

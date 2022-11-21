@@ -3,7 +3,9 @@ package com.example.eraofband.ui.main.board.info
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
@@ -14,6 +16,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,8 +36,9 @@ import com.example.eraofband.remote.board.deleteBoard.DeleteBoardService
 import com.example.eraofband.remote.board.deleteBoard.DeleteBoardView
 import com.example.eraofband.remote.board.getBoard.*
 import com.example.eraofband.ui.main.mypage.MyPageActivity
+import com.example.eraofband.ui.main.report.ReportDialog
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
-import com.example.eraofband.ui.report.ReportDialog
+import com.example.eraofband.ui.setOnSingleClickListener
 
 class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, BoardLikeView, DeleteBoardView {
 
@@ -80,13 +85,13 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
 
         binding.boardPostTopMoreIv.setOnClickListener { showPopup(binding.boardPostTopMoreIv) }
 
-        binding.boardPostLikeIv.setOnClickListener {
+        binding.boardPostLikeIv.setOnSingleClickListener {
             if(like) likeService.deleteLike(getJwt()!!, boardIdx)
             else likeService.like(getJwt()!!, boardIdx)
         }
 
-        binding.boardPostWriteCommentUploadTv.setOnClickListener {
-            val comment = binding.boardPostWriteCommentEt.text.toString()
+        binding.boardPostWriteCommentUploadTv.setOnSingleClickListener {
+            val comment = "${binding.boardPostWriteCommentEt.text.trim()}"
             val userIdx = getUserIdx()
             if(comment.isNotEmpty()) {  // 댓글에 적은 내용이 있는 경우 댓글 업로드
                 // 답글 어쩌구가 있으면 답글, 아무것도 없으면 댓글
@@ -375,7 +380,32 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
 
     override fun onWriteCommentFailure(code: Int, message: String) {
         Log.d("WRITE/FAIL", "$code $message")
+
+        if(code == 2006) {  // 상대방이 나를 차단한 경우
+            binding.boardPostWriteCommentEt.setText("")
+            setToast(message)
+        }
     }
+
+    private fun setToast(str : String) {
+        val view : View = layoutInflater.inflate(R.layout.toast_signup, findViewById(R.id.toast_signup))
+        val toast = Toast(this)
+
+        val text = view.findViewById<TextView>(R.id.toast_signup_text_tv)
+        text.text = str
+
+        val display = windowManager.defaultDisplay // in case of Activity
+        val size = Point()
+        display.getSize(size)  // 상단바 등을 제외한 스크린 전체 크기 구하기
+        val height = size.y / 2  // 토스트 메세지가 중간에 고정되어있기 때문에 높이 / 2
+
+        // 중간부터 marginBottom, 버튼 높이 / 2 만큼 빼줌
+        toast.view = view
+        toast.setGravity(Gravity.FILL_HORIZONTAL, 0, height - 80.toPx())
+        toast.show()
+    }
+
+    private fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onDeleteCommentSuccess(result: String) {

@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -19,6 +18,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -33,6 +33,7 @@ import com.example.eraofband.remote.board.postBoard.PostBoardService
 import com.example.eraofband.remote.board.postBoard.PostBoardView
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
+import com.example.eraofband.ui.setOnSingleClickListener
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -59,12 +60,13 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
 
         binding.boardMakeBackIb.setOnClickListener { finish() }
 
-        binding.boardMakeRegisterBtn.setOnClickListener {
+        binding.boardMakeRegisterBtn.setOnSingleClickListener {
             val postBoardService = PostBoardService()
             postBoardService.setBoardView(this)
             postBoardService.postBoard(getJwt()!!, postBoard())
 
         }
+
         initTopicSpinner()
     }
 
@@ -78,7 +80,7 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
                 if (position < boardImgRVAdapter.itemCount - 1){
 
                 } else{
-                    imgList.re
+//                    imgList.re
                 }
             }
 
@@ -88,12 +90,10 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
 
 
     private fun postBoard(): Board{
-
         board.category = category
-        board.title = binding.boardMakeTitleEt.toString()
-        board.content = binding.boardMakeContentEt.toString()
+        board.title = "${binding.boardMakeTitleEt.text.trim()}"
+        board.content = "${binding.boardMakeContentEt.text.trim()}"
         board.userIdx = getUserIdx()
-
 
         return board
     }

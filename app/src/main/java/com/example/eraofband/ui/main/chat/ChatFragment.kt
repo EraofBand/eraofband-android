@@ -1,6 +1,5 @@
 package com.example.eraofband.ui.main.chat
 
-import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
@@ -15,20 +14,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.data.ChatRoom
+import com.example.eraofband.data.Users
 import com.example.eraofband.databinding.FragmentChatBinding
 import com.example.eraofband.remote.chat.getChatList.GetChatListResult
 import com.example.eraofband.remote.chat.getChatList.GetChatListService
 import com.example.eraofband.remote.chat.getChatList.GetChatListView
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResult
+import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomService
+import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomView
 
-class ChatFragment : Fragment(), GetChatListView {
+class ChatFragment : Fragment(), GetChatListView, IsChatRoomView {
 
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
 
     private lateinit var chatRVAdapter: ChatRVAdapter
     private var chatRooms = ArrayList<ChatRoom>()
+
+    private val isChatRoomService = IsChatRoomService()
 
     private var chatIdx = ""
 
@@ -52,8 +55,8 @@ class ChatFragment : Fragment(), GetChatListView {
         getChatListService.setChatListView(this)
         getChatListService.getChatList(getJwt()!!)
 
+        isChatRoomService.setChatListView(this)
     }
-
 
     private fun initRVAdapter(result: ArrayList<ChatRoom>) {
         chatRVAdapter = ChatRVAdapter()
@@ -66,6 +69,9 @@ class ChatFragment : Fragment(), GetChatListView {
 
         chatRVAdapter.setMyItemClickListener(object : ChatRVAdapter.MyItemClickListener{
             override fun onItemClick(chatIdx : String, profileImg: String, nickname : String, userIdx: Int) {
+                isChatRoomService.isChatRoom(getJwt()!!, Users(getUserIdx(),userIdx))
+
+
                 activity?.let {
                     val intent = Intent(activity, ChatContentActivity::class.java)
                     intent.putExtra("chatRoomIndex", chatIdx)
@@ -128,6 +134,14 @@ class ChatFragment : Fragment(), GetChatListView {
 
     override fun onGetListFailure(code: Int, message: String) {
         Log.d("GET CHAT / FAIL", "$code $message")
+    }
+
+    override fun onExistsSuccess(result: IsChatRoomResult) {
+        Log.d("IS CHATROOM / SUCCESS", result.toString())
+    }
+
+    override fun onExistsFailure(code: Int, message: String) {
+        Log.d("IS CHATROOM / FAIL", "$code $message")
     }
 
     override fun onDestroy() {

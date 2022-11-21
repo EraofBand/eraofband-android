@@ -11,6 +11,7 @@ import android.view.Window
 import androidx.fragment.app.DialogFragment
 import com.example.eraofband.databinding.DialogSessionCompleteBinding
 import com.example.eraofband.ui.login.GlobalApplication
+import com.example.eraofband.ui.setOnSingleClickListener
 
 class SessionCompleteDialog: DialogFragment() {
 
@@ -36,7 +37,7 @@ class SessionCompleteDialog: DialogFragment() {
 
                 binding.sessionCompleteAcceptTv.text = "완료"
 
-                binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
+                binding.sessionCompleteAcceptTv.setOnSingleClickListener { dismiss() }
             }
             "duplicateBand" -> {  // 중복 지원
                 binding.sessionCompleteTitleTv.text = "중복 신청 불가"
@@ -44,7 +45,7 @@ class SessionCompleteDialog: DialogFragment() {
 
                 binding.sessionCompleteAcceptTv.text = "완료"
 
-                binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
+                binding.sessionCompleteAcceptTv.setOnSingleClickListener { dismiss() }
             }
             "acceptApply" -> {  // 지원 수락
                 binding.sessionCompleteTitleTv.text = "수락 완료"
@@ -52,7 +53,7 @@ class SessionCompleteDialog: DialogFragment() {
 
                 binding.sessionCompleteAcceptTv.text = "완료"
 
-                binding.sessionCompleteAcceptTv.setOnClickListener {
+                binding.sessionCompleteAcceptTv.setOnSingleClickListener {
                     applyListener.applyAccept()
                     dismiss()
                 }
@@ -63,7 +64,7 @@ class SessionCompleteDialog: DialogFragment() {
 
                 binding.sessionCompleteAcceptTv.text = "완료"
 
-                binding.sessionCompleteAcceptTv.setOnClickListener {
+                binding.sessionCompleteAcceptTv.setOnSingleClickListener {
                     applyListener.applyReject()
                     dismiss()
                 }
@@ -74,7 +75,7 @@ class SessionCompleteDialog: DialogFragment() {
 
                 binding.sessionCompleteAcceptTv.text = "완료"
 
-                binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
+                binding.sessionCompleteAcceptTv.setOnSingleClickListener { dismiss() }
             }
             "duplicateLesson" -> {  // 중복 지원
                 binding.sessionCompleteTitleTv.text = "중복 신청 불가"
@@ -82,7 +83,7 @@ class SessionCompleteDialog: DialogFragment() {
 
                 binding.sessionCompleteAcceptTv.text = "완료"
 
-                binding.sessionCompleteAcceptTv.setOnClickListener { dismiss() }
+                binding.sessionCompleteAcceptTv.setOnSingleClickListener { dismiss() }
             }
         }
 

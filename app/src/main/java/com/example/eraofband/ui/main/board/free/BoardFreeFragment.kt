@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.databinding.FragmentBoardFreeBinding
@@ -14,6 +15,7 @@ import com.example.eraofband.remote.board.getBoardList.GetBoardListResult
 import com.example.eraofband.remote.board.getBoardList.GetBoardListService
 import com.example.eraofband.remote.board.getBoardList.GetBoardListView
 import com.example.eraofband.ui.main.board.info.BoardPostActivity
+import kotlinx.coroutines.launch
 
 class BoardFreeFragment : Fragment(), GetBoardListView {
     private var _binding: FragmentBoardFreeBinding? = null
@@ -40,12 +42,18 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
     override fun onResume() {
         super.onResume()
         service.setBoardListView(this)
-        service.getBoardList(0,0)
+        getBoardIdx(0)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         layoutRefresh()
+    }
+
+    private fun getBoardIdx(boardIdx: Int) {
+        lifecycleScope.launch {
+            service.getBoardList(0, boardIdx)
+        }
     }
 
     private fun connectAdapter(list: ArrayList<GetBoardListResult>) {
@@ -65,9 +73,10 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
                     if(mAdapter.itemCount % 20 == 0) {
                         if(!loading) {
                             add = true
-                            service.getBoardList(0, lastIdx)
-
                             loading = true
+
+                            getBoardIdx(lastIdx)
+                            Log.d("TIME", System.currentTimeMillis().toString())
                         }
                     }
                 }
@@ -95,7 +104,7 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
     private fun layoutRefresh() {
         binding.boardFreeRl.setOnRefreshListener {
             add = false
-            service.getBoardList(0, 0)
+            getBoardIdx(0)
             
             binding.boardFreeRl.isRefreshing = false
         }
@@ -108,7 +117,8 @@ class BoardFreeFragment : Fragment(), GetBoardListView {
 
     override fun onGetListSuccess(result: ArrayList<GetBoardListResult>) {
         Log.d("GET BOARD LIST / SUCCESS", result.toString())
-        Log.d("SCROLL", lastIdx.toString())
+
+        if(result.isEmpty()) return
 
         if (!add) connectAdapter(result)
         else mAdapter.initBoardList(result)

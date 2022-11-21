@@ -3,6 +3,7 @@ package com.example.eraofband.remote.portfolio.pofolComment
 import android.util.Log
 import com.example.eraofband.data.Comment
 import com.example.eraofband.remote.API
+import com.example.eraofband.remote.BasicResponse
 import com.example.eraofband.remote.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -61,12 +62,12 @@ class PofolCommentService {
     }
 
     fun deleteComment(jwt: String, pofolCommentIdx: Int, userIdx: Int) {  // 댓글 삭제하기
-        pofolCommentService?.pofolDeleteComment(jwt, pofolCommentIdx, userIdx)?.enqueue(object : Callback<PofolCommentDeleteResponse> {
-            override fun onResponse(call: Call<PofolCommentDeleteResponse>, response: Response<PofolCommentDeleteResponse>) {
+        pofolCommentService?.pofolDeleteComment(jwt, pofolCommentIdx, userIdx)?.enqueue(object : Callback<BasicResponse> {
+            override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                 // 응답이 왔을 때 처리
                 Log.d("COMMENT / SUCCESS", response.toString())
 
-                val resp : PofolCommentDeleteResponse = response.body()!!
+                val resp : BasicResponse = response.body()!!
 
                 when(val code = resp.code) {
                     1000 -> commentView.onCommentDeleteSuccess(code, resp.result)  // 성공
@@ -74,7 +75,7 @@ class PofolCommentService {
                 }
             }
 
-            override fun onFailure(call: Call<PofolCommentDeleteResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
                 // 네트워크 연결이 실패했을 때 실행
                 Log.d("COMMENT / FAILURE", t.message.toString())
             }

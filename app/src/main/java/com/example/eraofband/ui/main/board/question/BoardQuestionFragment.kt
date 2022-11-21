@@ -41,8 +41,11 @@ class BoardQuestionFragment : Fragment(), GetBoardListView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        super.onResume()
+        layoutRefresh()
+    }
 
+    override fun onResume() {
+        super.onResume()
         service.setBoardListView(this)
         service.getBoardList(1,0)
     }
@@ -99,7 +102,7 @@ class BoardQuestionFragment : Fragment(), GetBoardListView {
     }
 
     override fun onGetListSuccess(result: ArrayList<GetBoardListResult>) {
-        Log.d("GET BOARD LIST / SUCCESS", result.toString())
+        Log.d("GET BOARD LIST / Success", "$result")
         if (!add) connectAdapter(result)
         else mAdapter.initBoardList(result)
 

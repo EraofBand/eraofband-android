@@ -2,6 +2,7 @@ package com.example.eraofband.remote.lesson.deleteUserLesson
 
 import android.util.Log
 import com.example.eraofband.remote.API
+import com.example.eraofband.remote.BasicResponse
 import com.example.eraofband.remote.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,12 +19,12 @@ class DeleteUserLessonService {private lateinit var deleteView : DeleteUserLesso
         val deleteService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
         deleteService?.deleteUserLesson(jwt, lessonIdx)?.enqueue(object :
-            Callback<DeleteUserLessonResponse> {
-            override fun onResponse(call: Call<DeleteUserLessonResponse>, response: Response<DeleteUserLessonResponse>) {
+            Callback<BasicResponse> {
+            override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                 // 응답이 왔을 때 처리
                 Log.d("DELETE / SUCCESS", response.toString())
 
-                val resp : DeleteUserLessonResponse = response.body()!!
+                val resp : BasicResponse = response.body()!!
 
                 when(resp.code) {
                     1000 -> deleteView.onDeleteUserSuccess(resp.result)  // 성공
@@ -31,7 +32,7 @@ class DeleteUserLessonService {private lateinit var deleteView : DeleteUserLesso
                 }
             }
 
-            override fun onFailure(call: Call<DeleteUserLessonResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
                 // 네트워크 연결이 실패했을 때 실행
                 Log.d("DELETE / FAILURE", t.message.toString())
             }

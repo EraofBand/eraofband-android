@@ -3,13 +3,12 @@ package com.example.eraofband.ui.main.mypage.lesson
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.eraofband.databinding.ActivityLessonInfoBinding
 import com.example.eraofband.databinding.FragmentMypageLessonBinding
 import com.example.eraofband.remote.user.getMyPage.GetMyPageResult
 import com.example.eraofband.remote.user.getMyPage.GetMyPageService
@@ -60,7 +59,7 @@ class MyPageLessonFragment : Fragment(), GetMyPageView {
         binding.mypageNoLessonTv.visibility = View.GONE
         binding.mypageLessonRv.visibility = View.VISIBLE
 
-        val lessonRVAdapter = MyPageLessonRVAdapter(context!!)
+        val lessonRVAdapter = MyPageLessonRVAdapter(requireContext())
         binding.mypageLessonRv.adapter = lessonRVAdapter
         binding.mypageLessonRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
