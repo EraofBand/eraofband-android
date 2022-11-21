@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.databinding.ActivityUserMypageBinding
+import com.example.eraofband.remote.BasicResponse
 import com.example.eraofband.remote.block.block.BlockService
 import com.example.eraofband.remote.block.block.BlockView
 import com.example.eraofband.remote.user.getOtherUser.GetOtherUserResult
@@ -25,7 +26,6 @@ import com.example.eraofband.remote.user.getOtherUser.GetOtherUserView
 import com.example.eraofband.remote.user.userFollow.UserFollowResponse
 import com.example.eraofband.remote.user.userFollow.UserFollowService
 import com.example.eraofband.remote.user.userFollow.UserFollowView
-import com.example.eraofband.remote.user.userUnfollow.UserUnfollowResponse
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowService
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowView
 import com.example.eraofband.ui.main.chat.ChatContentActivity
@@ -293,7 +293,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     }
 
     // 언팔로우 리스폰스-------------------------------------------------------------------
-    override fun onUserUnfollowSuccess(code: Int, response: UserUnfollowResponse) {
+    override fun onUserUnfollowSuccess(code: Int, response: BasicResponse) {
         Log.d("USER UNFOLLOW / SUCCESS", "코드 : $code / 응답 : $response")
     }
 

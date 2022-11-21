@@ -8,7 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.databinding.ActivityMypageSettingBinding
-import com.example.eraofband.remote.user.signout.ResignResponse
+import com.example.eraofband.remote.BasicResponse
 import com.example.eraofband.remote.user.signout.ResignService
 import com.example.eraofband.remote.user.signout.ResignView
 import com.example.eraofband.ui.login.LoginActivity
@@ -131,7 +131,7 @@ class MyPageSettingActivity : AppCompatActivity(), ResignView {
         userEdit.apply()
     }
 
-    override fun onResignSuccess(code: Int, response: ResignResponse) {
+    override fun onResignSuccess(code: Int, response: BasicResponse) {
         Log.d("RESIGN/SUC", response.toString())
     }
 

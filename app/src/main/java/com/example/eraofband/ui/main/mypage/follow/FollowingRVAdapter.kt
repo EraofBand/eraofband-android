@@ -9,16 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.ItemFollowBinding
+import com.example.eraofband.remote.BasicResponse
 import com.example.eraofband.remote.user.userFollow.UserFollowResponse
 import com.example.eraofband.remote.user.userFollow.UserFollowService
 import com.example.eraofband.remote.user.userFollow.UserFollowView
 import com.example.eraofband.remote.user.userFollowList.FollowingInfo
-import com.example.eraofband.remote.user.userUnfollow.UserUnfollowResponse
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowService
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowView
 import com.example.eraofband.ui.setOnSingleClickListener
 
-class FollowingRVAdapter() : RecyclerView.Adapter<FollowingRVAdapter.ViewHolder>(), UserFollowView, UserUnfollowView {
+class FollowingRVAdapter : RecyclerView.Adapter<FollowingRVAdapter.ViewHolder>(), UserFollowView, UserUnfollowView {
     private var followList = arrayListOf<FollowingInfo>()
     private var userFollowService = UserFollowService()
     private var userUnfollowService = UserUnfollowService()
@@ -125,7 +125,7 @@ class FollowingRVAdapter() : RecyclerView.Adapter<FollowingRVAdapter.ViewHolder>
     }
 
     // 언팔로우 리스폰스-------------------------------------------------------------------
-    override fun onUserUnfollowSuccess(code: Int, response: UserUnfollowResponse) {
+    override fun onUserUnfollowSuccess(code: Int, response: BasicResponse) {
         Log.d("USER UNFOLLOW / SUCCESS", "코드 : $code / 응답 : $response")
     }
 
