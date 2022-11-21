@@ -326,6 +326,8 @@ interface API {
     @PATCH("/chat/status/active")
     fun activeChat(@Header("X-ACCESS-TOKEN") jwt : String, @Body makeChatRoom: MakeChatRoom) : Call<BasicResponse>
 
+    // 채팅방 활성화 후 마지막 채팅 인덱스 받아오기
+
     // 게시물 생성
     @POST("/board")
     fun postBoard(@Header("X-ACCESS-TOKEN") jwt: String, @Body board : Board) : Call<PostBoardResponse>

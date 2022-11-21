@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
 import com.example.eraofband.databinding.DialogSessionApplyBinding
+import com.example.eraofband.remote.BasicResponse
 import com.example.eraofband.remote.band.deleteBand.DeleteBandService
 import com.example.eraofband.remote.band.deleteBand.DeleteBandView
 import com.example.eraofband.remote.band.deleteUserBand.DeleteUserBandService
@@ -21,7 +22,6 @@ import com.example.eraofband.remote.lesson.deleteLesson.DeleteLessonService
 import com.example.eraofband.remote.lesson.deleteLesson.DeleteLessonView
 import com.example.eraofband.remote.lesson.deleteUserLesson.DeleteUserLessonService
 import com.example.eraofband.remote.lesson.deleteUserLesson.DeleteUserLessonView
-import com.example.eraofband.remote.portfolio.deletePofol.DeletePofolResponse
 import com.example.eraofband.remote.portfolio.deletePofol.DeletePofolService
 import com.example.eraofband.remote.portfolio.deletePofol.DeletePofolView
 import com.example.eraofband.ui.login.GlobalApplication
@@ -150,7 +150,7 @@ class BandDeleteDialog(private val jwt: String, private val userIdx: Int, privat
         dismiss()
     }
 
-    override fun onDeleteFailure(response: DeletePofolResponse) {
+    override fun onDeleteFailure(response: BasicResponse) {
         Log.d("DELETE/FAIL", response.toString())
     }
 

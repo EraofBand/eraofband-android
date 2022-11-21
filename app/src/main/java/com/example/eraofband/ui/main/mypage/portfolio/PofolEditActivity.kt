@@ -8,7 +8,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.data.Portfolio
 import com.example.eraofband.databinding.ActivityPofolEditBinding
-import com.example.eraofband.remote.portfolio.patchPofol.PatchPofolResponse
+import com.example.eraofband.remote.BasicResponse
 import com.example.eraofband.remote.portfolio.patchPofol.PatchPofolService
 import com.example.eraofband.remote.portfolio.patchPofol.PatchPofolView
 import com.example.eraofband.ui.setOnSingleClickListener
@@ -76,7 +76,7 @@ class PofolEditActivity : AppCompatActivity(), PatchPofolView {
         finish()
     }
 
-    override fun onPatchFailure(response: PatchPofolResponse) {
+    override fun onPatchFailure(response: BasicResponse) {
         Log.d("PATCH/FAIL", "${response.code} ${response.message}")
     }
 }
