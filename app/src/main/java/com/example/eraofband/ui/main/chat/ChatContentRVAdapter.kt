@@ -28,9 +28,9 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
 
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addNewChat(chatComment: List<ChatComment>){
-        chatContents.addAll(chatComment)
-        notifyDataSetChanged()
+    fun addNewChat(chatComment: ChatComment){
+        chatContents.add(chatComment)
+        notifyItemInserted(chatContents.size - 1)
     }
 
     @SuppressLint("NotifyDataSetChanged")

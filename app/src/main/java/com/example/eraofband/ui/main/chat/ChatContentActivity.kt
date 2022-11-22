@@ -14,16 +14,15 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
-import com.example.eraofband.data.ChatComment
-import com.example.eraofband.data.ChatUser
-import com.example.eraofband.data.MakeChatRoom
-import com.example.eraofband.data.Users
+import com.example.eraofband.data.*
 import com.example.eraofband.databinding.ActivityChatContentBinding
 import com.example.eraofband.remote.chat.activeChat.ActiveChatService
 import com.example.eraofband.remote.chat.activeChat.ActiveChatView
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResult
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomService
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomView
+import com.example.eraofband.remote.chat.leaveChat.LeaveChatService
+import com.example.eraofband.remote.chat.leaveChat.LeaveChatView
 import com.example.eraofband.remote.chat.makeChat.MakeChatService
 import com.example.eraofband.remote.chat.makeChat.MakeChatView
 import com.google.firebase.database.DataSnapshot
@@ -35,13 +34,14 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import java.util.*
 
-class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, ActiveChatView {
+class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, ActiveChatView, LeaveChatView {
     private lateinit var binding: ActivityChatContentBinding
 
     // 채팅 API
     private val isChatRoomService = IsChatRoomService()
     private val activeChatService = ActiveChatService()
     private val makeChatService = MakeChatService()
+    private val leaveChatService = LeaveChatService()
 
     // 채팅 리사이클러뷰 어뎁터
     private lateinit var chatRVAdapter : ChatContentRVAdapter
@@ -54,6 +54,7 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
 
     // 채팅방 인덱스
     private var chatIdx = ""
+    // 마지막 채팅 인덱스
     private var num = -1
     private var lastChatIdx = -1
 
@@ -73,6 +74,7 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
 
         isChatRoomService.setChatListView(this)
         activeChatService.setActiveView(this)
+        leaveChatService.setChatView(this)
 
         // 유저 정보 저장
         firstIndex = intent.getIntExtra("firstIndex", -1)
@@ -91,7 +93,6 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
         }
 
         clickListener()
-
     }
 
     private fun clickListener() {
@@ -122,8 +123,7 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
         binding.chatContentRv.adapter = chatRVAdapter
 
     }
-
-
+    
     // 데이터를 올리는 부분
     private fun createChatRoom() {
         // 다른 유저 마이페이지에서 들어온 경우
@@ -138,7 +138,7 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
 
     private fun writeChat(chatComment: ChatComment) {
         // child에 있는 path가 없는 경우 만들어주고 있는 경우는 path를 타고 들어가서 값을 파이어베이스에 넣어주는 형식
-        Log.d("SUCCESS", num.toString())  // 추가 확인
+        Log.d("NUM/CHECK", num.toString())  // 추가 확인
         sendChatRef.child(chatIdx).child("comments").child("${num + 1}").setValue(chatComment)
             .addOnSuccessListener {
                 binding.chatContentTextEt.setText("")
@@ -159,25 +159,37 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
                 if (snapshot.exists()) {
                     num = -1
                     chatRVAdapter.clearChat()  // 새로 불러오기 때문에 초기화 필요
-                    getChatRef.child(chatIdx).child("users").addValueEventListener(object : ValueEventListener {
-                        override fun onDataChange(index: DataSnapshot) {
-                            for (commentSnapShot in snapshot.children) {  // 하나씩 불러옴
-                                val getData = commentSnapShot.getValue(ChatComment::class.java)
 
-                                // 여기서도 일단 나가기 기능 전이니까 outIdx 부분 뺐어요!!
-                                if (getData != null) {
+                    getChatRef.child(chatIdx).child("users").get().addOnSuccessListener {
+                        val user = it.getValue(ChatUser::class.java)
+                        var outIdx = -1
+
+                        if(user != null) {
+                            outIdx = if(user.firstUserIdx == getUserIdx()) {
+                                user.firstOutIdx
+                            } else {
+                                user.secondOutIdx
+                            }
+                        }
+
+                        for (commentSnapShot in snapshot.children) {  // 하나씩 불러옴
+                            val getData = commentSnapShot.getValue(ChatComment::class.java)
+
+                            // 여기서도 일단 나가기 기능 전이니까 outIdx 부분 뺐어요!!
+                            if (getData != null) {
+                                if(outIdx <= num) {
                                     if (getData.userIdx == getUserIdx()) {
                                         val chat: ChatComment = getData
                                         chat.type = 1
-                                        chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
-                                        Log.d("SUCCESS", getData.toString())  // 추가 확인
-                                        Log.d("SUCCESS", num.toString())  // 추가 확인
+                                        chatRVAdapter.addNewChat(chat)  // 리사이클러뷰에 채팅을 한 개씩 추가
+                                        Log.d("FIRE/SUC", getData.toString())  // 추가 확인
+                                        Log.d("FIRE-NUM/SUC", num.toString())  // 추가 확인
                                     } else {
                                         val chat: ChatComment = getData
                                         chat.type = 0
-                                        chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
-                                        Log.d("SUCCESS", getData.toString())  // 추가 확인
-                                        Log.d("SUCCESS", num.toString())  // 추가 확인
+                                        chatRVAdapter.addNewChat(chat)  // 리사이클러뷰에 채팅을 한 개씩 추가
+                                        Log.d("FIRE/SUC", getData.toString())  // 추가 확인
+                                        Log.d("FIRE-NUM/SUC", num.toString())  // 추가 확인
                                     }
 
                                     binding.chatContentRv.scrollToPosition(chatRVAdapter.itemCount - 1)
@@ -185,11 +197,7 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
                                 }
                             }
                         }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            Log.d("FAIL", "데이터를 불러오지 못했습니다")
-                        }
-                    })
+                    }
                 }
             }
 
@@ -206,7 +214,8 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
 
         popupMenu.setOnMenuItemClickListener{item->
             if (item!!.itemId== R.id.chat_delete) {
-                // 나가기 부분은 새로 할 거라서 아예 지웠어요!!
+                // 채팅방 나가기 APi 호출
+                leaveChatService.leaveChat(getJwt()!!, chatIdx, LastChatIdx(chatRVAdapter.itemCount))
             }
 
             false
@@ -256,6 +265,34 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
 
     override fun onActiveFailure(code: Int, message: String) {
         Log.d("ACTIVE/FAIL", "$code $message")
+    }
+
+    // 채팅방 나가기 API
+    override fun onLeaveSuccess(result: String) {
+        Log.d("LEAVE/SUC", result)
+        val outIdx = chatRVAdapter.itemCount
+
+        getChatRef.child(chatIdx).child("users").get().addOnSuccessListener {
+            val user = it.getValue(ChatUser::class.java)!!
+            Log.d("USERS", user.toString())
+
+            if(user.firstUserIdx == getUserIdx()) {
+                // 아웃 인덱스를 firstUserIdx로 올려줌
+                sendChatRef.child(chatIdx).child("users").child("firstOutIdx").setValue(outIdx).addOnSuccessListener {
+                    finish()
+                }
+            } else {
+                // 아웃 인덱스를 firstUserIdx로 올려줌
+                sendChatRef.child(chatIdx).child("users").child("secondOutIdx").setValue(outIdx).addOnSuccessListener {
+                    finish()
+                }
+            }
+        }
+
+    }
+
+    override fun onLeaveFailure(code: Int, message: String) {
+        Log.d("LEAVE/FAIL", "$code $message")
     }
 
     /* 추가 기능을 위한 함수들 */
