@@ -253,10 +253,10 @@ class ChatBackUp: AppCompatActivity(), MakeChatView, IsChatRoomView, LeaveChatVi
                 //인덱스 업데이트
                 sendChatRef.child(chatIdx).child("users").updateChildren(hashMap as Map<String, Any>)
 
-                val leaveChatService = LeaveChatService() // 채팅방 나가기 api
-                leaveChatService.setChatView(this)
-                leaveChatService.leaveChat(getJwt()!!, chatIdx)
-                finish()
+//                val leaveChatService = LeaveChatService() // 채팅방 나가기 api
+//                leaveChatService.setChatView(this)
+//                leaveChatService.leaveChat(getJwt()!!, chatIdx)
+//                finish()
             }
             false
         }

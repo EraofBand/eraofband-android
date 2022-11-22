@@ -118,6 +118,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             intent.putExtra("firstIndex", getUserIdx())
             intent.putExtra("secondIndex", otherUserIdx)
             intent.putExtra("lastChatIdx", lastChatIdx)
+            intent.putExtra("chatRoomIndex", chatIdx)
             startActivity(intent)
         }
 
