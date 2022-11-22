@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.data.ChatRoom
 import com.example.eraofband.data.MakeChatRoom
-import com.example.eraofband.data.Users
 import com.example.eraofband.databinding.FragmentChatBinding
 import com.example.eraofband.remote.chat.activeChat.ActiveChatService
 import com.example.eraofband.remote.chat.activeChat.ActiveChatView
@@ -25,9 +24,6 @@ import com.example.eraofband.remote.chat.enterChatRoom.EnterChatRoomView
 import com.example.eraofband.remote.chat.getChatList.GetChatListResult
 import com.example.eraofband.remote.chat.getChatList.GetChatListService
 import com.example.eraofband.remote.chat.getChatList.GetChatListView
-import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResult
-import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomService
-import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomView
 
 class ChatFragment : Fragment(), GetChatListView, ActiveChatView, EnterChatRoomView {
 
@@ -151,7 +147,6 @@ class ChatFragment : Fragment(), GetChatListView, ActiveChatView, EnterChatRoomV
     override fun onGetListFailure(code: Int, message: String) {
         Log.d("GET CHAT / FAIL", "$code $message")
     }
-
 
     // 채팅방 활성화 API
     override fun onActiveSuccess(result: String) {
