@@ -1,4 +1,6 @@
-package com.example.eraofband.remote.chat.isChatRoom
+package com.example.eraofband.remote.chat.isrChatRoom
+
+import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResult
 
 interface IsChatRoomView {
     fun onExistsSuccess(result: IsChatRoomResult)
