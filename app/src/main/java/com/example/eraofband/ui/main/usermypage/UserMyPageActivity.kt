@@ -367,6 +367,15 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             }
             enterChatRoomService.enterChatRoom(getJwt()!!, chatIdx)
         }
+
+        val intent = Intent(this, ChatContentActivity::class.java)
+        intent.putExtra("nickname", nickName)
+        intent.putExtra("profile", profileImg)
+        intent.putExtra("firstIndex", getUserIdx())
+        intent.putExtra("secondIndex", otherUserIdx)
+        intent.putExtra("lastChatIdx", lastChatIdx)
+        intent.putExtra("chatRoomIndex", chatIdx)
+        startActivity(intent)
     }
 
     override fun onExistsFailure(code: Int, message: String) {

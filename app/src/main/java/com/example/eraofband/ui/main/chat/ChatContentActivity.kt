@@ -61,6 +61,8 @@ class ChatContentActivity : AppCompatActivity(), LeaveChatView {
         binding = ActivityChatContentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        leaveChatService.setChatView(this)
+
         // 유저 정보 저장
         firstIndex = intent.getIntExtra("firstIndex", -1)
         secondIndex = intent.getIntExtra("secondIndex", -1)
