@@ -22,7 +22,7 @@ import com.example.eraofband.remote.chat.activeChat.ActiveChatService
 import com.example.eraofband.remote.chat.activeChat.ActiveChatView
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResult
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomService
-import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomView
+import com.example.eraofband.remote.chat.isrChatRoom.IsChatRoomView
 import com.example.eraofband.remote.chat.leaveChat.LeaveChatService
 import com.example.eraofband.remote.chat.leaveChat.LeaveChatView
 import com.example.eraofband.remote.chat.makeChat.MakeChatService

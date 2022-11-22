@@ -11,36 +11,25 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
-import com.example.eraofband.data.*
+import com.example.eraofband.data.ChatComment
+import com.example.eraofband.data.ChatUser
+import com.example.eraofband.data.LastChatIdx
 import com.example.eraofband.databinding.ActivityChatContentBinding
-import com.example.eraofband.remote.chat.activeChat.ActiveChatService
-import com.example.eraofband.remote.chat.activeChat.ActiveChatView
-import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResult
-import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomService
-import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomView
 import com.example.eraofband.remote.chat.leaveChat.LeaveChatService
 import com.example.eraofband.remote.chat.leaveChat.LeaveChatView
-import com.example.eraofband.remote.chat.makeChat.MakeChatService
-import com.example.eraofband.remote.chat.makeChat.MakeChatView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.launch
-import java.util.*
 
-class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, ActiveChatView, LeaveChatView {
+class ChatContentActivity : AppCompatActivity(), LeaveChatView {
     private lateinit var binding: ActivityChatContentBinding
 
     // 채팅 API
-    private val isChatRoomService = IsChatRoomService()
-    private val activeChatService = ActiveChatService()
-    private val makeChatService = MakeChatService()
     private val leaveChatService = LeaveChatService()
 
     // 채팅 리사이클러뷰 어뎁터
@@ -72,27 +61,21 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
         binding = ActivityChatContentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        isChatRoomService.setChatListView(this)
-        activeChatService.setActiveView(this)
         leaveChatService.setChatView(this)
 
         // 유저 정보 저장
         firstIndex = intent.getIntExtra("firstIndex", -1)
         secondIndex = intent.getIntExtra("secondIndex", -1)
         lastChatIdx = intent.getIntExtra("lastChatIdx", -1)
+        chatIdx = intent.getStringExtra("chatRoomIndex").toString()
 
         binding.chatContentNicknameTv.text = intent.getStringExtra("nickname")
         profileImg = intent.getStringExtra("profile")!!
         nickname = intent.getStringExtra("nickname")!!
 
-        // 채팅방 유무 확인
-        if(firstIndex != -1 && secondIndex != -1) {
-            lifecycleScope.launch {
-                isChatRoomService.isChatRoom(getJwt()!!, Users(firstIndex, secondIndex))
-            }
-        }
-
         clickListener()
+        initAdapter(chatIdx)
+        getChats()
     }
 
     private fun clickListener() {
@@ -129,10 +112,9 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
         // 다른 유저 마이페이지에서 들어온 경우
         // 채팅방이 없는 상태면 파이어베이스에 올려주고 서버에도 채팅방 생성
         // 채팅방이 있는지 없는지 파악 여부는 comments가 1개인지로 파악
-        Log.d("CHATIDX", chatIdx)
         sendChatRef.child(chatIdx).child("users").setValue(ChatUser(firstIndex, -1, secondIndex, -1))
             .addOnSuccessListener {
-                makeChatService.makeChat(MakeChatRoom(chatIdx, firstIndex, secondIndex))
+                Log.d("CREATE/SUC", chatIdx)
             }  // 채팅방 users 입력, 채팅방 생성
     }
 
@@ -221,50 +203,6 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
             false
         }
         popupMenu.show()
-    }
-
-    // 채팅방 유무 확인 API
-    override fun onExistsSuccess(result: IsChatRoomResult) {
-        Log.d("GET/SUC", "$result")
-
-        // 채팅룸 idx가 없으면 랜덤 uuid 생성, 아니면 불러오기
-        chatIdx = if(result.chatRoomIdx == "null") "${UUID.randomUUID()}"
-        else {
-            if(result.status == 0){  // 둘 중 아무나 나간 경우에는 다시 채팅방 활성화
-                activeChatService.activeChat(getJwt()!!, MakeChatRoom(chatIdx, firstIndex, secondIndex))
-            }
-            result.chatRoomIdx
-        }
-
-        initAdapter(chatIdx)
-        getChats()
-    }
-
-    override fun onExistsFailure(code: Int, message: String) {
-        Log.d("GET/SUC", "$code $message")
-    }
-
-    // 채팅방 생성 API
-    override fun onMakeSuccess(result: String) {
-        Log.d("MAKE/SUC", result)
-        // 채팅방이 만들어지면 그 이후에 채팅을 올림
-        val message = binding.chatContentTextEt.text.toString()
-        val timeStamp = System.currentTimeMillis()
-
-        writeChat(ChatComment(message, false, timeStamp, getUserIdx()))
-    }
-
-    override fun onMakeFailure(code: Int, message: String) {
-        Log.d("MAKE/FAIL", "$code $message")
-    }
-
-    // 채팅방 활성화 API
-    override fun onActiveSuccess(result: String) {
-        Log.d("ACTIVE/SUC", result)
-    }
-
-    override fun onActiveFailure(code: Int, message: String) {
-        Log.d("ACTIVE/FAIL", "$code $message")
     }
 
     // 채팅방 나가기 API
