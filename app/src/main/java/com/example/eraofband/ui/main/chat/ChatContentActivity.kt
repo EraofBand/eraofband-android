@@ -122,51 +122,6 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
 
     }
 
-    private fun getChats() {
-        // 게시물에 달린 댓글 받아오기
-        // 여기서 중요한 점 : 이 리스너는 onCreate에서 한 번만 호출되어야 함
-        // 필요할 때마다 불러오는 게 아님 <- 변화를 감지하는 리스너기 때문
-        // 처음 화면을 열면 무조건 한 번 실행돼서 초기 값 받아올 수 있음
-        // 데이터를 받아오는 것은 비동기적으로 진행되기 때문에 return 값은 무조건 null, size를 세는 것도 안됨
-        // 자세한 기능은 리사이클러뷰에서 진행해야할 것 같습니다
-        getChatRef.child(chatIdx).child("comments").addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    num = -1
-                    chatRVAdapter.clearChat()  // 새로 불러오기 때문에 초기화 필요
-
-                        for (commentSnapShot in snapshot.children) {  // 하나씩 불러옴
-                            val getData =
-                                commentSnapShot.getValue(ChatComment::class.java)  // 리스폰스가 들어가겠죵
-
-                            if (getData != null) {
-                                    if (getData.userIdx == getUserIdx()) {
-                                        val chat: ChatComment = getData
-                                        chat.type = 1
-                                        num++
-                                        chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
-                                        Log.d("SUCCESS", getData.toString())  // 추가 확인
-                                        Log.d("SUCCESS", num.toString())  // 추가 확인
-                                    } else {
-                                        val chat: ChatComment = getData
-                                        chat.type = 0
-                                        num++
-                                        chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
-                                        Log.d("SUCCESS", getData.toString())  // 추가 확인
-                                        Log.d("SUCCESS", num.toString())  // 추가 확인
-                                    }
-                                }
-                                binding.chatContentRv.scrollToPosition(chatRVAdapter.itemCount - 1)
-                            }
-                        }
-                    }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
-    }
-
     // 데이터를 올리는 부분
     private fun createChatRoom() {
         // 다른 유저 마이페이지에서 들어온 경우
