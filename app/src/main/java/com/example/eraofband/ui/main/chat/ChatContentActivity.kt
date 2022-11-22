@@ -55,6 +55,7 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
     // 채팅방 인덱스
     private var chatIdx = ""
     private var num = -1
+    private var lastChatIdx = -1
 
     // 채팅 내역을 받아오기 위한 파이어베이스
     private val database = Firebase.database
@@ -76,6 +77,7 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
         // 유저 정보 저장
         firstIndex = intent.getIntExtra("firstIndex", -1)
         secondIndex = intent.getIntExtra("secondIndex", -1)
+        lastChatIdx = intent.getIntExtra("lastChatIdx", -1)
 
         binding.chatContentNicknameTv.text = intent.getStringExtra("nickname")
         profileImg = intent.getStringExtra("profile")!!
@@ -121,50 +123,6 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
 
     }
 
-    private fun getChats() {
-        // 게시물에 달린 댓글 받아오기
-        // 여기서 중요한 점 : 이 리스너는 onCreate에서 한 번만 호출되어야 함
-        // 필요할 때마다 불러오는 게 아님 <- 변화를 감지하는 리스너기 때문
-        // 처음 화면을 열면 무조건 한 번 실행돼서 초기 값 받아올 수 있음
-        // 데이터를 받아오는 것은 비동기적으로 진행되기 때문에 return 값은 무조건 null, size를 세는 것도 안됨
-        // 자세한 기능은 리사이클러뷰에서 진행해야할 것 같습니다
-        getChatRef.child(chatIdx).child("comments").addValueEventListener(object : ValueEventListener {  // 데베에 변화가 있으면 새로 불러옴
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    num = -1
-                    chatRVAdapter.clearChat()  // 새로 불러오기 때문에 초기화 필요
-
-                        for (commentSnapShot in snapshot.children) {  // 하나씩 불러옴
-                            val getData =
-                                commentSnapShot.getValue(ChatComment::class.java)  // 리스폰스가 들어가겠죵
-
-                            if (getData != null) {
-                                    if (getData.userIdx == getUserIdx()) {
-                                        val chat: ChatComment = getData
-                                        chat.type = 1
-                                        num++
-                                        chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
-                                        Log.d("SUCCESS", getData.toString())  // 추가 확인
-                                        Log.d("SUCCESS", num.toString())  // 추가 확인
-                                    } else {
-                                        val chat: ChatComment = getData
-                                        chat.type = 0
-                                        num++
-                                        chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
-                                        Log.d("SUCCESS", getData.toString())  // 추가 확인
-                                        Log.d("SUCCESS", num.toString())  // 추가 확인
-                                    }
-                                }
-                                binding.chatContentRv.scrollToPosition(chatRVAdapter.itemCount - 1)
-                            }
-                        }
-                    }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
-    }
 
     // 데이터를 올리는 부분
     private fun createChatRoom() {
@@ -257,7 +215,7 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
     }
 
     // 채팅방 유무 확인 API
-    override fun onGetSuccess(result: IsChatRoomResult) {
+    override fun onExistsSuccess(result: IsChatRoomResult) {
         Log.d("GET/SUC", "$result")
 
         // 채팅룸 idx가 없으면 랜덤 uuid 생성, 아니면 불러오기
@@ -273,7 +231,7 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
         getChats()
     }
 
-    override fun onGetFailure(code: Int, message: String) {
+    override fun onExistsFailure(code: Int, message: String) {
         Log.d("GET/SUC", "$code $message")
     }
 

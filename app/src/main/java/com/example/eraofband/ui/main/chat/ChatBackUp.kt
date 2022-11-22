@@ -289,7 +289,7 @@ class ChatBackUp: AppCompatActivity(), MakeChatView, IsChatRoomView, PatchChatVi
     override fun onPatchFailure(code: Int, message: String) {
         Log.d("PATCH CHAT/FAIL", "$code $message")
     }
-    override fun onGetSuccess(result: IsChatRoomResult) {
+    override fun onExistsSuccess(result: IsChatRoomResult) {
         Log.d("GET/SUC", "$result")
 
         // 채팅룸 idx가 없으면 랜덤 uuid 생성, 아니면 불러오기
@@ -304,7 +304,7 @@ class ChatBackUp: AppCompatActivity(), MakeChatView, IsChatRoomView, PatchChatVi
         getChats()
     }
 
-    override fun onGetFailure(code: Int, message: String) {
+    override fun onExistsFailure(code: Int, message: String) {
         Log.d("GET/SUC", "$code $message")
     }
 
