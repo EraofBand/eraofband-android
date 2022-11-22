@@ -56,6 +56,7 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
     private var chatIdx = ""
     // 마지막 채팅 인덱스
     private var num = -1
+    private var lastChatIdx = -1
 
     // 채팅 내역을 받아오기 위한 파이어베이스
     private val database = Firebase.database
@@ -78,6 +79,7 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
         // 유저 정보 저장
         firstIndex = intent.getIntExtra("firstIndex", -1)
         secondIndex = intent.getIntExtra("secondIndex", -1)
+        lastChatIdx = intent.getIntExtra("lastChatIdx", -1)
 
         binding.chatContentNicknameTv.text = intent.getStringExtra("nickname")
         profileImg = intent.getStringExtra("profile")!!
@@ -121,7 +123,7 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
         binding.chatContentRv.adapter = chatRVAdapter
 
     }
-
+    
     // 데이터를 올리는 부분
     private fun createChatRoom() {
         // 다른 유저 마이페이지에서 들어온 경우
@@ -222,7 +224,7 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
     }
 
     // 채팅방 유무 확인 API
-    override fun onGetSuccess(result: IsChatRoomResult) {
+    override fun onExistsSuccess(result: IsChatRoomResult) {
         Log.d("GET/SUC", "$result")
 
         // 채팅룸 idx가 없으면 랜덤 uuid 생성, 아니면 불러오기
@@ -238,7 +240,7 @@ class ChatContentActivity : AppCompatActivity(), IsChatRoomView, MakeChatView, A
         getChats()
     }
 
-    override fun onGetFailure(code: Int, message: String) {
+    override fun onExistsFailure(code: Int, message: String) {
         Log.d("GET/SUC", "$code $message")
     }
 

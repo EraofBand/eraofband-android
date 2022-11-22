@@ -16,10 +16,22 @@ import androidx.appcompat.view.ContextThemeWrapper
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
+import com.example.eraofband.data.MakeChatRoom
+import com.example.eraofband.data.Users
 import com.example.eraofband.databinding.ActivityUserMypageBinding
 import com.example.eraofband.remote.BasicResponse
 import com.example.eraofband.remote.block.block.BlockService
 import com.example.eraofband.remote.block.block.BlockView
+import com.example.eraofband.remote.chat.activeChat.ActiveChatService
+import com.example.eraofband.remote.chat.activeChat.ActiveChatView
+import com.example.eraofband.remote.chat.enterChatRoom.EnterChatRoomResult
+import com.example.eraofband.remote.chat.enterChatRoom.EnterChatRoomService
+import com.example.eraofband.remote.chat.enterChatRoom.EnterChatRoomView
+import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResult
+import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomService
+import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomView
+import com.example.eraofband.remote.chat.makeChat.MakeChatService
+import com.example.eraofband.remote.chat.makeChat.MakeChatView
 import com.example.eraofband.remote.user.getOtherUser.GetOtherUserResult
 import com.example.eraofband.remote.user.getOtherUser.GetOtherUserService
 import com.example.eraofband.remote.user.getOtherUser.GetOtherUserView
@@ -36,7 +48,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 import java.util.*
 
-class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView, UserUnfollowView, BlockView {
+class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView, UserUnfollowView, BlockView, IsChatRoomView, ActiveChatView, MakeChatView, EnterChatRoomView {
 
     private lateinit var binding: ActivityUserMypageBinding
     internal var otherUserIdx: Int? = null
@@ -45,11 +57,17 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     private lateinit var nickName: String
     private lateinit var profileImg: String
     private var secondIndex = -1
+    private lateinit var chatIdx: String
+    private var lastChatIdx = -1
 
     private val getOtherUserService = GetOtherUserService()
     private val blockService = BlockService()
     private val userUnfollowService = UserUnfollowService() // 언팔로우
     private val userFollowService = UserFollowService() // 팔로우
+    private val isChatRoomService = IsChatRoomService()
+    private val activeChatService = ActiveChatService()
+    private val makeChatService = MakeChatService()
+    private val enterChatRoomService = EnterChatRoomService()
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,6 +91,12 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         super.onResume()
 
         getOtherUserService.getOtherUser(getJwt()!!, otherUserIdx!!)
+
+        isChatRoomService.setChatListView(this)
+        activeChatService.setActiveView(this)
+        enterChatRoomService.setEnterChatRoomView(this)
+        makeChatService.setChatView(this)
+
         clickListener()
     }
 
@@ -85,11 +109,15 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
 
         // 메세지 클릭하면 채팅방으로 이동
         binding.userMypageMessageTv.setOnSingleClickListener {
+
+            isChatRoomService.isChatRoom(getJwt()!!, Users(getUserIdx(), otherUserIdx!!))
+
             val intent = Intent(this, ChatContentActivity::class.java)
             intent.putExtra("nickname", nickName)
             intent.putExtra("profile", profileImg)
             intent.putExtra("firstIndex", getUserIdx())
             intent.putExtra("secondIndex", otherUserIdx)
+            intent.putExtra("lastChatIdx", lastChatIdx)
             startActivity(intent)
         }
 
@@ -309,6 +337,57 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
 
     override fun onBlockFailure(code: Int, message: String) {
         Log.d("BLOCK/FAIL", "$code $message")
+    }
+
+
+    // 채팅방 활성화 API
+    override fun onActiveSuccess(result: String) {
+        Log.d("ACTIVE CHATROOM / SUCCESS", result)
+    }
+
+    override fun onActiveFailure(code: Int, message: String) {
+        Log.d("ACTIVE CHATROOM / FAIL", "$code $message")
+    }
+
+    // 채팅방 존재 확인 API
+    override fun onExistsSuccess(result: IsChatRoomResult) {
+        Log.d("EXIST CHATROOM / SUCCESS", result.toString())
+
+        if(result.chatRoomIdx == "null"){
+            chatIdx = "${UUID.randomUUID()}"
+            makeChatService.makeChat(MakeChatRoom(chatIdx, getUserIdx(), otherUserIdx!!))
+        } else{
+            chatIdx = result.chatRoomIdx
+            if(result.status == 0){
+                activeChatService.activeChat(getJwt()!!, MakeChatRoom(result.chatRoomIdx, getUserIdx(), otherUserIdx!!))
+            }
+            enterChatRoomService.enterChatRoom(getJwt()!!, chatIdx)
+        }
+    }
+
+    override fun onExistsFailure(code: Int, message: String) {
+        Log.d("EXIST CHATROOM / FAIL", "$code $message")
+    }
+
+
+    // 채팅방 만들기 API
+    override fun onMakeSuccess(result: String) {
+        Log.d("MAKE CHATROOM / SUCCESS", result)
+    }
+
+    override fun onMakeFailure(code: Int, message: String) {
+        Log.d("MAKE CHATROOM / FAIL", "$code $message")
+    }
+
+
+    // 채팅방 들어가기 API
+    override fun onEnterSuccess(result: EnterChatRoomResult) {
+        Log.d("ENTER CHATROOM / SUCCESS", result.toString())
+        lastChatIdx = result.lastChatIdx
+    }
+
+    override fun onEnterFailure(code: Int, message: String) {
+        Log.d("ENTER CHATROOM / FAIL", "$code $message")
     }
 
 }

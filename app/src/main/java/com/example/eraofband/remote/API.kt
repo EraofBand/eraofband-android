@@ -19,6 +19,7 @@ import com.example.eraofband.remote.board.getBoardList.GetBoardListResponse
 import com.example.eraofband.remote.board.getMyBoardList.GetMyBoardListResponse
 import com.example.eraofband.remote.board.getMyCommentList.GetMyCommentListResponse
 import com.example.eraofband.remote.board.postBoard.PostBoardResponse
+import com.example.eraofband.remote.chat.enterChatRoom.EnterChatRoomResponse
 import com.example.eraofband.remote.chat.getChatList.GetChatListResponse
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResponse
 import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonResponse
@@ -309,6 +310,10 @@ interface API {
     // 채팅방 리스트 조회
     @GET("/chat/chat-room")
     fun getChatList(@Header("X-ACCESS-TOKEN") jwt: String) : Call<GetChatListResponse>
+
+    // 채팅방 들어가기
+    @PATCH("/chat/chatroom-in")
+    fun enterChatRoom(@Header("X-ACCESS-TOKEN") jwt: String, @Body chatRoomIdx: String) : Call<EnterChatRoomResponse>
 
     // 채팅방 존재 유무 조회
     @PATCH("/chat/chat-room/exist")

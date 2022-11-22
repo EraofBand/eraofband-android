@@ -1,17 +1,38 @@
 package com.example.eraofband.ui.main.board
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.database.Cursor
+import android.net.Uri
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat.requestPermissions
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.data.PostImgUrl
 import com.example.eraofband.databinding.ItemPictureBinding
+import com.example.eraofband.remote.sendimg.SendImgService
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 
 class BoardImgRVAdapter : RecyclerView.Adapter<BoardImgRVAdapter.ViewHolder>() {
 
     private var postImgUrl = arrayListOf<PostImgUrl>()
+
 
     interface MyItemClickListener {
         // 클릭 이벤트
@@ -39,9 +60,10 @@ class BoardImgRVAdapter : RecyclerView.Adapter<BoardImgRVAdapter.ViewHolder>() {
         holder.bind(postImgUrl[position])
 
         holder.binding.itemPictureIv.setOnClickListener {
-            mItemClickListener.onDelete(position)
+                mItemClickListener.onDelete(position)
         }
     }
+
 
     override fun getItemCount(): Int = postImgUrl.size
 

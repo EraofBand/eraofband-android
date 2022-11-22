@@ -26,8 +26,8 @@ class IsChatRoomService {
                 val resp : IsChatRoomResponse = response.body()!!
 
                 when(val code = resp.code) {
-                    1000 -> chatRoomView.onGetSuccess(resp.result)  // 성공
-                    else -> chatRoomView.onGetFailure(code, resp.message)
+                    1000 -> chatRoomView.onExistsSuccess(resp.result)  // 성공
+                    else -> chatRoomView.onExistsFailure(code, resp.message)
                 }
             }
 

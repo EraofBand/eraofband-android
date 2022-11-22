@@ -32,7 +32,7 @@ class ChatRVAdapter : RecyclerView.Adapter<ChatRVAdapter.ViewHolder>() {
 
 
     interface MyItemClickListener{
-        fun onItemClick(chatIdx : String, profileImg : String, nickname : String, userIdx : Int)
+        fun onItemClick(chatIdx : String, profileImg : String, nickname : String, userIdx : Int, status : Int)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -95,7 +95,7 @@ class ChatRVAdapter : RecyclerView.Adapter<ChatRVAdapter.ViewHolder>() {
             }
 
             binding.itemChatListRv.setOnClickListener {
-                mItemClickListener.onItemClick(chatRoom.chatRoomIdx, chatRoom.profileImgUrl, chatRoom.nickname, chatRoom.otherUserIdx)
+                mItemClickListener.onItemClick(chatRoom.chatRoomIdx, chatRoom.profileImgUrl, chatRoom.nickname, chatRoom.otherUserIdx, chatRoom.status)
             }
         }
     }
