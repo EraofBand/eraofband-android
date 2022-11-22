@@ -316,7 +316,7 @@ interface API {
 
    // 채팅방 나가기 처리
     @PATCH("/chat/status/{chatRoomIdx}")
-    fun patchChat(@Header("X-ACCESS-TOKEN") jwt: String, @Path("chatRoomIdx") chatRoomIdx: String) : Call<BasicResponse>
+    fun leaveChat(@Header("X-ACCESS-TOKEN") jwt: String, @Path("chatRoomIdx") chatRoomIdx: String, @Body lastChatIdx: LastChatIdx) : Call<BasicResponse>
 
     // 채팅방 생성 처리
     @POST("/chat")

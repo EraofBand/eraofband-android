@@ -23,10 +23,10 @@ import com.example.eraofband.remote.chat.activeChat.ActiveChatView
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResult
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomService
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomView
+import com.example.eraofband.remote.chat.leaveChat.LeaveChatService
+import com.example.eraofband.remote.chat.leaveChat.LeaveChatView
 import com.example.eraofband.remote.chat.makeChat.MakeChatService
 import com.example.eraofband.remote.chat.makeChat.MakeChatView
-import com.example.eraofband.remote.chat.patchChat.PatchChatService
-import com.example.eraofband.remote.chat.patchChat.PatchChatView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -35,7 +35,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
 
-class ChatBackUp: AppCompatActivity(), MakeChatView, IsChatRoomView, PatchChatView, ActiveChatView {
+class ChatBackUp: AppCompatActivity(), MakeChatView, IsChatRoomView, LeaveChatView, ActiveChatView {
     private lateinit var binding: ActivityChatContentBinding
 
     // 채팅방 인덱스
@@ -63,7 +63,7 @@ class ChatBackUp: AppCompatActivity(), MakeChatView, IsChatRoomView, PatchChatVi
     private lateinit var chatRVAdapter : ChatContentRVAdapter
 
     // 채팅방 나가기 API
-    private val patchChatService = PatchChatService()
+    private val leaveChatService = LeaveChatService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +87,7 @@ class ChatBackUp: AppCompatActivity(), MakeChatView, IsChatRoomView, PatchChatVi
         profileImg = intent.getStringExtra("profile")!!
         nickname = intent.getStringExtra("nickname")!!
 
-        patchChatService.setChatView(this)
+        leaveChatService.setChatView(this)
 
         binding.chatContentSendTv.setOnClickListener {  // 메세지 보내기
             val chat = "${binding.chatContentTextEt.text.trim()}"
@@ -155,13 +155,13 @@ class ChatBackUp: AppCompatActivity(), MakeChatView, IsChatRoomView, PatchChatVi
                                                 if (getData.userIdx == getUserIdx()) {
                                                     val chat: ChatComment = getData
                                                     chat.type = 1
-                                                    chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
+                                                    chatRVAdapter.addNewChat(chat)  // 리사이클러뷰에 채팅을 한 개씩 추가
                                                     Log.d("SUCCESS", getData.toString())  // 추가 확인
                                                     Log.d("SUCCESS", num.toString())  // 추가 확인
                                                 } else {
                                                     val chat: ChatComment = getData
                                                     chat.type = 0
-                                                    chatRVAdapter.addNewChat(listOf(chat))  // 리사이클러뷰에 채팅을 한 개씩 추가
+                                                    chatRVAdapter.addNewChat(chat)  // 리사이클러뷰에 채팅을 한 개씩 추가
                                                     Log.d("SUCCESS", getData.toString())  // 추가 확인
                                                     Log.d("SUCCESS", num.toString())  // 추가 확인
                                                 }
@@ -253,9 +253,9 @@ class ChatBackUp: AppCompatActivity(), MakeChatView, IsChatRoomView, PatchChatVi
                 //인덱스 업데이트
                 sendChatRef.child(chatIdx).child("users").updateChildren(hashMap as Map<String, Any>)
 
-                val patchChatService = PatchChatService() // 채팅방 나가기 api
-                patchChatService.setChatView(this)
-                patchChatService.patchChat(getJwt()!!, chatIdx)
+                val leaveChatService = LeaveChatService() // 채팅방 나가기 api
+                leaveChatService.setChatView(this)
+                leaveChatService.leaveChat(getJwt()!!, chatIdx)
                 finish()
             }
             false
@@ -282,11 +282,11 @@ class ChatBackUp: AppCompatActivity(), MakeChatView, IsChatRoomView, PatchChatVi
         Log.d("MAKE/FAIL", "$code $message")
     }
 
-    override fun onPatchSuccess(result: String) {
+    override fun onLeaveSuccess(result: String) {
         Log.d("PATCH CHAT/SUC", result)
     }
 
-    override fun onPatchFailure(code: Int, message: String) {
+    override fun onLeaveFailure(code: Int, message: String) {
         Log.d("PATCH CHAT/FAIL", "$code $message")
     }
     override fun onGetSuccess(result: IsChatRoomResult) {
