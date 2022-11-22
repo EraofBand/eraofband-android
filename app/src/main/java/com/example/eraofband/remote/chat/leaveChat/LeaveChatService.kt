@@ -1,6 +1,7 @@
-package com.example.eraofband.remote.chat.patchChat
+package com.example.eraofband.remote.chat.leaveChat
 
 import android.util.Log
+import com.example.eraofband.data.LastChatIdx
 import com.example.eraofband.remote.API
 import com.example.eraofband.remote.BasicResponse
 import com.example.eraofband.remote.NetworkModule
@@ -8,18 +9,18 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PatchChatService {
-    private lateinit var patchChatView: PatchChatView
+class LeaveChatService {
+    private lateinit var leaveChatView: LeaveChatView
 
-    fun setChatView(patchChatView: PatchChatView) {
-        this.patchChatView = patchChatView
+    fun setChatView(leaveChatView: LeaveChatView) {
+        this.leaveChatView = leaveChatView
     }
 
-    fun patchChat(jwt: String, chatRoomIdx: String) {
+    fun leaveChat(jwt: String, chatRoomIdx: String, lastChatIdx: LastChatIdx) {
 
         val patchChatService = NetworkModule().getRetrofit()?.create(API::class.java)
 
-        patchChatService?.patchChat(jwt, chatRoomIdx)?.enqueue(object : Callback<BasicResponse> {
+        patchChatService?.leaveChat(jwt, chatRoomIdx,lastChatIdx)?.enqueue(object : Callback<BasicResponse> {
             override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                 // 응답이 왔을 때 처리
                 Log.d("PATCH CHAT / SUCCESS", response.toString())
@@ -27,8 +28,8 @@ class PatchChatService {
                 val resp : BasicResponse = response.body()!!
 
                 when(val code = resp.code) {
-                    1000 -> patchChatView.onPatchSuccess(resp.result)  // 성공
-                    else -> patchChatView.onPatchFailure(code, resp.message)
+                    1000 -> leaveChatView.onLeaveSuccess(resp.result)  // 성공
+                    else -> leaveChatView.onLeaveFailure(code, resp.message)
                 }
             }
 
