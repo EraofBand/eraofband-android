@@ -20,7 +20,6 @@ class UserMyPagePortfolioFragment : Fragment(), GetMyPofolView {
     private var _binding: FragmentUserMypagePortfolioBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

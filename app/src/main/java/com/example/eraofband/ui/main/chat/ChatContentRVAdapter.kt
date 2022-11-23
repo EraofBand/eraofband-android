@@ -14,7 +14,7 @@ import com.example.eraofband.databinding.ItemChatRightBinding
 import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
 
-class ChatContentRVAdapter(private val profileImg : String, private val nickname : String, private val chatIdx : String, private val userIdx : Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChatContentRVAdapter(private val profileImg : String, private val nickname : String, private val chatIdx : String, private val userIdx : Int, private val lastChatIdx: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var chatContents = arrayListOf<ChatComment>()
 
@@ -74,9 +74,10 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
 
         }
 
-        fun setRead(position: Int) {
+        private fun setRead(position: Int) {
             sendChatRef.child(chatIdx).child("comments").child("$position").child("readUser").setValue(true).addOnSuccessListener {
                 Log.d("EXECUTE", "SUCCESS")
+                Log.d("POSITION", "$position")
             }
         }
     }
@@ -129,7 +130,7 @@ class ChatContentRVAdapter(private val profileImg : String, private val nickname
 
         when (currentItem.type) {
             0 -> {
-                lastIndex = position
+                lastIndex = position + lastChatIdx + 1
                 (holder as LeftViewHolder).bind(currentItem, lastIndex)
             }
             1 -> (holder as RightViewHolder).bind(currentItem)
