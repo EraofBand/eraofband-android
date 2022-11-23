@@ -41,11 +41,10 @@ class ChatContentActivity : AppCompatActivity(), LeaveChatView {
     private lateinit var profileImg : String
     private lateinit var nickname : String
 
-    // 채팅방 인덱스
-    private var chatIdx = ""
-    // 마지막 채팅 인덱스
-    private var num = -1
-    private var lastChatIdx = -1
+    // 인덱스
+    private var chatIdx = ""  // 채팅방 인덱스
+    private var num = -1  // 불러온 채팅 수
+    private var lastChatIdx = -1  // 데베에 저장된 마지막 채팅 인덱스
 
     // 채팅 내역을 받아오기 위한 파이어베이스
     private val database = Firebase.database
@@ -142,43 +141,29 @@ class ChatContentActivity : AppCompatActivity(), LeaveChatView {
                     num = -1
                     chatRVAdapter.clearChat()  // 새로 불러오기 때문에 초기화 필요
 
-                    getChatRef.child(chatIdx).child("users").get().addOnSuccessListener {
-                        val user = it.getValue(ChatUser::class.java)
-                        var outIdx = -1
+                    for (commentSnapShot in snapshot.children) {  // 하나씩 불러옴
+                        val getData = commentSnapShot.getValue(ChatComment::class.java)
 
-                        if(user != null) {
-                            outIdx = if(user.firstUserIdx == getUserIdx()) {
-                                user.firstOutIdx
-                            } else {
-                                user.secondOutIdx
-                            }
-                        }
-
-                        for (commentSnapShot in snapshot.children) {  // 하나씩 불러옴
-                            val getData = commentSnapShot.getValue(ChatComment::class.java)
-
-                            // 여기서도 일단 나가기 기능 전이니까 outIdx 부분 뺐어요!!
-                            if (getData != null) {
-                                if(outIdx <= num) {
-                                    if (getData.userIdx == getUserIdx()) {
-                                        val chat: ChatComment = getData
-                                        chat.type = 1
-                                        chatRVAdapter.addNewChat(chat)  // 리사이클러뷰에 채팅을 한 개씩 추가
-                                        Log.d("FIRE/SUC", getData.toString())  // 추가 확인
-                                        Log.d("FIRE-NUM/SUC", num.toString())  // 추가 확인
-                                    } else {
-                                        val chat: ChatComment = getData
-                                        chat.type = 0
-                                        chatRVAdapter.addNewChat(chat)  // 리사이클러뷰에 채팅을 한 개씩 추가
-                                        Log.d("FIRE/SUC", getData.toString())  // 추가 확인
-                                        Log.d("FIRE-NUM/SUC", num.toString())  // 추가 확인
-                                    }
-
-                                    binding.chatContentRv.scrollToPosition(chatRVAdapter.itemCount - 1)
-                                    num++
+                        if (getData != null) {
+                            if(lastChatIdx <= num) {
+                                if (getData.userIdx == getUserIdx()) {
+                                    val chat: ChatComment = getData
+                                    chat.type = 1
+                                    chatRVAdapter.addNewChat(chat)  // 리사이클러뷰에 채팅을 한 개씩 추가
+                                    Log.d("FIRE/SUC", getData.toString())  // 추가 확인
+                                    Log.d("FIRE-NUM/SUC", num.toString())  // 추가 확인
+                                } else {
+                                    val chat: ChatComment = getData
+                                    chat.type = 0
+                                    chatRVAdapter.addNewChat(chat)  // 리사이클러뷰에 채팅을 한 개씩 추가
+                                    Log.d("FIRE/SUC", getData.toString())  // 추가 확인
+                                    Log.d("FIRE-NUM/SUC", num.toString())  // 추가 확인
                                 }
+
+                                binding.chatContentRv.scrollToPosition(chatRVAdapter.itemCount - 1)
                             }
                         }
+                        num++
                     }
                 }
             }
@@ -197,7 +182,8 @@ class ChatContentActivity : AppCompatActivity(), LeaveChatView {
         popupMenu.setOnMenuItemClickListener{item->
             if (item!!.itemId== R.id.chat_delete) {
                 // 채팅방 나가기 APi 호출
-                leaveChatService.leaveChat(getJwt()!!, chatIdx, LastChatIdx(chatRVAdapter.itemCount))
+                leaveChatService.leaveChat(getJwt()!!, chatIdx, LastChatIdx(num))
+                Log.d("LAST-CHAT-IDX", "$num")
             }
 
             false
@@ -208,25 +194,7 @@ class ChatContentActivity : AppCompatActivity(), LeaveChatView {
     // 채팅방 나가기 API
     override fun onLeaveSuccess(result: String) {
         Log.d("LEAVE/SUC", result)
-        val outIdx = chatRVAdapter.itemCount
-
-        getChatRef.child(chatIdx).child("users").get().addOnSuccessListener {
-            val user = it.getValue(ChatUser::class.java)!!
-            Log.d("USERS", user.toString())
-
-            if(user.firstUserIdx == getUserIdx()) {
-                // 아웃 인덱스를 firstUserIdx로 올려줌
-                sendChatRef.child(chatIdx).child("users").child("firstOutIdx").setValue(outIdx).addOnSuccessListener {
-                    finish()
-                }
-            } else {
-                // 아웃 인덱스를 firstUserIdx로 올려줌
-                sendChatRef.child(chatIdx).child("users").child("secondOutIdx").setValue(outIdx).addOnSuccessListener {
-                    finish()
-                }
-            }
-        }
-
+        finish()
     }
 
     override fun onLeaveFailure(code: Int, message: String) {

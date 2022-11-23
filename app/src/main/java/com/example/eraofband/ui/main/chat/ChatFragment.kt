@@ -97,7 +97,6 @@ class ChatFragment : Fragment(), GetChatListView, ActiveChatView, EnterChatRoomV
         })
     }
 
-
     private fun getUserIdx() : Int {
         val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
         return userSP.getInt("userIdx", 0)
