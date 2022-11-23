@@ -381,6 +381,10 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
 
     override fun onMakeFailure(code: Int, message: String) {
         Log.d("MAKE CHATROOM / FAIL", "$code $message")
+
+        if(code == 2004) {  // 둘 중 아무나 차단한 경우
+            setToast(message)
+        }
     }
 
     // 채팅방 들어가기 API
