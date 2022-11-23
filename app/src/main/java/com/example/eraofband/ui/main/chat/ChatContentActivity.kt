@@ -99,7 +99,7 @@ class ChatContentActivity : AppCompatActivity(), LeaveChatView {
     }
 
     private fun initAdapter(chatIdx : String) {
-        chatRVAdapter = ChatContentRVAdapter(profileImg, nickname, chatIdx, getUserIdx())
+        chatRVAdapter = ChatContentRVAdapter(profileImg, nickname, chatIdx, getUserIdx(), lastChatIdx)
         binding.chatContentRv.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.chatContentRv.adapter = chatRVAdapter
@@ -114,6 +114,11 @@ class ChatContentActivity : AppCompatActivity(), LeaveChatView {
         sendChatRef.child(chatIdx).child("users").setValue(ChatUser(firstIndex, -1, secondIndex, -1))
             .addOnSuccessListener {
                 Log.d("CREATE/SUC", chatIdx)
+
+                val message = binding.chatContentTextEt.text.toString()
+                val timeStamp = System.currentTimeMillis()
+
+                writeChat(ChatComment(message, false, timeStamp, getUserIdx()))
             }  // 채팅방 users 입력, 채팅방 생성
     }
 
@@ -162,8 +167,8 @@ class ChatContentActivity : AppCompatActivity(), LeaveChatView {
 
                                 binding.chatContentRv.scrollToPosition(chatRVAdapter.itemCount - 1)
                             }
+                            num++
                         }
-                        num++
                     }
                 }
             }
