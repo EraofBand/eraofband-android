@@ -38,6 +38,10 @@ class ChatFragment : Fragment(), GetChatListView, ActiveChatView, EnterChatRoomV
 
     private var chatIdx = ""
     private var lastChatIdx = -1
+    private lateinit var profileImg : String
+    private lateinit var nickname : String
+    private var userIdx = -1
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,26 +77,22 @@ class ChatFragment : Fragment(), GetChatListView, ActiveChatView, EnterChatRoomV
         chatRVAdapter.initChatList(result)
 
         chatRVAdapter.setMyItemClickListener(object : ChatRVAdapter.MyItemClickListener{
-            override fun onItemClick(chatIdx : String, profileImg: String, nickname : String, userIdx: Int, status: Int) {
+            override fun onItemClick(tempChatIdx : String, tempProfileImg: String, tempNickname : String, tempUserIdx: Int, status: Int) {
+                chatIdx = tempChatIdx
+                nickname = tempNickname
+                profileImg = tempProfileImg
+                userIdx = tempUserIdx
+
                 if (status == 0) {
                     activeChatService.activeChat(
                         getJwt()!!,
                         MakeChatRoom(chatIdx, getUserIdx(), userIdx)
                     )
                 }
+
                 enterChatRoomService.enterChatRoom(getJwt()!!, chatIdx)
                 Log.d("LAST CHAT INDEX", lastChatIdx.toString())
 
-                activity?.let {
-                    val intent = Intent(activity, ChatContentActivity::class.java)
-                    intent.putExtra("chatRoomIndex", chatIdx)
-                    intent.putExtra("profile", profileImg)
-                    intent.putExtra("nickname", nickname)
-                    intent.putExtra("firstIndex", getUserIdx())
-                    intent.putExtra("secondIndex", userIdx)
-                    intent.putExtra("lastChatIdx", lastChatIdx)
-                    startActivity(intent)
-                }
             }
         })
     }
@@ -159,6 +159,17 @@ class ChatFragment : Fragment(), GetChatListView, ActiveChatView, EnterChatRoomV
     override fun onEnterSuccess(result: EnterChatRoomResult) {
         Log.d("ENTER CHAT/ SUCCESS", result.toString())
         lastChatIdx = result.lastChatIdx
+
+        activity?.let {
+            val intent = Intent(activity, ChatContentActivity::class.java)
+            intent.putExtra("chatRoomIndex", chatIdx)
+            intent.putExtra("profile", profileImg)
+            intent.putExtra("nickname", nickname)
+            intent.putExtra("firstIndex", getUserIdx())
+            intent.putExtra("secondIndex", userIdx)
+            intent.putExtra("lastChatIdx", lastChatIdx)
+            startActivity(intent)
+        }
     }
 
     override fun onEnterFailure(code: Int, message: String) {

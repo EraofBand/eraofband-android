@@ -16,6 +16,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/chat_list_notification_iv"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:src="@drawable/red_circle_bg"
+        app:layout_constraintEnd_toEndOf="@id/chat_list_profile_iv"
+        app:layout_constraintBottom_toBottomOf="@id/chat_list_profile_iv"/>
+
     <TextView
         android:id="@+id/chat_list_nickname_tv"
         android:layout_width="0dp"

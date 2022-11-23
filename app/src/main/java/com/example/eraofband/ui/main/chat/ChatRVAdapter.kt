@@ -3,6 +3,7 @@ package com.example.eraofband.ui.main.chat
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -86,6 +87,10 @@ class ChatRVAdapter : RecyclerView.Adapter<ChatRVAdapter.ViewHolder>() {
 
                     Log.d("GET/DATA", getData!!.message)
                     Log.d("GET/DATA", "${getData.timeStamp}")
+                    Log.d("GET/DATA", "${getData!!.readUser}")
+
+                    if(!getData!!.readUser){ binding.chatListNotificationIv.visibility = View.VISIBLE }
+                    else { binding.chatListNotificationIv.visibility = View.GONE }
 
                     binding.chatListMessageTv.text = getData!!.message
 
