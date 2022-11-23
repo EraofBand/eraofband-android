@@ -21,6 +21,7 @@
         android:layout_width="12dp"
         android:layout_height="12dp"
         android:src="@drawable/red_circle_bg"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/chat_list_profile_iv"
         app:layout_constraintBottom_toBottomOf="@id/chat_list_profile_iv"/>
 

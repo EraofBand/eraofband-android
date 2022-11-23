@@ -106,7 +106,7 @@ class ChatBackUp: AppCompatActivity(), MakeChatView, IsChatRoomView, LeaveChatVi
 
 
     private fun initAdapter(chatIdx : String) {
-        chatRVAdapter = ChatContentRVAdapter(profileImg, nickname, chatIdx, getUserIdx())
+//        chatRVAdapter = ChatContentRVAdapter(profileImg, nickname, chatIdx, getUserIdx())
         binding.chatContentRv.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.chatContentRv.adapter = chatRVAdapter

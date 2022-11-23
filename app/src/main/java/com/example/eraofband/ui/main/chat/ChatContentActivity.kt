@@ -73,7 +73,7 @@ class ChatContentActivity : AppCompatActivity(), LeaveChatView {
         nickname = intent.getStringExtra("nickname")!!
 
         clickListener()
-        initAdapter(chatIdx)
+        initAdapter(chatIdx, lastChatIdx)
         getChats()
     }
 
@@ -98,8 +98,8 @@ class ChatContentActivity : AppCompatActivity(), LeaveChatView {
         }
     }
 
-    private fun initAdapter(chatIdx : String) {
-        chatRVAdapter = ChatContentRVAdapter(profileImg, nickname, chatIdx, getUserIdx())
+    private fun initAdapter(chatIdx : String, lastChatIdx : Int) {
+        chatRVAdapter = ChatContentRVAdapter(profileImg, nickname, chatIdx, getUserIdx(), lastChatIdx)
         binding.chatContentRv.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.chatContentRv.adapter = chatRVAdapter
@@ -114,6 +114,11 @@ class ChatContentActivity : AppCompatActivity(), LeaveChatView {
         sendChatRef.child(chatIdx).child("users").setValue(ChatUser(firstIndex, -1, secondIndex, -1))
             .addOnSuccessListener {
                 Log.d("CREATE/SUC", chatIdx)
+
+                val message = binding.chatContentTextEt.text.toString()
+                val timestamp = System.currentTimeMillis()
+
+                writeChat(ChatComment(message, false, timestamp, getUserIdx()))
             }  // 채팅방 users 입력, 채팅방 생성
     }
 
