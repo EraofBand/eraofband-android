@@ -68,7 +68,7 @@ class ChatFragment : Fragment(), GetChatListView, ActiveChatView, EnterChatRoomV
     }
 
     private fun initRVAdapter(result: ArrayList<ChatRoom>) {
-        chatRVAdapter = ChatRVAdapter()
+        chatRVAdapter = ChatRVAdapter(getUserIdx())
         binding.chatListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.chatListRv.adapter = chatRVAdapter
 
