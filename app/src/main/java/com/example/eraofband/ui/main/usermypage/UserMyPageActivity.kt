@@ -113,16 +113,6 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             isChatRoomService.isChatRoom(getJwt()!!, Users(getUserIdx(), otherUserIdx!!))
         }
 
-        val userMyPageAdapter = UserMyPageVPAdapter(this)
-        binding.userMypageVp.adapter = userMyPageAdapter
-
-        TabLayoutMediator(binding.userMypageTb, binding.userMypageVp) { tab, position ->
-            when (position) {
-                0 -> tab.text = "포트폴리오"
-                1 -> tab.text = "소속 밴드"
-            }
-        }.attach()
-
         binding.userMypageFollowTv.setOnSingleClickListener {  // 팔로우 리스트에서 언팔 및 팔로우 시 visibility 변경
             binding.userMypageFollowTv.visibility = View.INVISIBLE
             binding.userMypageUnfollowTv.visibility = View.VISIBLE
@@ -308,6 +298,17 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
                 binding.userMypageFollowTv.visibility = View.INVISIBLE
                 binding.userMypageUnfollowTv.visibility = View.VISIBLE
             }
+
+            // 뷰페이저 연동
+            val userMyPageAdapter = UserMyPageVPAdapter(this)
+            binding.userMypageVp.adapter = userMyPageAdapter
+
+            TabLayoutMediator(binding.userMypageTb, binding.userMypageVp) { tab, position ->
+                when (position) {
+                    0 -> tab.text = "포트폴리오"
+                    1 -> tab.text = "소속 밴드"
+                }
+            }.attach()
         }
     }
 
