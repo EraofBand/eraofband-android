@@ -367,15 +367,6 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             }
             enterChatRoomService.enterChatRoom(getJwt()!!, chatIdx)
         }
-
-        val intent = Intent(this, ChatContentActivity::class.java)
-        intent.putExtra("nickname", nickName)
-        intent.putExtra("profile", profileImg)
-        intent.putExtra("firstIndex", getUserIdx())
-        intent.putExtra("secondIndex", otherUserIdx)
-        intent.putExtra("lastChatIdx", lastChatIdx)
-        intent.putExtra("chatRoomIndex", chatIdx)
-        startActivity(intent)
     }
 
     override fun onExistsFailure(code: Int, message: String) {
@@ -390,7 +381,6 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     override fun onMakeFailure(code: Int, message: String) {
         Log.d("MAKE CHATROOM / FAIL", "$code $message")
     }
-
 
     // 채팅방 들어가기 API
     override fun onEnterSuccess(result: EnterChatRoomResult) {
