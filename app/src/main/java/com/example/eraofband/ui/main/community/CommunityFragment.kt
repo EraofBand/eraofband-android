@@ -56,7 +56,6 @@ class CommunityFragment : Fragment(), GetOtherPofolView, CommunityInterface {
         add = false
         pofolService.setPofolView(this)
         pofolService.getTotalPortfolio(getJwt()!!, 0)
-
         binding.communityTopEditIv.setOnClickListener { startActivity(Intent(activity, PortfolioMakeActivity::class.java)) }
 
         binding.communityTotalTv.setOnSingleClickListener {

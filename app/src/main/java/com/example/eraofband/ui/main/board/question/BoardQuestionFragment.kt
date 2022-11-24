@@ -102,7 +102,7 @@ class BoardQuestionFragment : Fragment(), GetBoardListView {
     }
 
     override fun onGetListSuccess(result: ArrayList<GetBoardListResult>) {
-        Log.d("GET BOARD LIST / Success", "$result")
+        Log.d("GET BOARD LIST / SUCCESS", result.toString())
         if (!add) connectAdapter(result)
         else mAdapter.initBoardList(result)
 

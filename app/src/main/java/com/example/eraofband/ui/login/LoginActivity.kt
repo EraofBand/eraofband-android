@@ -1,6 +1,9 @@
 package com.example.eraofband.ui.login
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,17 +18,38 @@ import com.example.eraofband.ui.signup.SignUpNicknameActivity
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.user.UserApiClient
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+import java.util.Base64.getEncoder
 
 class LoginActivity : AppCompatActivity(), CheckUserView {
 
     private lateinit var binding : ActivityLoginBinding
 
+    private fun getHashKey() {
+        var packageInfo: PackageInfo? = null
+        try {
+            packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+        if (packageInfo == null) Log.e("KeyHash", "KeyHash:null")
+        for (signature in packageInfo!!.signatures) {
+            try {
+                val md: MessageDigest = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                Log.d("KeyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT))
+            } catch (e: NoSuchAlgorithmException) {
+            }
+        }
+
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
-
+getHashKey()
         setContentView(binding.root)
 
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
@@ -56,7 +80,8 @@ class LoginActivity : AppCompatActivity(), CheckUserView {
                         Toast.makeText(this, "앱이 요청 권한이 없음", Toast.LENGTH_SHORT).show()
                     }
                     else -> { // Unknown
-                        Toast.makeText(this, "기타 에러", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "기타에러", Toast.LENGTH_SHORT).show()
+                        Log.d("login", error.toString())
                     }
                 }
             } else if (token != null) {

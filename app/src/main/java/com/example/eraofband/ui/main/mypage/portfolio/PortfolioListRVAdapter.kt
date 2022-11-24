@@ -18,6 +18,7 @@ import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeService
 import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeView
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.kakao.sdk.template.model.*
 
 class PortfolioListRVAdapter(private val jwt: String, private val context: Context) : RecyclerView.Adapter<PortfolioListRVAdapter.ViewHolder>(),
     PofolLikeView {
@@ -25,6 +26,7 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
     private var videoPlayer: ExoPlayer? = null
     private val pofolLikeService = PofolLikeService()
     private lateinit var mItemListener: MyItemListener
+    //private lateinit var defaultFeed: FeedTemplate
 
     @SuppressLint("NotifyDataSetChanged")
     fun initPortfolio(portfolio : List<GetPofolResult>) {
@@ -50,6 +52,7 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
         fun onShowComment(pofolIdx : Int)
         fun onShowPopup(portfolio: GetPofolResult, position: Int, view: View)
         fun onShowInfoPage(userIdx: Int)
+        fun sharePofol(defaultFeed: FeedTemplate)
     }
 
     fun setMyItemClickListener(itemListener: MyItemListener) {
@@ -70,20 +73,21 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
 
         // 좋아요 관련
         holder.binding.portfolioListLikeIv.setOnClickListener {
-            if(portfolio[position].likeOrNot == "Y") {  // 좋아요가 되어있는 경우, 좋아요 취소 진행
+            if (portfolio[position].likeOrNot == "Y") {  // 좋아요가 되어있는 경우, 좋아요 취소 진행
                 pofolLikeService.deleteLike(jwt, portfolio[position].pofolIdx)
                 holder.binding.portfolioListLikeIv.setImageResource(R.drawable.ic_heart_off)
 
                 portfolio[position].pofolLikeCount -= 1
-                holder.binding.portfolioListLikeCntTv.text = portfolio[position].pofolLikeCount.toString()
+                holder.binding.portfolioListLikeCntTv.text =
+                    portfolio[position].pofolLikeCount.toString()
                 portfolio[position].likeOrNot = "N"
-            }
-            else {  // 좋아요가 안되어있는 경우, 좋아요 진행
+            } else {  // 좋아요가 안되어있는 경우, 좋아요 진행
                 pofolLikeService.like(jwt, portfolio[position].pofolIdx)
                 holder.binding.portfolioListLikeIv.setImageResource(R.drawable.ic_heart_on)
 
                 portfolio[position].pofolLikeCount += 1
-                holder.binding.portfolioListLikeCntTv.text = portfolio[position].pofolLikeCount.toString()
+                holder.binding.portfolioListLikeCntTv.text =
+                    portfolio[position].pofolLikeCount.toString()
                 portfolio[position].likeOrNot = "Y"
             }
         }
@@ -106,7 +110,11 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
 
         // 댓글 수정, 신고하기 popup menu 띄우기
         holder.binding.portfolioListListIv.setOnClickListener {
-            mItemListener.onShowPopup(portfolio[position], position, holder.binding.portfolioListListIv)
+            mItemListener.onShowPopup(
+                portfolio[position],
+                position,
+                holder.binding.portfolioListListIv
+            )
             holder.binding.portfolioListVideoPv.player?.stop()
         }
     }
@@ -139,6 +147,34 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
             else binding.portfolioListLikeIv.setImageResource(R.drawable.ic_heart_off)
             binding.portfolioListLikeCntTv.text = portfolio.pofolLikeCount.toString()
             binding.portfolioListCommentCntTv.text = portfolio.commentCount.toString()
+
+            // 카카오링크 공유
+            var defaultFeed = FeedTemplate(
+                content = Content(
+                    title = portfolio.title,
+                    description = portfolio.content,
+                    imageUrl = portfolio.imgUrl,
+                    link = Link(
+                    )
+                ),
+                social = Social(
+                    likeCount = portfolio.pofolLikeCount,
+                    commentCount = portfolio.commentCount
+                ),
+                buttons = listOf(
+                    Button(
+                        "앱으로 보기",
+                        Link(
+                            androidExecutionParams = mapOf("test" to "test"),
+                            iosExecutionParams = mapOf("test" to "test")
+                        )
+                    )
+                )
+            )
+            // 포트폴리오 공유하기
+            binding.porfolioListShareIv.setOnClickListener {
+                mItemListener.sharePofol(defaultFeed)
+            }
         }
     }
 

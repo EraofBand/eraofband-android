@@ -16,11 +16,11 @@ class PatchBoardService {
         this.patchBoardView = patchBoardView
     }
 
-    fun patchBoard(jwt : String, bandIdx : Int, boardContent : BoardContent) {
+    fun patchBoard(jwt : String, boardIdx : Int, boardContent : BoardContent) {
 
         val patchBoardService = NetworkModule().getRetrofit()?.create(API::class.java)
 
-        patchBoardService?.patchBoard(jwt, bandIdx, boardContent)?.enqueue(object :
+        patchBoardService?.patchBoard(jwt, boardIdx, boardContent)?.enqueue(object :
             Callback<BasicResponse> {
             override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                 // 응답이 왔을 때 처리

@@ -3,6 +3,7 @@ package com.example.eraofband.remote.board.postBoard
 import android.util.Log
 import com.example.eraofband.data.Board
 import com.example.eraofband.remote.API
+import com.example.eraofband.remote.BasicResponse
 import com.example.eraofband.remote.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,20 +21,20 @@ class PostBoardService {
 
         val postBoardService = NetworkModule().getRetrofit()?.create(API::class.java)
 
-        postBoardService?.postBoard(jwt, board)?.enqueue(object : Callback<PostBoardResponse> {
-            override fun onResponse(call: Call<PostBoardResponse>, response: Response<PostBoardResponse>) {
+        postBoardService?.postBoard(jwt, board)?.enqueue(object : Callback<BasicResponse> {
+            override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                 // 응답이 왔을 때 처리
                 Log.d("POST BOARD / SUCCESS", response.toString())
 
-                val resp : PostBoardResponse = response.body()!!
+                val resp : BasicResponse = response.body()!!
 
                 when(val code = resp.code) {
-                    1000 -> postBoardView.onPostSuccess(code, resp.result)  // 성공
+                    1000 -> postBoardView.onPostSuccess(resp.result)  // 성공
                     else -> postBoardView.onPostFailure(code, resp.message)
                 }
             }
 
-            override fun onFailure(call: Call<PostBoardResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
                 // 네트워크 연결이 실패했을 때 실행
                 Log.d("POST BOARD / FAILURE", t.message.toString())
             }

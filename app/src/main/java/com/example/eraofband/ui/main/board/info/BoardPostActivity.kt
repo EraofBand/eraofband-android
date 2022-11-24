@@ -35,6 +35,7 @@ import com.example.eraofband.remote.board.boardLike.BoardLikeView
 import com.example.eraofband.remote.board.deleteBoard.DeleteBoardService
 import com.example.eraofband.remote.board.deleteBoard.DeleteBoardView
 import com.example.eraofband.remote.board.getBoard.*
+import com.example.eraofband.ui.main.board.BoardEditActivity
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.report.ReportDialog
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
@@ -64,7 +65,6 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
         binding = ActivityBoardPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        boardIdx = intent.getIntExtra("boardIdx", -1)
         likeService.setLikeView(this)
         commentService.setBoardView(this)
         textWatcher()
@@ -99,11 +99,14 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
                 else commentService.writeComment(getJwt()!!, boardIdx, Comment(comment, userIdx))
             }
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
+        boardIdx = intent.getIntExtra("boardIdx", -1)
         val boardService = GetBoardService()
         boardService.setBoardView(this)
         boardService.getBoard(getJwt()!!, boardIdx)
-
     }
 
     private fun initVP(img: List<GetBoardImgs>) {
@@ -180,7 +183,9 @@ class BoardPostActivity: AppCompatActivity(), GetBoardView, BoardCommentView, Bo
 
         popupMenu.setOnMenuItemClickListener { item ->
             if(item!!.itemId == R.id.board_edit) {
-                // 수정 창 띄우기
+                val intent = Intent(this@BoardPostActivity, BoardEditActivity::class.java)
+                intent.putExtra("boardIdx", boardIdx)
+                startActivity(intent)
             }
             else if (item.itemId == R.id.board_delete) {  // 게시물 삭제하기
                 val deleteService = DeleteBoardService()

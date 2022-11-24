@@ -18,7 +18,6 @@ import com.example.eraofband.remote.board.getBoard.GetBoardResponse
 import com.example.eraofband.remote.board.getBoardList.GetBoardListResponse
 import com.example.eraofband.remote.board.getMyBoardList.GetMyBoardListResponse
 import com.example.eraofband.remote.board.getMyCommentList.GetMyCommentListResponse
-import com.example.eraofband.remote.board.postBoard.PostBoardResponse
 import com.example.eraofband.remote.chat.enterChatRoom.EnterChatRoomResponse
 import com.example.eraofband.remote.chat.getChatList.GetChatListResponse
 import com.example.eraofband.remote.chat.isChatRoom.IsChatRoomResponse
@@ -166,6 +165,9 @@ interface API {
     // 내 포트폴리오 리스트 조회
     @GET("/pofols/info/{userIdx}")
     fun getMyPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<GetPofolResponse>
+
+    // 게시판 게시물 사진 수정
+
 
     // 내 포트폴리오 등록
     @POST("/pofols")
@@ -335,7 +337,7 @@ interface API {
 
     // 게시물 생성
     @POST("/board")
-    fun postBoard(@Header("X-ACCESS-TOKEN") jwt: String, @Body board : Board) : Call<PostBoardResponse>
+    fun postBoard(@Header("X-ACCESS-TOKEN") jwt: String, @Body board : Board) : Call<BasicResponse>
 
     // 게시물 사진 수정
     @POST("/board/board-img/{boardIdx}")
