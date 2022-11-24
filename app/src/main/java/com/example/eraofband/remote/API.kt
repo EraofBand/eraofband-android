@@ -195,6 +195,9 @@ interface API {
     @GET("/pofols/info/{userIdx}")
     fun getMyPofol(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<GetPofolResponse>
 
+    // 게시판 게시물 사진 수정
+
+
     // 내 포트폴리오 등록
     @POST("/pofols")
     fun makePofol(@Header("X-ACCESS-TOKEN") jwt: String, @Body portfolio: Portfolio) : Call<MakePofolResponse>

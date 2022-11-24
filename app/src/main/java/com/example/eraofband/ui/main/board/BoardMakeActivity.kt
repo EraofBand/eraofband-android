@@ -64,9 +64,6 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
         binding.boardMakePictureIv.setOnClickListener {
             initImageViewBand()
         }
-        if (postImgsUrl.size >= 5) {
-            binding.boardMakePictureIv.visibility = View.GONE
-        }
         initTopicSpinner()
     }
 
@@ -86,7 +83,11 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
 
     private fun initRVAdapter(item: List<PostImgUrl>) {
         val boardImgRVAdapter = BoardImgRVAdapter()
-
+        if (postImgsUrl.size >= 5) { // 사진이 5개 이상이면 추가 X
+            binding.boardMakePictureIv.visibility = View.GONE
+        } else {
+            binding.boardMakePictureIv.visibility = View.VISIBLE
+        }
         binding.boardMakePictureRv.adapter = boardImgRVAdapter
         binding.boardMakePictureRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
