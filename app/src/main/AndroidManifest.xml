@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.eraofband">
+    <!-- 인터넷 사용 권한 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 외부 저장소 접근 권한 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:name="com.example.eraofband.ui.login.GlobalApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_app_icon"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_app_icon_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.EraofBand"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
+
+        <!-- 카카오 로그인 AuthCodeHandler -->
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:host="kakaolink"
+                    android:scheme="@string/kakao_native_key" />
+
+                <data
+                    android:host="oauth"
+                    android:scheme="@string/kakao_native_key" />
+            </intent-filter>
+        </activity> <!-- FCM -->
+        <service
+            android:name="com.example.eraofband.ui.login.MyFirebaseInstanceIDService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name="com.example.eraofband.ui.splash.SplashActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.eraofband.ui.onboarding.OnboardingActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.signup.SignUpNicknameActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.signup.SignUpGenderActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.signup.SignUpProfileActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.signup.SignUpLocationActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.signup.SignUpSessionActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.signup.SignUpTermActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name=".ui.signup.SignUpFinishActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.login.LoginActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.main.MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.main.board.info.BoardPostActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustUnspecified|adjustPan"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.main.home.session.band.BandListActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.main.home.session.band.BandRecruitActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.main.home.lesson.LessonInfoActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.main.mypage.MyPageActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.main.mypage.ProfileEditActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.main.mypage.MyPageSettingActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.main.mypage.MyPageSessionActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.main.mypage.portfolio.PortfolioMakeActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.main.mypage.portfolio.PortfolioListActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.main.mypage.portfolio.PortfolioCommentActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustUnspecified|adjustPan"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.main.mypage.portfolio.PofolEditActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.main.mypage.follow.FollowActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.main.chat.ChatContentActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustUnspecified|adjustPan"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name="com.example.eraofband.ui.main.usermypage.UserMyPageActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name="com.example.eraofband.ui.main.usermypage.portfolio.UserPortfolioListActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name="com.example.eraofband.ui.main.home.session.band.BandMakeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name="com.example.eraofband.ui.main.home.session.band.BandEditActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".ui.main.home.session.band.album.BandMakeAlbumActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name="com.example.eraofband.ui.main.home.lesson.LessonMakeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name="com.example.eraofband.ui.main.home.lesson.LessonEditActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".ui.main.home.notice.NoticeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".ui.main.search.SearchActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".ui.main.board.BoardEditActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name=".ui.main.board.BoardMakeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+        <activity
+            android:name=".ui.main.block.UserBlockActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"  />
+    </application>
+
+</manifest>

@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lesson_info_top"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/lesson_info_back_iv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="15dp"
+            android:adjustViewBounds="true"
+            android:padding="5dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lesson_info_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pretendard_medium"
+            android:text="@string/lesson_info"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/lesson_info_list_iv"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_list"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/home_lesson_info_rl"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lesson_info_top">
+
+        <ScrollView
+            android:id="@+id/lesson_info_sv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:overScrollMode="never"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lesson_info_top">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/lesson_info_lesson_img_iv"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/medium_gray_round_bg"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintDimensionRatio="5:3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/lesson_info_lesson_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lesson_info_lesson_img_iv" />
+
+                <TextView
+                    android:id="@+id/lesson_info_lesson_intro_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text=""
+                    android:textColor="@color/gray"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="@+id/lesson_info_lesson_title_tv"
+                    app:layout_constraintStart_toStartOf="@+id/lesson_info_lesson_title_tv"
+                    app:layout_constraintTop_toBottomOf="@+id/lesson_info_lesson_title_tv" />
+
+                <TextView
+                    android:id="@+id/lesson_info_cnt_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text=""
+                    android:textColor="@color/blue"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="@+id/lesson_info_lesson_intro_tv"
+                    app:layout_constraintStart_toStartOf="@+id/lesson_info_lesson_intro_tv"
+                    app:layout_constraintTop_toBottomOf="@id/lesson_info_lesson_intro_tv" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/lesson_info_like_iv"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/gray_round_bg"
+                    android:padding="11dp"
+                    android:src="@drawable/ic_heart_off"
+                    android:tint="@color/blue"
+                    android:visibility="visible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lesson_info_cnt_tv" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/lesson_info_unlike_iv"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/gray_round_bg"
+                    android:padding="11dp"
+                    android:src="@drawable/ic_heart_on"
+                    android:tint="@color/blue"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lesson_info_cnt_tv" />
+
+                <TextView
+                    android:id="@+id/lesson_info_share_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/gray_round_bg"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:text="@string/share"
+                    android:textColor="@color/gray"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@id/lesson_info_like_iv"
+                    app:layout_constraintEnd_toStartOf="@id/lesson_info_apply_tv"
+                    app:layout_constraintStart_toEndOf="@id/lesson_info_like_iv"
+                    app:layout_constraintTop_toTopOf="@id/lesson_info_like_iv" />
+
+                <TextView
+                    android:id="@+id/lesson_info_apply_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/gray_round_bg"
+                    android:backgroundTint="@color/blue"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:gravity="center"
+                    android:text="@string/volunteer"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@id/lesson_info_like_iv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/lesson_info_share_tv"
+                    app:layout_constraintTop_toTopOf="@id/lesson_info_like_iv" />
+
+                <View
+                    android:id="@+id/lesson_info_line1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@color/tablayout_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lesson_info_like_iv" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/lesson_info_session_iv"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="25dp"
+                    android:src="@drawable/ic_lesson"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lesson_info_line1" />
+
+                <TextView
+                    android:id="@+id/lesson_info_session_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@string/lesson_session"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@id/lesson_info_session_iv"
+                    app:layout_constraintStart_toEndOf="@id/lesson_info_session_iv"
+                    app:layout_constraintTop_toTopOf="@id/lesson_info_session_iv" />
+
+                <TextView
+                    android:id="@+id/lesson_info_session_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text=""
+                    android:textColor="@color/blue"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@id/lesson_info_session_title_tv"
+                    app:layout_constraintStart_toEndOf="@id/lesson_info_session_title_tv"
+                    app:layout_constraintTop_toTopOf="@id/lesson_info_session_title_tv" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/lesson_info_area_iv"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="12dp"
+                    android:src="@drawable/ic_location"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lesson_info_session_iv" />
+
+                <TextView
+                    android:id="@+id/lesson_info_activity_area_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@string/activity_area"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@id/lesson_info_area_iv"
+                    app:layout_constraintStart_toEndOf="@id/lesson_info_area_iv"
+                    app:layout_constraintTop_toTopOf="@id/lesson_info_area_iv" />
+
+                <TextView
+                    android:id="@+id/lesson_info_area_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text=""
+                    android:textColor="@color/blue"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@id/lesson_info_activity_area_tv"
+                    app:layout_constraintStart_toEndOf="@id/lesson_info_activity_area_tv"
+                    app:layout_constraintTop_toTopOf="@id/lesson_info_activity_area_tv" />
+
+                <View
+                    android:id="@+id/lesson_info_line2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/tablayout_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lesson_info_area_iv" />
+
+                <TextView
+                    android:id="@+id/lesson_info_leader_info_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@string/teacher_info"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lesson_info_line2" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/lesson_info_teacher_profile_iv"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/profile_round_bg"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lesson_info_leader_info_tv" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/lesson_info_star_iv"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="-5dp"
+                    android:layout_marginBottom="-5dp"
+                    android:src="@drawable/ic_star"
+                    app:layout_constraintBottom_toBottomOf="@id/lesson_info_teacher_profile_iv"
+                    app:layout_constraintEnd_toEndOf="@id/lesson_info_teacher_profile_iv" />
+
+                <LinearLayout
+                    android:id="@+id/lesson_info_teacher_ly"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@id/lesson_info_teacher_profile_iv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/lesson_info_teacher_profile_iv"
+                    app:layout_constraintTop_toTopOf="@id/lesson_info_teacher_profile_iv">
+
+                    <TextView
+                        android:id="@+id/lesson_info_teacher_nickname_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:maxLines="1" />
+
+                    <TextView
+                        android:id="@+id/lesson_info_teacher_intro_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/gray"
+                        android:textSize="12sp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:maxLines="1"
+                        android:layout_marginTop="5dp"/>
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/lesson_info_line3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@color/tablayout_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lesson_info_teacher_profile_iv" />
+
+                <TextView
+                    android:id="@+id/lesson_info_intro_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="25dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@string/lesson_intro"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lesson_info_line3" />
+
+                <TextView
+                    android:id="@+id/lesson_info_intro_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:maxLines="3"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="4dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="15dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lesson_info_intro_title_tv" />
+
+                <View
+                    android:id="@+id/lesson_info_line4"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@color/tablayout_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lesson_info_intro_tv" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/lesson_recruit_info_member"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="130dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lesson_info_line4">
+
+                    <TextView
+                        android:id="@+id/lesson_info_student_title_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="25dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="@string/student_list"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/lesson_info_student_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:nestedScrollingEnabled="false"
+                        android:overScrollMode="never"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/lesson_info_student_title_tv" />
+
+                    <TextView
+                        android:id="@+id/lesson_info_no_member_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/pretendard_bold"
+                        android:text="@string/no_student"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/lesson_info_student_title_tv" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/lesson_info_line5"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="05dp"
+                    android:background="@color/tablayout_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lesson_recruit_info_member" />
+
+                <TextView
+                    android:id="@+id/lesson_info_chat_title_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="25dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="@string/chat_link"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lesson_info_line5" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/lesson_info_chat_cl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="50dp"
+                    android:background="@drawable/gray_round_bg"
+                    android:paddingVertical="15dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lesson_info_chat_title_tv">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/lesson_info_chat_iv"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginStart="20dp"
+                        android:src="@drawable/ic_chat"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/lesson_info_chat_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="20dp"
+                        android:autoLink="web"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:linksClickable="true"
+                        android:text="@string/link_for_student"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/lesson_info_chat_iv"
+                        app:layout_constraintTop_toTopOf="@id/lesson_info_chat_iv" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

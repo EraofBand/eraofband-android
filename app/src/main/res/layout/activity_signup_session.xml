@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/signup_session_back_iv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:padding="5dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="55dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/signup_session_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="45dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signup_session_back_iv">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:src="@drawable/ic_signup_progress" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_marginStart="7dp"
+            android:src="@drawable/ic_signup_progress" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_marginStart="7dp"
+            android:src="@drawable/ic_signup_progress" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_marginStart="7dp"
+            android:src="@drawable/ic_signup_progress" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="25dp"
+            android:layout_height="5dp"
+            android:layout_marginStart="7dp"
+            android:src="@drawable/ic_signup_progress_selected" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:layout_marginStart="7dp"
+            android:src="@drawable/ic_signup_progress" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/signup_session_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/pretendard_regular"
+        android:text="@string/signup_session_title"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signup_session_progress" />
+
+
+    <CheckBox
+        android:id="@+id/signup_session_vocal_cb"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/ic_vocal_selector"
+        android:button="@null"
+        app:layout_constraintStart_toStartOf="@id/signup_session_title_tv"
+        app:layout_constraintTop_toBottomOf="@id/signup_session_title_tv" />
+
+    <TextView
+        android:id="@+id/signup_session_vocal_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="@string/vocal"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/signup_session_vocal_cb"
+        app:layout_constraintStart_toStartOf="@+id/signup_session_vocal_cb"
+        app:layout_constraintTop_toBottomOf="@+id/signup_session_vocal_cb" />
+
+
+    <CheckBox
+        android:id="@+id/signup_session_guitar_cb"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/ic_guitar_selector"
+        android:button="@null"
+        app:layout_constraintEnd_toStartOf="@id/signup_session_base_cb"
+        app:layout_constraintStart_toEndOf="@id/signup_session_vocal_cb"
+        app:layout_constraintTop_toTopOf="@id/signup_session_vocal_cb" />
+
+    <TextView
+        android:id="@+id/signup_session_guitar_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="@string/guitar"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/signup_session_guitar_cb"
+        app:layout_constraintStart_toStartOf="@+id/signup_session_guitar_cb"
+        app:layout_constraintTop_toBottomOf="@+id/signup_session_guitar_cb" />
+
+
+    <CheckBox
+        android:id="@+id/signup_session_base_cb"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/ic_base_selector"
+        android:button="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/signup_session_vocal_cb" />
+
+    <TextView
+        android:id="@+id/signup_session_base_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="@string/base"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/signup_session_base_cb"
+        app:layout_constraintStart_toStartOf="@+id/signup_session_base_cb"
+        app:layout_constraintTop_toBottomOf="@+id/signup_session_base_cb" />
+
+    <CheckBox
+        android:id="@+id/signup_session_keyboard_cb"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/ic_keyboard_selector"
+        android:button="@null"
+        app:layout_constraintStart_toStartOf="@id/signup_session_vocal_cb"
+        app:layout_constraintTop_toBottomOf="@id/signup_session_vocal_cb" />
+
+    <TextView
+        android:id="@+id/signup_session_keyboard_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="@string/keyboard"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/signup_session_keyboard_cb"
+        app:layout_constraintStart_toStartOf="@+id/signup_session_keyboard_cb"
+        app:layout_constraintTop_toBottomOf="@+id/signup_session_keyboard_cb" />
+
+    <CheckBox
+        android:id="@+id/signup_session_drum_cb"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@drawable/ic_drum_selector"
+        android:button="@null"
+        app:layout_constraintStart_toStartOf="@id/signup_session_guitar_cb"
+        app:layout_constraintTop_toTopOf="@id/signup_session_keyboard_cb" />
+
+    <TextView
+        android:id="@+id/signup_session_drum_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/pretendard_medium"
+        android:text="@string/drum"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="@+id/signup_session_drum_cb"
+        app:layout_constraintStart_toStartOf="@+id/signup_session_drum_cb"
+        app:layout_constraintTop_toBottomOf="@+id/signup_session_drum_cb" />
+
+
+    <Button
+        android:id="@+id/signup_session_next_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="80dp"
+        android:background="@drawable/blue_round_bg"
+        android:fontFamily="@font/pretendard_regular"
+        android:paddingVertical="10dp"
+        android:text="@string/next"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

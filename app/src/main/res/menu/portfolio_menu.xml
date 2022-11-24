@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/portfolio_edit_gr">
+        <item
+            android:id="@+id/portfolio_edit"
+            android:title="@string/portfolio_edit" />
+    </group>
+    <group android:id="@+id/portfolio_delete_gr">
+        <item
+            android:id="@+id/portfolio_delete"
+            android:title="@string/portfolio_delete" />
+    </group>
+    <group android:id="@+id/portfolio_report_gr">
+        <item
+            android:id="@+id/portfolio_report"
+            android:title="@string/portfolio_report" />
+    </group>
+</menu>

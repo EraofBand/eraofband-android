@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/datepicekr_bg"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <DatePicker
+        android:id="@+id/dialog_datepicker_dark"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner"
+        android:theme="@style/AppTheme.Picker"
+        android:calendarTextColor="@color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/dialog_dark_next_tv"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/blue_round_bg"
+        android:fontFamily="@font/pretendard_medium"
+        android:paddingVertical="12dp"
+        android:text="@string/check"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dialog_datepicker_dark"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

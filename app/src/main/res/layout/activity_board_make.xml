@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/board_make_actionbar_cl"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/board_make_back_ib"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/ic_back"
+            android:background="@color/transparent"
+            android:scaleType="fitCenter"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/board_make_title_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/board_make"
+            android:textSize="20sp"
+            android:fontFamily="@font/pretendard_medium"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/board_make_nsv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/board_make_actionbar_cl"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/board_make_cl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/board_make_topic_sp"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:spinnerMode="dropdown"
+                android:background="@drawable/spinner_bg"
+                android:popupBackground="@color/background"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <EditText
+                android:id="@+id/board_make_title_et"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:minHeight="42dp"
+                android:hint="@string/title"
+                android:textColorHint="@color/content"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:fontFamily="@font/pretendard_regular"
+                android:background="@drawable/gray_round_bg"
+                android:maxLength="50"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintTop_toBottomOf="@id/board_make_topic_sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <EditText
+                android:id="@+id/board_make_content_et"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:minHeight="155dp"
+                android:hint="@string/board_content"
+                android:textColorHint="@color/content"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:fontFamily="@font/pretendard_regular"
+                android:background="@drawable/gray_round_bg"
+                android:gravity="top"
+                android:maxLength="500"
+                android:paddingVertical="15dp"
+                android:paddingHorizontal="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintTop_toBottomOf="@id/board_make_title_et"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/board_make_picture_rv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="@id/board_make_content_et"
+                app:layout_constraintTop_toBottomOf="@id/board_make_content_et" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/board_make_picture_iv"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/gray_round_bg"
+                android:padding="10dp"
+                android:src="@drawable/ic_add_picture"
+                app:layout_constraintStart_toEndOf="@id/board_make_picture_rv"
+                app:layout_constraintTop_toTopOf="@+id/board_make_picture_rv" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <TextView
+        android:id="@+id/board_make_register_btn"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="@string/board_btn"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:fontFamily="@font/pretendard_medium"
+        android:gravity="center"
+        android:background="@drawable/blue_round_bg"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

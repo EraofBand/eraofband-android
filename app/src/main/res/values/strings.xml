@@ -1,0 +1,305 @@
+<resources>
+    <string name="app_name">밴드의 시대</string>
+
+    <!-- 왠지 자주 쓸 거 같은 애들은 위에 올려둘게요 -->
+    <string name="next">다음</string>
+    <string name="start">시작하기</string>
+    <string name="see_all">모두보기</string>
+    <string name="total">전체</string>
+    <string name="more">더보기</string>
+    <string name="complete">완료</string>
+    <string name="cancel">취소하기</string>
+    <string name="delete_user">(탈퇴 유저)</string>
+    <string name="check">확인</string>
+    <string name="notice">알림</string>
+    <string name="zero">0</string>
+
+    <!-- 온보딩 화면 관련 String -->
+    <string name="skip">SKIP</string>
+    
+    <string name="onboarding_band_title">밴드결성을 쉽고 간편하게</string>
+    <string name="onboarding_band_info">모집 중인 밴드에 가입하거나\n직접 밴드를 결성해 세션들을 모집할 수 있어요</string>
+
+    <string name="onboarding_lesson_title">레슨 정보도 빠르게!</string>
+    <string name="onboarding_lesson_info">복잡하고 알기 어려웠던 주변의 악기, 보컬 레슨에\n대한 정보를 한눈에 확인할 수 있어요</string>
+
+    <string name="onboarding_portfolio_title">나만의 음악 포트폴리오 만들기</string>
+    <string name="onboarding_portfolio_info">열심히 연습한 곡들을 나만의 음악 포트폴리오에\n추가해 모두에게 내 실력을 뽐낼 수 있어요</string>
+
+    <string name="onboarding_together_title">이제 음악은 함께 즐겨야지!</string>
+    <string name="onboarding_together_info">다양한 사람들과 포트폴리오를 공유하고 게시판, 채팅을\n통해 자유롭게 소통할 수 있어요</string>
+
+    <!-- 로그인 관련 String -->
+    <string name="login_title">지금 당신은 밴드의 시대를\n열 준비가 되셨나요?</string>
+    <string name="kakao_login">Kakao로 시작하기</string>
+
+    <!-- 회원가입 관련 String -->
+    <string name="nickname">닉네임</string>
+    <string name="signup_nickname_title">밴드의 시대에 오신 것을\n진심으로 환영합니다</string>
+    <string name="signup_nickname_start">프로필을 입력하고 제대로 즐겨보아요!</string>
+
+    <string name="signup_gender_title">성별과 생년월일을\n선택해주세요</string>
+    <string name="gender">성별</string>
+    <string name="man">남</string>
+    <string name="woman">여</string>
+    <string name="birthday">생년월일</string>
+
+    <string name="signup_profile_title">다른 뮤지션들이\n회원님을 더 잘 알 수 있도록\n프로필 사진을 선택해주세요</string>
+
+    <string name="signup_location_title">활동 지역을 선택해주세요</string>
+    <string name="signup_location_subtitle">서울, 경기를 제외한 지역은 조금만 기다려주세요!</string>
+
+    <string name="signup_session_title">희망하는 세션을 선택해주세요</string>
+
+    <string name="signup_term_title">서비스 약관에 동의해주세요!</string>
+    <string name="signup_term_all_agree">모든 약관에 동의합니다.</string>
+    <string name="signup_mola">미정(필수)</string>
+    <string name="signup_mola2">미정(선택)</string>
+
+    <string name="signup_finish">밴드의 시대에 오신 것을\n진심으로 환영합니다!</string>
+
+    <!-- 카카오 로그인 앱 키 -->
+    <string name="kakao_app_key">ccf29d74d82be869acd9bcd90e665533</string>
+    <string name="kakao_native_key">kakaoccf29d74d82be869acd9bcd90e665533</string>
+    
+    <!-- 설정 관련 String -->
+    <string name="setting">설정</string>
+    <string name="setting_notice">공지사항</string>
+    <string name="version_info">버전 정보</string>
+    <string name="mail">문의 메일 작성</string>
+    <string name="notice_setting">알림 설정</string>
+    <string name="logout">로그아웃</string>
+    <string name="sign_out">회원 탈퇴</string>
+
+    <!-- 홈 화면 밴드, 레슨 생성 관련 String -->
+    <string name="make_band">밴드 생성</string>
+    <string name="make_lesson">레슨 생성</string>
+
+    <!-- 밴드 리스트 관련 String -->
+    <string name="band_list">생성된 밴드 리스트</string>
+
+    <!-- 밴드 모집 페이지 관련 String -->
+    <string name="share">공유하기</string>
+    <string name="band_intro">밴드 소개</string>
+    <string name="session_recruit">세션 모집</string>
+    <string name="album">앨범</string>
+
+    <string name="show_or_not">공연 여부</string>
+    <string name="activity_area">활동 지역</string>
+    <string name="leader_info">리더 정보</string>
+    <string name="member">멤버</string>
+    <string name="no_member">아직 멤버가 존재하지 않습니다</string>
+    <string name="show_date">공연 일정</string>
+    <string name="no_perform">공연을 준비중입니다!</string>
+    <string name="chat_link">채팅방 링크</string>
+
+    <string name="volunteer_list">지원자 목록</string>
+    <string name="no_volunteer">아직 지원자가 존재하지 않습니다</string>
+    <string name="recruit_decide">모집 결정</string>
+    <string name="recruiting">모집 중</string>
+    <string name="volunteer">지원하기</string>
+
+    <string name="apply_complete">지원 완료</string>
+    <string name="session_apply">세션 지원</string>
+    <string name="session_apply_info">밴드에 지원하시겠습니까?</string>
+
+    <!-- 밴드 생성 관련 String -->
+    <string name="band_make_subtitle">밴드의 정보를 입력해주세요</string>
+    <string name="band_title">밴드 이름</string>
+    <string name="name">타이틀</string>
+    <string name="band_one_intro_info">밴드 한 줄 소개를 작성해주세요.</string>
+    <string name="band_intro_info">밴드를 소개해주세요!</string>
+    <string name="band_add_photo_info">밴드를 대표하는 사진 한장을 추가해 주세요.</string>
+    <string name="band_session_num_info">세션 모집 인원을 정해주세요</string>
+    <string name="band_session_num_sub_info">자신의 세션 제외</string>
+    <string name="band_make_session_info">희망하는 세션의 특징을 간단하게 적어주세요</string>
+
+    <!-- 밴드 수정 관련 String -->
+    <string name="band_edit_title">밴드 수정</string>
+    <string name="band_edit_sub_title">밴드의 정보를 수정해주세요</string>
+    <string name="band_perform_info">공연 정보</string>
+    <string name="perform_title">공연 이름</string>
+    <string name="date">날짜</string>
+    <string name="location">장소</string>
+    <string name="perform_location_info">장소를 입력해주세요.</string>
+    <string name="perform_fee">요금</string>
+    <string name="perform_fee_info">공연의 입장료를 입력해주세요.</string>
+
+    <!-- 레슨 생성 관련 String -->
+    <string name="lesson_make">레슨 생성</string>
+    <string name="lesson_make_info">레슨 정보를 입력해주세요</string>
+    <string name="lesson_title">레슨 이름</string>
+    <string name="lesson_intro_one">한 줄 소개</string>
+    <string name="lesson_intro_one_info">레슨 한 줄 소개를 작성해주세요.</string>
+    <string name="recruit_num">모집 인원</string>
+    <string name="lesson_recruit_num_info">희망하는 인원수를 입력해주세요</string>
+    <string name="first_photo">대표 사진</string>
+    <string name="lesson_add_photo">사진 추가</string>
+    <string name="lesson_add_photo_info">레슨을 대표하는 사진 한장을 추가해 주세요.</string>
+    <string name="lesson_intro_info">레슨을 소개해주세요!</string>
+    <string name="add_chat_link">채팅방 링크를 등록해주세요</string>
+
+    <!-- 레슨 수정 관련 String -->
+    <string name="lesson_edit_title">레슨 수정</string>
+    <string name="lesson_edit_info">레슨 정보를 수정해주세요</string>
+
+    <!-- 레슨 모집 페이지 관련 String -->
+    <string name="lesson_info">레슨 정보</string>
+    <string name="lesson_session">레슨 종목</string>
+    <string name="teacher_info">강사 정보</string>
+    <string name="lesson_intro">레슨 소개</string>
+    <string name="student_list">수강생 목록</string>
+
+    <string name="no_student">아직 수강생이 존재하지 않습니다!</string>
+    <string name="link_for_student">수강생에게만 공개됩니다.</string>
+
+    <!-- 검색 관련 String -->
+    <string name="search_info">검색어를 입력해주세요.</string>
+    <string name="search_following_hint">팔로잉 검색창</string>
+    <string name="search_follower_hint">팔로워 검색창</string>
+
+    <!-- 게시판 관련 String -->
+    <string name="board">게시판</string>
+
+    <string name="my_write_board">작성 글</string>
+    <string name="my_comment_board">댓글 단 글</string>
+
+    <!-- 피드 관련 String -->
+    <string name="feed">피드</string>
+    <string name="follow">팔로우</string>
+
+    <!-- 게시판 관련 String -->
+    <string name="board_edit">게시물 수정하기</string>
+    <string name="board_remove">게시물 삭제하기</string>
+    <string name="board_report">게시물 신고하기</string>
+
+    <!-- 게시글 자세히 보기 관련 String -->
+    <string name="free_board">자유게시판</string>
+    <string name="question_board">질문게시판</string>
+    <string name="promotion_board">홍보게시판</string>
+    <string name="sell_board">거래게시판</string>
+    <string name="my_board">MY게시판</string>
+
+    <string name="time">시간</string>
+    <string name="view_cnt">조회수</string>
+
+    <string name="write_reply">답글 달기</string>
+    <string name="write_reply_info">님에게 답글을 남기는 중</string>
+
+    <string name="enter_message">메세지를 입력해주세요.</string>
+    <string name="enter">입력</string>
+
+    <string name="delete_comment">삭제된 댓글입니다.</string>
+
+    <!-- 마이페이지 관련 String -->
+    <string name="mypage">마이페이지</string>
+    <string name="look_more">더보기</string>
+
+    <string name="session">세션</string>
+    <string name="edit">변경하기</string>
+    <string name="edit_session">세션 변경</string>
+
+    <string name="vocal">보컬</string>
+    <string name="keyboard">키보드</string>
+    <string name="drum">드럼</string>
+    <string name="guitar">기타</string>
+    <string name="base">베이스</string>
+
+    <string name="following">팔로잉</string>
+    <string name="follower">팔로워</string>
+    <string name="like">좋아요</string>
+
+    <string name="introduce">소개</string>
+    <string name="portfolio">포트폴리오</string>
+    <string name="belong_band">소속밴드</string>
+
+    <string name="message">메세지</string>
+    <string name="unfollow">언팔로잉</string>
+
+    <string name="user_report">유저 신고하기</string>
+    <string name="user_block">유저 차단하기</string>
+
+    <string name="no_user_band">참여하고 있는 밴드가 없습니다</string>
+    <string name="user_make_band">직접 밴드를 만들어보세요!</string>
+    <string name="no_user_lesson">레슨을 신청해보세요!</string>
+
+    <string name="add_album_title">앨범 등록</string>
+    <string name="add_album">앨범 등록하기</string>
+    <string name="add_album_info">밴드와 관련된 사진 한 장을 추가해 주세요.</string>
+
+    <!-- 포트폴리오 등록 관련 String -->
+    <string name="makePortfolio">포트폴리오 등록</string>
+    <string name="title">제목</string>
+    <string name="uploadVideo">포트폴리오 영상 등록</string>
+    <string name="make_portfolio_info">200MB 이하의\n영상을 추가해주세요</string>
+    <string name="explainPortfolio">포트폴리오에 대해 설명해주세요.</string>
+    <string name="make">등록하기</string>
+
+    <!-- 포트폴리오 수정 관련 String -->
+    <string name="portfolio_edit_title">포트폴리오 수정</string>
+    <string name="portfolio_edit_info">포트폴리오에 대해 설명해주세요.</string>
+    <string name="edit2">수정하기</string>
+
+    <string name="portfolio_edit">포트폴리오 수정하기</string>
+    <string name="portfolio_delete">포트폴리오 삭제하기</string>
+    <string name="portfolio_report">포트폴리오 신고하기</string>
+
+    <!-- 밴드 수정 관련 String-->
+    <string name="band_edit">밴드 수정하기</string>
+    <string name="band_delete">밴드 삭제하기</string>
+    <string name="band_leave">밴드 탈퇴하기</string>
+    <string name="band_report">밴드 신고하기</string>
+
+    <!-- 레슨 수정 관련 String-->
+    <string name="lesson_edit">레슨 수정하기</string>
+    <string name="lesson_delete">레슨 삭제하기</string>
+    <string name="lesson_leave">레슨 탈퇴하기</string>
+    <string name="lesson_report">레슨 신고하기</string>
+
+    <!-- 프로필 편집 관련 String -->
+    <string name="profile_edit">프로필 편집</string>
+    <string name="my_introduce">내 소개</string>
+    <string name="region">지역</string>
+    <string name="save">저장하기</string>
+    <string name="title_activity_portfolio_make">PortfolioMakeActivity</string>
+
+    <!-- 댓글 관련 String -->
+    <string name="comment">댓글</string>
+    <string name="comment_hint">댓글을 입력해주세요.</string>
+    <string name="upload">입력</string>
+    <string name="comment_delete">댓글 삭제하기</string>
+    <string name="comment_report">댓글 신고하기</string>
+
+    <!--채팅 관련 String -->
+    <string name="chat">채팅</string>
+    <string name="chat_exit">채팅방 나가기</string>
+    <string name="send">보내기</string>
+
+    <!--게시물 생성 관련 String -->
+    <string name="board_btn">생성하기</string>
+    <string name="board_content">게시물의 내용을 입력해주세요.</string>
+    <string name="board_make">게시물 생성</string>
+
+    <!--게시물 수정 관련 String -->
+    <string name="board_edit_btn">수정하기</string>
+    <string name="board_edit_">게시물 수정</string>
+
+    <!-- 신고 관련 String -->
+    <string name="report">신고하기</string>
+    <string name="report_info">신고 사유를 적어주세요.</string>
+    <string name="report_suc">신고가 완료되었습니다 :)</string>
+    
+    <!-- 차단 관련 String -->
+    <string name="block_list">차단 리스트</string>
+    <string name="block">차단하기</string>
+    <string name="cancel_block">차단 해제</string>
+
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+</resources>

@@ -1,0 +1,67 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.EraofBand" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- 어플 포인트 컬러 -->
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryVariant">@color/blue</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/blue</item>
+        <item name="colorSecondaryVariant">@color/blue</item>
+        <item name="colorOnSecondary">@color/black</item>
+
+        <!-- 어플 배경색 설정 #111111 -->
+        <item name="android:windowBackground">@color/background</item>
+
+        <!-- 상태바 반투명 설정 -->
+        <item name="android:windowTranslucentStatus">true</item>
+
+        <!-- 네비게이션 바 색상 설정 -->
+        <item name="android:navigationBarColor">@color/black</item>
+
+    </style>
+
+    <!-- 탭레이아웃 텍스트 설정 -->
+    <style name="tab_text" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <!-- 탭레이아웃 홈 텍스트 설정 -->
+    <style name="tab_home_text" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">17sp</item>
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <!-- 탭레이아웃 게시판 텍스트 설정 -->
+    <style name="tab_board_text" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/pretendard_medium</item>
+    </style>
+
+    <style name="Theme.EraofBand.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.EraofBand.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.EraofBand.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!-- Popup Menu -->
+    <style name="AppTheme" parent="Widget.AppCompat.Light.PopupMenu">
+        <item name="android:itemBackground">@android:color/black</item>
+    </style>
+
+    <style name="AppTheme2" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/bottom_nav</item>
+        <item name="colorAccent">@color/blue</item>
+        ...
+        <item name="android:timePickerStyle">@style/MyTimePickerTheme</item>
+    </style>
+
+
+
+</resources>

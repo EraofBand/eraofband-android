@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.home.session.HomeSessionFragment"
+    android:id="@+id/home_session_rl">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/home_session_nsv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/home_cl_1"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="7dp"
+                android:paddingHorizontal="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/home_detail_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="나와 함께할 밴드 찾아보기"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/home_detail_iv"
+                    android:layout_width="10dp"
+                    android:layout_height="16dp"
+                    android:background="@drawable/ic_home_arrow_right"
+                    app:layout_constraintBottom_toBottomOf="@+id/home_detail_tv"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/home_detail_tv" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/home_cl_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingHorizontal="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_cl_1">
+
+                <ImageView
+                    android:id="@+id/home_session_vocal_iv"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_vocal_on"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/home_session_vocal_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="보컬"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/home_session_vocal_iv"
+                    app:layout_constraintStart_toStartOf="@id/home_session_vocal_iv"
+                    app:layout_constraintTop_toBottomOf="@id/home_session_vocal_iv" />
+
+                <ImageView
+                    android:id="@+id/home_session_guitar_iv"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_guitar_on"
+                    app:layout_constraintEnd_toStartOf="@+id/home_session_base_iv"
+                    app:layout_constraintStart_toEndOf="@id/home_session_vocal_iv"
+                    app:layout_constraintTop_toTopOf="@id/home_session_vocal_iv" />
+
+                <TextView
+                    android:id="@+id/home_session_guitar_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="기타"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/home_session_guitar_iv"
+                    app:layout_constraintStart_toStartOf="@id/home_session_guitar_iv"
+                    app:layout_constraintTop_toBottomOf="@id/home_session_guitar_iv" />
+
+                <ImageView
+                    android:id="@+id/home_session_base_iv"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_base_on"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/home_session_guitar_iv" />
+
+                <TextView
+                    android:id="@+id/home_session_base_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="베이스"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/home_session_base_iv"
+                    app:layout_constraintStart_toStartOf="@id/home_session_base_iv"
+                    app:layout_constraintTop_toBottomOf="@id/home_session_base_iv" />
+
+                <ImageView
+                    android:id="@+id/home_session_keyboard_iv"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_keyboard_on"
+                    app:layout_constraintEnd_toStartOf="@+id/home_session_drum_iv"
+                    app:layout_constraintStart_toEndOf="@+id/home_session_base_iv"
+                    app:layout_constraintTop_toTopOf="@id/home_session_base_iv" />
+
+                <TextView
+                    android:id="@+id/home_session_keyboard_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="키보드"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/home_session_keyboard_iv"
+                    app:layout_constraintStart_toStartOf="@id/home_session_keyboard_iv"
+                    app:layout_constraintTop_toBottomOf="@id/home_session_keyboard_iv" />
+
+                <ImageView
+                    android:id="@+id/home_session_drum_iv"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/ic_drum_on"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/home_session_keyboard_iv" />
+
+                <TextView
+                    android:id="@+id/home_session_drum_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/pretendard_medium"
+                    android:text="드럼"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/home_session_drum_iv"
+                    app:layout_constraintStart_toStartOf="@id/home_session_drum_iv"
+                    app:layout_constraintTop_toBottomOf="@id/home_session_drum_iv" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/home_new_band_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="40dp"
+                android:text="새롭게 결성되었어요!"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/home_cl_2" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_new_band_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:paddingEnd="15dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_new_band_tv"
+                tools:listitem="@layout/item_session_new_band" />
+
+            <TextView
+                android:id="@+id/home_popular_band_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/pretendard_medium"
+                android:text="인기 있는 밴드"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_new_band_rv" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/home_popular_band_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:layout_constraintBottom_toTopOf="@id/view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_popular_band_tv"
+                tools:listitem="@layout/item_popular_band" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="40dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_popular_band_rv" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

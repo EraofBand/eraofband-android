@@ -1,0 +1,163 @@
+package com.example.eraofband.ui.main.home.session.band
+
+import android.content.Intent
+import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.eraofband.R
+import com.example.eraofband.databinding.ActivityBandListBinding
+import com.example.eraofband.remote.band.getRegionBand.GetRegionBandResult
+import com.example.eraofband.remote.band.getRegionBand.GetRegionBandService
+import com.example.eraofband.remote.band.getRegionBand.GetRegionBandView
+import com.example.eraofband.ui.main.search.SearchActivity
+import com.example.eraofband.ui.setOnSingleClickListener
+
+class BandListActivity: AppCompatActivity(), GetRegionBandView {
+
+    private lateinit var binding: ActivityBandListBinding
+    private lateinit var bandListRVAdapter: BandListRVAdapter
+    private var sessionValue = -1
+    private var regionValue = "전체"
+
+    val getRegionBandService = GetRegionBandService()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityBandListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        initSpinner()
+        sessionSelector()
+        layoutRefresh()
+
+        binding.homeBandListSearchIv.setOnClickListener {
+            val intent = Intent(this, SearchActivity::class.java)
+            intent.putExtra("current", 1)
+            startActivity(intent)
+            finish()
+        }
+
+        binding.homeBandListBackIv.setOnClickListener { finish() }
+
+        binding.homeBandListFab.setOnClickListener {
+            val fabDialog = BandFabDialog()
+            fabDialog.show(supportFragmentManager, "bandFabDialog")
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        sessionValue = intent.getIntExtra("sessionBtn", 0)
+        getRegionBandService.setGetView(this)
+
+        if (sessionValue != -1) {
+            sessionSelect(sessionValue)
+            getRegionBandService.getRegionBand("전체", sessionValue)
+        } else {
+            getRegionBandService.getRegionBand("전체", 5)
+        }
+    }
+
+    private fun initSpinner() {  // 스피너 초기화
+        // 지역 스피너 어뎁터 연결
+        val city = resources.getStringArray(R.array.capital)  // 전체, 서울, 경기도
+
+        val cityAdapter = ArrayAdapter(this, R.layout.item_spinner, city)
+        binding.homeBandListCitySp.adapter = cityAdapter
+
+        // 지역 스피너 클릭 이벤트
+        binding.homeBandListCitySp.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                regionValue = when (position) {
+                    0 -> "전체"
+                    1 -> "서울"
+                    else -> "경기도"
+                }
+                getRegionBandService.getRegionBand(regionValue, sessionValue)
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {  // 아무것도 클릭되어있지 않을 때는 기본으로 전체를 띄워줌
+                binding.homeBandListCitySp.setSelection(0)
+                getRegionBandService.getRegionBand("전체", 5)
+            }
+        })
+    }
+
+    private fun sessionSelect(session: Int) {
+        when(session) {
+            0 -> binding.homeBandListVocalCp.isChecked = true
+            1 -> binding.homeBandListGuitarCp.isChecked = true
+            2 -> binding.homeBandListBaseCp.isChecked = true
+            3 -> binding.homeBandListKeyboardCp.isChecked = true
+            4 -> binding.homeBandListDrumCp.isChecked = true
+            5 -> binding.homeBandListTotalCp.isChecked = true
+        }
+    }
+
+    private fun sessionSelector() {
+        binding.homeBandListSessionCg.isSelectionRequired = true
+
+        binding.homeBandListVocalCp.setOnSingleClickListener {
+            sessionValue = 0
+            getRegionBandService.getRegionBand(regionValue, sessionValue)
+        }
+        binding.homeBandListGuitarCp.setOnSingleClickListener {
+            sessionValue = 1
+            getRegionBandService.getRegionBand(regionValue, sessionValue)
+        }
+        binding.homeBandListBaseCp.setOnSingleClickListener {
+            sessionValue = 2
+            getRegionBandService.getRegionBand(regionValue, sessionValue)
+        }
+        binding.homeBandListKeyboardCp.setOnSingleClickListener {
+            sessionValue = 3
+            getRegionBandService.getRegionBand(regionValue, sessionValue)
+        }
+        binding.homeBandListDrumCp.setOnSingleClickListener {
+            sessionValue = 4
+            getRegionBandService.getRegionBand(regionValue, sessionValue)
+        }
+        binding.homeBandListTotalCp.setOnSingleClickListener {
+            sessionValue = 5
+            getRegionBandService.getRegionBand(regionValue, sessionValue)
+        }
+    }
+
+    private fun initRecyclerView(regionBand : List<GetRegionBandResult>) {
+        bandListRVAdapter = BandListRVAdapter()
+        binding.homeBandListListRv.adapter = bandListRVAdapter
+        binding.homeBandListListRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        bandListRVAdapter.initBandList(regionBand)
+
+        bandListRVAdapter.setMyItemClickListener(object : BandListRVAdapter.MyItemClickListener{
+            override fun onShowDetail(bandIdx: Int) {  // 밴드 모집 페이지로 전환
+                val intent = Intent(this@BandListActivity, BandRecruitActivity::class.java)
+                intent.putExtra("bandIdx", bandIdx)
+                startActivity(intent)
+            }
+        })
+    }
+
+    private fun layoutRefresh() {
+        binding.homeBandRl.setOnRefreshListener {
+            binding.homeBandListCitySp.setSelection(0)
+            binding.homeBandListTotalCp.isChecked = true
+            getRegionBandService.getRegionBand("전체", 5)
+            binding.homeBandRl.isRefreshing = false
+        }
+    }
+
+    override fun onGetSuccess(code: Int, result: List<GetRegionBandResult>) {
+        Log.d("GET BAND / SUCCESS", result.toString())
+        initRecyclerView(result)
+    }
+
+    override fun onGetFailure(code: Int, message: String) {
+        Log.d("GET BAND / FAIL", "$code $message")
+    }
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/band_edit_gr">
+        <item
+            android:id="@+id/band_edit"
+            android:title="@string/band_edit" />
+    </group>
+    <group android:id="@+id/band_delete_gr">
+        <item
+            android:id="@+id/band_delete"
+            android:title="@string/band_delete" />
+    </group>
+    <group android:id="@+id/band_leave_gr">
+        <item
+            android:id="@+id/band_leave"
+            android:title="@string/band_leave" />
+    </group>
+    <group android:id="@+id/band_report_gr">
+        <item
+            android:id="@+id/band_report"
+            android:title="@string/band_report" />
+    </group>
+</menu>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/user_report_gr">
+        <item
+            android:id="@+id/user_report"
+            android:title="@string/user_report" />
+    </group>
+    <group android:id="@+id/user_block_gr">
+        <item
+            android:id="@+id/user_block"
+            android:title="@string/user_block" />
+    </group>
+</menu>

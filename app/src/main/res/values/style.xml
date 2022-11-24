@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    // 팝업 메뉴 커스텀
+    <style name="MyPopupMenu" parent="@style/Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@drawable/popup_menu_bg</item>
+        <item name="android:textColor">#E2E2E2</item>
+        <item name="android:dropDownListViewStyle">@style/DropDown.Theme</item>
+    </style>
+
+    <style name="DropDown.Theme" parent="ThemeOverlay.AppCompat">
+        <item name="android:divider">#292929</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
+    <style name="MyTimePickerTheme" parent="android:Widget.Material.Light.TimePicker">
+        <item name="android:timePickerMode">spinner</item>
+    </style>
+
+    <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="android:textColorHighlight">@color/white</item>
+    </style>
+</resources>
