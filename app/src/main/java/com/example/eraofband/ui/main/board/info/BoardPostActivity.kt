@@ -24,7 +24,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
-import com.example.eraofband.data.Board
 import com.example.eraofband.data.Comment
 import com.example.eraofband.data.Reply
 import com.example.eraofband.databinding.ActivityBoardPostBinding

@@ -1,6 +1,5 @@
 package com.example.eraofband.ui.main.board
 
-import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -17,29 +16,20 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.eraofband.R
 import com.example.eraofband.data.Board
 import com.example.eraofband.data.PostImgUrl
 import com.example.eraofband.databinding.ActivityBoardMakeBinding
-import com.example.eraofband.remote.band.getNewBand.GetNewBandResult
-import com.example.eraofband.remote.board.postBoard.PostBoardResult
 import com.example.eraofband.remote.board.postBoard.PostBoardService
 import com.example.eraofband.remote.board.postBoard.PostBoardView
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
 import com.example.eraofband.ui.setOnSingleClickListener
-import com.example.eraofband.ui.main.home.session.HomeSessionNewBandRVAdapter
-import com.example.eraofband.ui.main.home.session.band.BandRecruitActivity
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -59,9 +49,6 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
 
         binding = ActivityBoardMakeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-//        getImage()
-
         binding.boardMakeBackIb.setOnClickListener { finish() }
 
         binding.boardMakeRegisterBtn.setOnSingleClickListener {
@@ -69,17 +56,17 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
             val postBoardService = PostBoardService()
             postBoardService.setBoardView(this)
             postBoardService.postBoard(getJwt()!!, board)
-            Log.d("board",board.toString())
+            Log.d("imgTest", board.toString())
+            Handler(Looper.getMainLooper()).postDelayed({
+                finish()
+            }, 100)
         }
-        binding.boardMakePictureIv.setOnClickListener {
-            getImage()
+
+        getImage()
+        binding.boardMakePictureIv.setOnSingleClickListener {
+            initImageView()
         }
         initTopicSpinner()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        initRVAdapter(postImgUrl)
     }
 
     private fun postBoard() {
@@ -87,7 +74,7 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
         board.title = binding.boardMakeTitleEt.text.toString()
         board.content = binding.boardMakeContentEt.text.toString()
         board.userIdx = getUserIdx()
-        board.postImgUrl = postImgUrl
+        board.postImgsUrl = postImgUrl
     }
 
     private fun initRVAdapter(item: List<PostImgUrl>) {
@@ -98,11 +85,10 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
             binding.boardMakePictureIv.visibility = View.VISIBLE
         }
         binding.boardMakePictureRv.adapter = boardImgRVAdapter
-        binding.boardMakePictureRv.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.boardMakePictureRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         boardImgRVAdapter.initImg(item)
-        boardImgRVAdapter.setMyItemClickListener(object : BoardImgRVAdapter.MyItemClickListener {
+        boardImgRVAdapter.setMyItemClickListener(object : BoardImgRVAdapter.MyItemClickListener{
 
             override fun onDelete(position: Int) {
                 postImgUrl.removeAt(position)
@@ -110,6 +96,7 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
             }
         })
     }
+
 
     private fun initTopicSpinner() {
         //  게시판 주제 스피너
@@ -145,6 +132,7 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
         else requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1000)
     }
 
+
     // 권한 요청 승인 이후 실행되는 함수
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -159,8 +147,8 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
                     val intent = Intent(Intent.ACTION_PICK)
                     intent.type = "image/*"
                     getResult.launch(intent)
-                }
-                else Toast.makeText(this, "권한을 거부하셨습니다.", Toast.LENGTH_SHORT).show()
+                } else
+                    Toast.makeText(this, "권한을 거부하셨습니다.", Toast.LENGTH_SHORT).show()
             }
             else -> {
                 //
@@ -174,7 +162,9 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
                 Log.d("RESULT", result.data.toString())
                 val selectedImageUri: Uri? = result.data?.data
 
+
                 if (selectedImageUri != null) {
+
                     val imgPath = absolutelyPath(selectedImageUri, this)
                     val file = File(imgPath)
                     val requestBody = RequestBody.create(MediaType.parse("image/*"), file)
@@ -183,6 +173,7 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
                     val sendImgService = SendImgService()
                     sendImgService.setImageView(this)
                     sendImgService.sendImg(body)
+
 
                 } else {
                     Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
@@ -212,20 +203,19 @@ class BoardMakeActivity : AppCompatActivity(), PostBoardView, SendImgView {
         return userSP.getInt("userIdx", 0)
     }
 
-    override fun onPostSuccess(code: Int, result: PostBoardResult) {
-        Log.d("POST BOARD / SUC", result.toString())
-        Handler(Looper.getMainLooper()).postDelayed({
-            finish()
-        }, 100)
+    override fun onPostSuccess(result: String) {
+        Log.d("POST BOARD / SUC", result)
     }
 
     override fun onPostFailure(code: Int, message: String) {
         Log.d("POST BOARD / FAIL", "$code $message")
+        Toast.makeText(baseContext, "$message", Toast.LENGTH_SHORT).show()
     }
 
     override fun onSendSuccess(result: String) {
         postImgUrl.add(PostImgUrl(result))
         initRVAdapter(postImgUrl)
+        Log.d("SENDING / SUC", result)
     }
 
     override fun onSendFailure(code: Int, message: String) {
