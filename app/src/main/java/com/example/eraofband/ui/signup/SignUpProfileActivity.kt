@@ -32,6 +32,7 @@ import com.example.eraofband.data.User
 import com.example.eraofband.databinding.ActivitySignupProfileBinding
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
+import com.example.eraofband.ui.setOnSingleClickListener
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -75,10 +76,10 @@ class SignUpProfileActivity : AppCompatActivity(), SendImgView {
         setTextColor()
         getImage()
 
-        binding.signupProfileAddIv.setOnClickListener{
+        binding.signupProfileAddIv.setOnSingleClickListener{
             initImageViewProfile()
         }
-        binding.signupProfileProfileIv.setOnClickListener{
+        binding.signupProfileProfileIv.setOnSingleClickListener{
             initImageViewProfile()
         }
     }

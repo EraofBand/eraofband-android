@@ -15,6 +15,7 @@ import com.example.eraofband.remote.band.applyBand.ApplyBandResult
 import com.example.eraofband.remote.band.applyBand.ApplyBandService
 import com.example.eraofband.remote.band.applyBand.ApplyBandView
 import com.example.eraofband.ui.login.GlobalApplication
+import com.example.eraofband.ui.setOnSingleClickListener
 
 class SessionApplyDialog(private val jwt: String, private val session: Int, private val bandIdx: Int): DialogFragment(),
     ApplyBandView {
@@ -43,11 +44,11 @@ class SessionApplyDialog(private val jwt: String, private val session: Int, priv
         val applyService = ApplyBandService()
         applyService.setApplyView(this)
 
-        binding.sessionApplyAcceptTv.setOnClickListener {  // 지원하기 누르면 API 연동 후 다음 다이얼로그로 넘어감
+        binding.sessionApplyAcceptTv.setOnSingleClickListener {  // 지원하기 누르면 API 연동 후 다음 다이얼로그로 넘어감
             applyService.applyBand(jwt, bandIdx, session)
         }
 
-        binding.sessionApplyCancelTv.setOnClickListener { dismiss() }  // 취소하기를 누르면 다이얼로그 종료
+        binding.sessionApplyCancelTv.setOnSingleClickListener { dismiss() }  // 취소하기를 누르면 다이얼로그 종료
 
         return binding.root
     }

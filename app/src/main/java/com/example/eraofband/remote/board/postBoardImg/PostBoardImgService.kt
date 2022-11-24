@@ -2,6 +2,7 @@ package com.example.eraofband.remote.board.postBoardImg
 
 import android.util.Log
 import com.example.eraofband.remote.API
+import com.example.eraofband.remote.BasicResponse
 import com.example.eraofband.remote.NetworkModule
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,12 +20,12 @@ class PostBoardImgService {
 
         val postBoardImgService = NetworkModule().getRetrofit()?.create(API::class.java)
 
-        postBoardImgService?.postBoardImg(bandIdx, imgUrl)?.enqueue(object : Callback<PostBoardImgResponse> {
-            override fun onResponse(call: Call<PostBoardImgResponse>, response: Response<PostBoardImgResponse>) {
+        postBoardImgService?.postBoardImg(bandIdx, imgUrl)?.enqueue(object : Callback<BasicResponse> {
+            override fun onResponse(call: Call<BasicResponse>, response: Response<BasicResponse>) {
                 // 응답이 왔을 때 처리
                 Log.d("POST BOARD IMG / SUCCESS", response.toString())
 
-                val resp : PostBoardImgResponse = response.body()!!
+                val resp : BasicResponse = response.body()!!
 
                 when(val code = resp.code) {
                     1000 -> postBoardImgView.onPostImgSuccess(resp.result)  // 성공
@@ -32,7 +33,7 @@ class PostBoardImgService {
                 }
             }
 
-            override fun onFailure(call: Call<PostBoardImgResponse>, t: Throwable) {
+            override fun onFailure(call: Call<BasicResponse>, t: Throwable) {
                 // 네트워크 연결이 실패했을 때 실행
                 Log.d("POST BOARD IMG / FAILURE", t.message.toString())
             }

@@ -39,6 +39,11 @@ class BoardQuestionFragment : Fragment(), GetBoardListView {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        layoutRefresh()
+    }
+
     override fun onResume() {
         super.onResume()
         service.setBoardListView(this)

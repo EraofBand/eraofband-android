@@ -5,15 +5,19 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.eraofband.databinding.DialogSessionApplyBinding
 import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonResult
+import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonService
 import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonView
 import com.example.eraofband.ui.login.GlobalApplication
 import com.example.eraofband.ui.main.home.session.band.session.SessionCompleteDialog
-import com.example.eraofband.remote.lesson.applyLesson.ApplyLessonService
+import com.example.eraofband.ui.setOnSingleClickListener
 
 class LessonApplyDialog(private val teacherIdx: Int, private val jwt: String, private val userIdx: Int, private val lessonIdx: Int): DialogFragment(), ApplyLessonView {
 
@@ -40,7 +44,7 @@ class LessonApplyDialog(private val teacherIdx: Int, private val jwt: String, pr
         val applyLesson = ApplyLessonService()
         applyLesson.setApplyView(this)
 
-        binding.sessionApplyAcceptTv.setOnClickListener {  // 지원하기 누르면 API 연동 후 다음 다이얼로그로 넘어감
+        binding.sessionApplyAcceptTv.setOnSingleClickListener {  // 지원하기 누르면 API 연동 후 다음 다이얼로그로 넘어감
             if (userIdx == teacherIdx) {
                 Toast.makeText(context, "자신이 개설한 레슨에는 신청할 수 없습니다.", Toast.LENGTH_SHORT).show()
                 dismiss()
@@ -48,6 +52,7 @@ class LessonApplyDialog(private val teacherIdx: Int, private val jwt: String, pr
                 applyLesson.applyLesson(jwt, lessonIdx)
             }
         }
+
         binding.sessionApplyCancelTv.setOnClickListener { dismiss() }  // 취소하기를 누르면 다이얼로그 종료
 
 
@@ -59,7 +64,6 @@ class LessonApplyDialog(private val teacherIdx: Int, private val jwt: String, pr
         // 다이얼로그 크기 지정
         dialog?.window?.setLayout((GlobalApplication.width - 40.toPx()), ((GlobalApplication.width - 40.toPx()) * 0.75).toInt())
     }
-
 
     private fun Int.toPx(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 

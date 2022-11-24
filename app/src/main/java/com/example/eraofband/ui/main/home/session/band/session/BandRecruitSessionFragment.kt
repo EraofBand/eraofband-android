@@ -51,7 +51,9 @@ class BandRecruitSessionFragment : Fragment() {
 
         val bandInfo = gson.fromJson(bandJson, GetBandResult::class.java)
 
-        initInfo(bandInfo)
+        synchronized(this) {
+            initInfo(bandInfo)
+        }
     }
 
     private fun initInfo(band: GetBandResult) {

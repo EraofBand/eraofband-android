@@ -33,7 +33,7 @@ class SignUpNicknameActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.signupNicknameNextBtn.setOnClickListener {
-            val nickname = binding.signupNicknameNicknameEt.text.toString()
+            val nickname = "${binding.signupNicknameNicknameEt.text.trim()}"
             user.nickName = nickname
 
             if(nickname.isEmpty()) {

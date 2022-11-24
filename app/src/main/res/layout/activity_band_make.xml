@@ -588,7 +588,7 @@
                     app:layout_constraintEnd_toStartOf="@id/make_base_plus_ib"
                     app:layout_constraintBottom_toBottomOf="parent"/>
 
-                <androidx.appcompat.widget.AppCompatButton
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/make_base_plus_ib"
                     android:layout_width="29dp"
                     android:layout_height="29dp"

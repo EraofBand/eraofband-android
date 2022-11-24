@@ -9,15 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.databinding.ItemFollowBinding
+import com.example.eraofband.remote.BasicResponse
 import com.example.eraofband.remote.user.userFollow.UserFollowResponse
 import com.example.eraofband.remote.user.userFollow.UserFollowService
 import com.example.eraofband.remote.user.userFollow.UserFollowView
 import com.example.eraofband.remote.user.userFollowList.FollowerInfo
-import com.example.eraofband.remote.user.userUnfollow.UserUnfollowResponse
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowService
 import com.example.eraofband.remote.user.userUnfollow.UserUnfollowView
+import com.example.eraofband.ui.setOnSingleClickListener
 
-class FollowerRVAdapter() : RecyclerView.Adapter<FollowerRVAdapter.ViewHolder>(), UserFollowView, UserUnfollowView {
+class FollowerRVAdapter : RecyclerView.Adapter<FollowerRVAdapter.ViewHolder>(), UserFollowView, UserUnfollowView {
     private var followList = arrayListOf<FollowerInfo>()
     private var userFollowService = UserFollowService()
     private var userUnfollowService = UserUnfollowService()
@@ -68,13 +69,13 @@ class FollowerRVAdapter() : RecyclerView.Adapter<FollowerRVAdapter.ViewHolder>()
             holder.binding.itemFollowButtonIv.visibility = View.INVISIBLE
             holder.binding.itemFollowFollowingButtonIv.visibility = View.INVISIBLE
         }
-        holder.binding.itemFollowFollowingButtonIv.setOnClickListener {  // 회색 버튼 눌러서 팔로우 취소
+        holder.binding.itemFollowFollowingButtonIv.setOnSingleClickListener {  // 회색 버튼 눌러서 팔로우 취소
             holder.binding.itemFollowButtonIv.visibility = View.VISIBLE
             holder.binding.itemFollowFollowingButtonIv.visibility = View.INVISIBLE
             userUnfollowService.userUnfollow(mItemClickListener.getJwt()!!, followList[position].userIdx)
         }
 
-        holder.binding.itemFollowButtonIv.setOnClickListener {  // 파란 색버튼 다시 눌러서 팔로우
+        holder.binding.itemFollowButtonIv.setOnSingleClickListener {  // 파란 색버튼 다시 눌러서 팔로우
             holder.binding.itemFollowButtonIv.visibility = View.INVISIBLE
             holder.binding.itemFollowFollowingButtonIv.visibility = View.VISIBLE
             userFollowService.userFollow(mItemClickListener.getJwt()!!, followList[position].userIdx)
@@ -121,7 +122,7 @@ class FollowerRVAdapter() : RecyclerView.Adapter<FollowerRVAdapter.ViewHolder>()
     }
 
     // 언팔로우 리스폰스-------------------------------------------------------------------
-    override fun onUserUnfollowSuccess(code: Int, response: UserUnfollowResponse) {
+    override fun onUserUnfollowSuccess(code: Int, response: BasicResponse) {
         Log.d("USER UNFOLLOW / SUCCESS", "코드 : $code / 응답 : $response")
     }
 

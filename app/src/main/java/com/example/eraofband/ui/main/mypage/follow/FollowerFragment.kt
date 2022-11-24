@@ -67,9 +67,9 @@ class FollowerFragment(var userIdx: Int) : Fragment(), UserFollowListView {
             binding.followerSearchEt.text = null
             binding.followerSearchEt.hint = "팔로워 검색창"
         }
+
         userFollowList.setUserFollowListView(this)
         userFollowList.userFollowList(getJwt()!!, userIdx)
-
     }
 
     fun searchFilter(searchText: String) {

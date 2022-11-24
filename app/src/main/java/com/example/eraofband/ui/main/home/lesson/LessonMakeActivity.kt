@@ -37,6 +37,7 @@ import com.example.eraofband.remote.lesson.makeLesson.MakeLessonService
 import com.example.eraofband.remote.lesson.makeLesson.MakeLessonView
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
+import com.example.eraofband.ui.setOnSingleClickListener
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -65,11 +66,11 @@ class LessonMakeActivity : AppCompatActivity(), MakeLessonView, SendImgView {
 
         getImage()
 
-        binding.homeLessonMakeImgV.setOnClickListener {  // 이미지 등록 클릭 리스너
+        binding.homeLessonMakeImgV.setOnSingleClickListener {  // 이미지 등록 클릭 리스너
             initImageViewLesson()
         }
 
-        binding.homeLessonMakeRegisterBtn.setOnClickListener {
+        binding.homeLessonMakeRegisterBtn.setOnSingleClickListener {
             updateUser()
             if (cnt == 0) {
                 Toast.makeText(this, "모집 인원이 최소 한 명은 있어야 합니다.", Toast.LENGTH_SHORT).show()
@@ -78,9 +79,6 @@ class LessonMakeActivity : AppCompatActivity(), MakeLessonView, SendImgView {
                 makeLessonService.setMakeLessonView(this)
                 makeLessonService.makeLesson(getJwt()!!, lesson)
             }
-        }
-        binding.homeLessonMakeImgV.setOnClickListener {
-            initImageViewLesson()
         }
 
         // 레슨 타이틀 텍스트워쳐
@@ -288,13 +286,13 @@ class LessonMakeActivity : AppCompatActivity(), MakeLessonView, SendImgView {
 
     private fun updateUser() {
         lesson.lessonSession = session
-        lesson.lessonTitle = binding.homeLessonMakeNameEt.text.toString()
-        lesson.lessonIntroduction = binding.homeLessonMakeInfoEt.text.toString()
-        lesson.lessonRegion = binding.homeLessonMakeCitySp.selectedItem.toString() + " " + binding.homeLessonMakeAreaSp.selectedItem.toString()
+        lesson.lessonTitle = "${binding.homeLessonMakeNameEt.text.trim()}"
+        lesson.lessonIntroduction = "${binding.homeLessonMakeInfoEt.text.trim()}"
+        lesson.lessonRegion = "${binding.homeLessonMakeCitySp.selectedItem}" + " " + "${binding.homeLessonMakeAreaSp.selectedItem}"
         lesson.capacity = cnt
         lesson.lessonImgUrl = profileUrl
-        lesson.lessonContent = binding.homeLessonMakeDetailEt.text.toString()
-        lesson.chatRoomLink = binding.homeLessonMakeChatEt.text.toString()
+        lesson.lessonContent = "${binding.homeLessonMakeDetailEt.text.trim()}"
+        lesson.chatRoomLink = "${binding.homeLessonMakeChatEt.text.trim()}"
         lesson.userIdx = getUserIdx()
     }
 

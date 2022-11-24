@@ -3,26 +3,28 @@ package com.example.eraofband.ui.main.home.session
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.databinding.FragmentHomeSessionBinding
-import com.example.eraofband.ui.main.home.session.band.BandListActivity
-import com.example.eraofband.ui.main.home.session.band.BandRecruitActivity
 import com.example.eraofband.remote.band.getNewBand.GetNewBandResult
 import com.example.eraofband.remote.band.getNewBand.GetNewBandService
 import com.example.eraofband.remote.band.getNewBand.GetNewBandView
 import com.example.eraofband.remote.band.getPopularBand.GetPopularBandResult
 import com.example.eraofband.remote.band.getPopularBand.GetPopularBandService
 import com.example.eraofband.remote.band.getPopularBand.GetPopularBandView
+import com.example.eraofband.ui.main.home.session.band.BandListActivity
+import com.example.eraofband.ui.main.home.session.band.BandRecruitActivity
+import kotlinx.coroutines.launch
 
 class HomeSessionFragment : Fragment(), GetNewBandView, GetPopularBandView {
 
-
     private var _binding: FragmentHomeSessionBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
+
     private val getNewService =  GetNewBandService()
     private val getPopularService = GetPopularBandService()
 
@@ -69,19 +71,28 @@ class HomeSessionFragment : Fragment(), GetNewBandView, GetPopularBandView {
 
     override fun onResume() {
         super.onResume()
-        // 새로운 밴드 리스트
-        getNewService.setBandView(this)
-        getNewService.getNewBand()
-
-        // TOP3 밴드 리스트
-        getPopularService.setBandView(this)
-        getPopularService.getPopularBand()
+        getBand()
     }
 
     private fun moveSession(session : Int){
         val intent = Intent(context, BandListActivity::class.java)
         intent.putExtra("sessionBtn", session)
         startActivity(intent)
+    }
+
+    private fun getBand() {
+        getNewService.setBandView(this)
+        getPopularService.setBandView(this)
+
+        lifecycleScope.launch {
+            // 새로운 밴드 리스트
+            getNewService.getNewBand()
+        }
+
+        lifecycleScope.launch {
+            // TOP3 밴드 리스트
+            getPopularService.getPopularBand()
+        }
     }
 
     private fun initNewBandRV(item: List<GetNewBandResult>) {

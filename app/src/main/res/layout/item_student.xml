@@ -11,7 +11,7 @@
         android:id="@+id/student_profile_iv"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/profile_round_bg"
+        android:background="@drawable/profile_round_bg"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 

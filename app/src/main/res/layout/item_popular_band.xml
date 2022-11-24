@@ -25,7 +25,7 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginStart="15dp"
-        android:src="@drawable/profile_round_bg"
+        android:background="@drawable/profile_round_bg"
         app:layout_constraintBottom_toBottomOf="@+id/popular_band_order_tv"
         app:layout_constraintStart_toEndOf="@+id/popular_band_order_tv"
         app:layout_constraintTop_toTopOf="@+id/popular_band_order_tv" />

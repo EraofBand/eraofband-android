@@ -8,9 +8,10 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import com.example.eraofband.data.Portfolio
 import com.example.eraofband.databinding.ActivityPofolEditBinding
-import com.example.eraofband.remote.portfolio.patchPofol.PatchPofolResponse
+import com.example.eraofband.remote.BasicResponse
 import com.example.eraofband.remote.portfolio.patchPofol.PatchPofolService
 import com.example.eraofband.remote.portfolio.patchPofol.PatchPofolView
+import com.example.eraofband.ui.setOnSingleClickListener
 
 class PofolEditActivity : AppCompatActivity(), PatchPofolView {
 
@@ -22,19 +23,20 @@ class PofolEditActivity : AppCompatActivity(), PatchPofolView {
         binding = ActivityPofolEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val patchService = PatchPofolService()
+        patchService.setPatchView(this)
+
         binding.portfolioEditBackIb.setOnClickListener { finish() }
 
         // 내용 불러오기
         binding.portfolioEditTitleEt.setText(intent.getStringExtra("title").toString())
         binding.portfolioEditVideoIntroEt.setText(intent.getStringExtra("content").toString())
 
-        binding.portfolioEditSaveBt.setOnClickListener {
+        binding.portfolioEditSaveBt.setOnSingleClickListener {
             if(binding.portfolioEditTitleEt.text.isNotEmpty() && binding.portfolioEditVideoIntroEt.text.isNotEmpty()) {
-                val title = binding.portfolioEditTitleEt.text.toString()
-                val intro = binding.portfolioEditVideoIntroEt.text.toString()
+                val title = "${binding.portfolioEditTitleEt.text.trim()}"
+                val intro = "${binding.portfolioEditVideoIntroEt.text.trim()}"
 
-                val patchService = PatchPofolService()
-                patchService.setPatchView(this)
                 patchService.patchPortfolio(getJwt()!!, intent.getIntExtra("pofolIdx", 0), Portfolio(intro, "", title, getUserIdx(), ""))
             }
         }
@@ -74,7 +76,7 @@ class PofolEditActivity : AppCompatActivity(), PatchPofolView {
         finish()
     }
 
-    override fun onPatchFailure(response: PatchPofolResponse) {
+    override fun onPatchFailure(response: BasicResponse) {
         Log.d("PATCH/FAIL", "${response.code} ${response.message}")
     }
 }

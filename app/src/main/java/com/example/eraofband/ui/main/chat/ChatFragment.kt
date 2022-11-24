@@ -1,6 +1,5 @@
 package com.example.eraofband.ui.main.chat
 
-import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
@@ -15,14 +14,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.data.ChatRoom
+import com.example.eraofband.data.MakeChatRoom
 import com.example.eraofband.databinding.FragmentChatBinding
+import com.example.eraofband.remote.chat.activeChat.ActiveChatService
+import com.example.eraofband.remote.chat.activeChat.ActiveChatView
+import com.example.eraofband.remote.chat.enterChatRoom.EnterChatRoomResult
+import com.example.eraofband.remote.chat.enterChatRoom.EnterChatRoomService
+import com.example.eraofband.remote.chat.enterChatRoom.EnterChatRoomView
 import com.example.eraofband.remote.chat.getChatList.GetChatListResult
 import com.example.eraofband.remote.chat.getChatList.GetChatListService
 import com.example.eraofband.remote.chat.getChatList.GetChatListView
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
-class ChatFragment : Fragment(), GetChatListView {
+class ChatFragment : Fragment(), GetChatListView, ActiveChatView, EnterChatRoomView {
 
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
@@ -30,7 +33,15 @@ class ChatFragment : Fragment(), GetChatListView {
     private lateinit var chatRVAdapter: ChatRVAdapter
     private var chatRooms = ArrayList<ChatRoom>()
 
+    private val activeChatService = ActiveChatService()
+    private val enterChatRoomService = EnterChatRoomService()
+
     private var chatIdx = ""
+    private var lastChatIdx = -1
+    private lateinit var profileImg : String
+    private lateinit var nickname : String
+    private var userIdx = -1
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,11 +63,12 @@ class ChatFragment : Fragment(), GetChatListView {
         getChatListService.setChatListView(this)
         getChatListService.getChatList(getJwt()!!)
 
+        activeChatService.setActiveView(this)
+        enterChatRoomService.setEnterChatRoomView(this)
     }
 
-
     private fun initRVAdapter(result: ArrayList<ChatRoom>) {
-        chatRVAdapter = ChatRVAdapter()
+        chatRVAdapter = ChatRVAdapter(getUserIdx())
         binding.chatListRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.chatListRv.adapter = chatRVAdapter
 
@@ -65,20 +77,25 @@ class ChatFragment : Fragment(), GetChatListView {
         chatRVAdapter.initChatList(result)
 
         chatRVAdapter.setMyItemClickListener(object : ChatRVAdapter.MyItemClickListener{
-            override fun onItemClick(chatIdx : String, profileImg: String, nickname : String, userIdx: Int) {
-                activity?.let {
-                    val intent = Intent(activity, ChatContentActivity::class.java)
-                    intent.putExtra("chatRoomIndex", chatIdx)
-                    intent.putExtra("profile", profileImg)
-                    intent.putExtra("nickname", nickname)
-                    intent.putExtra("firstIndex", getUserIdx())
-                    intent.putExtra("secondIndex", userIdx)
-                    startActivity(intent)
+            override fun onItemClick(tempChatIdx : String, tempProfileImg: String, tempNickname : String, tempUserIdx: Int, status: Int) {
+                chatIdx = tempChatIdx
+                nickname = tempNickname
+                profileImg = tempProfileImg
+                userIdx = tempUserIdx
+
+                if (status == 0) {
+                    activeChatService.activeChat(
+                        getJwt()!!,
+                        MakeChatRoom(chatIdx, getUserIdx(), userIdx)
+                    )
                 }
+
+                enterChatRoomService.enterChatRoom(getJwt()!!, chatIdx)
+                Log.d("LAST CHAT INDEX", lastChatIdx.toString())
+
             }
         })
     }
-
 
     private fun getUserIdx() : Int {
         val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
@@ -118,8 +135,7 @@ class ChatFragment : Fragment(), GetChatListView {
 
         // 결과값에서 채팅룸 인덱스, 닉네임, 프로필사진만 먼저 가져옴
         for (i in 0 until result.size)
-            chatRooms.add(i, ChatRoom(result[i].chatRoomIdx, result[i].otherUserIdx, result[i].nickName, result[i].profileImgUrl,
-                "", "", true, result[i].status))
+            chatRooms.add(i, ChatRoom(result[i].chatRoomIdx, result[i].otherUserIdx, result[i].nickName, result[i].profileImgUrl, result[i].status))
 
 
         initRVAdapter(chatRooms)
@@ -128,6 +144,36 @@ class ChatFragment : Fragment(), GetChatListView {
 
     override fun onGetListFailure(code: Int, message: String) {
         Log.d("GET CHAT / FAIL", "$code $message")
+    }
+
+    // 채팅방 활성화 API
+    override fun onActiveSuccess(result: String) {
+        Log.d("ACTIVE CHAT/ SUCCESS", result.toString())
+    }
+
+    override fun onActiveFailure(code: Int, message: String) {
+        Log.d("ACTIVE CHAT / FAIL", "$code $message")
+    }
+
+    // 채팅방 들어가기 API
+    override fun onEnterSuccess(result: EnterChatRoomResult) {
+        Log.d("ENTER CHAT/ SUCCESS", result.toString())
+        lastChatIdx = result.lastChatIdx
+
+        activity?.let {
+            val intent = Intent(activity, ChatContentActivity::class.java)
+            intent.putExtra("chatRoomIndex", chatIdx)
+            intent.putExtra("profile", profileImg)
+            intent.putExtra("nickname", nickname)
+            intent.putExtra("firstIndex", getUserIdx())
+            intent.putExtra("secondIndex", userIdx)
+            intent.putExtra("lastChatIdx", lastChatIdx)
+            startActivity(intent)
+        }
+    }
+
+    override fun onEnterFailure(code: Int, message: String) {
+        Log.d("ENTER CHAT / FAIL", "$code $message")
     }
 
     override fun onDestroy() {

@@ -42,6 +42,7 @@ import com.example.eraofband.remote.lesson.patchLesson.PatchLessonService
 import com.example.eraofband.remote.lesson.patchLesson.PatchLessonView
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
+import com.example.eraofband.ui.setOnSingleClickListener
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -81,11 +82,11 @@ class LessonEditActivity : AppCompatActivity(), GetLessonInfoView, PatchLessonVi
         binding.homeLessonEditBackIb.setOnClickListener { finish() }
 
         getImage()
-        binding.homeLessonEditImgV.setOnClickListener {  // 이미지 등록 클릭 리스너
+        binding.homeLessonEditImgV.setOnSingleClickListener {  // 이미지 등록 클릭 리스너
             initImageViewLesson()
         }
 
-        binding.homeLessonEditRegisterBtn.setOnClickListener {
+        binding.homeLessonEditRegisterBtn.setOnSingleClickListener {
             updateUser()
 
             val patchLessonService = PatchLessonService()
@@ -303,13 +304,13 @@ class LessonEditActivity : AppCompatActivity(), GetLessonInfoView, PatchLessonVi
 
     private fun updateUser() {
         lesson.lessonSession = session
-        lesson.lessonTitle = binding.homeLessonEditNameEt.text.toString()
-        lesson.lessonIntroduction = binding.homeLessonEditInfoEt.text.toString()
-        lesson.lessonRegion = binding.homeLessonEditCitySp.selectedItem.toString() + " " + binding.homeLessonEditAreaSp.selectedItem.toString()
+        lesson.lessonTitle = "${binding.homeLessonEditNameEt.text.trim()}"
+        lesson.lessonIntroduction = "${binding.homeLessonEditInfoEt.text.trim()}"
+        lesson.lessonRegion = "${binding.homeLessonEditCitySp.selectedItem}" + " " + "${binding.homeLessonEditAreaSp.selectedItem}"
         lesson.capacity = cnt
         lesson.lessonImgUrl = profileUrl
-        lesson.lessonContent = binding.homeLessonEditDetailEt.text.toString()
-        lesson.chatRoomLink = binding.homeLessonEditChatEt.text.toString()
+        lesson.lessonContent = "${binding.homeLessonEditDetailEt.text.trim()}"
+        lesson.chatRoomLink = "${binding.homeLessonEditChatEt.text.trim()}"
         lesson.userIdx = getUserIdx()
     }
 

@@ -4,7 +4,7 @@ package com.example.eraofband.data
 data class Board(
     var category: Int,
     var content: String,
-    var postImgsUrl: ArrayList<PostImgUrl>,
+    var postImgUrl: ArrayList<PostImgUrl>,
     var title: String,
     var userIdx: Int
 )

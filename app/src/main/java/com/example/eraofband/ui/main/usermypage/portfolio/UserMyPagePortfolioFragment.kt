@@ -20,7 +20,6 @@ class UserMyPagePortfolioFragment : Fragment(), GetMyPofolView {
     private var _binding: FragmentUserMypagePortfolioBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,12 +30,17 @@ class UserMyPagePortfolioFragment : Fragment(), GetMyPofolView {
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
 
         val getMypofol = GetMyPofolService()
         getMypofol.setPofolView(this)
         getMypofol.getPortfolio(getJwt()!!, getUserIdx())
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun getUserIdx(): Int {  //임시방편입니다요...
@@ -66,11 +70,6 @@ class UserMyPagePortfolioFragment : Fragment(), GetMyPofolView {
                 startActivity(intent)
             }
         })
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     override fun onGetSuccess(result: List<GetPofolResult>) {
