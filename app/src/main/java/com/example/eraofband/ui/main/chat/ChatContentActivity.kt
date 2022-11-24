@@ -73,7 +73,7 @@ class ChatContentActivity : AppCompatActivity(), LeaveChatView {
         nickname = intent.getStringExtra("nickname")!!
 
         clickListener()
-        initAdapter(chatIdx)
+        initAdapter(chatIdx, lastChatIdx)
         getChats()
     }
 
@@ -98,7 +98,8 @@ class ChatContentActivity : AppCompatActivity(), LeaveChatView {
         }
     }
 
-    private fun initAdapter(chatIdx : String) {
+
+    private fun initAdapter(chatIdx : String, lastChatIdx : Int) {
         chatRVAdapter = ChatContentRVAdapter(profileImg, nickname, chatIdx, getUserIdx(), lastChatIdx)
         binding.chatContentRv.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
