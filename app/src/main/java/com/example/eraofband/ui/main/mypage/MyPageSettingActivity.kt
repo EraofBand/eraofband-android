@@ -3,7 +3,9 @@ package com.example.eraofband.ui.main.mypage
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -27,6 +29,33 @@ class MyPageSettingActivity : AppCompatActivity(), ResignView {
 
         binding = ActivityMypageSettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.settingNotificationCl.setOnClickListener {
+            val intent = when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
+                    Intent().apply {
+                        action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+                        putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+                    }
+
+                }
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP -> {
+                    Intent().apply {
+                        action = "android.settings.APP_NOTIFICATION_SETTINGS"
+                        putExtra("app_package", packageName)
+                        putExtra("app_uid", applicationInfo?.uid)
+                    }
+                }
+                else -> {
+                    Intent().apply {
+                        action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                        addCategory(Intent.CATEGORY_DEFAULT)
+                        data = Uri.parse("package:$packageName")
+                    }
+                }
+            }
+            startActivity(intent)
+        }
         binding.settingNoticeCl.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://eraofband.tistory.com/"))
             startActivity(intent)
