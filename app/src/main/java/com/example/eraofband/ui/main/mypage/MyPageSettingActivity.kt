@@ -163,6 +163,8 @@ class MyPageSettingActivity : AppCompatActivity(), ResignView {
         userEdit.remove("token")
         userEdit.remove("userIdx")
         userEdit.remove("jwt")
+        userEdit.remove("refresh")
+        userEdit.remove("expiration")
 
         userEdit.apply()
     }

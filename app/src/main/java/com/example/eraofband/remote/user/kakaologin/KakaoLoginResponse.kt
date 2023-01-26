@@ -8,6 +8,8 @@ data class KakaoLoginResponse (
 )
 
 data class LoginResult (
-    var jwt : String,
-    var userIdx : Int
+    var expiration: Long,
+    var jwt: String,
+    var refresh: String,
+    var userIdx: Int
 )

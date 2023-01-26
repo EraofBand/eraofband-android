@@ -14,11 +14,11 @@ class CheckUserService {
         this.checkUserView = checkUserView
     }
 
-    fun checkUser(email: String) {
+    fun checkUser(token: String) {
 
         val checkUserService =  NetworkModule().getRetrofit()?.create(API::class.java)
 
-        checkUserService?.checkUser(email)?.enqueue(object : Callback<CheckUserResponse> {
+        checkUserService?.checkUser(token)?.enqueue(object : Callback<CheckUserResponse> {
             override fun onResponse(call: Call<CheckUserResponse>, response: Response<CheckUserResponse>) {
                 // 응답이 왔을 때 처리
                 Log.d("CHECK / SUCCESS", response.toString())
