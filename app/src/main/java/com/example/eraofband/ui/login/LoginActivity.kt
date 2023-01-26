@@ -20,36 +20,18 @@ import com.kakao.sdk.common.model.AuthErrorCause
 import com.kakao.sdk.user.UserApiClient
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
+import java.util.*
 import java.util.Base64.getEncoder
 
 class LoginActivity : AppCompatActivity(), CheckUserView {
 
     private lateinit var binding : ActivityLoginBinding
 
-    private fun getHashKey() {
-        var packageInfo: PackageInfo? = null
-        try {
-            packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
-        }
-        if (packageInfo == null) Log.e("KeyHash", "KeyHash:null")
-        for (signature in packageInfo!!.signatures) {
-            try {
-                val md: MessageDigest = MessageDigest.getInstance("SHA")
-                md.update(signature.toByteArray())
-                Log.d("KeyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT))
-            } catch (e: NoSuchAlgorithmException) {
-            }
-        }
-
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
-getHashKey()
         setContentView(binding.root)
 
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
@@ -93,16 +75,12 @@ getHashKey()
                 userEdit.apply()
                 Log.d("token",token.accessToken)
 
-                // 이메일 불러와서 DB에 유저가 있는지 확인
+                // DB에 유저가 있는지 확인
                 UserApiClient.instance.me { user, _ ->
                     if(user != null) {
-                        val email = user.kakaoAccount?.email.toString()
-
-                        Log.d("EMAIL", email)
-
                         val checkUserService = CheckUserService()
                         checkUserService.setUserView(this)
-                        checkUserService.checkUser(email)
+                        checkUserService.checkUser(token.accessToken)
                     }
                 }
             }
@@ -131,17 +109,16 @@ getHashKey()
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
 
         } else {  // DB에 유저가 있는 case
-            Toast.makeText(
-                applicationContext,
-                "가입한 유저입니다. userIdx = ${result.userIdx}",
-                Toast.LENGTH_SHORT
-            ).show()
             Toast.makeText(applicationContext,"가입한 유저입니다. userIdx = ${result.userIdx}", Toast.LENGTH_SHORT).show()
-
             userEdit.putInt("userIdx", result.userIdx)
             userEdit.putString("jwt", result.jwt)
+            userEdit.putLong("expiration",result.expiration)
+            userEdit.putString("refresh", result.refresh)
             userEdit.apply()
-
+            Log.d("SP LIST", "userIdx : ${result.userIdx}\n" +
+                    "jwt : ${result.jwt}\n" +
+                    "jwt 만료시간 : ${result.expiration}\n" +
+                    "리프레시 토큰 : ${result.refresh}")
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
             finish()

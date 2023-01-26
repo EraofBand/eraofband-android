@@ -37,10 +37,12 @@ import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeResponse
 import com.example.eraofband.remote.search.getBand.GetSearchBandResponse
 import com.example.eraofband.remote.search.getLesson.GetSearchLessonResponse
 import com.example.eraofband.remote.search.getUser.GetSearchUserResponse
+import com.example.eraofband.remote.user.autologin.AutoLoginResponse
 import com.example.eraofband.remote.user.checkUser.CheckUserResponse
 import com.example.eraofband.remote.user.getMyPage.GetMyPageResponse
 import com.example.eraofband.remote.user.getOtherUser.GetOtherUserResponse
 import com.example.eraofband.remote.user.kakaologin.KakaoLoginResponse
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtResponse
 import com.example.eraofband.remote.user.userFollow.UserFollowResponse
 import com.example.eraofband.remote.user.userFollowList.UserFollowListResponse
 import okhttp3.MultipartBody
@@ -54,13 +56,20 @@ interface API {
     @POST("/api/v1/upload")
     fun sendImg(@Part url: MultipartBody.Part) : Call<BasicResponse>
 
-    // 카카오 로그인
+    // jwt 재발급 처리
+    @PATCH("/users/refresh/{userIdx}")
+    fun refreshJwt(@Header("X-ACCESS-TOKEN") refreshToken: String, @Path("userIdx") userIdx: Int) : Call<RefreshJwtResponse>
+    // 카카오 회원가입
     @POST("/users/signin/{access-token}")
     fun kakaoLogin(@Body user: User, @Path("access-token") token : String) : Call<KakaoLoginResponse>
 
-    // 가입된 유저인지 확인
-    @POST("/users/login/{kakao-email}")
-    fun checkUser(@Path("kakao-email") email : String) : Call<CheckUserResponse>
+    // 카카오 로그인
+    @POST("/users/login/{access-token}")
+    fun checkUser(@Path("access-token") token : String) : Call<CheckUserResponse>
+
+    // 자동 로그인
+    @PATCH("/users/auto-login/{userIdx}")
+    fun autoLogin(@Header("X-ACCESS-TOKEN") jwt: String, @Path("userIdx") userIdx: Int) : Call<AutoLoginResponse>
 
     // 밴드 정보 조회
     @GET("/sessions/info/{bandIdx}")

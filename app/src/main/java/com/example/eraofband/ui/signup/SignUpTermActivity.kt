@@ -184,6 +184,8 @@ class SignUpTermActivity : AppCompatActivity(), KakaoLoginView {
 
         userEdit.putInt("userIdx", result.userIdx)
         userEdit.putString("jwt", result.jwt)
+        userEdit.putLong("expiration", result.expiration)
+        userEdit.putString("refresh", result.refresh)
         userEdit.apply()
     }
 

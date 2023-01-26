@@ -1,7 +1,10 @@
 package com.example.eraofband.ui.main.home.lesson
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -25,10 +28,18 @@ import com.example.eraofband.ui.main.home.session.band.BandDeleteDialog
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.example.eraofband.ui.main.report.ReportDialog
+import com.kakao.sdk.common.util.KakaoCustomTabsClient
+import com.kakao.sdk.share.ShareClient
+import com.kakao.sdk.share.WebSharerClient
+import com.kakao.sdk.template.model.Button
+import com.kakao.sdk.template.model.Content
+import com.kakao.sdk.template.model.FeedTemplate
+import com.kakao.sdk.template.model.Link
 
 
 class LessonInfoActivity : AppCompatActivity(), GetLessonInfoView, LessonLikeView {
     private lateinit var binding: ActivityLessonInfoBinding
+    private lateinit var defaultFeed: FeedTemplate
     private lateinit var lessonStudentRVAdapter: LessonStudentRVAdapter
     private var lessonIdx: Int? = null
     private var teacherIdx: Int? = null
@@ -99,6 +110,52 @@ class LessonInfoActivity : AppCompatActivity(), GetLessonInfoView, LessonLikeVie
                 intent.putExtra("userIdx", teacherIdx)
                 startActivity(intent)
             }
+        }
+        binding.lessonInfoShareTv.setOnClickListener { // 공유하기
+            binding.lessonInfoPb.visibility = View.VISIBLE
+            // 피드 메시지 보내기
+            // 카카오톡 설치여부 확인
+            if (ShareClient.instance.isKakaoTalkSharingAvailable(this)) {
+                // 카카오톡으로 카카오톡 공유 가능
+                ShareClient.instance.shareDefault(this, defaultFeed) { sharingResult, error ->
+                    if (error != null) {
+                        Log.e("SHARE", "카카오톡 공유 실패", error)
+                    }
+                    else if (sharingResult != null) {
+                        Log.d("SHARE", "카카오톡 공유 성공 ${sharingResult.intent}")
+                        startActivity(sharingResult.intent)
+
+                        // 카카오톡 공유에 성공했지만 아래 경고 메시지가 존재할 경우 일부 컨텐츠가 정상 동작하지 않을 수 있습니다.
+                        Log.w("SHARE", "Warning Msg: ${sharingResult.warningMsg}")
+                        Log.w("SHARE", "Argument Msg: ${sharingResult.argumentMsg}")
+                    }
+                }
+            } else {
+                // 카카오톡 미설치: 웹 공유 사용 권장
+                // 웹 공유 예시 코드
+                val sharerUrl = WebSharerClient.instance.makeDefaultUrl(defaultFeed)
+
+                // CustomTabs으로 웹 브라우저 열기
+
+                // 1. CustomTabsServiceConnection 지원 브라우저 열기
+                // ex) Chrome, 삼성 인터넷, FireFox, 웨일 등
+                try {
+                    KakaoCustomTabsClient.openWithDefault(this, sharerUrl)
+                } catch(e: UnsupportedOperationException) {
+                    // CustomTabsServiceConnection 지원 브라우저가 없을 때 예외처리
+                }
+
+                // 2. CustomTabsServiceConnection 미지원 브라우저 열기
+                // ex) 다음, 네이버 등
+                try {
+                    KakaoCustomTabsClient.open(this, sharerUrl)
+                } catch (e: ActivityNotFoundException) {
+                    // 디바이스에 설치된 인터넷 브라우저가 없을 때 예외처리
+                }
+            }
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.lessonInfoPb.visibility = View.GONE
+            }, 3000)
         }
     }
 
@@ -264,6 +321,26 @@ class LessonInfoActivity : AppCompatActivity(), GetLessonInfoView, LessonLikeVie
             initRecyclerView(result.lessonMembers) // 수강생 목록
         }
         lessonMember = checkUserIdx(result.lessonMembers)
+
+        defaultFeed = FeedTemplate(
+            content = Content(
+                title = result.lessonTitle,
+                description = result.lessonIntroduction,
+                imageUrl = result.lessonImgUrl,
+                link = Link(
+                    mobileWebUrl = "https://play.google.com"
+                )
+            ),
+            buttons = listOf(
+                Button(
+                    "앱으로 보기",
+                    Link(
+                        androidExecutionParams = mapOf("test" to "test"),
+                        iosExecutionParams = mapOf("test" to "test")
+                    )
+                )
+            )
+        )
     }
 
 

@@ -60,6 +60,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     private var secondIndex = -1
     private lateinit var chatIdx: String
     private var lastChatIdx = -1
+    private var blockStatus = -1
 
     private val getOtherUserService = GetOtherUserService()
     private val blockService = BlockService()
@@ -195,7 +196,10 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             }
             else {  // 유저 차단하기
                 Log.d("BLOCK", "USER")
-                blockService.block(getJwt()!!, otherUserIdx!!)
+                if (blockStatus == 0)
+                    blockService.block(getJwt()!!, otherUserIdx!!)
+                else
+                    Toast.makeText(applicationContext, "이미 차단한 유저입니다.", Toast.LENGTH_SHORT).show()
             }
 
             false
@@ -310,6 +314,7 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
                 }
             }.attach()
         }
+        blockStatus = result.getUser.blockStatus
     }
 
     override fun onGetFailure(code: Int, message: String) {

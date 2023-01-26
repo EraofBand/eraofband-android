@@ -14,6 +14,7 @@ class BandRecruitSessionListRVAdapter(private val bandName: String, private val 
     interface MyItemClickListener {
         // 클릭 이벤트
         fun showApplyPopup(bandIdx: Int, session: Int)
+        fun shareRecruitSession(bandIdx: Int, session: String, sessionComment: String)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
@@ -58,6 +59,7 @@ class BandRecruitSessionListRVAdapter(private val bandName: String, private val 
 
         // 클릭 이벤트
         holder.binding.sessionListVolunteerTv.setOnClickListener { mItemClickListener.showApplyPopup(bandIdx, sessionList[position].sessionInt) }
+        holder.binding.sessionListShareTv.setOnClickListener { mItemClickListener.shareRecruitSession(bandIdx, sessionList[position].session, sessionList[position].sessionComment) }
 
     }
     override fun getItemCount(): Int = sessionList.size
