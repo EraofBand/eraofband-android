@@ -1,6 +1,7 @@
 package com.example.eraofband.ui.main.mypage.band
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,11 +15,17 @@ import com.example.eraofband.remote.user.getMyPage.GetMyPageResult
 import com.example.eraofband.remote.user.getMyPage.GetMyPageService
 import com.example.eraofband.remote.user.getMyPage.GetMyPageView
 import com.example.eraofband.remote.user.getMyPage.GetUserBand
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtService
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtView
+import com.example.eraofband.remote.user.refreshjwt.RefreshResult
 import com.example.eraofband.ui.main.home.session.band.BandRecruitActivity
 
-class MyPageBandFragment : Fragment(), GetMyPageView {
+class MyPageBandFragment : Fragment(), GetMyPageView, RefreshJwtView {
     private var _binding: FragmentMypageBandBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
+
+    private val getMyPageBand = GetMyPageService()
+    private val getRefreshJwt = RefreshJwtService()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,9 +40,15 @@ class MyPageBandFragment : Fragment(), GetMyPageView {
     override fun onResume() {
         super.onResume()
 
-        val getMyPageBand = GetMyPageService()
         getMyPageBand.setUserView(this)
-        getMyPageBand.getMyInfo(getJwt()!!, getUserIdx())
+        getRefreshJwt.setRefreshView(this)
+
+        // Log.d("expiration", getUser().getLong("expiration", 0).toString() + " " + System.currentTimeMillis())
+        if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+            getRefreshJwt.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+        } else {
+            getMyPageBand.getMyInfo(getJwt()!!, getUserIdx())
+        }
     }
 
     private fun getUserIdx(): Int {
@@ -46,6 +59,10 @@ class MyPageBandFragment : Fragment(), GetMyPageView {
     private fun getJwt(): String? {
         val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
         return userSP.getString("jwt", "")
+    }
+
+    private fun getUser(): SharedPreferences {
+        return requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
     }
 
     private fun initRV(item: List<GetUserBand>) {
@@ -89,5 +106,14 @@ class MyPageBandFragment : Fragment(), GetMyPageView {
 
     override fun onGetFailure(code: Int, message: String) {
         Log.d("MYPAGE/FAIL", "$code $message")
+    }
+
+    override fun onPatchSuccess(code: Int, result: RefreshResult) {
+        Log.d("REFRESH/SUC", "$result")
+        getMyPageBand.getMyInfo(getJwt()!!, getUserIdx())
+    }
+
+    override fun onPatchFailure(code: Int, message: String) {
+        Log.d("REFRESH/FAIL", "$code $message")
     }
 }
