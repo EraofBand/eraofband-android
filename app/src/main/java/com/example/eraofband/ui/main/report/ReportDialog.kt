@@ -91,6 +91,8 @@ class ReportDialog(private val jwt: String, private val location: Int, private v
     }
 
     override fun onPatchSuccess(code: Int, result: RefreshResult) {
+        Log.d("REFRESH/SUC", "$result")
+
         val message = "${binding.reportEt.text.trim()}"
         reportService.report(jwt, Report(message, location, locationIdx, userIdx))
     }

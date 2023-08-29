@@ -13,7 +13,7 @@ import com.example.eraofband.databinding.DialogSessionApplyBinding
 import com.example.eraofband.ui.login.GlobalApplication
 import com.example.eraofband.ui.setOnSingleClickListener
 
-class ResignDialog(private val code: Int): DialogFragment(){
+class ResignDialog(private val code: Int): DialogFragment() {
 
     private lateinit var binding: DialogSessionApplyBinding
 

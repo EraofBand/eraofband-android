@@ -32,8 +32,8 @@ class PatchUserService {
                     val resp: BasicResponse = response.body()!!
 
                     when (val code = resp.code) {
-                        1000 -> patchUserView.onPatchSuccess(code, resp.result)  // 성공
-                        else -> patchUserView.onPatchFailure(code, resp.message)
+                        1000 -> patchUserView.onPatchUserSuccess(code, resp.result)  // 성공
+                        else -> patchUserView.onPatchUserFailure(code, resp.message)
                     }
                 }
 

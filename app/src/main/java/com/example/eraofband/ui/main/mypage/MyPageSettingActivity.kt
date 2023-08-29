@@ -2,6 +2,7 @@ package com.example.eraofband.ui.main.mypage
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -9,8 +10,12 @@ import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.eraofband.data.Report
 import com.example.eraofband.databinding.ActivityMypageSettingBinding
 import com.example.eraofband.remote.BasicResponse
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtService
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtView
+import com.example.eraofband.remote.user.refreshjwt.RefreshResult
 import com.example.eraofband.remote.user.signout.ResignService
 import com.example.eraofband.remote.user.signout.ResignView
 import com.example.eraofband.ui.login.LoginActivity
@@ -19,9 +24,13 @@ import com.example.eraofband.ui.setOnSingleClickListener
 import com.kakao.sdk.user.UserApiClient
 
 
-class MyPageSettingActivity : AppCompatActivity(), ResignView {
+class MyPageSettingActivity : AppCompatActivity(), ResignView, RefreshJwtView {
 
     private lateinit var binding: ActivityMypageSettingBinding
+
+    private val resignService = ResignService()
+    private val refreshJwtService = RefreshJwtService()
+
 
     @SuppressLint("IntentReset")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +38,10 @@ class MyPageSettingActivity : AppCompatActivity(), ResignView {
 
         binding = ActivityMypageSettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // DB에서 지우기
+        resignService.setResignView(this)
+        refreshJwtService.setRefreshView(this)
 
         binding.settingNotificationCl.setOnClickListener {
             val intent = when {
@@ -131,10 +144,11 @@ class MyPageSettingActivity : AppCompatActivity(), ResignView {
             } else {
                 Toast.makeText(this, "회원탈퇴 성공", Toast.LENGTH_SHORT).show()
 
-                // DB에서 지우기
-                val resignService = ResignService()
-                resignService.setResignView(this)
-                resignService.resign(getJwt()!!, getUserIdx())
+                if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+                    refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+                } else {
+                    resignService.resign(getJwt()!!, getUserIdx())
+                }
 
                 removeUser()
 
@@ -153,6 +167,10 @@ class MyPageSettingActivity : AppCompatActivity(), ResignView {
     private fun getJwt() : String? {
         val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getString("jwt", "")
+    }
+
+    private fun getUser(): SharedPreferences {
+        return getSharedPreferences("user", MODE_PRIVATE)
     }
 
     private fun removeUser() {
@@ -175,5 +193,14 @@ class MyPageSettingActivity : AppCompatActivity(), ResignView {
 
     override fun onResignFailure(code: Int, message: String) {
         Log.d("RESIGN/FAIL", "$code $message")
+    }
+
+    override fun onPatchSuccess(code: Int, result: RefreshResult) {
+        Log.d("REFRESH/SUC", "$result")
+        resignService.resign(getJwt()!!, getUserIdx())
+    }
+
+    override fun onPatchFailure(code: Int, message: String) {
+        Log.d("REFRESH/FAIL", "$code $message")
     }
 }

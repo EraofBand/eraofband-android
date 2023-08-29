@@ -1,6 +1,7 @@
 package com.example.eraofband.ui.main.mypage.portfolio
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Point
@@ -21,22 +22,30 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.eraofband.R
 import com.example.eraofband.data.Comment
+import com.example.eraofband.data.Report
 import com.example.eraofband.databinding.ActivityPortfolioCommentBinding
 import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentResult
 import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentService
 import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentView
 import com.example.eraofband.remote.portfolio.pofolComment.PofolCommentWriteResult
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtService
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtView
+import com.example.eraofband.remote.user.refreshjwt.RefreshResult
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.example.eraofband.ui.main.report.ReportDialog
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.example.eraofband.ui.setOnSingleClickListener
 
 
-class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
+class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView, RefreshJwtView {
 
     private lateinit var binding : ActivityPortfolioCommentBinding
 
     private val commentService = PofolCommentService()
+    private val refreshJwtService = RefreshJwtService()
+
+    private var api = 0
+
     private val commentRVAdapter = PortfolioCommentRVAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,11 +67,17 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
         commentRVAdapter.clearComment()
 
         commentService.setCommentView(this)
-        commentService.getComment(intent.getIntExtra("pofolIdx", 0))
+        refreshJwtService.setRefreshView(this)
+
+        if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+            api = 1
+            refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+        } else {
+            commentService.getComment(intent.getIntExtra("pofolIdx", 0))
+        }
     }
 
     private fun initRecyclerView(item: List<PofolCommentResult>) {
-
         commentRVAdapter.initComment(item)
 
         commentRVAdapter.setMyItemClickListener(object : PortfolioCommentRVAdapter.MyItemClickListener {
@@ -111,7 +126,12 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
             val comment = "${binding.portfolioCommentWriteEt.text.trim()}"
 
             if(comment.isNotEmpty()) {  // 댓글에 적은 내용이 있는 경우 댓글 업로드
-                commentService.writeComment(getJwt()!!, intent.getIntExtra("pofolIdx", 0), Comment(comment, getUserIdx()))
+                if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+                    api = 2
+                    refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+                } else {
+                    commentService.writeComment(getJwt()!!, intent.getIntExtra("pofolIdx", 0), Comment(comment, getUserIdx()))
+                }
             }
         }
     }
@@ -124,6 +144,10 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
     private fun getJwt() : String? {  // 내 jwt를 불러옴
         val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getString("jwt", "")
+    }
+
+    private fun getUser(): SharedPreferences {
+        return getSharedPreferences("user", MODE_PRIVATE)
     }
 
     private fun showPopup(commentIdx: Int, position: Int, userIdx: Int, view: View) {  // 내 댓글인 경우 삭제 가능
@@ -141,7 +165,15 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
                 editor.apply()
 
                 // 댓글 삭제
-                commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
+                if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+                    api = 3
+                    refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+
+                    editor.putInt("commentIdx", commentIdx)
+                    editor.apply()
+                } else {
+                    commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
+                }
             }
             else {
                 // 댓글 신고하기
@@ -251,5 +283,27 @@ class PortfolioCommentActivity : AppCompatActivity(), PofolCommentView {
     private fun hideKeyboard() {
         val inputManager : InputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(currentFocus!!.windowToken!!, InputMethodManager.HIDE_NOT_ALWAYS)
+    }
+
+    override fun onPatchSuccess(code: Int, result: RefreshResult) {
+        Log.d("REFRESH/SUC", "$result")
+
+        if(api == 1) {
+            commentService.getComment(intent.getIntExtra("pofolIdx", 0))
+        } else if(api == 2) {
+            val comment = "${binding.portfolioCommentWriteEt.text.trim()}"
+            commentService.writeComment(getJwt()!!, intent.getIntExtra("pofolIdx", 0), Comment(comment, getUserIdx()))
+        } else if(api == 3) {
+            val commentSP = getSharedPreferences("comment", MODE_PRIVATE)
+            val commentIdx = commentSP.getInt("commentIdx", 0)
+
+            commentService.deleteComment(getJwt()!!, commentIdx, getUserIdx())
+        }
+
+        api = 0
+    }
+
+    override fun onPatchFailure(code: Int, message: String) {
+        Log.d("REFRESH/FAIL", "$code $message")
     }
 }

@@ -3,6 +3,7 @@ package com.example.eraofband.ui.main.mypage
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Rect
@@ -28,6 +29,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.data.EditUser
+import com.example.eraofband.data.Report
 import com.example.eraofband.databinding.ActivityProfileEditBinding
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
@@ -36,6 +38,9 @@ import com.example.eraofband.remote.user.getMyPage.GetMyPageService
 import com.example.eraofband.remote.user.getMyPage.GetMyPageView
 import com.example.eraofband.remote.user.patchUser.PatchUserService
 import com.example.eraofband.remote.user.patchUser.PatchUserView
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtService
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtView
+import com.example.eraofband.remote.user.refreshjwt.RefreshResult
 import com.example.eraofband.ui.setOnSingleClickListener
 import com.example.eraofband.ui.signup.DialogDatePicker
 import okhttp3.MediaType
@@ -43,7 +48,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
 
-class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, SendImgView {
+class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, SendImgView, RefreshJwtView {
 
     private lateinit var binding : ActivityProfileEditBinding
 
@@ -54,6 +59,13 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
     // 스피너 초기화 관련 변수
     private var initial = true
     private var currentArea = 0
+
+    private var api = 0;
+    private val getMyPageService = GetMyPageService()
+    private val patchUserService = PatchUserService()
+    private val sendImgService = SendImgService()
+
+    private val refreshJwtService = RefreshJwtService()
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,10 +79,17 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
         }
 
         // 유저 정보를 받아온 후 프로필 편집 화면에 연동
-        val getMyPageService = GetMyPageService()
 
         getMyPageService.setUserView(this)
-        getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
+        patchUserService.setPatchUserView(this)
+        sendImgService.setImageView(this)
+
+        if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+            refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+        } else {
+            api = 1
+            getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
+        }
 
         getImage()
 
@@ -81,6 +100,7 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
             initImageViewProfile()
         }
 
+        binding.profileEditIntroduceEt.text.isBlank()
         // 소개 글 글자 수 실시간 연동
         binding.profileEditIntroduceEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -110,13 +130,16 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
         initDatePicker()
 
         binding.signupSaveBtn.setOnSingleClickListener {
-            val patchUserService = PatchUserService()
-            patchUserService.setPatchUserView(this)
 
             editUser = updateUser()
             Log.d("USER PATCH", editUser.toString())
 
-            patchUserService.patchUser(getJwt()!!, editUser)
+            if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+                refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+            } else {
+                api = 2
+                patchUserService.patchUser(getJwt()!!, editUser)
+            }
 
             Handler(Looper.getMainLooper()).postDelayed({
                 finish()
@@ -143,6 +166,10 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
         val userSP = getSharedPreferences("user", MODE_PRIVATE)
         Log.d("jwt value", userSP.getString("jwt", "").toString())
         return userSP.getString("jwt", "")
+    }
+
+    private fun getUser(): SharedPreferences {
+        return getSharedPreferences("user", MODE_PRIVATE)
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
@@ -331,8 +358,6 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
                     val requestBody = RequestBody.create(MediaType.parse("image/*"), file)
                     val body = MultipartBody.Part.createFormData("file", file.name, requestBody)
 
-                    val sendImgService = SendImgService()
-                    sendImgService.setImageView(this)
                     sendImgService.sendImg(body)
 
                 } else {
@@ -353,12 +378,24 @@ class ProfileEditActivity : AppCompatActivity(), GetMyPageView, PatchUserView, S
         return result!!
     }
 
-    override fun onPatchSuccess(code: Int, result: String) {
+    override fun onPatchUserSuccess(code: Int, result: String) {
         Log.d("PATCH / SUCCESS",  result)
     }
 
-    override fun onPatchFailure(code: Int, message: String) {
+    override fun onPatchUserFailure(code: Int, message: String) {
         Log.d("PATCH / FAIL", "$code $message")
+    }
+
+    override fun onPatchSuccess(code: Int, result: RefreshResult) {
+        Log.d("REFRESH/SUC", "$result")
+        if(api == 1) getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
+        else if(api == 2) patchUserService.patchUser(getJwt()!!, editUser)
+
+        api = 0
+    }
+
+    override fun onPatchFailure(code: Int, message: String) {
+        Log.d("REFRESH/FAIL", "$code $message")
     }
 
     override fun onSendSuccess(result: String) {

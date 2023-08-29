@@ -2,6 +2,7 @@ package com.example.eraofband.ui.main.mypage
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,20 +10,27 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
+import com.example.eraofband.data.Report
 import com.example.eraofband.databinding.ActivityMypageBinding
 import com.example.eraofband.remote.user.getMyPage.GetMyPageResult
 import com.example.eraofband.remote.user.getMyPage.GetMyPageService
 import com.example.eraofband.remote.user.getMyPage.GetMyPageView
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtService
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtView
+import com.example.eraofband.remote.user.refreshjwt.RefreshResult
 import com.example.eraofband.ui.main.mypage.follow.FollowActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MyPageActivity : AppCompatActivity(), GetMyPageView {
+class MyPageActivity : AppCompatActivity(), GetMyPageView, RefreshJwtView {
 
     private lateinit var binding: ActivityMypageBinding
     private var mySession : Int = -1
     private lateinit var nickName : String
+
+    private val getMyPageService = GetMyPageService()
+    private val refreshJwtService = RefreshJwtService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,9 +42,14 @@ class MyPageActivity : AppCompatActivity(), GetMyPageView {
     override fun onResume() {
         super.onResume()
 
-        val getMyPageService = GetMyPageService()
         getMyPageService.setUserView(this)
-        getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
+        refreshJwtService.setRefreshView(this)
+
+        if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+            refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+        } else {
+            getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
+        }
 
         clickListener()
     }
@@ -82,6 +95,10 @@ class MyPageActivity : AppCompatActivity(), GetMyPageView {
     private fun getJwt() : String? {
         val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
         return userSP.getString("jwt", "")
+    }
+
+    private fun getUser(): SharedPreferences {
+        return getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
     }
 
     private fun connectVP() {
@@ -190,6 +207,15 @@ class MyPageActivity : AppCompatActivity(), GetMyPageView {
             3 -> binding.mypageSessionTv.text = "키보드"
             else ->  binding.mypageSessionTv.text = "드럼"
         }
+    }
+
+    override fun onPatchSuccess(code: Int, result: RefreshResult) {
+        Log.d("REPORT/SUC", "$result")
+        getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
+    }
+
+    override fun onPatchFailure(code: Int, message: String) {
+        Log.d("REPORT/FAIL", "$code $message")
     }
 
 }

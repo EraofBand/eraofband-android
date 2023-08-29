@@ -1,33 +1,42 @@
 package com.example.eraofband.ui.main.mypage
 
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.example.eraofband.data.Report
 import com.example.eraofband.data.Session
 import com.example.eraofband.databinding.ActivityMyPageSessionBinding
 import com.example.eraofband.remote.user.patchSession.PatchSessionService
 import com.example.eraofband.remote.user.patchSession.PatchSessionView
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtService
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtView
+import com.example.eraofband.remote.user.refreshjwt.RefreshResult
 import com.example.eraofband.ui.setOnSingleClickListener
 
-class MyPageSessionActivity : AppCompatActivity(), PatchSessionView{
+class MyPageSessionActivity : AppCompatActivity(), PatchSessionView, RefreshJwtView{
 
     lateinit var binding : ActivityMyPageSessionBinding
     var session = Session(-1,-1)
 
+    private val patchSessionService = PatchSessionService()
+    private val refreshJwtService = RefreshJwtService()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMyPageSessionBinding.inflate(layoutInflater)
-        session.userIdx = getUserIdx()
-
         setContentView(binding.root)
 
-        // 원래 나의 세션이 뭐였는지 체크
-        val editSession = intent.getIntExtra("session", -1)
+        session.userIdx = getUserIdx()
 
-        when(editSession){
+        patchSessionService.setPatchSessionView(this)
+        refreshJwtService.setRefreshView(this)
+
+        // 원래 나의 세션이 뭐였는지 체크
+        when(intent.getIntExtra("session", -1)){
             0 -> binding.mypageSessionVocalCb.isChecked = true
             1 -> binding.mypageSessionGuitarCb.isChecked = true
             2 -> binding.mypageSessionBaseCb.isChecked = true
@@ -40,9 +49,11 @@ class MyPageSessionActivity : AppCompatActivity(), PatchSessionView{
         }
 
         binding.mypageSessionNextBtn.setOnSingleClickListener{ // 변경버튼 api 연동
-            val patchSessionService = PatchSessionService()
-            patchSessionService.setPatchSessionView(this)
-            patchSessionService.patchSession(getJwt()!!, session)
+            if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+                refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+            } else {
+                patchSessionService.patchSession(getJwt()!!, session)
+            }
 
             Handler(Looper.getMainLooper()).postDelayed({
                 finish()
@@ -135,8 +146,12 @@ class MyPageSessionActivity : AppCompatActivity(), PatchSessionView{
     }
 
     private fun getJwt() : String? {
-        val userSP = getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
+        val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getString("jwt", "")
+    }
+
+    private fun getUser(): SharedPreferences {
+        return getSharedPreferences("user", MODE_PRIVATE)
     }
 
     override fun onPatchSessionSuccess(result: String) {
@@ -145,5 +160,14 @@ class MyPageSessionActivity : AppCompatActivity(), PatchSessionView{
 
     override fun onPatchSessionFailure(code: Int, message: String) {
         Log.d("SESSION/FAIL", "$code $message")
+    }
+
+    override fun onPatchSuccess(code: Int, result: RefreshResult) {
+        Log.d("REFRESH/SUC", "$result")
+        patchSessionService.patchSession(getJwt()!!, session)
+    }
+
+    override fun onPatchFailure(code: Int, message: String) {
+        Log.d("REFRESH/FAIL", "$code $message")
     }
 }

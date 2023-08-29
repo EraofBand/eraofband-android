@@ -2,6 +2,7 @@ package com.example.eraofband.ui.main.mypage.portfolio
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
@@ -24,12 +25,16 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.example.eraofband.data.Portfolio
+import com.example.eraofband.data.Report
 import com.example.eraofband.databinding.ActivityPortfolioMakeBinding
 import com.example.eraofband.remote.portfolio.makePofol.MakePofolResult
 import com.example.eraofband.remote.portfolio.makePofol.MakePofolService
 import com.example.eraofband.remote.portfolio.makePofol.MakePofolView
 import com.example.eraofband.remote.sendimg.SendImgService
 import com.example.eraofband.remote.sendimg.SendImgView
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtService
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtView
+import com.example.eraofband.remote.user.refreshjwt.RefreshResult
 import com.example.eraofband.ui.setOnSingleClickListener
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -38,10 +43,12 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 
 
-class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
+class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView, RefreshJwtView {
 
     private lateinit var binding: ActivityPortfolioMakeBinding
 
+    private val makeService = MakePofolService()
+    private val refreshJwtService = RefreshJwtService()
     private val sendImgService = SendImgService()
 
     private lateinit var getResult: ActivityResultLauncher<Intent>
@@ -58,9 +65,8 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
         setContentView(binding.root)
 
         sendImgService.setImageView(this)
-
-        val makeService = MakePofolService()
         makeService.setMakeView(this)
+        refreshJwtService.setRefreshView(this)
 
         binding.portfolioMakeBackIb.setOnClickListener { finish() }  // 뒤로가기
 
@@ -74,7 +80,11 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
 
             if(title.isNotEmpty() && content.isNotEmpty() && videoUrl != "" && thumbnailUrl != "") {
                 // 제목, 소개, 비디오를 모두 올린 경우 정보 저장 후 포트폴리오 올려줌
-                makeService.makePortfolio(getJwt()!!, Portfolio(content, thumbnailUrl, title, getUserIdx(), videoUrl))
+                if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+                    refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+                } else {
+                    makeService.makePortfolio(getJwt()!!, Portfolio(content, thumbnailUrl, title, getUserIdx(), videoUrl))
+                }
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     finish()
@@ -91,6 +101,10 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
     private fun getUserIdx(): Int {
         val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getInt("userIdx", 0)
+    }
+
+    private fun getUser(): SharedPreferences {
+        return getSharedPreferences("user", MODE_PRIVATE)
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
@@ -247,5 +261,17 @@ class PortfolioMakeActivity : AppCompatActivity(), SendImgView, MakePofolView {
 
     override fun onMakeFailure(code: Int, message: String) {
         Log.d("MAKE/FAIL", "$code $message")
+    }
+
+    override fun onPatchSuccess(code: Int, result: RefreshResult) {
+        Log.d("REFRESH/SUC", "$result")
+        val title = "${binding.portfolioMakeTitleEt.text.trim()}"
+        val content = "${binding.portfolioMakeVideoIntroEt.text.trim()}"
+
+        makeService.makePortfolio(getJwt()!!, Portfolio(content, thumbnailUrl, title, getUserIdx(), videoUrl))
+    }
+
+    override fun onPatchFailure(code: Int, message: String) {
+        Log.d("REFRESH/FAIL", "$code $message")
     }
 }

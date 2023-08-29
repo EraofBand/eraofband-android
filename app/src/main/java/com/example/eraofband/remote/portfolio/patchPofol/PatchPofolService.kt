@@ -28,8 +28,8 @@ class PatchPofolService {
                 val resp : BasicResponse = response.body()!!
 
                 when(val code = resp.code) {
-                    1000 -> patchView.onPatchSuccess(code, resp.result)  // 성공
-                    else -> patchView.onPatchFailure(resp)
+                    1000 -> patchView.onPatchUserSuccess(code, resp.result)  // 성공
+                    else -> patchView.onPatchUserFailure(resp)
                 }
             }
 
