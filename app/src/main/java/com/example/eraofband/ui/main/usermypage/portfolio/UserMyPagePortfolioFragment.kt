@@ -13,12 +13,18 @@ import com.example.eraofband.databinding.FragmentUserMypagePortfolioBinding
 import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolService
 import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolView
 import com.example.eraofband.remote.portfolio.getPofol.GetPofolResult
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtService
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtView
+import com.example.eraofband.remote.user.refreshjwt.RefreshResult
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 
-class UserMyPagePortfolioFragment : Fragment(), GetMyPofolView {
+class UserMyPagePortfolioFragment : Fragment(), GetMyPofolView, RefreshJwtView {
 
     private var _binding: FragmentUserMypagePortfolioBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
+
+    private val getMypofol = GetMyPofolService()
+    private val getRefreshJwt = RefreshJwtService()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +39,6 @@ class UserMyPagePortfolioFragment : Fragment(), GetMyPofolView {
     override fun onResume() {
         super.onResume()
 
-        val getMypofol = GetMyPofolService()
         getMypofol.setPofolView(this)
         getMypofol.getPortfolio(getJwt()!!, getUserIdx())
     }
@@ -79,6 +84,14 @@ class UserMyPagePortfolioFragment : Fragment(), GetMyPofolView {
 
     override fun onGetFailure(code: Int, message: String) {
         Log.d("PORTFOLIO/FAIL", "$code $message")
+    }
+
+    override fun onPatchSuccess(code: Int, result: RefreshResult) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onPatchFailure(code: Int, message: String) {
+        TODO("Not yet implemented")
     }
 
 }

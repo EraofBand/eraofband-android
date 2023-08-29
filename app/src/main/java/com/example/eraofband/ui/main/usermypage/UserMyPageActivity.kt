@@ -2,6 +2,7 @@ package com.example.eraofband.ui.main.usermypage
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.Resources
 import android.graphics.Point
 import android.os.Bundle
@@ -17,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
 import com.example.eraofband.data.MakeChatRoom
+import com.example.eraofband.data.Report
 import com.example.eraofband.data.Users
 import com.example.eraofband.databinding.ActivityUserMypageBinding
 import com.example.eraofband.remote.BasicResponse
@@ -35,6 +37,9 @@ import com.example.eraofband.remote.chat.makeChat.MakeChatView
 import com.example.eraofband.remote.user.getOtherUser.GetOtherUserResult
 import com.example.eraofband.remote.user.getOtherUser.GetOtherUserService
 import com.example.eraofband.remote.user.getOtherUser.GetOtherUserView
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtService
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtView
+import com.example.eraofband.remote.user.refreshjwt.RefreshResult
 import com.example.eraofband.remote.user.userFollow.UserFollowResponse
 import com.example.eraofband.remote.user.userFollow.UserFollowService
 import com.example.eraofband.remote.user.userFollow.UserFollowView
@@ -49,7 +54,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView, UserUnfollowView, BlockView,
-    IsChatRoomView, ActiveChatView, MakeChatView, EnterChatRoomView {
+    IsChatRoomView, ActiveChatView, MakeChatView, EnterChatRoomView, RefreshJwtView {
 
     private lateinit var binding: ActivityUserMypageBinding
     internal var otherUserIdx: Int? = null
@@ -71,6 +76,9 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     private val makeChatService = MakeChatService()
     private val enterChatRoomService = EnterChatRoomService()
 
+    private val refreshJwtService = RefreshJwtService()
+    private var api = 0
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,13 +94,19 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
         getOtherUserService.setOtherUserView(this)
         userUnfollowService.setUserUnfollowView(this)
         userFollowService.setUserFollowView(this)
+        refreshJwtService.setRefreshView(this)
 
     }
 
     override fun onResume() {
         super.onResume()
 
-        getOtherUserService.getOtherUser(getJwt()!!, otherUserIdx!!)
+        if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+            refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+        } else {
+            api = 1
+            getOtherUserService.getOtherUser(getJwt()!!, otherUserIdx!!)
+        }
 
         isChatRoomService.setChatListView(this)
         activeChatService.setActiveView(this)
@@ -111,7 +125,12 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
 
         // 메세지 클릭하면 채팅방으로 이동
         binding.userMypageMessageTv.setOnSingleClickListener {
-            isChatRoomService.isChatRoom(getJwt()!!, Users(getUserIdx(), otherUserIdx!!))
+            if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+                refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+            } else {
+                api = 2
+                isChatRoomService.isChatRoom(getJwt()!!, Users(getUserIdx(), otherUserIdx!!))
+            }
         }
 
         binding.userMypageFollowTv.setOnSingleClickListener {  // 팔로우 리스트에서 언팔 및 팔로우 시 visibility 변경
@@ -120,7 +139,12 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             binding.userMypageFollowerCntTv.text = "${followerCnt++}"
             followerCnt += 1
 
-            userFollowService.userFollow(getJwt()!!, otherUserIdx!!)
+            if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+                refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+            } else {
+                api = 3
+                userFollowService.userFollow(getJwt()!!, otherUserIdx!!)
+            }
         }
 
         binding.userMypageUnfollowTv.setOnSingleClickListener {
@@ -129,7 +153,12 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             binding.userMypageFollowerCntTv.text = (followerCnt - 1).toString()
             followerCnt -= 1
 
-            userUnfollowService.userUnfollow(getJwt()!!, otherUserIdx!!)
+            if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+                refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+            } else {
+                api = 4
+                userUnfollowService.userUnfollow(getJwt()!!, otherUserIdx!!)
+            }
         }
 
         moveFollowActivity()
@@ -161,6 +190,10 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
     private fun getUserIdx() : Int {
         val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getInt("userIdx", 0)
+    }
+
+    private fun getUser(): SharedPreferences {
+        return getSharedPreferences("user", MODE_PRIVATE)
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -196,10 +229,16 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
             }
             else {  // 유저 차단하기
                 Log.d("BLOCK", "USER")
-                if (blockStatus == 0)
-                    blockService.block(getJwt()!!, otherUserIdx!!)
-                else
+                if (blockStatus == 0) {
+                    if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+                        refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+                    } else {
+                        api = 5
+                        blockService.block(getJwt()!!, otherUserIdx!!)
+                    }
+                } else {
                     Toast.makeText(applicationContext, "이미 차단한 유저입니다.", Toast.LENGTH_SHORT).show()
+                }
             }
 
             false
@@ -365,13 +404,29 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
 
         if(result.chatRoomIdx == "null"){
             chatIdx = "${UUID.randomUUID()}"
-            makeChatService.makeChat(MakeChatRoom(chatIdx, getUserIdx(), otherUserIdx!!))
+            if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+                refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+            } else {
+                api = 6
+                makeChatService.makeChat(MakeChatRoom(chatIdx, getUserIdx(), otherUserIdx!!))
+            }
         } else{
             chatIdx = result.chatRoomIdx
             if(result.status == 0){
-                activeChatService.activeChat(getJwt()!!, MakeChatRoom(result.chatRoomIdx, getUserIdx(), otherUserIdx!!))
+                if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+                    refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+                } else {
+                    api = 7
+                    activeChatService.activeChat(getJwt()!!, MakeChatRoom(result.chatRoomIdx, getUserIdx(), otherUserIdx!!))
+                }
             }
-            enterChatRoomService.enterChatRoom(getJwt()!!, chatIdx)
+
+            if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+                refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+            } else {
+                api = 8
+                enterChatRoomService.enterChatRoom(getJwt()!!, chatIdx)
+            }
         }
     }
 
@@ -402,6 +457,27 @@ class UserMyPageActivity : AppCompatActivity(), GetOtherUserView, UserFollowView
 
     override fun onEnterFailure(code: Int, message: String) {
         Log.d("ENTER CHATROOM / FAIL", "$code $message")
+    }
+
+    override fun onPatchSuccess(code: Int, result: RefreshResult) {
+        Log.d("REFRESH/SUC", "$result")
+
+        when(api) {
+            1 -> getOtherUserService.getOtherUser(getJwt()!!, otherUserIdx!!)
+            2 -> isChatRoomService.isChatRoom(getJwt()!!, Users(getUserIdx(), otherUserIdx!!))
+            3 -> userFollowService.userFollow(getJwt()!!, otherUserIdx!!)
+            4 -> userUnfollowService.userUnfollow(getJwt()!!, otherUserIdx!!)
+            5 -> blockService.block(getJwt()!!, otherUserIdx!!)
+            6 -> makeChatService.makeChat(MakeChatRoom(chatIdx, getUserIdx(), otherUserIdx!!))
+            7 -> activeChatService.activeChat(getJwt()!!, MakeChatRoom(chatIdx, getUserIdx(), otherUserIdx!!))
+            8 -> enterChatRoomService.enterChatRoom(getJwt()!!, chatIdx)
+        }
+
+        api = 0
+    }
+
+    override fun onPatchFailure(code: Int, message: String) {
+        Log.d("REFRESH/FAIL", "$code $message")
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.eraofband.ui.main.usermypage.portfolio
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -12,19 +13,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
+import com.example.eraofband.data.Report
 import com.example.eraofband.databinding.ActivityUserPortfolioListBinding
 import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolService
 import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolView
 import com.example.eraofband.remote.portfolio.getPofol.GetPofolResult
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtService
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtView
+import com.example.eraofband.remote.user.refreshjwt.RefreshResult
 import com.example.eraofband.ui.main.mypage.portfolio.PortfolioCommentActivity
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 import com.example.eraofband.ui.main.report.ReportDialog
 import android.view.View as View1
 
-class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
+class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView, RefreshJwtView {
 
     private lateinit var binding : ActivityUserPortfolioListBinding
     private lateinit var userPortfolioAdapter : UserPortfolioListRVAdapter
+
+    private val getMypofol = GetMyPofolService()
+    private val refreshJwtService = RefreshJwtService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +49,14 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
     override fun onStart() {
         super.onStart()
 
-        val getMypofol = GetMyPofolService()
         getMypofol.setPofolView(this)
-        getMypofol.getPortfolio(getJwt()!!, getUserIdx())
+        refreshJwtService.setRefreshView(this)
+
+        if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+            refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+        } else {
+            getMypofol.getPortfolio(getJwt()!!, getUserIdx())
+        }
     }
 
     private fun getUserIdx(): Int {
@@ -54,6 +67,10 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
     private fun getJwt() : String? {
         val userSP = getSharedPreferences("user", MODE_PRIVATE)
         return userSP.getString("jwt", "")
+    }
+
+    private fun getUser(): SharedPreferences {
+        return getSharedPreferences("user", MODE_PRIVATE)
     }
 
     private fun initRecyclerView(item: List<GetPofolResult>) {
@@ -134,5 +151,14 @@ class UserPortfolioListActivity : AppCompatActivity(), GetMyPofolView {
     override fun onBackPressed() {
         super.onBackPressed()
         initRecyclerView(arrayListOf())
+    }
+
+    override fun onPatchSuccess(code: Int, result: RefreshResult) {
+        Log.d("REFRESH/SUC", "$result")
+        getMypofol.getPortfolio(getJwt()!!, getUserIdx())
+    }
+
+    override fun onPatchFailure(code: Int, message: String) {
+        Log.d("REFRESH/FAIL", "$code $message")
     }
 }
