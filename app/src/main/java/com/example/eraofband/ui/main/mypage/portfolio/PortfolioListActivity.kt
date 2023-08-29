@@ -2,6 +2,7 @@ package com.example.eraofband.ui.main.mypage.portfolio
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -16,10 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.example.eraofband.R
+import com.example.eraofband.data.Report
 import com.example.eraofband.databinding.ActivityPortfolioListBinding
 import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolService
 import com.example.eraofband.remote.portfolio.getPofol.GetMyPofolView
 import com.example.eraofband.remote.portfolio.getPofol.GetPofolResult
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtService
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtView
+import com.example.eraofband.remote.user.refreshjwt.RefreshResult
 import com.example.eraofband.ui.main.home.session.band.BandDeleteDialog
 import com.example.eraofband.ui.main.mypage.MyPageActivity
 import com.kakao.sdk.common.util.KakaoCustomTabsClient
@@ -27,10 +32,13 @@ import com.kakao.sdk.share.ShareClient
 import com.kakao.sdk.share.WebSharerClient
 import com.kakao.sdk.template.model.FeedTemplate
 
-class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
+class PortfolioListActivity : AppCompatActivity(), GetMyPofolView, RefreshJwtView {
 
     private lateinit var binding : ActivityPortfolioListBinding
     private lateinit var portfolioAdapter : PortfolioListRVAdapter
+
+    private val getMypofol = GetMyPofolService()
+    private val refreshJwtService = RefreshJwtService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,9 +55,14 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
     override fun onResume() {
         super.onResume()
 
-        val getMypofol = GetMyPofolService()
         getMypofol.setPofolView(this)
-        getMypofol.getPortfolio(getJwt()!!, getUserIdx())
+        refreshJwtService.setRefreshView(this)
+
+        if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+            refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+        } else {
+            getMypofol.getPortfolio(getJwt()!!, getUserIdx())
+        }
     }
 
     private fun getUserIdx() : Int {
@@ -62,8 +75,12 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
         return userSP.getString("jwt", "")
     }
 
+    private fun getUser(): SharedPreferences {
+        return getSharedPreferences("user", MODE_PRIVATE)
+    }
+
     private fun initRecyclerView(item: List<GetPofolResult>) {
-        portfolioAdapter = PortfolioListRVAdapter(getJwt()!!, this)
+        portfolioAdapter = PortfolioListRVAdapter(getJwt()!!, getUserIdx(), getUser(), this)
         binding.portfolioListPortfolioRv.adapter = portfolioAdapter
         binding.portfolioListPortfolioRv.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
@@ -199,5 +216,14 @@ class PortfolioListActivity : AppCompatActivity(), GetMyPofolView {
     override fun onBackPressed() {
         super.onBackPressed()
         initRecyclerView(arrayListOf())
+    }
+
+    override fun onPatchSuccess(code: Int, result: RefreshResult) {
+        Log.d("REFRESH/SUC", "$result")
+        getMypofol.getPortfolio(getJwt()!!, getUserIdx())
+    }
+
+    override fun onPatchFailure(code: Int, message: String) {
+        Log.d("REFRESH/FAIL", "$code $message")
     }
 }

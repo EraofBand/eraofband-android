@@ -2,31 +2,42 @@ package com.example.eraofband.ui.main.mypage.portfolio
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
+import com.example.eraofband.data.Report
 import com.example.eraofband.databinding.ItemPortfolioListBinding
 import com.example.eraofband.remote.portfolio.getPofol.GetPofolResult
 import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeResult
 import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeService
 import com.example.eraofband.remote.portfolio.pofolLike.PofolLikeView
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtService
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtView
+import com.example.eraofband.remote.user.refreshjwt.RefreshResult
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.kakao.sdk.template.model.*
 
-class PortfolioListRVAdapter(private val jwt: String, private val context: Context) : RecyclerView.Adapter<PortfolioListRVAdapter.ViewHolder>(),
-    PofolLikeView {
+class PortfolioListRVAdapter(private val jwt: String, private val userIdx: Int, private val user: SharedPreferences, private val context: Context) :
+    RecyclerView.Adapter<PortfolioListRVAdapter.ViewHolder>(), PofolLikeView, RefreshJwtView {
     private val portfolio = arrayListOf<GetPofolResult>()
     private var videoPlayer: ExoPlayer? = null
-    private val pofolLikeService = PofolLikeService()
     private lateinit var mItemListener: MyItemListener
     //private lateinit var defaultFeed: FeedTemplate
+
+    private val pofolLikeService = PofolLikeService()
+    private val refreshJwtService = RefreshJwtService()
+
+    private var api = 0
+    private var tempPortfolio: GetPofolResult? = null
 
     @SuppressLint("NotifyDataSetChanged")
     fun initPortfolio(portfolio : List<GetPofolResult>) {
@@ -69,12 +80,21 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(portfolio[position])
         pofolLikeService.setLikeView(this)
+        refreshJwtService.setRefreshView(this)
+
         videoPlayer = ExoPlayer.Builder(context).build() // 비디오플레이어 초기화
 
         // 좋아요 관련
         holder.binding.portfolioListLikeIv.setOnClickListener {
             if (portfolio[position].likeOrNot == "Y") {  // 좋아요가 되어있는 경우, 좋아요 취소 진행
-                pofolLikeService.deleteLike(jwt, portfolio[position].pofolIdx)
+                if(System.currentTimeMillis() >= user.getLong("expiration", 0)) {
+                    refreshJwtService.refreshJwt(user.getString("refresh", "")!!, userIdx)
+                } else {
+                    api = 1
+                    tempPortfolio = portfolio[position]
+                    pofolLikeService.deleteLike(jwt, portfolio[position].pofolIdx)
+                }
+
                 holder.binding.portfolioListLikeIv.setImageResource(R.drawable.ic_heart_off)
 
                 portfolio[position].pofolLikeCount -= 1
@@ -82,7 +102,14 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
                     portfolio[position].pofolLikeCount.toString()
                 portfolio[position].likeOrNot = "N"
             } else {  // 좋아요가 안되어있는 경우, 좋아요 진행
-                pofolLikeService.like(jwt, portfolio[position].pofolIdx)
+                if(System.currentTimeMillis() >= user.getLong("expiration", 0)) {
+                    refreshJwtService.refreshJwt(user.getString("refresh", "")!!, userIdx)
+                } else {
+                    api = 2
+                    tempPortfolio = portfolio[position]
+                    pofolLikeService.like(jwt, portfolio[position].pofolIdx)
+                }
+
                 holder.binding.portfolioListLikeIv.setImageResource(R.drawable.ic_heart_on)
 
                 portfolio[position].pofolLikeCount += 1
@@ -178,6 +205,7 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
         }
     }
 
+
     override fun onLikeSuccess(code: Int, result: PofolLikeResult) {
         Log.d("POFOLLIKE", result.toString())
     }
@@ -198,5 +226,18 @@ class PortfolioListRVAdapter(private val jwt: String, private val context: Conte
         super.onViewRecycled(holder)
         holder.binding.portfolioListVideoPv.player?.release()
         holder.binding.portfolioListVideoPv.player = null
+    }
+
+    override fun onPatchSuccess(code: Int, result: RefreshResult) {
+        Log.d("REFRESH/SUC", "$result")
+
+        if(api == 1) pofolLikeService.deleteLike(jwt, tempPortfolio!!.pofolIdx)
+        else if(api == 2) pofolLikeService.like(jwt, tempPortfolio!!.pofolIdx)
+
+        api = 0
+    }
+
+    override fun onPatchFailure(code: Int, message: String) {
+        Log.d("REFRESH/FAIL", "$code $message")
     }
 }

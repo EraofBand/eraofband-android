@@ -3,6 +3,7 @@ package com.example.eraofband.ui.main.mypage
 import android.annotation.SuppressLint
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,17 +15,21 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.eraofband.R
+import com.example.eraofband.data.Report
 import com.example.eraofband.databinding.FragmentMypageBinding
 import com.example.eraofband.remote.user.getMyPage.GetMyPageResult
 import com.example.eraofband.remote.user.getMyPage.GetMyPageService
 import com.example.eraofband.remote.user.getMyPage.GetMyPageView
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtService
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtView
+import com.example.eraofband.remote.user.refreshjwt.RefreshResult
 import com.example.eraofband.ui.main.mypage.follow.FollowActivity
 import com.example.eraofband.ui.main.mypage.portfolio.PortfolioMakeActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MyPageFragment : Fragment(), GetMyPageView {
+class MyPageFragment : Fragment(), GetMyPageView, RefreshJwtView {
 
     private var _binding: FragmentMypageBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
@@ -32,6 +37,7 @@ class MyPageFragment : Fragment(), GetMyPageView {
     private lateinit var nickName : String
 
     private val getMyPageService = GetMyPageService()
+    private val refreshJwtService = RefreshJwtService()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +52,13 @@ class MyPageFragment : Fragment(), GetMyPageView {
     override fun onResume() {
         super.onResume()
         getMyPageService.setUserView(this)
-        getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
+        refreshJwtService.setRefreshView(this)
+
+        if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+            refreshJwtService.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+        } else {
+            getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
+        }
 
         clickListener()
     }
@@ -110,6 +122,10 @@ class MyPageFragment : Fragment(), GetMyPageView {
     private fun getJwt() : String? {
         val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
         return userSP.getString("jwt", "")
+    }
+
+    private fun getUser(): SharedPreferences {
+        return requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
     }
 
     private fun connectVP() {
@@ -219,6 +235,15 @@ class MyPageFragment : Fragment(), GetMyPageView {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onPatchSuccess(code: Int, result: RefreshResult) {
+        Log.d("REFRESH/SUC", "$result")
+        getMyPageService.getMyInfo(getJwt()!!, getUserIdx())
+    }
+
+    override fun onPatchFailure(code: Int, message: String) {
+        Log.d("REPORT/FAIL", "$code $message")
     }
 }
 

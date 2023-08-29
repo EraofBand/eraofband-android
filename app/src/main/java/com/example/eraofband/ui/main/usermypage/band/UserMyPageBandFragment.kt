@@ -1,6 +1,7 @@
 package com.example.eraofband.ui.main.usermypage.band
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,14 +15,19 @@ import com.example.eraofband.remote.user.getOtherUser.GetOtherUserResult
 import com.example.eraofband.remote.user.getOtherUser.GetOtherUserService
 import com.example.eraofband.remote.user.getOtherUser.GetOtherUserView
 import com.example.eraofband.remote.user.getOtherUser.GetUserBand
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtService
+import com.example.eraofband.remote.user.refreshjwt.RefreshJwtView
+import com.example.eraofband.remote.user.refreshjwt.RefreshResult
 import com.example.eraofband.ui.main.home.session.band.BandRecruitActivity
-import com.example.eraofband.ui.main.mypage.band.MyPageBandRVAdapter
 import com.example.eraofband.ui.main.usermypage.UserMyPageActivity
 
-class UserMyPageBandFragment : Fragment(), GetOtherUserView {
+class UserMyPageBandFragment : Fragment(), GetOtherUserView, RefreshJwtView {
 
     private var _binding: FragmentUserMypageBandBinding? = null
     private val binding get() = _binding!! // 바인딩 누수 방지
+
+    private val getOtherUserService = GetOtherUserService()
+    private val getRefreshJwt = RefreshJwtService()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,9 +42,14 @@ class UserMyPageBandFragment : Fragment(), GetOtherUserView {
     override fun onResume() {
         super.onResume()
 
-        val getOtherUserService = GetOtherUserService()
         getOtherUserService.setOtherUserView(this)
-        getOtherUserService.getOtherUser(getJwt()!!, getUserIdx())
+        getRefreshJwt.setRefreshView(this)
+
+        if(System.currentTimeMillis() >= getUser().getLong("expiration", 0)) {
+            getRefreshJwt.refreshJwt(getUser().getString("refresh", "")!!, getUserIdx())
+        } else {
+            getOtherUserService.getOtherUser(getJwt()!!, getUserIdx())
+        }
     }
 
     private fun getUserIdx(): Int {  //임시방편입니다요...
@@ -49,6 +60,10 @@ class UserMyPageBandFragment : Fragment(), GetOtherUserView {
     private fun getJwt(): String? {
         val userSP = requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
         return userSP.getString("jwt", "")
+    }
+
+    private fun getUser(): SharedPreferences {
+        return requireActivity().getSharedPreferences("user", AppCompatActivity.MODE_PRIVATE)
     }
 
     private fun initRV(item: List<GetUserBand>) {
@@ -62,7 +77,7 @@ class UserMyPageBandFragment : Fragment(), GetOtherUserView {
         binding.userMypageNoBandTv.visibility = View.GONE
         binding.userMypageBandRv.visibility = View.VISIBLE
 
-        val bandRVAdapter = UserPageBandRVAdapter(context!!)
+        val bandRVAdapter = UserPageBandRVAdapter(requireContext())
         binding.userMypageBandRv.adapter = bandRVAdapter
         binding.userMypageBandRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
@@ -94,4 +109,12 @@ class UserMyPageBandFragment : Fragment(), GetOtherUserView {
         Log.d("MYPAGE/FAIL", "$code $message")
     }
 
+    override fun onPatchSuccess(code: Int, result: RefreshResult) {
+        Log.d("REFRESH/SUC", "$result")
+        getOtherUserService.getOtherUser(getJwt()!!, getUserIdx())
+    }
+
+    override fun onPatchFailure(code: Int, message: String) {
+        Log.d("REFRESH/FAIL", "$code $message")
+    }
 }
