@@ -10,7 +10,7 @@ import retrofit2.Response
 class RefreshJwtService {
     private lateinit var refreshJwtView : RefreshJwtView
 
-    fun setAutoLoginView(refreshJwtView: RefreshJwtView) {
+    fun setRefreshView(refreshJwtView: RefreshJwtView) {
         this.refreshJwtView = refreshJwtView
     }
 
